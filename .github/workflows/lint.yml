@@ -1,0 +1,20 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22.6.0
+          cache: npm
+
+      - name: Prepare .env
+        run: cp .env.example .env
+
+      - run: npm ci
+      - run: make lint
