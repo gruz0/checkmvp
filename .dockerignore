@@ -9,3 +9,4 @@ coverage
 .git
 .github
 .env*
+*.db

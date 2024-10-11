@@ -36,3 +36,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/prompts/*.txt
+!/prompts/00-*.txt
+
+*.db

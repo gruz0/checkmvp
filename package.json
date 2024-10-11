@@ -11,22 +11,35 @@
     "next-lint": "next lint --no-cache",
     "eslint": "npx eslint . --ext .ts,.tsx,.js,.jsx",
     "next-lint-fix": "next lint --fix",
+    "lint:prisma": "npx prisma validate",
     "prettier": "npx prettier --check .",
     "knip": "npx knip",
-    "lint": "npm run next-lint && npm run eslint && npm run prettier && npm run knip",
-    "prepare": "npx husky"
+    "lint": "npm run next-lint && npm run prettier && npm run knip",
+    "prepare": "npx husky",
+    "prisma:generate_client": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "worker:tasks": "tsx src/workers/tasksWorker.ts"
   },
   "dependencies": {
     "@next/bundle-analyzer": "^14.2.5",
+    "@prisma/client": "^5.20.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "bullmq": "^5.14.0",
+    "dotenv": "^16.4.5",
+    "next": "14.2.13",
+    "openai": "^4.65.0",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.13"
+    "react-icons": "^5.3.0",
+    "tsx": "^4.19.1",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/eslint-plugin-security": "^3.0.0",
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.2.0",
     "@typescript-eslint/parser": "^8.2.0",
     "cross-env": "^7.0.3",
@@ -48,7 +61,9 @@
     "postcss": "^8.4.41",
     "postcss-load-config": "^6.0.1",
     "prettier": "^3.3.3",
+    "prisma": "^5.20.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "zod": "^3.23.8"
   }
 }

@@ -19,7 +19,17 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN npm run build
+ARG OPENAI_API_KEY
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
+
+ARG REDIS_URL
+ENV REDIS_URL=$REDIS_URL
+
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
+RUN npm run prisma:generate_client && \
+    npm run build
 
 FROM node:22.9.0-alpine AS prod_builder
 WORKDIR /app
@@ -30,11 +40,12 @@ COPY --from=base /app/node_modules ./node_modules
 COPY . .
 
 RUN npm install && \
+    npm run prisma:generate_client && \
     cp -R node_modules prod_node_modules
 
 # Production image, copy all the files and run next
 FROM node:22.9.0-alpine AS runner
-RUN apk add --update --no-cache curl=8.9.1-r2
+RUN apk add --update --no-cache curl=8.10.1-r0
 
 WORKDIR /app
 
@@ -46,8 +57,9 @@ ENV USER="app"
 
 RUN adduser -D $USER -u $UID
 
-# You only need to copy next.config.js if you are NOT using the default configuration
+# You only need to copy next.config.mjs if you are NOT using the default configuration
 COPY --from=builder --chown=$USER:$USER /app/next.config.mjs ./
+COPY --from=builder --chown=$USER:$USER /app/prisma ./prisma
 COPY --from=builder --chown=$USER:$USER /app/public ./public
 COPY --from=builder --chown=$USER:$USER /app/package.json ./package.json
 COPY --from=prod_builder --chown=$USER:$USER /app/prod_node_modules ./node_modules

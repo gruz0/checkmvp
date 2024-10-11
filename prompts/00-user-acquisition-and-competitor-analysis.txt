@@ -1,0 +1,96 @@
+You are an expert in startup growth and marketing strategy. Based on the provided description of a product problem and its target audience, I need you to generate a structured JSON response with the following details. Please ensure that the response is concise, but provides enough detail to be actionable for a startup founder looking to attract their first users and understand the competitive landscape. Use the provided structure, and ensure all fields are clearly defined.
+
+### Input:
+
+Product Problem Description: ###
+{problem_description}
+###
+
+Target Audience Description: ###
+{target_audience_description}
+###
+
+### Output:
+Generate a JSON response with the following fields:
+
+1. **Early Adopters Acquisition Ideas**: Strategies and tactics to attract the first group of users who are likely to adopt the product early. Focus on methods that are cost-effective and target users with a strong need for the solution.
+
+2. **Competitor Overview**: A brief analysis of 2-3 competitors or similar products in the market. Include the following information for each:
+   - **Name**: The name of the competitor or product.
+   - **Website**: The website URL of the competitor.
+   - **Strengths**: Key strengths or features that make the competitor successful.
+   - **Borrowed Ideas**: Concepts or approaches that could be adapted or improved upon for the user's product.
+   - **Investment Approach**: A summary of how the competitor raised funding or bootstrapped their growth.
+
+3. **Potential Product Names**: Suggest a few creative and memorable names for the user’s product, along with potential domain names that may be available for purchase.
+
+4. **Collaboration Opportunities**: Ideas for potential partnerships or collaborations with other companies, influencers, or communities that could help expand the product’s reach. Focus on partnerships that align with the target audience and provide mutual benefits.
+
+### Example JSON structure:
+```json
+{
+  "earlyAdoptersAcquisitionIdeas": [
+    "Join SEO and digital marketing groups on Facebook and Reddit to share your tool with community members.",
+    "Offer a limited-time free trial to users who provide feedback on the product.",
+    "Collaborate with influencers or bloggers who cover SEO and digital marketing topics to reach their audience."
+  ],
+  "competitorOverview": [
+    {
+      "name": "Ahrefs",
+      "website": "https://ahrefs.com",
+      "strengths": [
+        "Comprehensive SEO data and backlink analysis",
+        "Highly detailed reports for advanced users"
+      ],
+      "borrowedIdeas": [
+        "Focus on providing actionable data for users with limited time",
+        "Use of interactive graphs to simplify complex data"
+      ],
+      "investmentApproach": "Bootstrap with a focus on building a strong community and content marketing."
+    },
+    {
+      "name": "SEMrush",
+      "website": "https://semrush.com",
+      "strengths": [
+        "All-in-one marketing toolkit with powerful keyword analysis",
+        "Integration with other marketing tools"
+      ],
+      "borrowedIdeas": [
+        "Offering a simplified version for beginners",
+        "Create educational resources to teach users about SEO basics"
+      ],
+      "investmentApproach": "Secured early venture capital funding to accelerate growth and add new features."
+    }
+  ],
+  "potentialProductNames": [
+    {
+      "name": "SEO Insight Pro",
+      "domainExamples": ["seopro.com", "seoinsight.co", "insightseo.io"]
+    },
+    {
+      "name": "RankMaster",
+      "domainExamples": ["rankmaster.net", "rankmasterhq.com", "rankm.io"]
+    },
+    {
+      "name": "EasySEO Wizard",
+      "domainExamples": ["easyseowizard.com", "seowizard.co", "easyseo.ai"]
+    }
+  ],
+  "collaborationOpportunities": [
+    {
+      "partner": "SEO bloggers and influencers",
+      "strategy": "Reach out to influencers in the SEO space to test your tool and share their feedback with their audience."
+    },
+    {
+      "partner": "Local business associations",
+      "strategy": "Collaborate with local business groups to offer a webinar or workshop about SEO basics, using your tool as an example."
+    },
+    {
+      "partner": "Freelance platforms like Upwork",
+      "strategy": "Offer your tool as a value-add for freelancers who want to include SEO services in their offerings, and build a referral network."
+    }
+  ]
+}
+```
+
+Make sure the JSON is properly formatted, and provide only the JSON as the output. Avoid any additional commentary or explanations.
