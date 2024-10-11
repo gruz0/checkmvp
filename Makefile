@@ -29,12 +29,29 @@ build: prepare-dev-env # Build project
 dev: prepare-dev-env # Run dev server
 	@${NPM_RUN} dev
 
+worker: prepare-dev-env # Run dev worker
+	@${NPM_RUN} worker:tasks
+
 lint: # Run linters
 	@${NPM_RUN} lint
 
 fix: # Run automatically fixes
 	@${NPM_RUN} next-lint-fix
 	@${NPX} prettier -w .
+
+db-migrate: prepare-dev-env # Apply available migrations
+	@${NPM_RUN} db:migrate
+
+redis-start:
+	@${DOCKER_COMPOSE} -f docker-compose.development.yml up -d redis
+	@${DOCKER_COMPOSE} -f docker-compose.development.yml exec redis /init-redis.sh
+
+redis-stop:
+	@${DOCKER_COMPOSE} -f docker-compose.development.yml down redis
+	@${DOCKER_COMPOSE} -f docker-compose.development.yml rm -f redis
+
+redis-cli:
+	@${DOCKER_COMPOSE} -f docker-compose.development.yml exec redis redis-cli
 
 #
 # Production environment
@@ -54,6 +71,9 @@ prod-docker-stop: prepare-prod-env # Stop Docker container
 
 prod-docker-app-cli: prepare-prod-env # Attach to Docker container
 	@${DOCKER_COMPOSE} -f docker-compose.production.yml exec app sh
+
+prod-docker-db-migrate: prepare-prod-env # Apply available migrations
+	@${DOCKER_COMPOSE} -f docker-compose.production.yml exec app npm run db:migrate
 
 prod-docker-logs: prepare-prod-env # Show production related logs
 	@${DOCKER_COMPOSE} -f docker-compose.production.yml logs -f

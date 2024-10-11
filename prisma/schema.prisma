@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Idea {
+  id                                   String                                @id @default(uuid())
+  initialProblem                       String                                @map(name: "initial_problem")
+  initialTargetAudience                String                                @map(name: "initial_target_audience")
+  problem                              String?
+  targetAudience                       String?                               @map(name: "target_audience")
+  mvpFeatures                          String?                               @map(name: "mvp_features")
+  problemEvaluation                    ProblemEvaluation?
+  targetAudienceEvaluation             TargetAudienceEvaluation?
+  contentAndStrategyEvaluation         ContentAndLongTermStrategyEvaluation?
+  userAcquisitionAndCompetitorAnalysis UserAcquisitionAndCompetitorAnalysis?
+  contentStrategyAndGrowthPlan         ContentStrategyAndGrowthPlan?
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map("ideas")
+}
+
+model ProblemEvaluation {
+  id              String   @id @default(uuid())
+  status          String
+  suggestions     String
+  recommendations String
+  painPoints      String   @map(name: "pain_points")
+  marketExistence String   @map(name: "market_existence")
+  ideaId          String   @unique @map(name: "idea_id")
+  idea            Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @updatedAt @map(name: "updated_at")
+
+  @@map("problem_evaluations")
+}
+
+model TargetAudienceEvaluation {
+  id              String   @id @default(uuid())
+  status          String
+  existence       String
+  suggestions     String
+  recommendations String
+  ideaId          String   @unique @map(name: "idea_id")
+  idea            Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @updatedAt @map(name: "updated_at")
+
+  @@map("target_audience_evaluations")
+}
+
+model ContentAndLongTermStrategyEvaluation {
+  id                 String   @id @default(uuid())
+  valueProposition   String   @map(name: "value_proposition")
+  mvpRecommendation  String   @map(name: "mvp_recommendation")
+  twoWeekPlan        String   @map(name: "two_week_plan")
+  mvpCostAndTimeline String   @map(name: "mvp_cost_and_timeline")
+  ideaId             String   @unique @map(name: "idea_id")
+  idea               Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  createdAt          DateTime @default(now()) @map(name: "created_at")
+  updatedAt          DateTime @updatedAt @map(name: "updated_at")
+
+  @@map("content_and_strategy_evaluations")
+}
+
+model UserAcquisitionAndCompetitorAnalysis {
+  id                            String   @id @default(uuid())
+  earlyAdoptersAcquisitionIdeas String   @map(name: "early_adopters_acquisition_ideas")
+  competitorOverview            String   @map(name: "competitor_overview")
+  potentialProductNames         String   @map(name: "potential_product_names")
+  collaborationOpportunities    String   @map(name: "collaboration_opportunities")
+  ideaId                        String   @unique @map(name: "idea_id")
+  idea                          Idea     @relation(fields: [ideaId], references: [id])
+  createdAt                     DateTime @default(now()) @map(name: "created_at")
+  updatedAt                     DateTime @updatedAt @map(name: "updated_at")
+
+  @@map("user_acquisition_and_competitor_analysis")
+}
+
+model ContentStrategyAndGrowthPlan {
+  id                          String   @id @default(uuid())
+  ideaId                      String   @unique @map(name: "idea_id")
+  idea                        Idea     @relation(fields: [ideaId], references: [id])
+  contentMarketingIdeas       String   @map(name: "content_marketing_ideas")
+  keyMetricsToTrackPostLaunch String   @map(name: "key_metrics_to_track_post_launch")
+  recommendedToolsAndServices String   @map(name: "recommended_tools_and_services")
+  caseStudyOutline            String   @map(name: "case_study_outline")
+  createdAt                   DateTime @default(now()) @map(name: "created_at")
+  updatedAt                   DateTime @updatedAt @map(name: "updated_at")
+
+  @@map("content_strategy_and_growth_plans")
+}

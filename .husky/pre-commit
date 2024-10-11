@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+set -eu
+
+make lint
+
+exit 0

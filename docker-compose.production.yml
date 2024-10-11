@@ -3,8 +3,46 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - OPENAI_API_KEY=${OPENAI_API_KEY}
+        - REDIS_URL=${REDIS_URL}
+        - DATABASE_URL=${DATABASE_URL}
     env_file: .env
     stdin_open: true
     tty: true
+    # Used only for sharing access to SQLite DB between services
+    volumes:
+      - ./shared:/app/shared
     ports:
-      - 127.0.0.1:3000:3000
+      - '127.0.0.1:${APP_PORT:-3000}:3000'
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: worker.Dockerfile
+      args:
+        - OPENAI_API_KEY=${OPENAI_API_KEY}
+        - REDIS_URL=${REDIS_URL}
+        - DATABASE_URL=${DATABASE_URL}
+    env_file: .env
+    stdin_open: true
+    tty: true
+    # Used only for sharing access to SQLite DB between services
+    volumes:
+      - ./shared:/app/shared
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - '${REDIS_HOST:-127.0.0.1}:${REDIS_PORT:-6379}:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5

@@ -1,0 +1,13 @@
+services:
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - 127.0.0.1:6379:6379
+    volumes:
+      # NOTE: Do not forget to run this script manually
+      - ./docker/redis/init-redis.sh:/init-redis.sh
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5
