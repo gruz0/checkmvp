@@ -22,6 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   const ideaProps: IdeaProps = {
+    loading: true,
     id: idea.getId(),
     problem: idea.getInitialProblem(),
     problemEvaluation: null,
@@ -99,6 +100,13 @@ export default async function Page({ params }: { params: { id: string } }) {
       caseStudyOutline: contentStrategyAndGrowthPlan.getCaseStudyOutline(),
     }
   }
+
+  ideaProps.loading =
+    !problemEvaluation ||
+    !targetAudienceEvaluation ||
+    !contentAndLongTermStrategyEvaluation ||
+    !userAcquisitionAndCompetitorAnalysis ||
+    !contentStrategyAndGrowthPlan
 
   return <ReportPage idea={ideaProps} />
 }
