@@ -40,4 +40,7 @@ next-env.d.ts
 /prompts/*.txt
 !/prompts/00-*.txt
 
+/shared/
+!/shared/.gitkeep
+
 *.db
