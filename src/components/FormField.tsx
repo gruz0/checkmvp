@@ -43,7 +43,7 @@ const FormField = ({
       <textarea
         id={id}
         name={id}
-        className="mt-1 block h-32 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        className="mt-1 block h-32 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         value={value}
         onChange={onChange}
         required={required}
@@ -77,7 +77,7 @@ const FormField = ({
       <input
         id={id}
         name={id}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        className="mt-1 block w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         value={value}
         onChange={onChange}
         required={required}
