@@ -6,6 +6,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      UID: 1001
+
     steps:
       - uses: actions/checkout@v3
 
