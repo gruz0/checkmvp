@@ -17,19 +17,13 @@ If the input is valid, please evaluate the following and respond in this JSON fo
       "status": "well-defined", "requires_changes", or "not-well-defined",
       "suggestions": [provide 2-3 suggestions to improve the target audience definition],
       "existence": "Please ensure your response about target audience existence is consistent with whether the problem and target audience are well-defined. If the problem and target audience are well-defined, provide a clear statement of whether there is or is not a target audience for the problem."
-      "recommendations": [
+      "recommendations": [ // Provide 1-2 well-defined segments
         {
           "segment": [a well-defined segment based on provided suggestions to improve the target audience definition including demographics or other relevant activity to the product problem]. Provide 3 sentences.,
           "common_pain_points": [2-3 specific pain points that relate to product problem for this segment],
           "interaction": "Explain in 3 sentences how this segment might respond to the solution.",
           "targeting_strategy": "Detailed strategies to effectively target the audience and explain how the product can meet their specific needs and pain points. Provide 3 sentences."
         },
-        {
-          "segment": [a second well-defined segment based on provided suggestions to improve the target audience definition including demographics or other relevant activity to the product problem. Provide 3 sentences.],
-          "common_pain_points": [2-3 specific pain points that relate to product problem for this segment],
-          "interaction": "Explain in 3 sentences how this segment might respond to the solution.",
-          "targeting_strategy": "Detailed strategies to effectively target the audience and explain how the product can meet their specific needs and pain points. Provide 3 sentences."
-        }
       ]
     }
   }

@@ -56,7 +56,7 @@ ${targetAudience.trim()}"""`,
       // For most factual use cases such as data extraction, and truthful Q&A, the temperature of 0 is best.
       // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api
       temperature: 0,
-      max_tokens: 1000,
+      max_tokens: 2000,
       response_format: {
         type: 'json_object',
       },
@@ -66,7 +66,11 @@ ${targetAudience.trim()}"""`,
 
     const content = response.choices[0].message.content ?? ''
 
-    return JSON.parse(content.trim()) as IdeaEvaluationResult
+    const result = JSON.parse(content.trim()) as IdeaEvaluationResult
+
+    console.debug(JSON.stringify({ evaluateIdea: result }, null, 2))
+
+    return result
   }
 
   async evaluateContentAndLongTermStrategy(
@@ -98,7 +102,7 @@ ${targetAudience.trim()}"""`,
       // For most factual use cases such as data extraction, and truthful Q&A, the temperature of 0 is best.
       // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api
       temperature: 0,
-      max_tokens: 1000,
+      max_tokens: 2000,
       response_format: {
         type: 'json_object',
       },
@@ -108,7 +112,13 @@ ${targetAudience.trim()}"""`,
 
     const content = response.choices[0].message.content ?? ''
 
-    return JSON.parse(content.trim()) as ContentAndLongTermStrategy
+    const result = JSON.parse(content.trim()) as ContentAndLongTermStrategy
+
+    console.debug(
+      JSON.stringify({ contentAndLongTermStrategy: result }, null, 2)
+    )
+
+    return result
   }
 
   async evaluateUserAcquisitionAndCompetitorAnalysis(
@@ -142,10 +152,7 @@ ${targetAudience.trim()}"""`,
       // For most factual use cases such as data extraction, and truthful Q&A, the temperature of 0 is best.
       // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api
       temperature: 0,
-      max_tokens: 1000,
-      // top_p: 1,
-      // frequency_penalty: 0,
-      // presence_penalty: 0,
+      max_tokens: 2000,
       response_format: {
         type: 'json_object',
       },
@@ -155,7 +162,15 @@ ${targetAudience.trim()}"""`,
 
     const content = response.choices[0].message.content ?? ''
 
-    return JSON.parse(content.trim()) as UserAcquisitionAndCompetitorAnalysis
+    const result = JSON.parse(
+      content.trim()
+    ) as UserAcquisitionAndCompetitorAnalysis
+
+    console.debug(
+      JSON.stringify({ userAcquisitionAndCompetitorAnalysis: result }, null, 2)
+    )
+
+    return result
   }
 
   async evaluateContentStrategyAndGrowthPlan(
@@ -189,7 +204,7 @@ ${targetAudience.trim()}"""`,
       // For most factual use cases such as data extraction, and truthful Q&A, the temperature of 0 is best.
       // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api
       temperature: 0,
-      max_tokens: 1000,
+      max_tokens: 2000,
       response_format: {
         type: 'json_object',
       },
@@ -199,6 +214,12 @@ ${targetAudience.trim()}"""`,
 
     const content = response.choices[0].message.content ?? ''
 
-    return JSON.parse(content.trim()) as ContentStrategyAndGrowthPlan
+    const result = JSON.parse(content.trim()) as ContentStrategyAndGrowthPlan
+
+    console.debug(
+      JSON.stringify({ contentStrategyAndGrowthPlan: result }, null, 2)
+    )
+
+    return result
   }
 }
