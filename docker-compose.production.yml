@@ -8,6 +8,7 @@ services:
         - OPENAI_API_KEY=${OPENAI_API_KEY}
         - REDIS_URL=${REDIS_URL}
         - DATABASE_URL=${DATABASE_URL}
+        - NEXT_PUBLIC_URL=${NEXT_PUBLIC_URL}
     env_file: .env
     stdin_open: true
     tty: true
@@ -29,6 +30,7 @@ services:
         - OPENAI_API_KEY=${OPENAI_API_KEY}
         - REDIS_URL=${REDIS_URL}
         - DATABASE_URL=${DATABASE_URL}
+        - NEXT_PUBLIC_URL=${NEXT_PUBLIC_URL}
     env_file: .env
     stdin_open: true
     tty: true
