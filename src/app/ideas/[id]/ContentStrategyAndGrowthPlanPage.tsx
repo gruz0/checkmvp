@@ -1,11 +1,10 @@
 'use client'
 import React from 'react'
-import {
-  FaBullhorn,
-  FaChartLine,
-  FaRegLightbulb,
-  FaToolbox,
-} from 'react-icons/fa'
+import { FaRegLightbulb, FaSpinner } from 'react-icons/fa'
+import Paragraph from './Paragraph'
+import Section from './Section'
+import SectionHeader from './SectionHeader'
+import SimpleUnorderedList from './SimpleUnorderedList'
 
 type RecommendedTool = {
   tool: string
@@ -32,92 +31,72 @@ type Props = {
 
 const ContentStrategyAndGrowthPlanPage = ({ contentStrategy }: Props) => (
   <div>
-    <h2 className="mb-6 flex items-center text-2xl font-semibold">
-      <FaRegLightbulb className="mr-2 text-yellow-600" />
+    <SectionHeader Icon={FaRegLightbulb} color="text-yellow-600">
       Content Strategy & Growth Plan:{' '}
       {!contentStrategy && (
-        <span className="ml-2 text-gray-600">Analyzing...</span>
+        <FaSpinner className="inline animate-spin text-blue-500" />
       )}
-    </h2>
+    </SectionHeader>
 
     {contentStrategy && (
       <>
-        <div className="mb-8">
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <FaBullhorn className="mr-2 text-blue-600" />
-            Content Marketing Ideas:
-          </h3>
-          <ul className="list-disc pl-6">
-            {contentStrategy.contentMarketingIdeas.map((idea, index) => (
-              <li key={index} className="mb-2 text-lg">
-                {idea}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Section header="Content Marketing Ideas:">
+          <SimpleUnorderedList items={contentStrategy.contentMarketingIdeas} />
+        </Section>
 
-        <div className="mb-8">
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <FaChartLine className="mr-2 text-green-600" />
-            Key Metrics to Track Post-Launch:
-          </h3>
-          <ul className="list-disc pl-6">
-            {contentStrategy.keyMetricsToTrackPostLaunch.map(
-              (metric, index) => (
-                <li key={index} className="mb-2 text-lg">
-                  {metric}
-                </li>
-              )
-            )}
-          </ul>
-        </div>
+        <Section header="Key Metrics to Track Post-Launch:">
+          <SimpleUnorderedList
+            items={contentStrategy.keyMetricsToTrackPostLaunch}
+          />
+        </Section>
 
-        <div className="mb-8">
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <FaToolbox className="mr-2 text-purple-600" />
-            Recommended Tools & Services:
-          </h3>
-          <ul className="list-disc pl-6">
+        <Section header="Recommended Tools & Services:">
+          <ul className="mb-6 list-disc pl-4">
             {contentStrategy.recommendedToolsAndServices.map((tool, index) => (
-              <li key={index} className="mb-2 text-lg">
+              <li key={index} className="mb-2 pl-2 text-lg">
                 <strong>{tool.tool}</strong>: {tool.description}
               </li>
             ))}
           </ul>
-        </div>
+        </Section>
 
-        <div className="mb-8">
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <FaRegLightbulb className="mr-2 text-yellow-600" />
-            Case Study Outline:
-          </h3>
-          <div className="space-y-4">
-            <div>
-              <h4 className="font-semibold">Problem Statement:</h4>
-              <p className="text-lg">
-                {contentStrategy.caseStudyOutline.problemStatement}
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold">Solution:</h4>
-              <p className="text-lg">
-                {contentStrategy.caseStudyOutline.solution}
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold">Measurable Results:</h4>
-              <p className="text-lg">
-                {contentStrategy.caseStudyOutline.measurableResults}
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold">User Testimonials:</h4>
-              <p className="text-lg">
-                {contentStrategy.caseStudyOutline.userTestimonials}
-              </p>
-            </div>
+        <Section header="Case Study Outline:">
+          <div className="mb-6">
+            <h4 className="mb-2 text-lg font-semibold md:text-xl">
+              Problem Statement:
+            </h4>
+
+            <Paragraph>
+              {contentStrategy.caseStudyOutline.problemStatement}
+            </Paragraph>
           </div>
-        </div>
+
+          <div className="mb-6">
+            <h4 className="mb-2 text-lg font-semibold md:text-xl">Solution:</h4>
+
+            <Paragraph>{contentStrategy.caseStudyOutline.solution}</Paragraph>
+          </div>
+
+          <div className="mb-6">
+            <h4 className="mb-2 text-lg font-semibold md:text-xl">
+              Measurable Results:
+            </h4>
+
+            <Paragraph>
+              {contentStrategy.caseStudyOutline.measurableResults}
+            </Paragraph>
+          </div>
+
+          <div className="mb-6">
+            <h4 className="mb-2 text-lg font-semibold md:text-xl">
+              User Testimonials:
+            </h4>
+
+            <Paragraph>
+              {contentStrategy.caseStudyOutline.userTestimonials}
+            </Paragraph>
+          </div>
+        </Section>
       </>
     )}
   </div>
