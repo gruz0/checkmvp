@@ -49,7 +49,7 @@ const ReportPage = ({ idea }: Props) => {
   }, [idea.loading, router])
 
   return (
-    <div className="mx-auto max-w-6xl p-8">
+    <div className="p-8">
       <h1 className="mb-6 text-4xl font-bold">Your Personalized Report</h1>
 
       {idea.loading && (
