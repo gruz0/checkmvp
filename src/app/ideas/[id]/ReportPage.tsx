@@ -1,7 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
-import { FaSpinner } from 'react-icons/fa'
 import ContentAndLongTermStrategyPage from './ContentAndLongTermStrategyPage'
 import ContentStrategyAndGrowthPlanPage from './ContentStrategyAndGrowthPlanPage'
 import ProblemEvaluationPage from './ProblemEvaluationPage'
@@ -49,45 +48,42 @@ const ReportPage = ({ idea }: Props) => {
   }, [idea.loading, router])
 
   return (
-    <div className="p-8">
-      <h1 className="mb-6 text-4xl font-bold">Your Personalized Report</h1>
+    <div className="p-4 md:p-6 lg:p-8">
+      <h1 className="mb-6 text-3xl font-bold md:text-4xl">Your Idea Report</h1>
 
       {idea.loading && (
-        <div className="mb-4 flex items-center rounded-lg border border-blue-300 bg-blue-50 p-4 text-xl">
-          <FaSpinner className="mr-2 animate-spin text-blue-500" />
-          <span>
-            Performing analysis. It might take up to 30 seconds, please wait...
-          </span>
+        <div className="mb-4 flex items-center rounded-lg border border-blue-300 bg-blue-50 p-4 text-lg md:text-xl">
+          Performing analysis. It might take up to 30 seconds, please wait...
         </div>
       )}
 
-      <hr className="my-8" />
+      <hr className="my-6 md:my-8 lg:my-10" />
 
       <ProblemEvaluationPage
         problem={idea.problem}
         problemEvaluation={idea.problemEvaluation}
       />
 
-      <hr className="my-8" />
+      <hr className="my-6 md:my-8 lg:my-10" />
 
       <TargetAudienceEvaluationPage
         targetAudience={idea.targetAudience}
         targetAudienceEvaluation={idea.targetAudienceEvaluation}
       />
 
-      <hr className="my-8" />
+      <hr className="my-6 md:my-8 lg:my-10" />
 
       <ContentAndLongTermStrategyPage
         contentAndStrategy={idea.contentAndLongTermStrategy}
       />
 
-      <hr className="my-8" />
+      <hr className="my-6 md:my-8 lg:my-10" />
 
       <UserAcquisitionAndCompetitorAnalysisPage
         analysis={idea.userAcquisitionAndCompetitorAnalysis}
       />
 
-      <hr className="my-8" />
+      <hr className="my-6 md:my-8 lg:my-10" />
 
       <ContentStrategyAndGrowthPlanPage
         contentStrategy={idea.contentStrategyAndGrowthPlan}

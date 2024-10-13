@@ -4,7 +4,7 @@ import { FaClipboardCheck, FaGithub, FaTwitter } from 'react-icons/fa'
 const Template = ({ children }: { children: React.ReactNode }) => (
   <div className="flex min-h-screen flex-col bg-gray-100">
     <nav className="w-full bg-white shadow-md">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
             <FaClipboardCheck className="text-2xl text-indigo-600" />
@@ -35,11 +35,11 @@ const Template = ({ children }: { children: React.ReactNode }) => (
       </div>
     </nav>
 
-    <main className="mx-auto w-full max-w-6xl grow py-6 sm:px-6 lg:px-8">
-      <div className="w-full rounded-lg bg-white p-6 shadow-md">{children}</div>
+    <main className="mx-auto w-full max-w-6xl grow px-4 py-6">
+      <div className="w-full rounded-lg bg-white shadow-md">{children}</div>
     </main>
 
-    <footer className="bg-gray-200 p-4 text-center">
+    <footer className="bg-gray-200 px-6 py-2 text-center">
       <p className="text-sm text-gray-700">
         Built with ❤️ to startup founders and indie makers by{' '}
         <Link

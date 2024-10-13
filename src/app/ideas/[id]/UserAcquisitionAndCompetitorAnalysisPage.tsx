@@ -1,12 +1,11 @@
 'use client'
+import Link from 'next/link'
 import React from 'react'
-import {
-  FaBullhorn,
-  FaHandshake,
-  FaLightbulb,
-  FaSearch,
-  FaUsers,
-} from 'react-icons/fa'
+import { FaBullhorn, FaSpinner } from 'react-icons/fa'
+import Paragraph from './Paragraph'
+import Section from './Section'
+import SectionHeader from './SectionHeader'
+import SimpleUnorderedList from './SimpleUnorderedList'
 
 type Competitor = {
   name: string
@@ -39,91 +38,77 @@ type Props = {
 
 const UserAcquisitionAndCompetitorAnalysisPage = ({ analysis }: Props) => (
   <div>
-    <h2 className="flex items-center text-2xl font-semibold">
-      <FaBullhorn className="mr-2 text-purple-600" />
-      <p>
-        User Acquisition & Competitor Analysis:{' '}
-        {!analysis && <span className="text-gray-600">Analyzing...</span>}
-      </p>
-    </h2>
+    <SectionHeader Icon={FaBullhorn} color="text-purple-600">
+      User Acquisition & Competitor Analysis:{' '}
+      {!analysis && <FaSpinner className="inline animate-spin text-blue-500" />}
+    </SectionHeader>
 
     {analysis && (
       <>
-        <div className="mb-8">
-          <h3 className="mt-8 flex items-center text-xl font-semibold">
-            <FaUsers className="mr-2 text-blue-600" /> Early Adopters
-            Acquisition Ideas:
-          </h3>
-          {analysis.earlyAdoptersAcquisitionIdeas.length > 0 && (
-            <ul className="mb-8 list-disc pl-6">
-              {analysis.earlyAdoptersAcquisitionIdeas.map((idea, index) => (
-                <li key={index} className="mb-2 text-lg">
-                  {idea}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <Section header="Early Adopters Acquisition Ideas:">
+          <SimpleUnorderedList items={analysis.earlyAdoptersAcquisitionIdeas} />
+        </Section>
 
-        <div className="mb-8">
-          <h3 className="mb-6 flex items-center text-xl font-semibold">
-            <FaSearch className="mr-2 text-green-600" /> Competitor Overview:
-          </h3>
-          {analysis.competitorOverview.length > 0 && (
-            <ul className="mb-8 list-disc pl-6">
+        {analysis.competitorOverview.length > 0 && (
+          <Section header="Competitor Overview:">
+            <ul className="mb-6 list-disc pl-4">
               {analysis.competitorOverview.map((competitor, index) => (
-                <li key={index} className="mb-2 text-lg">
-                  <strong>{competitor.name}</strong> ({competitor.website})
-                  <br />
-                  <strong>Strengths:</strong> {competitor.strengths.join(', ')}
-                  <br />
-                  <strong>Borrowed Ideas:</strong>{' '}
-                  {competitor.borrowedIdeas.join(', ')}
-                  <br />
-                  <strong>Investment Approach:</strong>{' '}
-                  {competitor.investmentApproach}
+                <li key={index} className="mb-2 pl-2 text-lg">
+                  <Link
+                    href={competitor.website}
+                    target="_blank"
+                    rel="nofollow noopener"
+                    className="text-blue-600 underline"
+                  >
+                    <strong>{competitor.name}</strong>
+                  </Link>
+
+                  <Paragraph>
+                    Strengths: {competitor.strengths.join(', ')}
+                  </Paragraph>
+
+                  <Paragraph>
+                    Borrowed Ideas: {competitor.borrowedIdeas.join(', ')}
+                  </Paragraph>
+
+                  <Paragraph>
+                    Investment Approach: {competitor.investmentApproach}
+                  </Paragraph>
                 </li>
               ))}
             </ul>
-          )}
-        </div>
+          </Section>
+        )}
 
-        <div className="mb-8">
-          <h3 className="mb-6 flex items-center text-xl font-semibold">
-            <FaLightbulb className="mr-2 text-yellow-600" /> Potential Product
-            Names:
-          </h3>
+        <Section header="Potential Product Names:">
           {analysis.potentialProductNames.length > 0 && (
-            <ul className="mb-8 list-disc pl-6">
+            <ul className="mb-6 list-disc pl-4">
               {analysis.potentialProductNames.map((suggestion, index) => (
-                <li key={index} className="mb-2 text-lg">
+                <li key={index} className="mb-2 pl-2 text-lg">
                   <strong>{suggestion.name}</strong>
-                  <br />
-                  <strong>Domain Examples:</strong>{' '}
-                  {suggestion.domainExamples.join(', ')}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
 
-        <div className="mb-8">
-          <h3 className="mb-6 flex items-center text-xl font-semibold">
-            <FaHandshake className="mr-2 text-teal-600" /> Collaboration
-            Opportunities:
-          </h3>
-          {analysis.collaborationOpportunities.length > 0 && (
-            <ul className="mb-8 list-disc pl-6">
-              {analysis.collaborationOpportunities.map((opportunity, index) => (
-                <li key={index} className="mb-2 text-lg">
-                  <strong>Partner:</strong> {opportunity.partner}
-                  <br />
-                  <strong>Strategy:</strong> {opportunity.strategy}
+                  <Paragraph>
+                    Domain Examples: {suggestion.domainExamples.join(', ')}
+                  </Paragraph>
                 </li>
               ))}
             </ul>
           )}
-        </div>
+        </Section>
+
+        <Section header="Collaboration Opportunities:">
+          {analysis.collaborationOpportunities.length > 0 && (
+            <ul className="mb-6 list-disc pl-4">
+              {analysis.collaborationOpportunities.map((opportunity, index) => (
+                <li key={index} className="mb-2 pl-2 text-lg">
+                  <strong>{opportunity.partner}</strong>
+
+                  <Paragraph>Strategy: {opportunity.strategy}</Paragraph>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Section>
       </>
     )}
   </div>
