@@ -17,18 +17,18 @@ const Template = ({ children }: { children: React.ReactNode }) => (
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-1 text-gray-900 hover:text-blue-500"
+              title="Report a Bug"
             >
-              <FaGithub className="mr-1 text-lg" />
-              <span>Report a Bug</span>
+              <FaGithub className="text-xl" />
             </Link>
             <Link
               href="https://x.com/itmistakes_com"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-1 text-gray-900 hover:text-blue-500"
+              title="Twitter (X)"
             >
-              <FaTwitter className="mr-1 text-lg" />
-              <span>Twitter (X)</span>
+              <FaTwitter className="text-xl" />
             </Link>
           </div>
         </div>
