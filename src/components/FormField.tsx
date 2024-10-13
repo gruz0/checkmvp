@@ -34,10 +34,10 @@ const FormField = ({
   required = false,
 }: FormFieldProps) => (
   <div className="mb-6 flex flex-col">
-    <label htmlFor={id} className="mb-2 text-2xl font-semibold text-gray-700">
+    <label htmlFor={id} className="mb-2 text-2xl font-bold">
       {label}
     </label>
-    {description && <p className="mb-2 text-gray-600">{description}</p>}
+    {description && <p className="mb-2 text-lg text-gray-600">{description}</p>}
 
     {type === 'textarea' ? (
       <textarea
