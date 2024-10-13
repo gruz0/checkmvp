@@ -409,4 +409,8 @@ export class SQLiteIdeaRepository implements IdeaRepository {
       )
     })
   }
+
+  async getTotalIdeasCount(): Promise<number> {
+    return await prisma.idea.count()
+  }
 }

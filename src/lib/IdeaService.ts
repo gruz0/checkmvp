@@ -43,6 +43,10 @@ export class IdeaService {
     return await this.repository.findAll()
   }
 
+  async getTotalIdeasCount(): Promise<number> {
+    return await this.repository.getTotalIdeasCount()
+  }
+
   async evaluateIdeaAndTargetAudience(id: string): Promise<void> {
     if (!this.ideaAIService) {
       throw new Error('IdeaAIService is not defined')
