@@ -1,11 +1,22 @@
+import Link from 'next/link'
 import React from 'react'
 import NewIdeaForm from '@/components/NewIdeaForm'
+import { IdeaService } from '@/lib/IdeaService'
+import { SQLiteIdeaRepository } from '@/lib/SQLiteIdeaRepository'
 import { createIdeaLimiterKey, getLimits } from '@/lib/rateLimiter'
 
 export const dynamic = 'force-dynamic'
 
+const repository = new SQLiteIdeaRepository()
+const ideaService = new IdeaService(repository)
+
+async function getTotalIdeasCount(): Promise<number> {
+  return await ideaService.getTotalIdeasCount()
+}
+
 export default async function NewIdeaPage() {
   const limiter = await getLimits(createIdeaLimiterKey)
+  const totalIdeasCount = await getTotalIdeasCount()
 
   return (
     <div className="p-4 sm:p-6 md:p-8">
@@ -36,7 +47,22 @@ export default async function NewIdeaPage() {
             </div>
           </div>
 
-          <hr className="my-8" />
+          <div className="mb-8 mt-6 flex items-center rounded-lg border border-green-300 bg-green-50 p-4 text-lg text-green-800">
+            <span className="mr-2">🎉</span>
+            <p>
+              We&apos;ve analyzed <strong>{totalIdeasCount} ideas</strong> so
+              far! Join{' '}
+              <Link
+                href="https://x.com/itmistakes_com"
+                target="_blank"
+                rel="nofollow noopener"
+                className="text-blue-600 underline"
+              >
+                the community of creators
+              </Link>
+              {' on Twitter (X) and see how we can help you!'}
+            </p>
+          </div>
 
           <NewIdeaForm />
         </>
