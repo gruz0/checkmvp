@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM node:22.9.0-alpine AS base
+FROM node:23.0.0-alpine AS base
 
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 # hadolint ignore=DL3018
@@ -11,7 +11,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 # Rebuild the source code only when needed
-FROM node:22.9.0-alpine AS builder
+FROM node:23.0.0-alpine AS builder
 WORKDIR /app
 
 COPY --from=base /app/node_modules ./node_modules
@@ -40,7 +40,7 @@ ENV CREATE_IDEA_LIMITER_TIMEFRAME=$CREATE_IDEA_LIMITER_TIMEFRAME
 RUN npm run prisma:generate_client && \
     npm run build
 
-FROM node:22.9.0-alpine AS prod_builder
+FROM node:23.0.0-alpine AS prod_builder
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -53,7 +53,7 @@ RUN npm install && \
     cp -R node_modules prod_node_modules
 
 # Production image, copy all the files and run next
-FROM node:22.9.0-alpine AS runner
+FROM node:23.0.0-alpine AS runner
 RUN apk add --update --no-cache curl=8.10.1-r0
 
 WORKDIR /app
