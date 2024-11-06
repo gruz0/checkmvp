@@ -1,5 +1,4 @@
 'use client'
-
 import React from 'react'
 
 interface FormFieldProps {
@@ -34,16 +33,16 @@ const FormField = ({
   required = false,
 }: FormFieldProps) => (
   <div className="mb-6 flex flex-col">
-    <label htmlFor={id} className="mb-2 text-2xl font-bold">
+    <label htmlFor={id} className="mb-4 text-xl font-bold md:text-2xl">
       {label}
     </label>
-    {description && <p className="mb-2 text-lg text-gray-600">{description}</p>}
+    {description && <p className="mb-4 text-lg">{description}</p>}
 
     {type === 'textarea' ? (
       <textarea
         id={id}
         name={id}
-        className="mt-1 block h-32 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        className="mt-1 block h-64 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         value={value}
         onChange={onChange}
         required={required}

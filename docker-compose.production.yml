@@ -10,6 +10,8 @@ services:
         - DATABASE_URL=${DATABASE_URL}
         - CREATE_IDEA_LIMITER_LIMIT=${CREATE_IDEA_LIMITER_LIMIT}
         - CREATE_IDEA_LIMITER_TIMEFRAME=${CREATE_IDEA_LIMITER_TIMEFRAME}
+        - IDEA_SERVICE_API_BASE=${IDEA_SERVICE_API_BASE}
+        - CONCEPT_SERVICE_API_BASE=${CONCEPT_SERVICE_API_BASE}
         - NEXT_PUBLIC_URL=${NEXT_PUBLIC_URL}
     env_file: .env
     stdin_open: true
@@ -19,28 +21,6 @@ services:
       - ./shared:/app/shared:rw
     ports:
       - '127.0.0.1:${APP_PORT:-3000}:3000'
-    depends_on:
-      redis:
-        condition: service_healthy
-
-  worker:
-    build:
-      context: .
-      dockerfile: worker.Dockerfile
-      args:
-        - UID=${UID}
-        - OPENAI_API_KEY=${OPENAI_API_KEY}
-        - REDIS_URL=${REDIS_URL}
-        - DATABASE_URL=${DATABASE_URL}
-        - CREATE_IDEA_LIMITER_LIMIT=${CREATE_IDEA_LIMITER_LIMIT}
-        - CREATE_IDEA_LIMITER_TIMEFRAME=${CREATE_IDEA_LIMITER_TIMEFRAME}
-        - NEXT_PUBLIC_URL=${NEXT_PUBLIC_URL}
-    env_file: .env
-    stdin_open: true
-    tty: true
-    # Used only for sharing access to SQLite DB between services
-    volumes:
-      - ./shared:/app/shared:rw
     depends_on:
       redis:
         condition: service_healthy

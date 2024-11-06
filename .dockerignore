@@ -10,3 +10,6 @@ coverage
 .github
 .env*
 *.db
+*.db-journal
+architecture
+docker
