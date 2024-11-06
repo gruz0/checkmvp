@@ -44,3 +44,4 @@ next-env.d.ts
 !/shared/.gitkeep
 
 *.db
+*.db-journal

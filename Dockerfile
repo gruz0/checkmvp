@@ -1,9 +1,9 @@
-# Install dependencies only when needed
-FROM node:22.9.0-alpine AS base
+ARG NODE_VERSION="22.11.0"
+ARG ALPINE_VERSION="3.20"
 
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-# hadolint ignore=DL3018
-RUN apk add --update --no-cache libc6-compat
+# Install dependencies only when needed
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS base
+
 WORKDIR /app
 
 COPY package.json package-lock.json ./
@@ -11,7 +11,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 # Rebuild the source code only when needed
-FROM node:22.9.0-alpine AS builder
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 WORKDIR /app
 
 COPY --from=base /app/node_modules ./node_modules
@@ -37,10 +37,16 @@ ENV CREATE_IDEA_LIMITER_LIMIT=$CREATE_IDEA_LIMITER_LIMIT
 ARG CREATE_IDEA_LIMITER_TIMEFRAME
 ENV CREATE_IDEA_LIMITER_TIMEFRAME=$CREATE_IDEA_LIMITER_TIMEFRAME
 
+ARG IDEA_SERVICE_API_BASE
+ENV IDEA_SERVICE_API_BASE=$IDEA_SERVICE_API_BASE
+
+ARG CONCEPT_SERVICE_API_BASE
+ENV CONCEPT_SERVICE_API_BASE=$CONCEPT_SERVICE_API_BASE
+
 RUN npm run prisma:generate_client && \
     npm run build
 
-FROM node:22.9.0-alpine AS prod_builder
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS prod_builder
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -53,8 +59,7 @@ RUN npm install && \
     cp -R node_modules prod_node_modules
 
 # Production image, copy all the files and run next
-FROM node:22.9.0-alpine AS runner
-RUN apk add --update --no-cache curl=8.10.1-r0
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS runner
 
 WORKDIR /app
 
@@ -74,7 +79,7 @@ COPY --from=builder --chown=$USER:$USER /app/package.json ./package.json
 COPY --from=prod_builder --chown=$USER:$USER /app/prod_node_modules ./node_modules
 
 # Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
+# https://nextjs.org/docs/pages/api-reference/next-config-js/output
 COPY --from=builder --chown=$USER:$USER /app/.next/standalone ./
 COPY --from=builder --chown=$USER:$USER /app/.next/static ./.next/static
 

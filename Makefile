@@ -15,7 +15,6 @@ help: # Show this help
 
 setup: # Install dependencies
 	@${NPM} install
-	@${NPM_RUN} prepare
 
 prepare-dev-env:
 	@cp .env.development .env
@@ -28,9 +27,6 @@ build: prepare-dev-env # Build project
 
 dev: prepare-dev-env # Run dev server
 	@${NPM_RUN} dev
-
-worker: prepare-dev-env # Run dev worker
-	@${NPM_RUN} worker:tasks
 
 lint: # Run linters
 	@${NPM_RUN} lint
@@ -52,6 +48,13 @@ redis-stop:
 
 redis-cli:
 	@${DOCKER_COMPOSE} -f docker-compose.development.yml exec redis redis-cli
+
+#
+# Test environment
+#
+
+test: # Run test
+	@${NPM_RUN} test
 
 #
 # Production environment

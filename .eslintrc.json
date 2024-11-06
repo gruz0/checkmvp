@@ -12,6 +12,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:security/recommended-legacy",
+    "plugin:jest-extended/all",
     "prettier",
     "next"
   ],
@@ -19,6 +20,7 @@
     "react",
     "import",
     "filenames",
+    "jest-extended",
     "autofix",
     "unused-imports",
     "@typescript-eslint",

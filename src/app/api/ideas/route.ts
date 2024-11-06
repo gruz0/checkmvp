@@ -1,62 +1,40 @@
 import { NextResponse } from 'next/server'
-import { IdeaService } from '@/lib/IdeaService'
-import { QueueServiceFactory } from '@/lib/QueueServiceFactory'
-import { SQLiteIdeaRepository } from '@/lib/SQLiteIdeaRepository'
-import { createIdeaLimiterKey, manager } from '@/lib/rateLimiter'
-
-const queueService = QueueServiceFactory.createQueueService('bullmq')
-const repository = new SQLiteIdeaRepository()
-const ideaService = new IdeaService(repository, queueService)
-
-const createIdeaLimiter = manager.getLimiter(createIdeaLimiterKey)
+import { App } from '@/idea/service/Service'
 
 export async function POST(request: Request) {
   try {
-    if (!createIdeaLimiter) {
-      throw new Error('Rate limiter is not available')
-    }
-
     const formData = await request.json()
 
-    const { problem, targetAudience } = formData
+    const { idea_id, concept_id } = formData
 
-    if (!problem) {
+    if (!idea_id) {
       return NextResponse.json(
-        { error: 'Problem must be defined' },
+        { error: 'Idea ID must be defined' },
         { status: 422 }
       )
     }
 
-    if (!targetAudience) {
+    if (!concept_id) {
       return NextResponse.json(
-        { error: 'Target audience must be defined' },
+        { error: 'Concept ID must be defined' },
         { status: 422 }
       )
     }
 
-    const { remaining, resetAt } =
-      await createIdeaLimiter.getRemainingRequests()
-
-    if (remaining === 0) {
-      return NextResponse.json(
-        {
-          error:
-            'Rate limit exceeded. Please wait until ' + resetAt.toUTCString(),
-        },
-        { status: 429 }
-      )
-    }
-
-    const idea = await ideaService.createIdea(problem, targetAudience)
-
-    await createIdeaLimiter.updateCounter()
-
-    return NextResponse.json({ id: idea.getId() }, { status: 201 })
-  } catch (error) {
-    console.error('Error while creating the idea:', error)
+    await App.Commands.MakeReservation.handle({
+      ideaId: idea_id,
+      conceptId: concept_id,
+    })
 
     return NextResponse.json(
-      { error: 'Error while creating the idea.' },
+      { success: true, message: 'Success' },
+      { status: 201 }
+    )
+  } catch (error) {
+    console.error('Error while reserving an idea:', error)
+
+    return NextResponse.json(
+      { error: 'Error while reserving an idea.' },
       { status: 500 }
     )
   }

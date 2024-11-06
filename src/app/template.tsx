@@ -1,25 +1,23 @@
 import Link from 'next/link'
-import { FaClipboardCheck, FaGithub, FaTwitter } from 'react-icons/fa'
 
 const Template = ({ children }: { children: React.ReactNode }) => (
   <div className="flex min-h-screen flex-col bg-gray-100">
     <nav className="w-full bg-white shadow-md">
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-5xl px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <FaClipboardCheck className="text-2xl text-indigo-600" />
             <span className="text-xl font-bold text-gray-900">CheckMVP</span>
           </Link>
 
           <div className="flex items-center space-x-8">
             <Link
-              href="https://github.com/gruz0/checkmvp/issues/new"
+              href="https://github.com/gruz0/checkmvp"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-1 text-gray-900 hover:text-blue-500"
-              title="Report a Bug"
+              title="GitHub Repo"
             >
-              <FaGithub className="text-xl" />
+              GitHub
             </Link>
             <Link
               href="https://x.com/itmistakes_com"
@@ -28,14 +26,14 @@ const Template = ({ children }: { children: React.ReactNode }) => (
               className="flex items-center space-x-1 text-gray-900 hover:text-blue-500"
               title="Twitter (X)"
             >
-              <FaTwitter className="text-xl" />
+              Twitter
             </Link>
           </div>
         </div>
       </div>
     </nav>
 
-    <main className="mx-auto w-full max-w-6xl grow px-4 py-6">
+    <main className="mx-auto w-full max-w-5xl grow px-4 py-6">
       <div className="w-full rounded-lg bg-white shadow-md">{children}</div>
     </main>
 
