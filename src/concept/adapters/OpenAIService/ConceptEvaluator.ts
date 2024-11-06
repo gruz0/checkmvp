@@ -1,7 +1,23 @@
 import OpenAI from 'openai'
 import { z } from 'zod'
-import { Evaluation } from '@/concept/domain/Evaluation'
 import { getPromptContent } from '@/lib/prompts'
+
+type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
+
+interface Evaluation {
+  status: Status
+  suggestions: string[]
+  recommendations: string[]
+  painPoints: string[]
+  marketExistence: string
+  targetAudience: TargetAudience[]
+}
+
+interface TargetAudience {
+  segment: string
+  description: string
+  challenges: string[]
+}
 
 const ResponseSchema = z.object({
   problem_evaluation: z.object({
@@ -20,7 +36,7 @@ const ResponseSchema = z.object({
   }),
 })
 
-export class OpenAIService {
+export class ConceptEvaluator {
   private openai: OpenAI
 
   constructor(apiKey: string) {
@@ -74,15 +90,13 @@ ${problem.trim()}"""`,
 
     const analysis = ResponseSchema.parse(JSON.parse(content))
 
-    const evaluation = new Evaluation(
-      analysis.problem_evaluation.status,
-      analysis.problem_evaluation.suggestions,
-      analysis.problem_evaluation.recommendations,
-      analysis.problem_evaluation.pain_points,
-      analysis.problem_evaluation.market_existence.trim(),
-      analysis.problem_evaluation.target_audience
-    )
-
-    return evaluation
+    return {
+      status: analysis.problem_evaluation.status,
+      suggestions: analysis.problem_evaluation.suggestions,
+      recommendations: analysis.problem_evaluation.recommendations,
+      painPoints: analysis.problem_evaluation.pain_points,
+      marketExistence: analysis.problem_evaluation.market_existence.trim(),
+      targetAudience: analysis.problem_evaluation.target_audience,
+    }
   }
 }

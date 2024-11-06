@@ -4,8 +4,25 @@ import { Repository } from '@/concept/domain/Repository'
 import { ConceptCreated } from '@/concept/domain/events/ConceptCreated'
 import { EventHandler } from '@/concept/events/EventHandler'
 
+type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
+
+interface ConceptEvaluation {
+  status: Status
+  suggestions: string[]
+  recommendations: string[]
+  painPoints: string[]
+  marketExistence: string
+  targetAudience: TargetAudience[]
+}
+
+interface TargetAudience {
+  segment: string
+  description: string
+  challenges: string[]
+}
+
 export interface AIService {
-  evaluateConcept(problem: string): Promise<Evaluation>
+  evaluateConcept(problem: string): Promise<ConceptEvaluation>
 }
 
 // TODO: Emit event ConceptEvaluated
@@ -29,7 +46,16 @@ export class ConceptEvaluationSubscriber implements EventHandler {
     await this.repository.updateConcept(
       event.payload.id,
       (concept): Concept => {
-        concept.evaluate(evaluation)
+        concept.evaluate(
+          new Evaluation(
+            evaluation.status,
+            evaluation.suggestions,
+            evaluation.recommendations,
+            evaluation.painPoints,
+            evaluation.marketExistence,
+            evaluation.targetAudience
+          )
+        )
 
         return concept
       }
