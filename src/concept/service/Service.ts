@@ -1,7 +1,7 @@
 import { Service as IdeaService } from '@/common/client/Idea/Service'
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
 import { EventBusInMemory } from '@/concept/adapters/EventBusInMemory'
-import { OpenAIService } from '@/concept/adapters/OpenAIService'
+import { ConceptEvaluator } from '@/concept/adapters/OpenAIService/ConceptEvaluator'
 import { Application } from '@/concept/app/App'
 import { AcceptConceptHandler } from '@/concept/app/commands/AcceptConcept'
 import { EvaluateConceptHandler } from '@/concept/app/commands/EvaluateConcept'
@@ -13,12 +13,11 @@ import { env } from '@/lib/env'
 const registerApp = (): Application => {
   const conceptRepository = new ConceptRepositorySQLite()
   const eventBus = new EventBusInMemory()
-  const aiService = new OpenAIService(env.OPENAI_API_KEY)
   const ideaService = new IdeaService(env.IDEA_SERVICE_API_BASE)
 
   const conceptEvaluationSubscriber = new ConceptEvaluationSubscriber(
     conceptRepository,
-    aiService
+    new ConceptEvaluator(env.OPENAI_API_KEY)
   )
 
   const conceptTransitionSubscriber = new ConceptTransitionSubscriber(
