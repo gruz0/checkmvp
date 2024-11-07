@@ -2,6 +2,8 @@ import { Idea } from '@/idea/domain/Aggregate'
 import { Repository } from '@/idea/domain/Repository'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { IdeaCreated } from '@/idea/domain/events/IdeaCreated'
+import { ValuePropositionEvaluated } from '@/idea/domain/events/ValuePropositionEvaluated'
+import { EventBus } from '@/idea/events/EventBus'
 import { EventHandler } from '@/idea/events/EventHandler'
 
 type Evaluation = {
@@ -26,7 +28,8 @@ export interface AIService {
 export class ValuePropositionEvaluationSubscriber implements EventHandler {
   constructor(
     private readonly repository: Repository,
-    private readonly aiService: AIService
+    private readonly aiService: AIService,
+    private readonly eventBus: EventBus
   ) {}
 
   async handle(event: IdeaCreated): Promise<void> {
@@ -62,5 +65,7 @@ export class ValuePropositionEvaluationSubscriber implements EventHandler {
 
       return idea
     })
+
+    this.eventBus.emit(new ValuePropositionEvaluated(idea.getId().getValue()))
   }
 }

@@ -2,6 +2,7 @@ import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { Problem } from '@/idea/domain/Problem'
 import { ProductName } from '@/idea/domain/ProductName'
+import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { Identity } from '@/shared/Identity'
@@ -17,6 +18,7 @@ export class Idea {
   private marketAnalysis: MarketAnalysis | null = null
   private competitorAnalysis: CompetitorAnalysis | null = null
   private productNames: ProductName[] = []
+  private swotAnalysis: SWOTAnalysis | null = null
   private migrated: boolean = false
 
   private constructor(
@@ -66,6 +68,10 @@ export class Idea {
     this.productNames.push(productName)
   }
 
+  public addSWOTAnalysis(swotAnalysis: SWOTAnalysis): void {
+    this.swotAnalysis = swotAnalysis
+  }
+
   public finalizeMigration(): void {
     if (this.migrated) {
       throw new Error('Idea was migrated')
@@ -108,6 +114,10 @@ export class Idea {
 
   public getProductNames(): ProductName[] {
     return this.productNames
+  }
+
+  public getSWOTAnalysis(): SWOTAnalysis | null {
+    return this.swotAnalysis
   }
 
   public isMigrated(): boolean {

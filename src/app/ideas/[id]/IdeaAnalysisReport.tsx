@@ -65,6 +65,12 @@ interface Props {
       similarNames: string[]
       brandingPotential: string
     }> | null
+    swotAnalysis: {
+      strengths: string[]
+      weaknesses: string[]
+      opportunities: string[]
+      threats: string[]
+    } | null
   }
 }
 
@@ -574,12 +580,12 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
       <div>
         <SectionHeader
-          color="text-gray-600"
+          color="text-blue-600"
           onClick={() => toggleSection('swotAnalysis')}
           isExpanded={expandedSections.swotAnalysis}
           sectionId="swotAnalysis"
         >
-          This Week: SWOT Analysis
+          SWOT Analysis
         </SectionHeader>
 
         {expandedSections.swotAnalysis && (
@@ -591,6 +597,50 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
               helpful exercise that can reveal both challenges and potential
               advantages, guiding your strategy moving forward.
             </SectionDescription>
+
+            {data.swotAnalysis ? (
+              <>
+                <Section
+                  header="Strengths:"
+                  voteable
+                  onUpvote={onUpvote}
+                  onDownvote={onDownvote}
+                >
+                  <SimpleUnorderedList items={data.swotAnalysis.strengths} />
+                </Section>
+
+                <Section
+                  header="Weaknesses:"
+                  voteable
+                  onUpvote={onUpvote}
+                  onDownvote={onDownvote}
+                >
+                  <SimpleUnorderedList items={data.swotAnalysis.weaknesses} />
+                </Section>
+
+                <Section
+                  header="Opportunities:"
+                  voteable
+                  onUpvote={onUpvote}
+                  onDownvote={onDownvote}
+                >
+                  <SimpleUnorderedList
+                    items={data.swotAnalysis.opportunities}
+                  />
+                </Section>
+
+                <Section
+                  header="Threats:"
+                  voteable
+                  onUpvote={onUpvote}
+                  onDownvote={onDownvote}
+                >
+                  <SimpleUnorderedList items={data.swotAnalysis.threats} />
+                </Section>
+              </>
+            ) : (
+              <FetchingDataMessage />
+            )}
           </div>
         )}
       </div>
@@ -633,15 +683,13 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
         </SectionHeader>
 
         {expandedSections.potentialProductNames && (
-          <>
-            <div id="potentialProductNames">
-              <SectionDescription>
-                Here, we brainstorm some catchy names for your product. A good
-                name can leave a lasting impression and make your product more
-                memorable. This is a fun part of the process that allows you to
-                think creatively!
-              </SectionDescription>
-            </div>
+          <div id="potentialProductNames">
+            <SectionDescription>
+              Here, we brainstorm some catchy names for your product. A good
+              name can leave a lasting impression and make your product more
+              memorable. This is a fun part of the process that allows you to
+              think creatively!
+            </SectionDescription>
 
             {data.productNames !== null ? (
               <>
@@ -696,7 +744,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             ) : (
               <FetchingDataMessage />
             )}
-          </>
+          </div>
         )}
       </div>
 

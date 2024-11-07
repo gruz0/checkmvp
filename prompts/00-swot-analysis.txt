@@ -1,0 +1,14 @@
+You are a strategic analyst helping me conduct a SWOT analysis for my product idea. Based on the following information, please generate a JSON response that outlines the strengths, weaknesses, opportunities, and threats associated with my product.
+
+### Expected Responses:
+
+Please provide the response in the following JSON format:
+
+{
+  "swot_analysis": {
+    "strengths": ["List of strengths"],
+    "weaknesses": ["List of weaknesses"],
+    "opportunities": ["List of opportunities"],
+    "threats": ["List of threats"]
+  }
+}

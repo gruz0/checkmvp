@@ -2,6 +2,7 @@ import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { ProductName } from '@/idea/domain/ProductName'
+import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 
@@ -61,6 +62,12 @@ interface FullIdeaDTO {
     similarNames: string[]
     brandingPotential: string
   }> | null
+  swotAnalysis: {
+    strengths: string[]
+    weaknesses: string[]
+    opportunities: string[]
+    threats: string[]
+  } | null
 }
 
 interface ReadModel {
@@ -72,6 +79,7 @@ interface ReadModel {
     ideaId: string
   ): Promise<CompetitorAnalysis | null>
   getProductNamesByIdeaId(ideaId: string): Promise<ProductName[] | null>
+  getSWOTAnalysisByIdeaId(ideaId: string): Promise<SWOTAnalysis | null>
 }
 
 export class GetIdeaHandler {
@@ -100,6 +108,8 @@ export class GetIdeaHandler {
       await this.readModel.getCompetitorAnalysisByIdeaId(query.id)
 
     const productNames = await this.readModel.getProductNamesByIdeaId(query.id)
+
+    const swotAnalysis = await this.readModel.getSWOTAnalysisByIdeaId(query.id)
 
     return {
       id: idea.getId().getValue(),
@@ -149,6 +159,14 @@ export class GetIdeaHandler {
             similarNames: product.getSimilarNames(),
             brandingPotential: product.getBrandingPotential(),
           }))
+        : null,
+      swotAnalysis: swotAnalysis
+        ? {
+            strengths: swotAnalysis.getStrengths(),
+            weaknesses: swotAnalysis.getWeaknesses(),
+            opportunities: swotAnalysis.getOpportunities(),
+            threats: swotAnalysis.getThreats(),
+          }
         : null,
     }
   }
