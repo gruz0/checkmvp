@@ -1,6 +1,7 @@
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
+import { ProductName } from '@/idea/domain/ProductName'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 
@@ -51,6 +52,15 @@ interface FullIdeaDTO {
     }
     differentiationSuggestions: string[]
   } | null
+  productNames: Array<{
+    productName: string
+    domains: string[]
+    why: string
+    tagline: string
+    targetAudienceInsight: string
+    similarNames: string[]
+    brandingPotential: string
+  }> | null
 }
 
 interface ReadModel {
@@ -61,6 +71,7 @@ interface ReadModel {
   getCompetitorAnalysisByIdeaId(
     ideaId: string
   ): Promise<CompetitorAnalysis | null>
+  getProductNamesByIdeaId(ideaId: string): Promise<ProductName[] | null>
 }
 
 export class GetIdeaHandler {
@@ -87,6 +98,8 @@ export class GetIdeaHandler {
 
     const competitorAnalysis =
       await this.readModel.getCompetitorAnalysisByIdeaId(query.id)
+
+    const productNames = await this.readModel.getProductNamesByIdeaId(query.id)
 
     return {
       id: idea.getId().getValue(),
@@ -125,6 +138,17 @@ export class GetIdeaHandler {
             differentiationSuggestions:
               competitorAnalysis.getDifferentiationSuggestions(),
           }
+        : null,
+      productNames: productNames
+        ? productNames.map((product) => ({
+            productName: product.getProductName(),
+            domains: product.getDomains(),
+            why: product.getWhy(),
+            tagline: product.getTagline(),
+            targetAudienceInsight: product.getTargetAudienceInsight(),
+            similarNames: product.getSimilarNames(),
+            brandingPotential: product.getBrandingPotential(),
+          }))
         : null,
     }
   }

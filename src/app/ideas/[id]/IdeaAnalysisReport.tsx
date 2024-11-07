@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
@@ -55,6 +56,15 @@ interface Props {
       }
       differentiationSuggestions: string[]
     } | null
+    productNames: Array<{
+      productName: string
+      domains: string[]
+      why: string
+      tagline: string
+      targetAudienceInsight: string
+      similarNames: string[]
+      brandingPotential: string
+    }> | null
   }
 }
 
@@ -614,23 +624,79 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
       <div>
         <SectionHeader
-          color="text-gray-600"
+          color="text-blue-600"
           onClick={() => toggleSection('potentialProductNames')}
           isExpanded={expandedSections.potentialProductNames}
           sectionId="potentialProductNames"
         >
-          This Week: Potential Product Names
+          Potential Product Names
         </SectionHeader>
 
         {expandedSections.potentialProductNames && (
-          <div id="potentialProductNames">
-            <SectionDescription>
-              Here, we brainstorm some catchy names for your product. A good
-              name can leave a lasting impression and make your product more
-              memorable. This is a fun part of the process that allows you to
-              think creatively!
-            </SectionDescription>
-          </div>
+          <>
+            <div id="potentialProductNames">
+              <SectionDescription>
+                Here, we brainstorm some catchy names for your product. A good
+                name can leave a lasting impression and make your product more
+                memorable. This is a fun part of the process that allows you to
+                think creatively!
+              </SectionDescription>
+            </div>
+
+            {data.productNames !== null ? (
+              <>
+                {data.productNames.map((productName, idx) => (
+                  <Section
+                    key={productName.productName}
+                    header={`${idx + 1}. ${productName.productName} - ${productName.tagline}`}
+                    voteable
+                    onUpvote={onUpvote}
+                    onDownvote={onDownvote}
+                  >
+                    <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
+                      <Paragraph>
+                        {productName.why} {productName.targetAudienceInsight}
+                      </Paragraph>
+
+                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                        Branding Potential:
+                      </h3>
+                      <Paragraph>{productName.brandingPotential}</Paragraph>
+
+                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                        Potential Domains:
+                      </h3>
+
+                      <ul className="mb-4 list-disc pl-4">
+                        {productName.domains.map((item, index) => (
+                          <li
+                            key={index}
+                            className="mb-2 pl-1 md:pl-2 md:text-lg"
+                          >
+                            <Link
+                              href={`https://www.namecheap.com/domains/registration/results/?domain=${item}`}
+                              target="_blank"
+                              rel="nofollow noopener noreferrer"
+                              className="text-blue-500 underline hover:text-blue-700"
+                            >
+                              {item}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                        Similar Product Names:
+                      </h3>
+                      <SimpleUnorderedList items={productName.similarNames} />
+                    </div>
+                  </Section>
+                ))}
+              </>
+            ) : (
+              <FetchingDataMessage />
+            )}
+          </>
         )}
       </div>
 
