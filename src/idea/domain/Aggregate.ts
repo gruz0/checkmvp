@@ -17,7 +17,7 @@ export class Idea {
   private valueProposition: ValueProposition | null = null
   private marketAnalysis: MarketAnalysis | null = null
   private competitorAnalysis: CompetitorAnalysis | null = null
-  private productNames: ProductName[] = []
+  private productNames: ProductName[] | null = null
   private swotAnalysis: SWOTAnalysis | null = null
   private migrated: boolean = false
 
@@ -65,6 +65,10 @@ export class Idea {
   }
 
   public addProductName(productName: ProductName): void {
+    if (this.productNames === null) {
+      this.productNames = []
+    }
+
     this.productNames.push(productName)
   }
 
@@ -112,7 +116,7 @@ export class Idea {
     return this.competitorAnalysis
   }
 
-  public getProductNames(): ProductName[] {
+  public getProductNames(): ProductName[] | null {
     return this.productNames
   }
 
