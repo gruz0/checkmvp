@@ -4,6 +4,7 @@ import { IdeaRepositorySQLite } from '@/idea/adapters/IdeaRepositorySQLite'
 import { CompetitorAnalysisEvaluator } from '@/idea/adapters/OpenAIService/CompetitorAnalysisEvaluator'
 import { MarketAnalysisEvaluator } from '@/idea/adapters/OpenAIService/MarketAnalysisEvaluator'
 import { PotentialNamesEvaluator } from '@/idea/adapters/OpenAIService/PotentialNamesEvaluator'
+import { SWOTAnalysisEvaluator } from '@/idea/adapters/OpenAIService/SWOTAnalysisEvaluator'
 import { TargetAudienceEvaluator } from '@/idea/adapters/OpenAIService/TargetAudienceEvaluator'
 import { ValuePropositionEvaluator } from '@/idea/adapters/OpenAIService/ValuePropositionEvaluator'
 import { Application } from '@/idea/app/App'
@@ -12,6 +13,7 @@ import { GetIdeaHandler } from '@/idea/app/queries/GetIdea'
 import { CompetitorAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/CompetitorAnalysisEvaluationSubscriber'
 import { MarketAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/MarketAnalysisEvaluationSubscriber'
 import { PotentialNamesEvaluationSubscriber } from '@/idea/events/subscribers/PotentialNamesEvaluationSubscriber'
+import { SWOTAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/SWOTAnalysisEvaluationSubscriber'
 import { TargetAudienceEvaluationSubscriber } from '@/idea/events/subscribers/TargetAudienceEvaluationSubscriber'
 import { ValuePropositionEvaluationSubscriber } from '@/idea/events/subscribers/ValuePropositionEvaluationSubscriber'
 import { env } from '@/lib/env'
@@ -30,7 +32,8 @@ const registerApp = (): Application => {
   const valuePropositionEvaluationSubscriber =
     new ValuePropositionEvaluationSubscriber(
       ideaRepository,
-      new ValuePropositionEvaluator(env.OPENAI_API_KEY)
+      new ValuePropositionEvaluator(env.OPENAI_API_KEY),
+      eventBus
     )
 
   const marketAnalysisEvaluationSubscriber =
@@ -51,11 +54,20 @@ const registerApp = (): Application => {
       new PotentialNamesEvaluator(env.OPENAI_API_KEY)
     )
 
+  const swotAnalysisEvaluationSubscriber = new SWOTAnalysisEvaluationSubscriber(
+    ideaRepository,
+    new SWOTAnalysisEvaluator(env.OPENAI_API_KEY)
+  )
+
   eventBus.subscribe('IdeaCreated', targetAudienceEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', valuePropositionEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', marketAnalysisEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', competitorAnalysisEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', potentialNamesEvaluationSubscriber)
+  eventBus.subscribe(
+    'ValuePropositionEvaluated',
+    swotAnalysisEvaluationSubscriber
+  )
 
   return {
     Commands: {

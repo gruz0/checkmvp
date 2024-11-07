@@ -3,6 +3,7 @@ import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { ProductName } from '@/idea/domain/ProductName'
 import { Repository } from '@/idea/domain/Repository'
+import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { prisma } from '@/lib/prisma'
@@ -139,6 +140,27 @@ export class IdeaRepositorySQLite implements Repository {
           },
           update: {
             value: JSON.stringify(productNames),
+            updatedAt: new Date(),
+          },
+        })
+      }
+
+      const swotAnalysis = updatedIdea.getSWOTAnalysis()
+      if (swotAnalysis) {
+        await prisma.ideaContent.upsert({
+          where: {
+            ideaId_key: {
+              ideaId: id,
+              key: 'swot_analysis',
+            },
+          },
+          create: {
+            ideaId: id,
+            key: 'swot_analysis',
+            value: JSON.stringify(swotAnalysis),
+          },
+          update: {
+            value: JSON.stringify(swotAnalysis),
             updatedAt: new Date(),
           },
         })
@@ -347,6 +369,37 @@ export class IdeaRepositorySQLite implements Repository {
         product.similarNames,
         product.brandingPotential
       )
+    )
+  }
+
+  async getSWOTAnalysisByIdeaId(ideaId: string): Promise<SWOTAnalysis | null> {
+    const swotAnalysisModel = await prisma.ideaContent.findUnique({
+      where: {
+        ideaId_key: {
+          ideaId: ideaId,
+          key: 'swot_analysis',
+        },
+      },
+    })
+
+    if (!swotAnalysisModel) {
+      return null
+    }
+
+    interface swotAnalysis {
+      strengths: string[]
+      weaknesses: string[]
+      opportunities: string[]
+      threats: string[]
+    }
+
+    const data = JSON.parse(swotAnalysisModel.value) as swotAnalysis
+
+    return SWOTAnalysis.New(
+      data.strengths,
+      data.weaknesses,
+      data.opportunities,
+      data.threats
     )
   }
 }
