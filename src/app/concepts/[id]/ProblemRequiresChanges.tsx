@@ -105,7 +105,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
             {evaluation.recommendations.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 transition-transform hover:scale-105 hover:shadow-lg md:p-6"
+                className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6"
               >
                 <p className="grow md:text-lg">{item}</p>
 

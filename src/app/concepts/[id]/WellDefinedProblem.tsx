@@ -85,7 +85,7 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
           {evaluation.targetAudience.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 md:p-6 md:pb-0 md:transition-transform md:hover:scale-105 md:hover:shadow-lg"
+              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 md:p-6 md:pb-0"
             >
               <p className="mb-4 text-lg font-bold md:text-xl">
                 {item.segment}
