@@ -1,6 +1,7 @@
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
+import { ProductName } from '@/idea/domain/ProductName'
 import { Repository } from '@/idea/domain/Repository'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
@@ -117,6 +118,27 @@ export class IdeaRepositorySQLite implements Repository {
           },
           update: {
             value: JSON.stringify(competitorAnalysis),
+            updatedAt: new Date(),
+          },
+        })
+      }
+
+      const productNames = updatedIdea.getProductNames()
+      if (productNames) {
+        await prisma.ideaContent.upsert({
+          where: {
+            ideaId_key: {
+              ideaId: id,
+              key: 'product_names',
+            },
+          },
+          create: {
+            ideaId: id,
+            key: 'product_names',
+            value: JSON.stringify(productNames),
+          },
+          update: {
+            value: JSON.stringify(productNames),
             updatedAt: new Date(),
           },
         })
@@ -284,6 +306,47 @@ export class IdeaRepositorySQLite implements Repository {
       data.competitors,
       data.comparison,
       data.differentiationSuggestions
+    )
+  }
+
+  async getProductNamesByIdeaId(ideaId: string): Promise<ProductName[] | null> {
+    const productNamesModel = await prisma.ideaContent.findUnique({
+      where: {
+        ideaId_key: {
+          ideaId: ideaId,
+          key: 'product_names',
+        },
+      },
+    })
+
+    if (!productNamesModel) {
+      return null
+    }
+
+    interface productName {
+      productName: string
+      domains: string[]
+      why: string
+      tagline: string
+      targetAudienceInsight: string
+      similarNames: string[]
+      brandingPotential: string
+    }
+
+    type productNames = productName[]
+
+    const data = JSON.parse(productNamesModel.value) as productNames
+
+    return data.map((product) =>
+      ProductName.New(
+        product.productName,
+        product.domains,
+        product.why,
+        product.tagline,
+        product.targetAudienceInsight,
+        product.similarNames,
+        product.brandingPotential
+      )
     )
   }
 }

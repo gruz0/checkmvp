@@ -1,6 +1,7 @@
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { Problem } from '@/idea/domain/Problem'
+import { ProductName } from '@/idea/domain/ProductName'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { Identity } from '@/shared/Identity'
@@ -15,6 +16,7 @@ export class Idea {
   private valueProposition: ValueProposition | null = null
   private marketAnalysis: MarketAnalysis | null = null
   private competitorAnalysis: CompetitorAnalysis | null = null
+  private productNames: ProductName[] = []
   private migrated: boolean = false
 
   private constructor(
@@ -60,6 +62,10 @@ export class Idea {
     this.competitorAnalysis = competitorAnalysis
   }
 
+  public addProductName(productName: ProductName): void {
+    this.productNames.push(productName)
+  }
+
   public finalizeMigration(): void {
     if (this.migrated) {
       throw new Error('Idea was migrated')
@@ -98,6 +104,10 @@ export class Idea {
 
   public getCompetitorAnalysis(): CompetitorAnalysis | null {
     return this.competitorAnalysis
+  }
+
+  public getProductNames(): ProductName[] {
+    return this.productNames
   }
 
   public isMigrated(): boolean {

@@ -3,6 +3,7 @@ import { EventBusInMemory } from '@/idea/adapters/EventBusInMemory'
 import { IdeaRepositorySQLite } from '@/idea/adapters/IdeaRepositorySQLite'
 import { CompetitorAnalysisEvaluator } from '@/idea/adapters/OpenAIService/CompetitorAnalysisEvaluator'
 import { MarketAnalysisEvaluator } from '@/idea/adapters/OpenAIService/MarketAnalysisEvaluator'
+import { PotentialNamesEvaluator } from '@/idea/adapters/OpenAIService/PotentialNamesEvaluator'
 import { TargetAudienceEvaluator } from '@/idea/adapters/OpenAIService/TargetAudienceEvaluator'
 import { ValuePropositionEvaluator } from '@/idea/adapters/OpenAIService/ValuePropositionEvaluator'
 import { Application } from '@/idea/app/App'
@@ -10,6 +11,7 @@ import { MakeReservationHandler } from '@/idea/app/commands/MakeReservation'
 import { GetIdeaHandler } from '@/idea/app/queries/GetIdea'
 import { CompetitorAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/CompetitorAnalysisEvaluationSubscriber'
 import { MarketAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/MarketAnalysisEvaluationSubscriber'
+import { PotentialNamesEvaluationSubscriber } from '@/idea/events/subscribers/PotentialNamesEvaluationSubscriber'
 import { TargetAudienceEvaluationSubscriber } from '@/idea/events/subscribers/TargetAudienceEvaluationSubscriber'
 import { ValuePropositionEvaluationSubscriber } from '@/idea/events/subscribers/ValuePropositionEvaluationSubscriber'
 import { env } from '@/lib/env'
@@ -43,10 +45,17 @@ const registerApp = (): Application => {
       new CompetitorAnalysisEvaluator(env.OPENAI_API_KEY)
     )
 
+  const potentialNamesEvaluationSubscriber =
+    new PotentialNamesEvaluationSubscriber(
+      ideaRepository,
+      new PotentialNamesEvaluator(env.OPENAI_API_KEY)
+    )
+
   eventBus.subscribe('IdeaCreated', targetAudienceEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', valuePropositionEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', marketAnalysisEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', competitorAnalysisEvaluationSubscriber)
+  eventBus.subscribe('IdeaCreated', potentialNamesEvaluationSubscriber)
 
   return {
     Commands: {
