@@ -1,6 +1,7 @@
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
+import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { ProductName } from '@/idea/domain/ProductName'
 import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
@@ -76,6 +77,7 @@ interface FullIdeaDTO {
     valueProposition: string
     cta: string
   }> | null
+  googleTrendsKeywords: Array<string> | null
 }
 
 interface ReadModel {
@@ -89,6 +91,9 @@ interface ReadModel {
   getProductNamesByIdeaId(ideaId: string): Promise<ProductName[] | null>
   getSWOTAnalysisByIdeaId(ideaId: string): Promise<SWOTAnalysis | null>
   getElevatorPitchesByIdeaId(ideaId: string): Promise<ElevatorPitch[] | null>
+  getGoogleTrendsKeywordsByIdeaId(
+    ideaId: string
+  ): Promise<GoogleTrendsKeyword[] | null>
 }
 
 export class GetIdeaHandler {
@@ -123,6 +128,9 @@ export class GetIdeaHandler {
     const elevatorPitches = await this.readModel.getElevatorPitchesByIdeaId(
       query.id
     )
+
+    const googleTrendsKeywords =
+      await this.readModel.getGoogleTrendsKeywordsByIdeaId(query.id)
 
     return {
       id: idea.getId().getValue(),
@@ -189,6 +197,9 @@ export class GetIdeaHandler {
             valueProposition: pitch.getValueProposition(),
             cta: pitch.getCTA(),
           }))
+        : null,
+      googleTrendsKeywords: googleTrendsKeywords
+        ? googleTrendsKeywords.map((keyword) => keyword.getKeyword())
         : null,
     }
   }

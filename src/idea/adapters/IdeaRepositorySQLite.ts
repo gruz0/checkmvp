@@ -1,5 +1,7 @@
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
+import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
+import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { ProductName } from '@/idea/domain/ProductName'
 import { Repository } from '@/idea/domain/Repository'
@@ -7,7 +9,6 @@ import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { prisma } from '@/lib/prisma'
-import { ElevatorPitch } from '../domain/ElevatorPitch'
 import type { PrismaClient } from '@prisma/client/extension'
 
 type UpdateFn = (idea: Idea) => Idea
@@ -183,6 +184,27 @@ export class IdeaRepositorySQLite implements Repository {
           },
           update: {
             value: JSON.stringify(elevatorPitches),
+            updatedAt: new Date(),
+          },
+        })
+      }
+
+      const googleTrendsKeywords = updatedIdea.getGoogleTrendsKeywords()
+      if (googleTrendsKeywords) {
+        await prisma.ideaContent.upsert({
+          where: {
+            ideaId_key: {
+              ideaId: id,
+              key: 'google_trends_keywords',
+            },
+          },
+          create: {
+            ideaId: id,
+            key: 'google_trends_keywords',
+            value: JSON.stringify(googleTrendsKeywords),
+          },
+          update: {
+            value: JSON.stringify(googleTrendsKeywords),
             updatedAt: new Date(),
           },
         })
@@ -462,5 +484,32 @@ export class IdeaRepositorySQLite implements Repository {
         pitch.cta
       )
     )
+  }
+
+  async getGoogleTrendsKeywordsByIdeaId(
+    ideaId: string
+  ): Promise<GoogleTrendsKeyword[] | null> {
+    const googleTrendsKeywordsModel = await prisma.ideaContent.findUnique({
+      where: {
+        ideaId_key: {
+          ideaId: ideaId,
+          key: 'google_trends_keywords',
+        },
+      },
+    })
+
+    if (!googleTrendsKeywordsModel) {
+      return null
+    }
+
+    type keyword = {
+      keyword: string
+    }
+
+    type keywords = keyword[]
+
+    const data = JSON.parse(googleTrendsKeywordsModel.value) as keywords
+
+    return data.map((value) => GoogleTrendsKeyword.New(value.keyword))
   }
 }

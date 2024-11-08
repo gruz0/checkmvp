@@ -1,5 +1,6 @@
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
+import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { Problem } from '@/idea/domain/Problem'
 import { ProductName } from '@/idea/domain/ProductName'
@@ -21,6 +22,7 @@ export class Idea {
   private productNames: ProductName[] | null = null
   private swotAnalysis: SWOTAnalysis | null = null
   private elevatorPitches: ElevatorPitch[] | null = null
+  private googleTrendsKeywords: GoogleTrendsKeyword[] | null = null
   private migrated: boolean = false
 
   private constructor(
@@ -86,6 +88,14 @@ export class Idea {
     this.elevatorPitches.push(elevatorPitch)
   }
 
+  public addGoogleTrendsKeyword(keyword: GoogleTrendsKeyword): void {
+    if (this.googleTrendsKeywords === null) {
+      this.googleTrendsKeywords = []
+    }
+
+    this.googleTrendsKeywords.push(keyword)
+  }
+
   public finalizeMigration(): void {
     if (this.migrated) {
       throw new Error('Idea was migrated')
@@ -136,6 +146,10 @@ export class Idea {
 
   public getElevatorPitches(): ElevatorPitch[] | null {
     return this.elevatorPitches
+  }
+
+  public getGoogleTrendsKeywords(): GoogleTrendsKeyword[] | null {
+    return this.googleTrendsKeywords
   }
 
   public isMigrated(): boolean {
