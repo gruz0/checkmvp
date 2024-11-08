@@ -71,6 +71,13 @@ interface Props {
       opportunities: string[]
       threats: string[]
     } | null
+    elevatorPitches: Array<{
+      hook: string
+      problem: string
+      solution: string
+      valueProposition: string
+      cta: string
+    }> | null
   }
 }
 
@@ -649,12 +656,12 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
       <div>
         <SectionHeader
-          color="text-gray-600"
+          color="text-blue-600"
           onClick={() => toggleSection('elevatorPitch')}
           isExpanded={expandedSections.elevatorPitch}
           sectionId="elevatorPitch"
         >
-          This Week: Elevator Pitch
+          Elevator Pitch
         </SectionHeader>
 
         {expandedSections.elevatorPitch && (
@@ -666,6 +673,31 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
               which can be especially useful when networking or seeking
               feedback.
             </SectionDescription>
+
+            {data.elevatorPitches !== null ? (
+              <>
+                {data.elevatorPitches.map((pitch, idx) => (
+                  <Section
+                    key={pitch.hook}
+                    header={`${idx + 1}. ${pitch.hook}`}
+                    voteable
+                    onUpvote={onUpvote}
+                    onDownvote={onDownvote}
+                  >
+                    <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
+                      <Paragraph>
+                        {pitch.problem} {pitch.solution}{' '}
+                        {pitch.valueProposition}
+                      </Paragraph>
+
+                      <Paragraph>{pitch.cta}</Paragraph>
+                    </div>
+                  </Section>
+                ))}
+              </>
+            ) : (
+              <FetchingDataMessage />
+            )}
           </div>
         )}
       </div>

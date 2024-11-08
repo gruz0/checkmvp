@@ -7,6 +7,7 @@ import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { prisma } from '@/lib/prisma'
+import { ElevatorPitch } from '../domain/ElevatorPitch'
 import type { PrismaClient } from '@prisma/client/extension'
 
 type UpdateFn = (idea: Idea) => Idea
@@ -161,6 +162,27 @@ export class IdeaRepositorySQLite implements Repository {
           },
           update: {
             value: JSON.stringify(swotAnalysis),
+            updatedAt: new Date(),
+          },
+        })
+      }
+
+      const elevatorPitches = updatedIdea.getElevatorPitches()
+      if (elevatorPitches) {
+        await prisma.ideaContent.upsert({
+          where: {
+            ideaId_key: {
+              ideaId: id,
+              key: 'elevator_pitches',
+            },
+          },
+          create: {
+            ideaId: id,
+            key: 'elevator_pitches',
+            value: JSON.stringify(elevatorPitches),
+          },
+          update: {
+            value: JSON.stringify(elevatorPitches),
             updatedAt: new Date(),
           },
         })
@@ -400,6 +422,45 @@ export class IdeaRepositorySQLite implements Repository {
       data.weaknesses,
       data.opportunities,
       data.threats
+    )
+  }
+
+  async getElevatorPitchesByIdeaId(
+    ideaId: string
+  ): Promise<ElevatorPitch[] | null> {
+    const elevatorPitchesModel = await prisma.ideaContent.findUnique({
+      where: {
+        ideaId_key: {
+          ideaId: ideaId,
+          key: 'elevator_pitches',
+        },
+      },
+    })
+
+    if (!elevatorPitchesModel) {
+      return null
+    }
+
+    interface elevatorPitch {
+      hook: string
+      problem: string
+      solution: string
+      valueProposition: string
+      cta: string
+    }
+
+    type elevatorPitches = elevatorPitch[]
+
+    const data = JSON.parse(elevatorPitchesModel.value) as elevatorPitches
+
+    return data.map((pitch) =>
+      ElevatorPitch.New(
+        pitch.hook,
+        pitch.problem,
+        pitch.solution,
+        pitch.valueProposition,
+        pitch.cta
+      )
     )
   }
 }

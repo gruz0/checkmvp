@@ -1,5 +1,6 @@
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
+import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { ProductName } from '@/idea/domain/ProductName'
 import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
@@ -68,6 +69,13 @@ interface FullIdeaDTO {
     opportunities: string[]
     threats: string[]
   } | null
+  elevatorPitches: Array<{
+    hook: string
+    problem: string
+    solution: string
+    valueProposition: string
+    cta: string
+  }> | null
 }
 
 interface ReadModel {
@@ -80,6 +88,7 @@ interface ReadModel {
   ): Promise<CompetitorAnalysis | null>
   getProductNamesByIdeaId(ideaId: string): Promise<ProductName[] | null>
   getSWOTAnalysisByIdeaId(ideaId: string): Promise<SWOTAnalysis | null>
+  getElevatorPitchesByIdeaId(ideaId: string): Promise<ElevatorPitch[] | null>
 }
 
 export class GetIdeaHandler {
@@ -110,6 +119,10 @@ export class GetIdeaHandler {
     const productNames = await this.readModel.getProductNamesByIdeaId(query.id)
 
     const swotAnalysis = await this.readModel.getSWOTAnalysisByIdeaId(query.id)
+
+    const elevatorPitches = await this.readModel.getElevatorPitchesByIdeaId(
+      query.id
+    )
 
     return {
       id: idea.getId().getValue(),
@@ -167,6 +180,15 @@ export class GetIdeaHandler {
             opportunities: swotAnalysis.getOpportunities(),
             threats: swotAnalysis.getThreats(),
           }
+        : null,
+      elevatorPitches: elevatorPitches
+        ? elevatorPitches.map((pitch) => ({
+            hook: pitch.getHook(),
+            problem: pitch.getProblem(),
+            solution: pitch.getSolution(),
+            valueProposition: pitch.getValueProposition(),
+            cta: pitch.getCTA(),
+          }))
         : null,
     }
   }

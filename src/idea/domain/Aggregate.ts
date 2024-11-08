@@ -1,4 +1,5 @@
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
+import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { Problem } from '@/idea/domain/Problem'
 import { ProductName } from '@/idea/domain/ProductName'
@@ -19,6 +20,7 @@ export class Idea {
   private competitorAnalysis: CompetitorAnalysis | null = null
   private productNames: ProductName[] | null = null
   private swotAnalysis: SWOTAnalysis | null = null
+  private elevatorPitches: ElevatorPitch[] | null = null
   private migrated: boolean = false
 
   private constructor(
@@ -76,6 +78,14 @@ export class Idea {
     this.swotAnalysis = swotAnalysis
   }
 
+  public addElevatorPitch(elevatorPitch: ElevatorPitch): void {
+    if (this.elevatorPitches === null) {
+      this.elevatorPitches = []
+    }
+
+    this.elevatorPitches.push(elevatorPitch)
+  }
+
   public finalizeMigration(): void {
     if (this.migrated) {
       throw new Error('Idea was migrated')
@@ -122,6 +132,10 @@ export class Idea {
 
   public getSWOTAnalysis(): SWOTAnalysis | null {
     return this.swotAnalysis
+  }
+
+  public getElevatorPitches(): ElevatorPitch[] | null {
+    return this.elevatorPitches
   }
 
   public isMigrated(): boolean {

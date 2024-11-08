@@ -2,6 +2,7 @@ import { Service as IdeaService } from '@/common/client/Concept/Service'
 import { EventBusInMemory } from '@/idea/adapters/EventBusInMemory'
 import { IdeaRepositorySQLite } from '@/idea/adapters/IdeaRepositorySQLite'
 import { CompetitorAnalysisEvaluator } from '@/idea/adapters/OpenAIService/CompetitorAnalysisEvaluator'
+import { ElevatorPitchesEvaluator } from '@/idea/adapters/OpenAIService/ElevatorPitchesEvaluator'
 import { MarketAnalysisEvaluator } from '@/idea/adapters/OpenAIService/MarketAnalysisEvaluator'
 import { PotentialNamesEvaluator } from '@/idea/adapters/OpenAIService/PotentialNamesEvaluator'
 import { SWOTAnalysisEvaluator } from '@/idea/adapters/OpenAIService/SWOTAnalysisEvaluator'
@@ -11,6 +12,7 @@ import { Application } from '@/idea/app/App'
 import { MakeReservationHandler } from '@/idea/app/commands/MakeReservation'
 import { GetIdeaHandler } from '@/idea/app/queries/GetIdea'
 import { CompetitorAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/CompetitorAnalysisEvaluationSubscriber'
+import { ElevatorPitchesEvaluationSubscriber } from '@/idea/events/subscribers/ElevatorPitchesEvaluationSubscriber'
 import { MarketAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/MarketAnalysisEvaluationSubscriber'
 import { PotentialNamesEvaluationSubscriber } from '@/idea/events/subscribers/PotentialNamesEvaluationSubscriber'
 import { SWOTAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/SWOTAnalysisEvaluationSubscriber'
@@ -59,6 +61,12 @@ const registerApp = (): Application => {
     new SWOTAnalysisEvaluator(env.OPENAI_API_KEY)
   )
 
+  const elevatorPitchesEvaluationSubscriber =
+    new ElevatorPitchesEvaluationSubscriber(
+      ideaRepository,
+      new ElevatorPitchesEvaluator(env.OPENAI_API_KEY)
+    )
+
   eventBus.subscribe('IdeaCreated', targetAudienceEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', valuePropositionEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', marketAnalysisEvaluationSubscriber)
@@ -67,6 +75,10 @@ const registerApp = (): Application => {
   eventBus.subscribe(
     'ValuePropositionEvaluated',
     swotAnalysisEvaluationSubscriber
+  )
+  eventBus.subscribe(
+    'ValuePropositionEvaluated',
+    elevatorPitchesEvaluationSubscriber
   )
 
   return {
