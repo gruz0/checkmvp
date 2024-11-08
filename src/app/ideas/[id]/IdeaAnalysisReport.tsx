@@ -78,6 +78,7 @@ interface Props {
       valueProposition: string
       cta: string
     }> | null
+    googleTrendsKeywords: Array<string> | null
   }
 }
 
@@ -140,7 +141,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
       !data.competitorAnalysis ||
       !data.swotAnalysis ||
       !data.elevatorPitches ||
-      !data.productNames
+      !data.productNames ||
+      !data.googleTrendsKeywords
     ) {
       intervalId = setInterval(() => {
         router.refresh()
@@ -158,6 +160,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     data.swotAnalysis,
     data.elevatorPitches,
     data.productNames,
+    data.googleTrendsKeywords,
     router,
   ])
 
@@ -791,12 +794,12 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
       <div>
         <SectionHeader
-          color="text-gray-400"
+          color="text-blue-600"
           onClick={() => toggleSection('googleTrendsKeywords')}
           isExpanded={expandedSections.googleTrendsKeywords}
           sectionId="googleTrendsKeywords"
         >
-          Soon: Google Trends Keywords
+          Google Trends Keywords
         </SectionHeader>
 
         {expandedSections.googleTrendsKeywords && (
@@ -808,6 +811,31 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
               It&apos;s a practical way to connect your idea with what people
               are already searching for.
             </SectionDescription>
+
+            {data.googleTrendsKeywords !== null ? (
+              <Section
+                header="Suggested Keywords to Analyze:"
+                voteable
+                onUpvote={onUpvote}
+                onDownvote={onDownvote}
+              >
+                <div className="flex flex-wrap gap-2">
+                  {data.googleTrendsKeywords.map((keyword) => (
+                    <Link
+                      href={`https://trends.google.com/trends/explore?date=today%203-m&q=${keyword}&hl=en`}
+                      key={keyword}
+                      className="inline-flex cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white px-4 py-2 shadow transition-all duration-200 hover:bg-gray-200"
+                      target="_blank"
+                      rel="nofollow noopener noreferrer"
+                    >
+                      {keyword}
+                    </Link>
+                  ))}
+                </div>
+              </Section>
+            ) : (
+              <FetchingDataMessage />
+            )}
           </div>
         )}
       </div>
