@@ -1,4 +1,6 @@
+import Image from 'next/image'
 import Link from 'next/link'
+import CheckMVPLogo from '../../public/CheckMVP-Logo.png'
 
 const Template = ({ children }: { children: React.ReactNode }) => (
   <div className="flex min-h-screen flex-col bg-gray-100">
@@ -6,7 +8,12 @@ const Template = ({ children }: { children: React.ReactNode }) => (
       <div className="mx-auto max-w-5xl px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-gray-900">CheckMVP</span>
+            <Image
+              src={CheckMVPLogo.src}
+              alt="CheckMVP"
+              width="150"
+              height="40"
+            />
           </Link>
 
           <div className="flex items-center space-x-8">
