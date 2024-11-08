@@ -137,7 +137,10 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     if (
       !data.valueProposition ||
       !data.marketAnalysis ||
-      !data.competitorAnalysis
+      !data.competitorAnalysis ||
+      !data.swotAnalysis ||
+      !data.elevatorPitches ||
+      !data.productNames
     ) {
       intervalId = setInterval(() => {
         router.refresh()
@@ -148,9 +151,13 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
       clearInterval(intervalId)
     }
   }, [
+    data.targetAudiences,
     data.valueProposition,
     data.marketAnalysis,
     data.competitorAnalysis,
+    data.swotAnalysis,
+    data.elevatorPitches,
+    data.productNames,
     router,
   ])
 
