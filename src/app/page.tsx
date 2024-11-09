@@ -15,7 +15,7 @@ export default async function LandingPage() {
 
   return (
     <div className="p-4 md:p-6 lg:p-8">
-      <h1 className="mb-4 text-3xl font-bold text-indigo-600 md:mb-8 md:text-4xl">
+      <h1 className="mb-4 text-3xl font-bold text-blue-600 md:mb-8 md:text-4xl">
         Validate Your Product Idea in a Minute!
       </h1>
 
@@ -37,9 +37,9 @@ export default async function LandingPage() {
       <div className="mb-8 pt-8 text-center">
         <Link
           href="/start"
-          className="justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
-          Start Now
+          Take the First Step
         </Link>
       </div>
     </div>

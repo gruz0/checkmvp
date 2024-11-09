@@ -115,7 +115,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
                       pathname: '/start',
                       query: { problem: item },
                     }}
-                    className="rounded bg-gray-500 px-4 py-2 text-white transition duration-300 hover:bg-indigo-700"
+                    className="rounded bg-gray-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-700"
                   >
                     Validate This Problem Instead
                   </Link>
@@ -139,7 +139,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
           <button
             type="button"
             onClick={handleSubmit}
-            className="rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-xl font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl"
+            className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl"
             disabled={status === 'loading'}
           >
             {status === 'loading' ? 'Saving...' : 'Go To Detailed Analysis'}
