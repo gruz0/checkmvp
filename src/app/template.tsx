@@ -18,22 +18,11 @@ const Template = ({ children }: { children: React.ReactNode }) => (
 
           <div className="flex items-center space-x-4 md:space-x-6">
             <Link
-              href="https://github.com/gruz0/checkmvp"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/supporters"
               className="flex items-center space-x-1 text-gray-900 hover:text-blue-500"
-              title="GitHub Repo"
+              title="Supporters"
             >
-              GitHub
-            </Link>
-            <Link
-              href="https://x.com/itmistakes_com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-1 text-gray-900 hover:text-blue-500"
-              title="Twitter (X)"
-            >
-              Twitter
+              ❤️ Supporters
             </Link>
           </div>
         </div>
