@@ -17,7 +17,7 @@ export default async function StartPage({
     <div className="p-4 md:p-6 lg:p-8">
       {limiter.isAllowed ? (
         <>
-          <h1 className="mb-6 text-3xl font-bold text-indigo-600 md:mb-8 md:text-4xl">
+          <h1 className="mb-6 text-3xl font-bold text-blue-600 md:mb-8 md:text-4xl">
             Only One Question
           </h1>
 
@@ -25,7 +25,7 @@ export default async function StartPage({
         </>
       ) : (
         <>
-          <h1 className="mb-6 text-3xl font-bold text-indigo-600 md:mb-8 md:text-4xl">
+          <h1 className="mb-6 text-3xl font-bold text-blue-600 md:mb-8 md:text-4xl">
             Unfortunately...
           </h1>
 

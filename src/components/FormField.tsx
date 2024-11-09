@@ -42,7 +42,7 @@ const FormField = ({
       <textarea
         id={id}
         name={id}
-        className="mt-1 block h-64 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        className="mt-1 block h-64 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
         value={value}
         onChange={onChange}
         required={required}
@@ -61,7 +61,7 @@ const FormField = ({
               value={option.value}
               checked={value === option.value}
               onChange={onChange}
-              className="size-4 text-indigo-600 focus:ring-indigo-500"
+              className="size-4 text-blue-600 focus:ring-blue-500"
             />
             <label
               htmlFor={`${id}-${option.value}`}
@@ -76,7 +76,7 @@ const FormField = ({
       <input
         id={id}
         name={id}
-        className="mt-1 block w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        className="mt-1 block w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
         value={value}
         onChange={onChange}
         required={required}
