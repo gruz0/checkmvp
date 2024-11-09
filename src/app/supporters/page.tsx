@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
@@ -7,6 +8,7 @@ interface Supporter {
   name: string
   tagline: string
   url: string
+  image: string
 }
 
 const SupportersPage: React.FC = () => {
@@ -47,6 +49,20 @@ const SupportersPage: React.FC = () => {
               key={index}
               className="flex flex-col items-center rounded-lg border bg-white p-4 shadow-lg transition duration-300 hover:shadow-xl md:p-6"
             >
+              <Link
+                href={supporter.url}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+              >
+                <Image
+                  src={supporter.image}
+                  alt={`${supporter.name}'s profile picture`}
+                  className="mb-4 rounded-full"
+                  width={48}
+                  height={48}
+                />
+              </Link>
+
               <h2 className="text-xl font-semibold text-gray-800">
                 <Link
                   href={supporter.url}
