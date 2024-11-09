@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import FeedbackForm from '@/components/FeedbackForm'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import MessageBox from '@/components/MessageBox'
 import Paragraph from '@/components/Paragraph'
@@ -130,6 +131,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
   })
 
   const [showPopup, setShowPopup] = useState(false)
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
+  const [wrongSection, setWrongSection] = useState<string | null>(null)
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout
@@ -183,12 +186,51 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     }))
   }
 
-  const onUpvote = () => {
-    alert('Thanks! I will add this feature a bit later <3')
+  const onReport = (section: string) => {
+    if (!section) {
+      return
+    }
+
+    setWrongSection(section)
+
+    setShowFeedbackForm(true)
   }
 
-  const onDownvote = () => {
-    alert('Please contact @itmistakes_com on Twitter (X) <3')
+  const handleFeedbackSubmit = async (feedback: string, contact: string) => {
+    if (!wrongSection) {
+      return
+    }
+
+    try {
+      setWrongSection(null)
+      setShowFeedbackForm(false)
+
+      const res = await fetch(`/api/ideas/${data.id}/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          section: wrongSection,
+          feedback: feedback.trim(),
+          contact: contact.trim(),
+        }),
+      })
+
+      if (res.status === 201) {
+        setWrongSection(null)
+        setShowFeedbackForm(false)
+      } else {
+        const errorData = await res.json()
+
+        alert(errorData.error || 'Something went wrong.')
+
+        setWrongSection(null)
+        setShowFeedbackForm(false)
+      }
+    } catch (error) {
+      alert(`Error submitting report: ${error}`)
+    }
   }
 
   return (
@@ -211,6 +253,17 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             <WaitlistForm
               onSubmit={handleSubmit}
               onClose={() => setShowPopup(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {showFeedbackForm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800/50">
+          <div className="max-w-2xl rounded bg-white p-4 shadow-md md:p-8">
+            <FeedbackForm
+              onSubmit={handleFeedbackSubmit}
+              onClose={() => setShowFeedbackForm(false)}
             />
           </div>
         </div>
@@ -252,9 +305,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
             <Section
               header="Market Existence:"
-              voteable
-              onUpvote={onUpvote}
-              onDownvote={onDownvote}
+              onReport={() => onReport('market_existence')}
             >
               <Paragraph>{data.marketExistence}</Paragraph>
             </Section>
@@ -288,36 +339,36 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
               <>
                 <Section
                   header="Trends:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() => onReport('market_analysis_overview.trends')}
                 >
                   <Paragraph>{data.marketAnalysis.trends}</Paragraph>
                 </Section>
 
                 <Section
                   header="User Behaviors:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() =>
+                    onReport('market_analysis_overview.user_behaviors')
+                  }
                 >
                   <Paragraph>{data.marketAnalysis.userBehaviors}</Paragraph>
                 </Section>
 
                 <Section
                   header="Market Gaps:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() =>
+                    onReport('market_analysis_overview.market_gaps')
+                  }
                 >
                   <Paragraph>{data.marketAnalysis.marketGaps}</Paragraph>
                 </Section>
 
                 <Section
                   header="Innovation Opportunities:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() =>
+                    onReport(
+                      'market_analysis_overview.innovation_opportunities'
+                    )
+                  }
                 >
                   <Paragraph>
                     {data.marketAnalysis.innovationOpportunities}
@@ -326,9 +377,9 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
                 <Section
                   header="Strategic Direction:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() =>
+                    onReport('market_analysis_overview.strategic_direction')
+                  }
                 >
                   <Paragraph>
                     {data.marketAnalysis.strategicDirection}
@@ -370,9 +421,9 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
                   <Section
                     key={competitor.url}
                     header={`${idx + 1}. ${competitor.name}`}
-                    voteable
-                    onUpvote={onUpvote}
-                    onDownvote={onDownvote}
+                    onReport={() =>
+                      onReport(`competitor_analysis.competitors.${idx}`)
+                    }
                   >
                     <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
                       <h3 className="mb-2 text-lg font-semibold md:text-xl">
@@ -421,9 +472,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
                 <Section
                   header="Comparison:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() => onReport('competitor_analysis.comparison')}
                 >
                   <h3 className="mb-2 text-lg font-semibold md:text-xl">
                     Strengths:
@@ -442,9 +491,9 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
                 <Section
                   header="Differentiation Suggestions:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() =>
+                    onReport('competitor_analysis.differentiation_suggestions')
+                  }
                 >
                   <SimpleUnorderedList
                     items={data.competitorAnalysis.differentiationSuggestions}
@@ -483,27 +532,21 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
               <>
                 <Section
                   header="Main Benefit:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() => onReport('value_proposition.main_benefit')}
                 >
                   <Paragraph>{data.valueProposition.mainBenefit}</Paragraph>
                 </Section>
 
                 <Section
                   header="Problem Solving:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() => onReport('value_proposition.problem_solving')}
                 >
                   <Paragraph>{data.valueProposition.problemSolving}</Paragraph>
                 </Section>
 
                 <Section
                   header="Differentiation:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() => onReport('value_proposition.differentiation')}
                 >
                   <Paragraph>{data.valueProposition.differentiation}</Paragraph>
                 </Section>
@@ -541,9 +584,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
               <Section
                 key={audience.id}
                 header={`${idx + 1}. ${audience.segment}`}
-                voteable
-                onUpvote={onUpvote}
-                onDownvote={onDownvote}
+                onReport={() => onReport(`target_audiences.${audience.id}`)}
               >
                 <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6">
                   <h3 className="mb-2 text-lg font-semibold md:text-xl">
@@ -619,27 +660,21 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
               <>
                 <Section
                   header="Strengths:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() => onReport('swot_analysis.strengths')}
                 >
                   <SimpleUnorderedList items={data.swotAnalysis.strengths} />
                 </Section>
 
                 <Section
                   header="Weaknesses:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() => onReport('swot_analysis.weaknesses')}
                 >
                   <SimpleUnorderedList items={data.swotAnalysis.weaknesses} />
                 </Section>
 
                 <Section
                   header="Opportunities:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() => onReport('swot_analysis.opportunities')}
                 >
                   <SimpleUnorderedList
                     items={data.swotAnalysis.opportunities}
@@ -648,9 +683,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
                 <Section
                   header="Threats:"
-                  voteable
-                  onUpvote={onUpvote}
-                  onDownvote={onDownvote}
+                  onReport={() => onReport('swot_analysis.threats')}
                 >
                   <SimpleUnorderedList items={data.swotAnalysis.threats} />
                 </Section>
@@ -690,9 +723,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
                   <Section
                     key={pitch.hook}
                     header={`${idx + 1}. ${pitch.hook}`}
-                    voteable
-                    onUpvote={onUpvote}
-                    onDownvote={onDownvote}
+                    onReport={() => onReport(`elevator_pitch.${idx}`)}
                   >
                     <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
                       <Paragraph>
@@ -739,9 +770,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
                   <Section
                     key={productName.productName}
                     header={`${idx + 1}. ${productName.productName} - ${productName.tagline}`}
-                    voteable
-                    onUpvote={onUpvote}
-                    onDownvote={onDownvote}
+                    onReport={() => onReport(`potential_product_names.${idx}`)}
                   >
                     <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
                       <Paragraph>
@@ -815,9 +844,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             {data.googleTrendsKeywords !== null ? (
               <Section
                 header="Suggested Keywords to Analyze:"
-                voteable
-                onUpvote={onUpvote}
-                onDownvote={onDownvote}
+                onReport={() => onReport('google_trends_keywords')}
               >
                 <div className="flex flex-wrap gap-2">
                   {data.googleTrendsKeywords.map((keyword) => (
