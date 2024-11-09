@@ -632,10 +632,6 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
       <hr className="my-6" />
 
-      <MessageBox />
-
-      <hr className="my-6" />
-
       <div>
         <SectionHeader
           color="text-blue-600"
@@ -866,6 +862,10 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
           </div>
         )}
       </div>
+
+      <hr className="my-6" />
+
+      <MessageBox />
 
       <hr className="my-6" />
 
