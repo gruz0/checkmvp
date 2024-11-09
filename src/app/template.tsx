@@ -16,7 +16,7 @@ const Template = ({ children }: { children: React.ReactNode }) => (
             />
           </Link>
 
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center space-x-4 md:space-x-6">
             <Link
               href="https://github.com/gruz0/checkmvp"
               target="_blank"
