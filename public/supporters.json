@@ -2,86 +2,103 @@
   {
     "name": "Kristian Matic",
     "tagline": "Save 90% time and money in your recruitment process with hiretool.io",
-    "url": "https://x.com/Kmaticu"
+    "url": "https://x.com/Kmaticu",
+    "image": "/supporters/Kmaticu.jpg"
   },
   {
     "name": "Michael Lawrence",
     "tagline": "25-year code veteran | Debugging life's challenges with Stoic wisdom | Building robust web solutions and inner peace | Marcus Aurelius with a laptop",
-    "url": "https://x.com/michael_c_law"
+    "url": "https://x.com/michael_c_law",
+    "image": "/supporters/michael_c_law.jpg"
   },
   {
     "name": "Blondie Dev | Stacey",
     "tagline": "Self-taught Frontend Developer 💻  | building feedback-evolution.com | Sharing the journey step-by-step 🚀",
-    "url": "https://x.com/dev_blondie"
+    "url": "https://x.com/dev_blondie",
+    "image": "/supporters/dev_blondie.jpg"
   },
   {
     "name": "Zaid Al Kazemi",
     "tagline": "Supporting Founders 🧙",
-    "url": "https://newsletter.zalkazemi.com/"
+    "url": "https://newsletter.zalkazemi.com/",
+    "image": "/supporters/zalkazemi.jpg"
   },
   {
     "name": "Elisa from BrainDrip",
     "tagline": "I'm building mybraindrip.com so you can deliver your course material to students over email. ☕🥰",
-    "url": "https://x.com/MyBrainDrip"
+    "url": "https://x.com/MyBrainDrip",
+    "image": "/supporters/MyBrainDrip.jpg"
   },
   {
     "name": "Mark Maksi",
     "tagline": "Software Engineer | 𝕏 Content Creator | Topics: software engineering, entrepreneurship, fitness — building creatorspace.club",
-    "url": "https://x.com/markmaksi_"
+    "url": "https://x.com/markmaksi_",
+    "image": "/supporters/markmaksi_.jpg"
   },
   {
     "name": "S4RAH",
     "tagline": "Designer dev who likes making fun websites",
-    "url": "https://x.com/s4rah_dev"
+    "url": "https://x.com/s4rah_dev",
+    "image": "/supporters/s4rah_dev.jpg"
   },
   {
     "name": "Kyri",
     "tagline": "🧙Full-stack SWE (ex-@amazon) 10+ YoE. Helping devs build & self-host their SaaS. Control your stack, not the other way around. ",
-    "url": "https://x.com/kkyrio"
+    "url": "https://x.com/kkyrio",
+    "image": "/supporters/kkyrio.jpg"
   },
   {
     "name": "alex 👀",
     "tagline": "Running $1M ARR design agency baked.design",
-    "url": "https://x.com/aliszu"
+    "url": "https://x.com/aliszu",
+    "image": "/supporters/aliszu.jpg"
   },
   {
     "name": "Dave (@activenode)",
     "tagline": "⚡️ Supabase Author & Cult Leader | ⛩️  Web Architect | 23+y experience",
-    "url": "https://x.com/activenode"
+    "url": "https://x.com/activenode",
+    "image": "/supporters/activenode.jpg"
   },
   {
     "name": "FERO | Web Design",
     "tagline": "Increasing conversions, crafting premium designs and elevating online presences while operating from Czechia. Tell me what you need and I'll make it happen.",
-    "url": "https://x.com/ferobujnovsky"
+    "url": "https://x.com/ferobujnovsky",
+    "image": "/supporters/ferobujnovsky.jpg"
   },
   {
     "name": "Julia",
     "tagline": "👩🏽‍💻 Software engineer | Legaltech builder ⚒️ | Blockchain advocate | 42 School | From Law to Dev",
-    "url": "https://x.com/clivassy"
+    "url": "https://x.com/clivassy",
+    "image": "/supporters/clivassy.jpg"
   },
   {
     "name": "Adrian",
     "tagline": "CTO turned bootstrapper. AI proomptor. Expect: things I learn, tech rants, startup fails, AI shenanigans, and terrible puns",
-    "url": "https://x.com/hungrytrtl"
+    "url": "https://x.com/hungrytrtl",
+    "image": "/supporters/hungrytrtl.jpg"
   },
   {
     "name": "Filip J.M",
     "tagline": "I developed micro services and SaaS for 10-fig companies — Now helping developers launch their web apps and land their dream job.",
-    "url": "https://x.com/fjmellq"
+    "url": "https://x.com/fjmellq",
+    "image": "/supporters/fjmellq.jpg"
   },
   {
     "name": "Eddie Jaoude",
     "tagline": "🤓 DevRel as a Service | 🌏 Digital Nomad (usually: London, Portugal, Thailand)",
-    "url": "https://x.com/eddiejaoude"
+    "url": "https://x.com/eddiejaoude",
+    "image": "/supporters/eddiejaoude.jpg"
   },
   {
     "name": "Pedro",
     "tagline": "Build, disrupt, connect | Building first online business & projects in public.",
-    "url": "https://x.com/pedrodschott"
+    "url": "https://x.com/pedrodschott",
+    "image": "/supporters/pedrodschott.jpg"
   },
   {
     "name": "Tomasz Gil",
     "tagline": "Senior UI Engineer @Salesloft • ReactJs • TypeScript • Blogging at blog.tomaszgil.me",
-    "url": "https://x.com/gil_tomasz"
+    "url": "https://x.com/gil_tomasz",
+    "image": "/supporters/gil_tomasz.jpg"
   }
 ]
