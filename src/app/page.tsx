@@ -16,7 +16,7 @@ export default async function LandingPage() {
   return (
     <div className="p-4 md:p-6 lg:p-8">
       <h1 className="mb-4 text-3xl font-bold text-blue-600 md:mb-8 md:text-4xl">
-        Validate Your Product Idea in a Minute!
+        Validate Your Product or Startup Idea Fast!
       </h1>
 
       <div className="mb-6 md:mb-8">
