@@ -1,8 +1,10 @@
-'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
+import Supporters from '../../../public/supporters.json'
+
+export const dynamic = 'force-dynamic'
 
 interface Supporter {
   name: string
@@ -12,19 +14,7 @@ interface Supporter {
 }
 
 const SupportersPage: React.FC = () => {
-  const [supporters, setSupporters] = useState<Supporter[]>([])
-
-  useEffect(() => {
-    fetch('/supporters.json')
-      .then((response) => response.json())
-      .then((data) => {
-        const shuffledSupporters = data.sort(() => Math.random() - 0.5)
-        setSupporters(shuffledSupporters)
-      })
-      .catch((error) => {
-        console.error('Error fetching supporters data:', error)
-      })
-  }, [])
+  const supporters: Supporter[] = Supporters.sort(() => Math.random() - 0.5)
 
   return (
     <div className="p-4 md:p-6 lg:p-8">
