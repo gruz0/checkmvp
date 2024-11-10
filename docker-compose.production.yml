@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         - UID=${UID}
+        - DOMAIN=${DOMAIN}
         - OPENAI_API_KEY=${OPENAI_API_KEY}
         - REDIS_URL=${REDIS_URL}
         - DATABASE_URL=${DATABASE_URL}
