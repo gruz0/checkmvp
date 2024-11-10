@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react'
+import HorizontalLine from '@/components/HorizontalLine'
 
 interface WaitlistFormProps {
   onSubmit: (email: string) => void
@@ -24,7 +25,14 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSubmit, onClose }) => {
         Join Waitlist
       </h2>
 
-      <p className="mb-4 md:text-lg">
+      <p className="mb-4 font-semibold text-red-700 md:text-lg">
+        This form does not work yet. I will add this functionality a bit later.
+        Alex.
+      </p>
+
+      <HorizontalLine />
+
+      <p className="my-4 md:text-lg">
         By sharing your email, you{' '}
         <strong>help me validate the needs of this product</strong> and motivate
         me to move forward. When we go live,{' '}

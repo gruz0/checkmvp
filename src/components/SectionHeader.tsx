@@ -19,7 +19,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
 }) => (
   <button
     type="button"
-    className={`${isExpanded ? 'mb-6' : 'mb-0'} text-2xl font-semibold xl:text-3xl ${color} cursor-pointer ${
+    className={`${isExpanded ? 'mb-6' : 'mb-0'} text-xl font-semibold md:text-2xl ${color} cursor-pointer ${
       isExpanded ? 'text-blue-700' : 'text-blue-600'
     }`}
     onClick={onClick}
