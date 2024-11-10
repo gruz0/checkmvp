@@ -10,6 +10,7 @@ import { SWOTAnalysisEvaluator } from '@/idea/adapters/OpenAIService/SWOTAnalysi
 import { TargetAudienceEvaluator } from '@/idea/adapters/OpenAIService/TargetAudienceEvaluator'
 import { ValuePropositionEvaluator } from '@/idea/adapters/OpenAIService/ValuePropositionEvaluator'
 import { Application } from '@/idea/app/App'
+import { ArchivationHandler } from '@/idea/app/commands/Archive'
 import { MakeReservationHandler } from '@/idea/app/commands/MakeReservation'
 import { GetIdeaHandler } from '@/idea/app/queries/GetIdea'
 import { CompetitorAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/CompetitorAnalysisEvaluationSubscriber'
@@ -100,6 +101,7 @@ const registerApp = (): Application => {
         ideaService,
         eventBus
       ),
+      Archive: new ArchivationHandler(ideaRepository, eventBus),
     },
     Queries: {
       GetIdea: new GetIdeaHandler(ideaRepository),
