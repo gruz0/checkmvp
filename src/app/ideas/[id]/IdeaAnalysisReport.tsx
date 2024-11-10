@@ -181,6 +181,31 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     setShowPopup(false)
   }
 
+  const handleRemove = async () => {
+    if (!window.confirm('Are you sure?')) {
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/ideas/${data.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (res.status === 200) {
+        router.push('/')
+      } else {
+        const errorData = await res.json()
+
+        alert(errorData.error || 'Something went wrong.')
+      }
+    } catch (error) {
+      alert(`Error archiving the idea: ${error}`)
+    }
+  }
+
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -237,18 +262,6 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
   return (
     <div className="p-4 md:p-6 lg:p-8">
-      <div className="mb-2 flex items-center justify-between md:mb-4 lg:mb-6">
-        <h1 className="text-2xl font-bold md:text-3xl lg:text-4xl">
-          Your Idea Report
-        </h1>
-        <button
-          onClick={handleSaveClick}
-          className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
-        >
-          Join Waitlist
-        </button>
-      </div>
-
       <div className="flex flex-col md:flex-row">
         <aside className="sticky top-4 hidden self-start rounded-lg bg-gray-100 p-2 shadow-lg md:block md:w-1/4">
           <nav className="space-y-1">
@@ -370,6 +383,21 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
         </aside>
 
         <div className="flex-1 md:pl-8">
+          <div className="mb-2 flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-gray-700 md:text-3xl lg:text-4xl">
+              Your Idea Report
+            </h1>
+
+            <button
+              onClick={handleSaveClick}
+              className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+            >
+              Join Waitlist
+            </button>
+          </div>
+
+          <HorizontalLine />
+
           {showPopup && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-800/50">
               <div className="max-w-2xl rounded bg-white p-4 shadow-md md:p-8">
@@ -1265,6 +1293,17 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             )}
           </SectionWrapper>
         </div>
+      </div>
+
+      <HorizontalLine />
+
+      <div className="mt-6 text-right">
+        <button
+          onClick={handleRemove}
+          className="rounded bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
+        >
+          Remove Idea
+        </button>
       </div>
     </div>
   )

@@ -48,6 +48,7 @@ export class IdeaRepositorySQLite implements Repository {
         },
         data: {
           ...(updatedIdea.isMigrated() && { migratedAt: new Date() }),
+          ...(updatedIdea.isArchived() && { archivedAt: new Date() }),
           targetAudiences: {
             update: idea.getTargetAudiences().map((audience) => ({
               where: { id: audience.getId().getValue() },
@@ -218,6 +219,10 @@ export class IdeaRepositorySQLite implements Repository {
     })
 
     if (!ideaModel) {
+      return null
+    }
+
+    if (ideaModel.archivedAt) {
       return null
     }
 

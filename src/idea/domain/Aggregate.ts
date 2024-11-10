@@ -24,6 +24,7 @@ export class Idea {
   private elevatorPitches: ElevatorPitch[] | null = null
   private googleTrendsKeywords: GoogleTrendsKeyword[] | null = null
   private migrated: boolean = false
+  private archived: boolean = false
 
   private constructor(
     id: Identity,
@@ -104,6 +105,14 @@ export class Idea {
     this.migrated = true
   }
 
+  public archive(): void {
+    if (this.archived) {
+      throw new Error('Idea was archived')
+    }
+
+    this.archived = true
+  }
+
   public getId(): Identity {
     return this.id
   }
@@ -154,5 +163,9 @@ export class Idea {
 
   public isMigrated(): boolean {
     return this.migrated
+  }
+
+  public isArchived(): boolean {
+    return this.archived
   }
 }

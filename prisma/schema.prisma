@@ -32,6 +32,7 @@ model Idea {
   createdAt       DateTime         @default(now()) @map(name: "created_at")
   updatedAt       DateTime         @updatedAt @map(name: "updated_at")
   migratedAt      DateTime?        @map(name: "migrated_at")
+  archivedAt      DateTime?        @map(name: "archived_at")
 
   @@map("ideas")
 }
