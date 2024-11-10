@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Supporters from '../../../public/supporters.json'
 
 export const dynamic = 'force-dynamic'
@@ -32,46 +31,42 @@ const SupportersPage: React.FC = () => {
         </p>
       </header>
 
-      {supporters.length > 0 ? (
-        <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {supporters.map((supporter, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center rounded-lg border bg-white p-4 shadow-lg transition duration-300 hover:shadow-xl md:p-6"
+      <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {supporters.map((supporter, index) => (
+          <div
+            key={index}
+            className="flex flex-col items-center rounded-lg border bg-white p-4 shadow-lg transition duration-300 hover:shadow-xl md:p-6"
+          >
+            <Link
+              href={supporter.url}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
             >
+              <Image
+                src={supporter.image}
+                alt={`${supporter.name}'s profile picture`}
+                className="mb-4 rounded-full"
+                width={48}
+                height={48}
+              />
+            </Link>
+
+            <h2 className="text-xl font-semibold text-gray-800">
               <Link
                 href={supporter.url}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
+                className="mt-4 text-blue-600 hover:text-blue-700 hover:underline"
               >
-                <Image
-                  src={supporter.image}
-                  alt={`${supporter.name}'s profile picture`}
-                  className="mb-4 rounded-full"
-                  width={48}
-                  height={48}
-                />
+                {supporter.name}
               </Link>
-
-              <h2 className="text-xl font-semibold text-gray-800">
-                <Link
-                  href={supporter.url}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  className="mt-4 text-blue-600 hover:text-blue-700 hover:underline"
-                >
-                  {supporter.name}
-                </Link>
-              </h2>
-              <p className="mt-2 text-center text-gray-600">
-                {supporter.tagline}
-              </p>
-            </div>
-          ))}
-        </section>
-      ) : (
-        <FetchingDataMessage />
-      )}
+            </h2>
+            <p className="mt-2 text-center text-gray-600">
+              {supporter.tagline}
+            </p>
+          </div>
+        ))}
+      </section>
 
       <hr className="my-6" />
 
