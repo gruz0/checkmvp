@@ -1,6 +1,7 @@
 import { coerce, object, string } from 'zod'
 
 const envSchema = object({
+  DOMAIN: string().min(1),
   OPENAI_API_KEY: string().min(1),
   REDIS_URL: string().min(1),
   DATABASE_URL: string().min(1),
