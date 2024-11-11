@@ -33,7 +33,7 @@ interface TargetAudience {
   challenges: string[]
 }
 
-export interface AIService {
+interface AIService {
   evaluateCompetitorAnalysis(
     problem: string,
     marketExistence: string,

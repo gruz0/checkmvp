@@ -1,4 +1,4 @@
-export interface Competitor {
+interface Competitor {
   name: string
   productName: string
   url: string
@@ -10,7 +10,7 @@ export interface Competitor {
   differentiationOpportunity: string
 }
 
-export interface Comparison {
+interface Comparison {
   strengths: string[]
   weaknesses: string[]
 }

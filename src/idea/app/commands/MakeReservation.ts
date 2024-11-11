@@ -19,11 +19,11 @@ interface ConceptForReservation {
   }
 }
 
-export interface ConceptService {
+interface ConceptService {
   getConceptForReservation(conceptId: string): Promise<ConceptForReservation>
 }
 
-export type Command = {
+type Command = {
   ideaId: string
   conceptId: string
 }

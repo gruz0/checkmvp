@@ -8,11 +8,11 @@ interface Reservation {
   message: string
 }
 
-export interface IdeaService {
+interface IdeaService {
   reserve(ideaId: string, conceptId: string): Promise<Reservation>
 }
 
-export type Command = {
+type Command = {
   id: string
   newIdeaId: string
 }

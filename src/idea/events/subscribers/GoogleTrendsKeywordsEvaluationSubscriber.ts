@@ -20,7 +20,7 @@ interface ValueProposition {
   differentiation: string
 }
 
-export interface AIService {
+interface AIService {
   evaluateGoogleTrendsKeywords(
     problem: string,
     targetAudiences: TargetAudience[],

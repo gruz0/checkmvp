@@ -18,7 +18,7 @@ interface TargetAudience {
   challenges: string[]
 }
 
-export interface AIService {
+interface AIService {
   evaluateValueProposition(
     problem: string,
     targetAudiences: TargetAudience[]

@@ -3,7 +3,7 @@ import { Repository } from '@/idea/domain/Repository'
 import { IdeaArchived } from '@/idea/domain/events/IdeaArchived'
 import { EventBus } from '@/idea/events/EventBus'
 
-export type Command = {
+type Command = {
   ideaId: string
 }
 

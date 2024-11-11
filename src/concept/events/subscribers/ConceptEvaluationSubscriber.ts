@@ -21,7 +21,7 @@ interface TargetAudience {
   challenges: string[]
 }
 
-export interface AIService {
+interface AIService {
   evaluateConcept(problem: string): Promise<ConceptEvaluation>
 }
 
