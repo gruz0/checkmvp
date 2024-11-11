@@ -1,19 +1,31 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import FeedbackForm from '@/components/FeedbackForm'
-import FetchingDataMessage from '@/components/FetchingDataMessage'
 import HorizontalLine from '@/components/HorizontalLine'
 import MessageBox from '@/components/MessageBox'
-import Paragraph from '@/components/Paragraph'
-import Section from '@/components/Section'
-import SectionDescription from '@/components/SectionDescription'
-import SectionHeader from '@/components/SectionHeader'
-import SectionWrapper from '@/components/SectionWrapper'
-import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 import WaitlistForm from '@/components/WaitlistForm'
+import { NavBar } from './components/NavBar'
+import SectionActionableNextSteps from './components/SectionActionableNextSteps'
+import SectionCompetitors from './components/SectionCompetitors'
+import SectionContentIdeas from './components/SectionContentIdeas'
+import SectionContext from './components/SectionContext'
+import SectionEarlyAdopters from './components/SectionEarlyAdopters'
+import SectionElevatorPitch from './components/SectionElevatorPitch'
+import SectionEstimatedCosts from './components/SectionEstimatedCosts'
+import SectionFeedbackTemplates from './components/SectionFeedbackTemplates'
+import SectionGoogleTrends from './components/SectionGoogleTrends'
+import SectionMarketAnalysis from './components/SectionMarketAnalysis'
+import SectionNetworkingOpportunities from './components/SectionNetworkingOpportunities'
+import SectionPitchDeck from './components/SectionPitchDeck'
+import SectionProductNames from './components/SectionProductNames'
+import SectionRoadmap from './components/SectionRoadmap'
+import SectionSWOTAnalysis from './components/SectionSWOTAnalysis'
+import SectionTargetAudiences from './components/SectionTargetAudiences'
+import SectionToolsAndResources from './components/SectionToolsAndResources'
+import SectionTwoWeekTestingPlan from './components/SectionTwoWeekTestingPlan'
+import SectionValueProposition from './components/SectionValueProposition'
 
 interface Props {
   data: {
@@ -90,48 +102,6 @@ const reloadInterval = 5000
 export const IdeaAnalysisReport = ({ data }: Props) => {
   const router = useRouter()
 
-  const [expandedSections, setExpandedSections] = useState<{
-    context: boolean
-    marketAnalysisOverview: boolean
-    competitorOverview: boolean
-    valueProposition: boolean
-    targetAudiences: boolean
-    swotAnalysis: boolean
-    elevatorPitch: boolean
-    potentialProductNames: boolean
-    googleTrendsKeywords: boolean
-    contentIdeasForMarketing: boolean
-    actionableNextSteps: boolean
-    twoWeekTestingPlan: boolean
-    estimatedCostsAndTimeline: boolean
-    earlyAdoptersAcquisitionIdeas: boolean
-    networkingOpportunities: boolean
-    initialFeedbackTemplates: boolean
-    pitchDeckOutline: boolean
-    roadmapSuggestions: boolean
-    suggestedToolsAndResources: boolean
-  }>({
-    context: true,
-    marketAnalysisOverview: false,
-    competitorOverview: false,
-    valueProposition: false,
-    targetAudiences: false,
-    swotAnalysis: false,
-    elevatorPitch: false,
-    potentialProductNames: false,
-    googleTrendsKeywords: false,
-    contentIdeasForMarketing: false,
-    actionableNextSteps: false,
-    twoWeekTestingPlan: false,
-    estimatedCostsAndTimeline: false,
-    earlyAdoptersAcquisitionIdeas: false,
-    networkingOpportunities: false,
-    initialFeedbackTemplates: false,
-    pitchDeckOutline: false,
-    roadmapSuggestions: false,
-    suggestedToolsAndResources: false,
-  })
-
   const [showPopup, setShowPopup] = useState(false)
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
   const [wrongSection, setWrongSection] = useState<string | null>(null)
@@ -206,13 +176,6 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     }
   }
 
-  const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }))
-  }
-
   const onReport = (section: string) => {
     if (!section) {
       return
@@ -264,122 +227,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     <div className="p-4 md:p-6 lg:p-8">
       <div className="flex flex-col md:flex-row">
         <aside className="sticky top-4 hidden self-start rounded-lg bg-gray-100 p-2 shadow-lg md:block md:w-1/4">
-          <nav className="space-y-1">
-            <Link
-              href="#context"
-              className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
-            >
-              Context
-            </Link>
-            <Link
-              href="#market_analysis"
-              className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
-            >
-              Market Analysis
-            </Link>
-            <Link
-              href="#competitor_overview"
-              className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
-            >
-              Competitors
-            </Link>
-            <Link
-              href="#value_proposition"
-              className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
-            >
-              Value Proposition
-            </Link>
-            <Link
-              href="#target_audiences"
-              className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
-            >
-              Target Audiences
-            </Link>
-            <Link
-              href="#swot_analysis"
-              className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
-            >
-              SWOT Analysis
-            </Link>
-            <Link
-              href="#elevator_pitch"
-              className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
-            >
-              Elevator Pitch
-            </Link>
-            <Link
-              href="#product_names"
-              className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
-            >
-              Product Names
-            </Link>
-            <Link
-              href="#google_trends"
-              className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
-            >
-              Google Trends
-            </Link>
-            <Link
-              href="#content_ideas"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Content Ideas
-            </Link>
-            <Link
-              href="#actionable_next_steps"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Next Steps
-            </Link>
-            <Link
-              href="#two_week_testing_plan"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Two-Week Testing Plan
-            </Link>
-            <Link
-              href="#estimated_costs"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Estimated Costs
-            </Link>
-            <Link
-              href="#early_adopters"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Early Adopters
-            </Link>
-            <Link
-              href="#networking_opportunities"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Networking
-            </Link>
-            <Link
-              href="#feedback_templates"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Feedback Templates
-            </Link>
-            <Link
-              href="#pitch_deck"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Pitch Deck
-            </Link>
-            <Link
-              href="#roadmap"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Roadmap
-            </Link>
-            <Link
-              href="#tools_and_resources"
-              className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
-            >
-              Tools & Resources
-            </Link>
-          </nav>
+          <NavBar />
         </aside>
 
         <div className="flex-1 md:pl-8">
@@ -420,633 +268,63 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             </div>
           )}
 
-          <SectionWrapper id="context">
-            <SectionHeader
-              color="text-blue-600"
-              onClick={() => toggleSection('context')}
-              isExpanded={expandedSections.context}
-              sectionId="section_context"
-            >
-              Context
-            </SectionHeader>
-
-            {expandedSections.context && (
-              <div id="section_context">
-                <SectionDescription>
-                  In this section, we summarize your original problem and
-                  analyze the market existence. It sets the stage for your idea
-                  by giving you a clearer understanding of what you&apos;re
-                  aiming to solve and whether others are facing similar
-                  challenges. Knowing the context helps you see how your product
-                  can fit into the larger picture.
-                </SectionDescription>
-
-                <Section header="How You Defined The Problem:">
-                  <Paragraph>
-                    {data.problem.split('\n').map((line, index) => (
-                      <React.Fragment key={index}>
-                        {line}
-                        <br />
-                      </React.Fragment>
-                    ))}
-                  </Paragraph>
-                </Section>
-
-                <Section
-                  header="Market Existence:"
-                  onReport={() => onReport('market_existence')}
-                >
-                  <Paragraph>{data.marketExistence}</Paragraph>
-                </Section>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionContext
+            onReport={onReport}
+            data={{
+              problem: data.problem,
+              marketExistence: data.marketExistence,
+            }}
+          />
 
           <HorizontalLine />
 
-          <SectionWrapper id="market_analysis">
-            <SectionHeader
-              color="text-blue-600"
-              onClick={() => toggleSection('marketAnalysisOverview')}
-              isExpanded={expandedSections.marketAnalysisOverview}
-              sectionId="section_market_analysis_overview"
-            >
-              Market Analysis Overview
-            </SectionHeader>
-
-            {expandedSections.marketAnalysisOverview && (
-              <div id="section_market_analysis_overview">
-                <SectionDescription>
-                  Here, we take a closer look at the overall market landscape
-                  related to your idea. This overview helps you understand who
-                  your potential customers are, what trends are emerging, and
-                  how your product can fit into the market. It&apos;s important
-                  to know where your idea stands and what opportunities are out
-                  there.
-                </SectionDescription>
-
-                {data.marketAnalysis ? (
-                  <>
-                    <Section
-                      header="Trends:"
-                      onReport={() =>
-                        onReport('market_analysis_overview.trends')
-                      }
-                    >
-                      <Paragraph>{data.marketAnalysis.trends}</Paragraph>
-                    </Section>
-
-                    <Section
-                      header="User Behaviors:"
-                      onReport={() =>
-                        onReport('market_analysis_overview.user_behaviors')
-                      }
-                    >
-                      <Paragraph>{data.marketAnalysis.userBehaviors}</Paragraph>
-                    </Section>
-
-                    <Section
-                      header="Market Gaps:"
-                      onReport={() =>
-                        onReport('market_analysis_overview.market_gaps')
-                      }
-                    >
-                      <Paragraph>{data.marketAnalysis.marketGaps}</Paragraph>
-                    </Section>
-
-                    <Section
-                      header="Innovation Opportunities:"
-                      onReport={() =>
-                        onReport(
-                          'market_analysis_overview.innovation_opportunities'
-                        )
-                      }
-                    >
-                      <Paragraph>
-                        {data.marketAnalysis.innovationOpportunities}
-                      </Paragraph>
-                    </Section>
-
-                    <Section
-                      header="Strategic Direction:"
-                      onReport={() =>
-                        onReport('market_analysis_overview.strategic_direction')
-                      }
-                    >
-                      <Paragraph>
-                        {data.marketAnalysis.strategicDirection}
-                      </Paragraph>
-                    </Section>
-                  </>
-                ) : (
-                  <FetchingDataMessage />
-                )}
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionMarketAnalysis
+            onReport={onReport}
+            data={data.marketAnalysis}
+          />
 
           <HorizontalLine />
 
-          <SectionWrapper id="competitor_overview">
-            <SectionHeader
-              color="text-blue-600"
-              onClick={() => toggleSection('competitorOverview')}
-              isExpanded={expandedSections.competitorOverview}
-              sectionId="section_competitor_overview"
-            >
-              Competitor Overview
-            </SectionHeader>
-
-            {expandedSections.competitorOverview && (
-              <div id="section_competitor_overview">
-                <SectionDescription>
-                  This section highlights the main players in your space,
-                  showing you who else is offering similar solutions.
-                  Understanding your competitors can help you identify what
-                  makes your product unique and where there might be gaps in the
-                  market that you can fill. It&apos;s all about knowing your
-                  landscape!
-                </SectionDescription>
-
-                {data.competitorAnalysis ? (
-                  <>
-                    {data.competitorAnalysis.competitors.map(
-                      (competitor, idx) => (
-                        <Section
-                          key={competitor.url}
-                          header={`${idx + 1}. ${competitor.name}`}
-                          onReport={() =>
-                            onReport(`competitor_analysis.competitors.${idx}`)
-                          }
-                        >
-                          <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
-                            <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                              Product:
-                            </h3>
-                            <Paragraph>
-                              <a
-                                href={competitor.url}
-                                target="_blank"
-                                rel="nofollow noopener noreferrer"
-                                className="text-blue-700 underline hover:text-blue-600"
-                              >
-                                {competitor.productName}
-                              </a>
-                            </Paragraph>
-
-                            <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                              Value Proposition:
-                            </h3>
-                            <Paragraph>{competitor.valueProposition}</Paragraph>
-
-                            <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                              User Acquisition:
-                            </h3>
-                            <Paragraph>{competitor.userAcquisition}</Paragraph>
-
-                            <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                              Strengths:
-                            </h3>
-                            <SimpleUnorderedList items={competitor.strengths} />
-
-                            <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                              Weaknesses:
-                            </h3>
-                            <SimpleUnorderedList
-                              items={competitor.weaknesses}
-                            />
-
-                            <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                              Differentiation Opportunities:
-                            </h3>
-                            <Paragraph>
-                              {competitor.differentiationOpportunity}
-                            </Paragraph>
-                          </div>
-                        </Section>
-                      )
-                    )}
-
-                    <Section
-                      header="Comparison:"
-                      onReport={() =>
-                        onReport('competitor_analysis.comparison')
-                      }
-                    >
-                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                        Strengths:
-                      </h3>
-                      <SimpleUnorderedList
-                        items={data.competitorAnalysis.comparison.strengths}
-                      />
-
-                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                        Weaknesses:
-                      </h3>
-                      <SimpleUnorderedList
-                        items={data.competitorAnalysis.comparison.weaknesses}
-                      />
-                    </Section>
-
-                    <Section
-                      header="Differentiation Suggestions:"
-                      onReport={() =>
-                        onReport(
-                          'competitor_analysis.differentiation_suggestions'
-                        )
-                      }
-                    >
-                      <SimpleUnorderedList
-                        items={
-                          data.competitorAnalysis.differentiationSuggestions
-                        }
-                      />
-                    </Section>
-                  </>
-                ) : (
-                  <FetchingDataMessage />
-                )}
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionCompetitors
+            onReport={onReport}
+            data={data.competitorAnalysis}
+          />
 
           <HorizontalLine />
 
-          <SectionWrapper id="value_proposition">
-            <SectionHeader
-              color="text-blue-600"
-              onClick={() => toggleSection('valueProposition')}
-              isExpanded={expandedSections.valueProposition}
-              sectionId="section_value_proposition"
-            >
-              Value Proposition
-            </SectionHeader>
-
-            {expandedSections.valueProposition && (
-              <div id="section_value_proposition">
-                <SectionDescription>
-                  The value proposition explains what makes your product
-                  special. Here, we define the main benefits it provides to
-                  users and how it effectively solves their problems. A clear
-                  value proposition helps you articulate why someone should
-                  choose your product over others.
-                </SectionDescription>
-
-                {data.valueProposition ? (
-                  <>
-                    <Section
-                      header="Main Benefit:"
-                      onReport={() =>
-                        onReport('value_proposition.main_benefit')
-                      }
-                    >
-                      <Paragraph>{data.valueProposition.mainBenefit}</Paragraph>
-                    </Section>
-
-                    <Section
-                      header="Problem Solving:"
-                      onReport={() =>
-                        onReport('value_proposition.problem_solving')
-                      }
-                    >
-                      <Paragraph>
-                        {data.valueProposition.problemSolving}
-                      </Paragraph>
-                    </Section>
-
-                    <Section
-                      header="Differentiation:"
-                      onReport={() =>
-                        onReport('value_proposition.differentiation')
-                      }
-                    >
-                      <Paragraph>
-                        {data.valueProposition.differentiation}
-                      </Paragraph>
-                    </Section>
-                  </>
-                ) : (
-                  <FetchingDataMessage />
-                )}
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionValueProposition
+            onReport={onReport}
+            data={data.valueProposition}
+          />
 
           <HorizontalLine />
 
-          <SectionWrapper id="target_audiences">
-            <SectionHeader
-              color="text-blue-600"
-              onClick={() => toggleSection('targetAudiences')}
-              isExpanded={expandedSections.targetAudiences}
-              sectionId="section_target_audiences"
-            >
-              Target Audiences
-            </SectionHeader>
-
-            {expandedSections.targetAudiences && (
-              <div id="section_target_audiences">
-                <SectionDescription>
-                  This section presents potential target audiences for your
-                  product, detailing their specific characteristics and needs.
-                  It&apos;s vital to understand who you’re trying to reach
-                  because tailoring your message to these groups can make your
-                  product more appealing. Knowing your audience is key to
-                  success!
-                </SectionDescription>
-
-                {data.targetAudiences.map((audience, idx) => (
-                  <Section
-                    key={audience.id}
-                    header={`${idx + 1}. ${audience.segment}`}
-                    onReport={() => onReport(`target_audiences.${audience.id}`)}
-                  >
-                    <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6">
-                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                        Description:
-                      </h3>
-                      <Paragraph>{audience.description}</Paragraph>
-
-                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                        Challenges:
-                      </h3>
-                      <SimpleUnorderedList items={audience.challenges} />
-
-                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                        Why:
-                      </h3>
-                      {audience.why ? (
-                        <Paragraph>{audience.why}</Paragraph>
-                      ) : (
-                        <FetchingDataMessage />
-                      )}
-
-                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                        Pain Points:
-                      </h3>
-                      {audience.painPoints ? (
-                        <SimpleUnorderedList items={audience.painPoints} />
-                      ) : (
-                        <FetchingDataMessage />
-                      )}
-
-                      <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                        Targeting Strategy:
-                      </h3>
-                      {audience.targetingStrategy ? (
-                        <Paragraph>{audience.targetingStrategy}</Paragraph>
-                      ) : (
-                        <FetchingDataMessage />
-                      )}
-                    </div>
-                  </Section>
-                ))}
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionTargetAudiences
+            onReport={onReport}
+            data={data.targetAudiences}
+          />
 
           <HorizontalLine />
 
-          <SectionWrapper id="swot_analysis">
-            <SectionHeader
-              color="text-blue-600"
-              onClick={() => toggleSection('swotAnalysis')}
-              isExpanded={expandedSections.swotAnalysis}
-              sectionId="section_swot_analysis"
-            >
-              SWOT Analysis
-            </SectionHeader>
-
-            {expandedSections.swotAnalysis && (
-              <div id="section_swot_analysis">
-                <SectionDescription>
-                  SWOT stands for Strengths, Weaknesses, Opportunities, and
-                  Threats. In this section, we explore these aspects to provide
-                  a comprehensive view of your product&apos;s position.
-                  It&apos;s a helpful exercise that can reveal both challenges
-                  and potential advantages, guiding your strategy moving
-                  forward.
-                </SectionDescription>
-
-                {data.swotAnalysis ? (
-                  <>
-                    <Section
-                      header="Strengths:"
-                      onReport={() => onReport('swot_analysis.strengths')}
-                    >
-                      <SimpleUnorderedList
-                        items={data.swotAnalysis.strengths}
-                      />
-                    </Section>
-
-                    <Section
-                      header="Weaknesses:"
-                      onReport={() => onReport('swot_analysis.weaknesses')}
-                    >
-                      <SimpleUnorderedList
-                        items={data.swotAnalysis.weaknesses}
-                      />
-                    </Section>
-
-                    <Section
-                      header="Opportunities:"
-                      onReport={() => onReport('swot_analysis.opportunities')}
-                    >
-                      <SimpleUnorderedList
-                        items={data.swotAnalysis.opportunities}
-                      />
-                    </Section>
-
-                    <Section
-                      header="Threats:"
-                      onReport={() => onReport('swot_analysis.threats')}
-                    >
-                      <SimpleUnorderedList items={data.swotAnalysis.threats} />
-                    </Section>
-                  </>
-                ) : (
-                  <FetchingDataMessage />
-                )}
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionSWOTAnalysis onReport={onReport} data={data.swotAnalysis} />
 
           <HorizontalLine />
 
-          <SectionWrapper id="elevator_pitch">
-            <SectionHeader
-              color="text-blue-600"
-              onClick={() => toggleSection('elevatorPitch')}
-              isExpanded={expandedSections.elevatorPitch}
-              sectionId="section_elevator_pitch"
-            >
-              Elevator Pitch
-            </SectionHeader>
-
-            {expandedSections.elevatorPitch && (
-              <div id="section_elevator_pitch">
-                <SectionDescription>
-                  An elevator pitch is a brief summary of your idea that you can
-                  deliver quickly and effectively. This section helps you craft
-                  a compelling and concise way to explain your product to
-                  others, which can be especially useful when networking or
-                  seeking feedback.
-                </SectionDescription>
-
-                {data.elevatorPitches !== null ? (
-                  <>
-                    {data.elevatorPitches.map((pitch, idx) => (
-                      <Section
-                        key={pitch.hook}
-                        header={`${idx + 1}. ${pitch.hook}`}
-                        onReport={() => onReport(`elevator_pitch.${idx}`)}
-                      >
-                        <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
-                          <Paragraph>
-                            {pitch.problem} {pitch.solution}{' '}
-                            {pitch.valueProposition}
-                          </Paragraph>
-
-                          <Paragraph>{pitch.cta}</Paragraph>
-                        </div>
-                      </Section>
-                    ))}
-                  </>
-                ) : (
-                  <FetchingDataMessage />
-                )}
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionElevatorPitch
+            onReport={onReport}
+            data={data.elevatorPitches}
+          />
 
           <HorizontalLine />
 
-          <SectionWrapper id="product_names">
-            <SectionHeader
-              color="text-blue-600"
-              onClick={() => toggleSection('potentialProductNames')}
-              isExpanded={expandedSections.potentialProductNames}
-              sectionId="section_potential_product_names"
-            >
-              Potential Product Names
-            </SectionHeader>
-
-            {expandedSections.potentialProductNames && (
-              <div id="section_potential_product_names">
-                <SectionDescription>
-                  Here, we brainstorm some catchy names for your product. A good
-                  name can leave a lasting impression and make your product more
-                  memorable. This is a fun part of the process that allows you
-                  to think creatively!
-                </SectionDescription>
-
-                {data.productNames !== null ? (
-                  <>
-                    {data.productNames.map((productName, idx) => (
-                      <Section
-                        key={productName.productName}
-                        header={`${idx + 1}. ${productName.productName} - ${productName.tagline}`}
-                        onReport={() =>
-                          onReport(`potential_product_names.${idx}`)
-                        }
-                      >
-                        <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
-                          <Paragraph>
-                            {productName.why}{' '}
-                            {productName.targetAudienceInsight}
-                          </Paragraph>
-
-                          <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                            Branding Potential:
-                          </h3>
-                          <Paragraph>{productName.brandingPotential}</Paragraph>
-
-                          <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                            Potential Domains:
-                          </h3>
-
-                          <ul className="mb-4 list-disc pl-4">
-                            {productName.domains.map((item, index) => (
-                              <li
-                                key={index}
-                                className="mb-2 pl-1 md:pl-2 md:text-lg"
-                              >
-                                <Link
-                                  href={`https://www.namecheap.com/domains/registration/results/?domain=${item}`}
-                                  target="_blank"
-                                  rel="nofollow noopener noreferrer"
-                                  className="text-blue-500 underline hover:text-blue-700"
-                                >
-                                  {item}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-
-                          <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                            Similar Product Names:
-                          </h3>
-                          <SimpleUnorderedList
-                            items={productName.similarNames}
-                          />
-                        </div>
-                      </Section>
-                    ))}
-                  </>
-                ) : (
-                  <FetchingDataMessage />
-                )}
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionProductNames onReport={onReport} data={data.productNames} />
 
           <HorizontalLine />
 
-          <SectionWrapper id="google_trends">
-            <SectionHeader
-              color="text-blue-600"
-              onClick={() => toggleSection('googleTrendsKeywords')}
-              isExpanded={expandedSections.googleTrendsKeywords}
-              sectionId="section_google_trends_keywords"
-            >
-              Google Trends Keywords
-            </SectionHeader>
-
-            {expandedSections.googleTrendsKeywords && (
-              <div id="section_google_trends_keywords">
-                <SectionDescription>
-                  In this section, we look at popular search terms related to
-                  your product. Understanding which keywords are trending can
-                  inform your marketing strategy and help you attract the right
-                  audience. It&apos;s a practical way to connect your idea with
-                  what people are already searching for.
-                </SectionDescription>
-
-                {data.googleTrendsKeywords !== null ? (
-                  <Section
-                    header="Suggested Keywords to Analyze:"
-                    onReport={() => onReport('google_trends_keywords')}
-                  >
-                    <div className="flex flex-wrap gap-2">
-                      {data.googleTrendsKeywords.map((keyword) => (
-                        <Link
-                          href={`https://trends.google.com/trends/explore?date=today%203-m&q=${keyword}&hl=en`}
-                          key={keyword}
-                          className="inline-flex cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white px-4 py-2 shadow transition-all duration-200 hover:bg-gray-200"
-                          target="_blank"
-                          rel="nofollow noopener noreferrer"
-                        >
-                          {keyword}
-                        </Link>
-                      ))}
-                    </div>
-                  </Section>
-                ) : (
-                  <FetchingDataMessage />
-                )}
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionGoogleTrends
+            onReport={onReport}
+            data={data.googleTrendsKeywords}
+          />
 
           <HorizontalLine />
 
@@ -1054,244 +332,43 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
           <HorizontalLine />
 
-          <SectionWrapper id="content_ideas">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('contentIdeasForMarketing')}
-              isExpanded={expandedSections.contentIdeasForMarketing}
-              sectionId="section_content_ideas_for_marketing"
-            >
-              Soon: Content Ideas For Marketing
-            </SectionHeader>
-
-            {expandedSections.contentIdeasForMarketing && (
-              <div id="section_content_ideas_for_marketing">
-                <SectionDescription>
-                  This section provides you with fresh ideas for marketing
-                  content that resonates with your target audience. From blog
-                  posts to social media updates, having a content plan helps you
-                  engage potential users and create buzz around your product.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionContentIdeas />
 
           <HorizontalLine />
 
-          <SectionWrapper id="actionable_next_steps">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('actionableNextSteps')}
-              isExpanded={expandedSections.actionableNextSteps}
-              sectionId="section_actionable_next_steps"
-            >
-              Soon: Actionable Next Steps
-            </SectionHeader>
-
-            {expandedSections.actionableNextSteps && (
-              <div id="section_actionable_next_steps">
-                <SectionDescription>
-                  Here, we lay out clear steps for what to do next. This section
-                  is crucial because it helps you take your analysis and turn it
-                  into action, ensuring you stay on track and make progress with
-                  your idea.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionActionableNextSteps />
 
           <HorizontalLine />
 
-          <SectionWrapper id="two_week_testing_plan">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('twoWeekTestingPlan')}
-              isExpanded={expandedSections.twoWeekTestingPlan}
-              sectionId="section_two_week_testing_plan"
-            >
-              Soon: Two-Week Testing Plan
-            </SectionHeader>
-
-            {expandedSections.twoWeekTestingPlan && (
-              <div id="section_two_week_testing_plan">
-                <SectionDescription>
-                  This section outlines a simple plan for testing your product
-                  idea with real users over two weeks. Getting feedback early
-                  can save you time and resources later on. It&apos;s about
-                  learning quickly and adjusting your approach based on what you
-                  discover.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionTwoWeekTestingPlan />
 
           <HorizontalLine />
 
-          <SectionWrapper id="estimated_costs">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('estimatedCostsAndTimeline')}
-              isExpanded={expandedSections.estimatedCostsAndTimeline}
-              sectionId="section_estimated_costs_and_timeline"
-            >
-              Soon: Estimated Costs and Timeline for MVP Launch
-            </SectionHeader>
-
-            {expandedSections.estimatedCostsAndTimeline && (
-              <div id="section_estimated_costs_and_timeline">
-                <SectionDescription>
-                  In this section, we provide an overview of what it might cost
-                  to bring your minimum viable product (MVP) to life and how
-                  long it could take. Knowing the budget and timeline helps you
-                  plan effectively and manage expectations as you move forward.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionEstimatedCosts />
 
           <HorizontalLine />
 
-          <SectionWrapper id="early_adopters">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('earlyAdoptersAcquisitionIdeas')}
-              isExpanded={expandedSections.earlyAdoptersAcquisitionIdeas}
-              sectionId="section_early_adopters_acquisition_ideas"
-            >
-              Soon: Early Adopters Acquisition Ideas
-            </SectionHeader>
-
-            {expandedSections.earlyAdoptersAcquisitionIdeas && (
-              <div id="section_early_adopters_acquisition_ideas">
-                <SectionDescription>
-                  Here, we suggest ways to attract early adopters who can
-                  provide valuable feedback and help you refine your product.
-                  Engaging early users can build momentum and create a community
-                  around your idea.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionEarlyAdopters />
 
           <HorizontalLine />
 
-          <SectionWrapper id="networking_opportunities">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('networkingOpportunities')}
-              isExpanded={expandedSections.networkingOpportunities}
-              sectionId="section_networking_opportunities"
-            >
-              Soon: Networking Opportunities
-            </SectionHeader>
-
-            {expandedSections.networkingOpportunities && (
-              <div id="section_networking_opportunities">
-                <SectionDescription>
-                  This section identifies potential networking opportunities
-                  that could benefit your product journey. Connecting with
-                  others can provide support, insights, and collaboration
-                  possibilities that enhance your project.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionNetworkingOpportunities />
 
           <HorizontalLine />
 
-          <SectionWrapper id="feedback_templates">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('initialFeedbackTemplates')}
-              isExpanded={expandedSections.initialFeedbackTemplates}
-              sectionId="section_initial_feedback_templates"
-            >
-              Soon: Initial Feedback Templates
-            </SectionHeader>
-
-            {expandedSections.initialFeedbackTemplates && (
-              <div id="section_initial_feedback_templates">
-                <SectionDescription>
-                  In this part, we offer templates for gathering feedback from
-                  users about your product. Having ready-made questions can
-                  streamline the process and ensure you get useful insights that
-                  guide your next steps.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionFeedbackTemplates />
 
           <HorizontalLine />
 
-          <SectionWrapper id="pitch_deck">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('pitchDeckOutline')}
-              isExpanded={expandedSections.pitchDeckOutline}
-              sectionId="section_pitch_deck_outline"
-            >
-              Soon: Pitch Deck Outline
-            </SectionHeader>
-
-            {expandedSections.pitchDeckOutline && (
-              <div id="section_pitch_deck_outline">
-                <SectionDescription>
-                  This section helps you create a structured outline for a pitch
-                  deck, which is essential if you plan to present your idea to
-                  investors or stakeholders. A clear pitch can make a strong
-                  impression and open doors for opportunities.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionPitchDeck />
 
           <HorizontalLine />
 
-          <SectionWrapper id="roadmap">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('roadmapSuggestions')}
-              isExpanded={expandedSections.roadmapSuggestions}
-              sectionId="section_roadmap_suggestions"
-            >
-              Soon: Roadmap Suggestions
-            </SectionHeader>
-
-            {expandedSections.roadmapSuggestions && (
-              <div id="section_roadmap_suggestions">
-                <SectionDescription>
-                  Here, we provide suggestions for creating a roadmap that
-                  outlines the future direction of your product. It helps you
-                  visualize where you want to go and what steps are needed to
-                  get there.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionRoadmap />
 
           <HorizontalLine />
 
-          <SectionWrapper id="tools_and_resources">
-            <SectionHeader
-              color="text-gray-400"
-              onClick={() => toggleSection('suggestedToolsAndResources')}
-              isExpanded={expandedSections.suggestedToolsAndResources}
-              sectionId="section_suggested_tools_and_resources"
-            >
-              Soon: Suggested Tools and Resources
-            </SectionHeader>
-
-            {expandedSections.suggestedToolsAndResources && (
-              <div id="section_suggested_tools_and_resources">
-                <SectionDescription>
-                  In this final section, we list helpful tools and resources
-                  that can support your product development process. Whether
-                  it&apos;s software for project management or articles on best
-                  practices, these resources can make your journey smoother.
-                </SectionDescription>
-              </div>
-            )}
-          </SectionWrapper>
+          <SectionToolsAndResources />
         </div>
       </div>
 
