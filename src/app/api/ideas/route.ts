@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 import { App } from '@/idea/service/Service'
 
@@ -32,6 +33,8 @@ export async function POST(request: Request) {
     )
   } catch (error) {
     console.error('Error while reserving an idea:', error)
+
+    Sentry.captureException(error)
 
     return NextResponse.json(
       { error: 'Error while reserving an idea.' },

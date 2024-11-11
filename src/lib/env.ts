@@ -5,6 +5,7 @@ const envSchema = object({
   OPENAI_API_KEY: string().min(1),
   REDIS_URL: string().min(1),
   DATABASE_URL: string().min(1),
+  SENTRY_DSN: string().min(1),
   NEXT_PUBLIC_URL: string().min(1),
   IDEA_SERVICE_API_BASE: string().min(1),
   CONCEPT_SERVICE_API_BASE: string().min(1),

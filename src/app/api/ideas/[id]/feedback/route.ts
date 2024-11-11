@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 import { Service } from '@/common/client/Feedback/Service'
 import { App } from '@/idea/service/Service'
@@ -31,6 +32,8 @@ export async function POST(
     )
   } catch (error) {
     console.error('Error while sending a feedback:', error)
+
+    Sentry.captureException(error)
 
     return NextResponse.json(
       { error: 'Error while sending a feedback' },
