@@ -3,7 +3,7 @@ import { Repository } from '@/concept/domain/Repository'
 import { ConceptCreated } from '@/concept/domain/events/ConceptCreated'
 import { EventBus } from '@/concept/events/EventBus'
 
-export type Command = {
+type Command = {
   id: string
   problem: string
 }

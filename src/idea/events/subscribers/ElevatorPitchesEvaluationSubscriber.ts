@@ -26,7 +26,7 @@ interface ValueProposition {
   differentiation: string
 }
 
-export interface AIService {
+interface AIService {
   evaluateElevatorPitches(
     problem: string,
     targetAudiences: TargetAudience[],

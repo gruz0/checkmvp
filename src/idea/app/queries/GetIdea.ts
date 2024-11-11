@@ -8,7 +8,7 @@ import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 
-export type Query = {
+type Query = {
   id: string
 }
 

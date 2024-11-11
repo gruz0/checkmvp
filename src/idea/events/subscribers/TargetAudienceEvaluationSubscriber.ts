@@ -9,7 +9,7 @@ type Evaluation = {
   targetingStrategy: string
 }
 
-export interface AIService {
+interface AIService {
   evaluateTargetAudience(
     problem: string,
     segment: string,

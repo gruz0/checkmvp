@@ -23,7 +23,7 @@ interface ValueProposition {
   differentiation: string
 }
 
-export interface AIService {
+interface AIService {
   evaluateSWOTAnalysis(
     problem: string,
     marketExistence: string,

@@ -1,6 +1,6 @@
 import { Concept } from '@/concept/domain/Aggregate'
 
-export type Query = {
+type Query = {
   id: string
 }
 

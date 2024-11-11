@@ -23,7 +23,7 @@ interface TargetAudience {
   challenges: string[]
 }
 
-export interface AIService {
+interface AIService {
   evaluatePotentialNames(
     problem: string,
     marketExistence: string,
