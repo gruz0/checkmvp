@@ -1,3 +1,4 @@
+import PlausibleProvider from 'next-plausible'
 import React from 'react'
 import { env } from '@/lib/env'
 import type { Metadata } from 'next'
@@ -17,6 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <PlausibleProvider domain={env.DOMAIN} />
+      </head>
+
       <body>{children}</body>
     </html>
   )
