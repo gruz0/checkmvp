@@ -1,5 +1,6 @@
 ARG NODE_VERSION="22.11.0"
 ARG ALPINE_VERSION="3.20"
+ARG NPM_SHARP_VERSION="0.33.5"
 
 # Install dependencies only when needed
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS base
@@ -8,7 +9,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm ci
+RUN npm install sharp@${NPM_SHARP_VERSION} && npm ci
 
 # Rebuild the source code only when needed
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
