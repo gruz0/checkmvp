@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { App } from '@/concept/service/Service'
@@ -65,6 +66,8 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     return NextResponse.json(response, { status: 200 })
   } catch (error) {
     console.error('Error while getting the concept for reservation:', error)
+
+    Sentry.captureException(error)
 
     return NextResponse.json(
       { error: 'Error while getting the concept for reservation.' },

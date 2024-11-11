@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto'
+import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 import { App } from '@/concept/service/Service'
 import { createIdeaLimiterKey, manager } from '@/lib/rateLimiter'
@@ -47,6 +48,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ id: conceptId }, { status: 201 })
   } catch (error) {
     console.error('Error while creating a concept:', error)
+
+    Sentry.captureException(error)
 
     return NextResponse.json(
       { error: 'Error while creating a concept.' },

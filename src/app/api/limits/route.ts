@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 import { createIdeaLimiterKey, manager } from '@/lib/rateLimiter'
 
@@ -31,6 +32,8 @@ export async function GET() {
     )
   } catch (error) {
     console.error('Error while getting the limits:', error)
+
+    Sentry.captureException(error)
 
     return NextResponse.json(
       { error: 'Error while getting the limits.' },

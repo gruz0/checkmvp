@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
@@ -39,6 +40,8 @@ export async function POST(request: Request) {
     )
   } catch (error) {
     console.error('Error while storing a feedback:', error)
+
+    Sentry.captureException(error)
 
     return NextResponse.json(
       { error: 'Error while storing a feedback.' },
