@@ -1,5 +1,11 @@
 [
   {
+    "name": "Frank Diepmaat",
+    "tagline": "Growth Marketer | Over a decade in the tech industry | Helping startups and solopreneurs make sense of marketing",
+    "url": "https://x.com/franklyvhs",
+    "image": "/supporters/franklyvhs.jpg"
+  },
+  {
     "name": "Kristian Matic",
     "tagline": "Save 90% time and money in your recruitment process with hiretool.io",
     "url": "https://x.com/Kmaticu",
@@ -106,5 +112,11 @@
     "tagline": "🎯 Focus on your app - not servers 🚀 Effortlessly deploy your APP on $5 VPS 🛡️ High availability & security 😎",
     "url": "https://x.com/NickNikalayeu",
     "image": "/supporters/NickNikalayeu.png"
+  },
+  {
+    "name": "Ciara Wearen",
+    "tagline": "On a mission to teach Coding with AI Tools to Non-Techies + Beginners",
+    "url": "https://x.com/nocheerleader",
+    "image": "/supporters/nocheerleader.jpg"
   }
 ]
