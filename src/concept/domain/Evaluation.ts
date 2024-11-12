@@ -110,11 +110,6 @@ export class Evaluation {
       throw new Error(`Pain points for ${this.status} must be empty`)
     }
 
-    // TODO: Sometimes there is no market
-    // if (!this.marketExistence) {
-    //   throw new Error(`Market existence for ${this.status} must not be empty`)
-    // }
-
     if (this.targetAudience.length !== 0) {
       throw new Error(`Target audience for ${this.status} must be empty`)
     }
