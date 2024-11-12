@@ -8,15 +8,17 @@ import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
 
+interface ElevatorPitch {
+  hook: string
+  problem: string
+  solution: string
+  valueProposition: string
+  cta: string
+}
+
 interface SectionElevatorPitchProps {
   onReport: (section: string) => void
-  data: Array<{
-    hook: string
-    problem: string
-    solution: string
-    valueProposition: string
-    cta: string
-  }> | null
+  data: Array<ElevatorPitch> | null
 }
 
 const SectionElevatorPitch: React.FC<SectionElevatorPitchProps> = ({
@@ -48,19 +50,7 @@ const SectionElevatorPitch: React.FC<SectionElevatorPitchProps> = ({
           {data !== null ? (
             <>
               {data.map((pitch, idx) => (
-                <Section
-                  key={pitch.hook}
-                  header={`${idx + 1}. ${pitch.hook}`}
-                  onReport={() => onReport(`elevator_pitch.${idx}`)}
-                >
-                  <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
-                    <Paragraph>
-                      {pitch.problem} {pitch.solution} {pitch.valueProposition}
-                    </Paragraph>
-
-                    <Paragraph>{pitch.cta}</Paragraph>
-                  </div>
-                </Section>
+                <Pitch key={idx} idx={idx} pitch={pitch} onReport={onReport} />
               ))}
             </>
           ) : (
@@ -69,6 +59,78 @@ const SectionElevatorPitch: React.FC<SectionElevatorPitchProps> = ({
         </div>
       )}
     </SectionWrapper>
+  )
+}
+
+interface PitchProps {
+  idx: number
+  pitch: ElevatorPitch
+  onReport: (section: string) => void
+}
+
+const Pitch: React.FC<PitchProps> = ({ idx, pitch, onReport }) => {
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false)
+
+  const handleSpeak = (pitchText: string) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(pitchText)
+      utterance.lang = 'en-US'
+      utterance.rate = 1.1
+      utterance.pitch = 1.1
+
+      utterance.onstart = () => setIsSpeaking(true)
+      utterance.onend = () => setIsSpeaking(false)
+
+      speechSynthesis.speak(utterance)
+    } else {
+      alert('Speech synthesis not supported in this browser.')
+    }
+  }
+
+  const handleStop = () => {
+    if ('speechSynthesis' in window && isSpeaking) {
+      speechSynthesis.cancel()
+      setIsSpeaking(false)
+    }
+  }
+
+  return (
+    <Section
+      header={`${idx + 1}. ${pitch.hook}`}
+      onReport={() => onReport(`elevator_pitch.${idx}`)}
+    >
+      <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
+        <Paragraph>
+          {pitch.problem} {pitch.solution} {pitch.valueProposition}
+        </Paragraph>
+
+        <Paragraph>{pitch.cta}</Paragraph>
+      </div>
+
+      <div className="py-2 text-right">
+        {isSpeaking ? (
+          <button
+            onClick={handleStop}
+            className="rounded bg-gray-300 px-4 py-2 text-sm text-black hover:bg-gray-700 hover:text-white"
+            disabled={!isSpeaking}
+          >
+            ⏹️ Stop
+          </button>
+        ) : (
+          <button
+            onClick={() =>
+              handleSpeak(
+                `${pitch.problem} ${pitch.solution} ${pitch.valueProposition} ${pitch.cta}`
+              )
+            }
+            className="rounded bg-gray-300 px-4 py-2 text-sm text-black hover:bg-gray-700 hover:text-white"
+            disabled={isSpeaking}
+          >
+            🎙️ Pitch It
+          </button>
+        )}
+      </div>
+    </Section>
   )
 }
 
