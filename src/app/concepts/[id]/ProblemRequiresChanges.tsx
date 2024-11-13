@@ -115,6 +115,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
                       pathname: '/start',
                       query: { problem: item },
                     }}
+                    target="_blank"
                     className="rounded bg-gray-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-700"
                   >
                     Validate This Problem Instead
