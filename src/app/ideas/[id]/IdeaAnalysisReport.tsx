@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import BackToTopButton from '@/components/BackToTopButton'
 import FeedbackForm from '@/components/FeedbackForm'
 import HorizontalLine from '@/components/HorizontalLine'
 import MessageBox from '@/components/MessageBox'
@@ -395,6 +396,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
           Remove Idea
         </button>
       </div>
+
+      <BackToTopButton />
     </div>
   )
 }
