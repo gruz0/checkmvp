@@ -1,5 +1,7 @@
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
+import { ContentIdea, Strategy } from '@/idea/domain/ContentIdea'
+import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
 import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
 import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
@@ -206,6 +208,27 @@ export class IdeaRepositorySQLite implements Repository {
           },
           update: {
             value: JSON.stringify(googleTrendsKeywords),
+            updatedAt: new Date(),
+          },
+        })
+      }
+
+      const contentIdeas = updatedIdea.getContentIdeasForMarketing()
+      if (contentIdeas) {
+        await prisma.ideaContent.upsert({
+          where: {
+            ideaId_key: {
+              ideaId: id,
+              key: 'content_ideas_for_marketing',
+            },
+          },
+          create: {
+            ideaId: id,
+            key: 'content_ideas_for_marketing',
+            value: JSON.stringify(contentIdeas),
+          },
+          update: {
+            value: JSON.stringify(contentIdeas),
             updatedAt: new Date(),
           },
         })
@@ -516,5 +539,52 @@ export class IdeaRepositorySQLite implements Repository {
     const data = JSON.parse(googleTrendsKeywordsModel.value) as keywords
 
     return data.map((value) => GoogleTrendsKeyword.New(value.keyword))
+  }
+
+  async getContentIdeasForMarketingByIdeaId(
+    ideaId: string
+  ): Promise<ContentIdeasForMarketing | null> {
+    const contentIdeasModel = await prisma.ideaContent.findUnique({
+      where: {
+        ideaId_key: {
+          ideaId: ideaId,
+          key: 'content_ideas_for_marketing',
+        },
+      },
+    })
+
+    if (!contentIdeasModel) {
+      return null
+    }
+
+    interface contentIdea {
+      strategy: {
+        name: string
+      }
+      platforms: string[]
+      ideas: string[]
+      benefits: string[]
+    }
+
+    interface contentIdeas {
+      contentIdeas: contentIdea[]
+    }
+
+    const data = JSON.parse(contentIdeasModel.value) as contentIdeas
+
+    const contentIdeasForMarketing = ContentIdeasForMarketing.New()
+
+    data.contentIdeas.forEach((strategy) => {
+      contentIdeasForMarketing.addContentIdea(
+        ContentIdea.New(
+          Strategy.New(strategy.strategy.name),
+          strategy.platforms,
+          strategy.ideas,
+          strategy.benefits
+        )
+      )
+    })
+
+    return contentIdeasForMarketing
   }
 }

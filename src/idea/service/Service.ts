@@ -2,6 +2,7 @@ import { Service as IdeaService } from '@/common/client/Concept/Service'
 import { EventBusInMemory } from '@/idea/adapters/EventBusInMemory'
 import { IdeaRepositorySQLite } from '@/idea/adapters/IdeaRepositorySQLite'
 import { CompetitorAnalysisEvaluator } from '@/idea/adapters/OpenAIService/CompetitorAnalysisEvaluator'
+import { ContentIdeasEvaluator } from '@/idea/adapters/OpenAIService/ContentIdeasEvaluator'
 import { ElevatorPitchesEvaluator } from '@/idea/adapters/OpenAIService/ElevatorPitchesEvaluator'
 import { GoogleTrendsKeywordsEvaluator } from '@/idea/adapters/OpenAIService/GoogleTrendsKeywordsEvaluator'
 import { MarketAnalysisEvaluator } from '@/idea/adapters/OpenAIService/MarketAnalysisEvaluator'
@@ -14,6 +15,7 @@ import { ArchivationHandler } from '@/idea/app/commands/Archive'
 import { MakeReservationHandler } from '@/idea/app/commands/MakeReservation'
 import { GetIdeaHandler } from '@/idea/app/queries/GetIdea'
 import { CompetitorAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/CompetitorAnalysisEvaluationSubscriber'
+import { ContentIdeasEvaluationSubscriber } from '@/idea/events/subscribers/ContentIdeasEvaluationSubscriber'
 import { ElevatorPitchesEvaluationSubscriber } from '@/idea/events/subscribers/ElevatorPitchesEvaluationSubscriber'
 import { GoogleTrendsKeywordsEvaluationSubscriber } from '@/idea/events/subscribers/GoogleTrendsKeywordsEvaluationSubscriber'
 import { MarketAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/MarketAnalysisEvaluationSubscriber'
@@ -76,6 +78,11 @@ const registerApp = (): Application => {
       new GoogleTrendsKeywordsEvaluator(env.OPENAI_API_KEY)
     )
 
+  const contentIdeasEvaluationSubscriber = new ContentIdeasEvaluationSubscriber(
+    ideaRepository,
+    new ContentIdeasEvaluator(env.OPENAI_API_KEY)
+  )
+
   eventBus.subscribe('IdeaCreated', targetAudienceEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', valuePropositionEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', marketAnalysisEvaluationSubscriber)
@@ -92,6 +99,10 @@ const registerApp = (): Application => {
   eventBus.subscribe(
     'ValuePropositionEvaluated',
     googleTrendsKeywordsEvaluationSubscriber
+  )
+  eventBus.subscribe(
+    'ValuePropositionEvaluated',
+    contentIdeasEvaluationSubscriber
   )
 
   return {

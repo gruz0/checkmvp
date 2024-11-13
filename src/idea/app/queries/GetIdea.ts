@@ -1,5 +1,6 @@
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
+import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
 import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
 import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
@@ -78,6 +79,14 @@ interface FullIdeaDTO {
     cta: string
   }> | null
   googleTrendsKeywords: Array<string> | null
+  // FIXME: Replace the key with typed value
+  contentIdeasForMarketing: Record<string, ContentIdeaDTO> | null
+}
+
+interface ContentIdeaDTO {
+  platforms: string[]
+  ideas: string[]
+  benefits: string[]
 }
 
 interface ReadModel {
@@ -94,6 +103,9 @@ interface ReadModel {
   getGoogleTrendsKeywordsByIdeaId(
     ideaId: string
   ): Promise<GoogleTrendsKeyword[] | null>
+  getContentIdeasForMarketingByIdeaId(
+    ideaId: string
+  ): Promise<ContentIdeasForMarketing | null>
 }
 
 export class GetIdeaHandler {
@@ -131,6 +143,9 @@ export class GetIdeaHandler {
 
     const googleTrendsKeywords =
       await this.readModel.getGoogleTrendsKeywordsByIdeaId(query.id)
+
+    const contentIdeas =
+      await this.readModel.getContentIdeasForMarketingByIdeaId(query.id)
 
     return {
       id: idea.getId().getValue(),
@@ -200,6 +215,22 @@ export class GetIdeaHandler {
         : null,
       googleTrendsKeywords: googleTrendsKeywords
         ? googleTrendsKeywords.map((keyword) => keyword.getKeyword())
+        : null,
+      contentIdeasForMarketing: contentIdeas
+        ? contentIdeas.getContentIdeas().reduce(
+            (acc, contentIdea) => {
+              const section = contentIdea.getSection().getName()
+
+              acc[section] = {
+                platforms: contentIdea.getPlatforms(),
+                ideas: contentIdea.getIdeas(),
+                benefits: contentIdea.getBenefits(),
+              }
+
+              return acc
+            },
+            {} as Record<string, ContentIdeaDTO>
+          )
         : null,
     }
   }

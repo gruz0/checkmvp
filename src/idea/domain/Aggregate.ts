@@ -1,4 +1,5 @@
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
+import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
 import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
 import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
@@ -23,6 +24,7 @@ export class Idea {
   private swotAnalysis: SWOTAnalysis | null = null
   private elevatorPitches: ElevatorPitch[] | null = null
   private googleTrendsKeywords: GoogleTrendsKeyword[] | null = null
+  private contentIdeasForMarketing: ContentIdeasForMarketing | null = null
   private migrated: boolean = false
   private archived: boolean = false
 
@@ -97,6 +99,12 @@ export class Idea {
     this.googleTrendsKeywords.push(keyword)
   }
 
+  public addContentIdeasForMarketing(
+    contentIdeas: ContentIdeasForMarketing
+  ): void {
+    this.contentIdeasForMarketing = contentIdeas
+  }
+
   public finalizeMigration(): void {
     if (this.migrated) {
       throw new Error('Idea was migrated')
@@ -159,6 +167,10 @@ export class Idea {
 
   public getGoogleTrendsKeywords(): GoogleTrendsKeyword[] | null {
     return this.googleTrendsKeywords
+  }
+
+  public getContentIdeasForMarketing(): ContentIdeasForMarketing | null {
+    return this.contentIdeasForMarketing
   }
 
   public isMigrated(): boolean {

@@ -59,7 +59,7 @@ export const NavBar = () => (
     </Link>
     <Link
       href="#content_ideas"
-      className="block rounded px-4 py-2 text-gray-400 hover:bg-gray-200"
+      className="block rounded px-4 py-2 text-gray-900 hover:bg-gray-200"
     >
       Content Ideas
     </Link>
