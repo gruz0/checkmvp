@@ -94,7 +94,15 @@ interface Props {
       cta: string
     }> | null
     googleTrendsKeywords: Array<string> | null
+    // FIXME: Replace the key with typed value
+    contentIdeasForMarketing: Record<string, ContentIdeaProps> | null
   }
+}
+
+interface ContentIdeaProps {
+  platforms: string[]
+  ideas: string[]
+  benefits: string[]
 }
 
 const reloadInterval = 5000
@@ -117,7 +125,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
       !data.swotAnalysis ||
       !data.elevatorPitches ||
       !data.productNames ||
-      !data.googleTrendsKeywords
+      !data.googleTrendsKeywords ||
+      !data.contentIdeasForMarketing
     ) {
       intervalId = setInterval(() => {
         router.refresh()
@@ -136,6 +145,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     data.elevatorPitches,
     data.productNames,
     data.googleTrendsKeywords,
+    data.contentIdeasForMarketing,
     router,
   ])
 
@@ -328,11 +338,14 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
           <HorizontalLine />
 
-          <MessageBox />
+          <SectionContentIdeas
+            onReport={onReport}
+            data={data.contentIdeasForMarketing}
+          />
 
           <HorizontalLine />
 
-          <SectionContentIdeas />
+          <MessageBox />
 
           <HorizontalLine />
 
