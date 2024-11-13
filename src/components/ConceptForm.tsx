@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import FormField from '@/components/FormField'
+
 import Paragraph from '@/components/Paragraph'
 
 interface Props {
@@ -86,6 +86,7 @@ Target Audience:
 const DefineConceptForm = ({ problem }: Props) => {
   const [status, setStatus] = useState<string>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [showHint, setShowHint] = useState<boolean>(false)
 
   const [formData, setFormData] = useState({
     problem: problem,
@@ -138,25 +139,59 @@ const DefineConceptForm = ({ problem }: Props) => {
     }
   }
 
+  const problemMaxLength = 2048
+  const remainingCharacters = problemMaxLength - formData.problem.length
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <FormField
-        id="problem"
-        label="Describe the Problem Your Product Aims to Solve"
-        description="Tell us about the specific issue your product addresses. The clearer the problem, the more valuable our feedback will be. Focus on the challenges or frustrations that people face, and how your product intends to alleviate them."
-        placeholder={`I want to create an app that connects individuals seeking emotional support with trained professionals or peer support groups. This platform would ensure users receive the help they need in times of crisis or emotional distress.
+      <div className="mb-6 flex flex-col">
+        <label htmlFor="problem" className="mb-4 text-xl font-bold md:text-2xl">
+          Tell Us About The Specific Issue Your Product Addresses
+        </label>
+
+        {showHint ? (
+          <div className="mb-4 rounded-lg border bg-white p-4 shadow-sm md:p-6">
+            <p className="text-lg text-gray-700">
+              The clearer the problem, the more valuable our feedback will be.
+              Focus on the challenges or frustrations that people face, and how
+              your product intends to alleviate them. Check out our examples
+              below to get inspired!
+            </p>
+          </div>
+        ) : (
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setShowHint(!showHint)
+            }}
+            aria-label="Show Help"
+            className="mb-2 rounded bg-gray-100 p-2 hover:bg-green-100"
+          >
+            Need Help Getting Started?
+          </button>
+        )}
+
+        <textarea
+          id="problem"
+          name="problem"
+          className="mt-1 block h-64 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          value={formData.problem}
+          onChange={handleChange}
+          required
+          placeholder={`I want to create an app that connects individuals seeking emotional support with trained professionals or peer support groups. This platform would ensure users receive the help they need in times of crisis or emotional distress.
 
 Target Audience:
 1. Individuals experiencing mental health challenges
 2. Parents seeking support
 3. Caregivers of individuals with mental health issues`}
-        value={formData.problem}
-        onChange={handleChange}
-        type="textarea"
-        required
-        minLength={20}
-        maxLength={2048}
-      />
+          minLength={20}
+          maxLength={2048}
+        />
+
+        <p className="mt-2 text-right text-sm text-gray-600">
+          {remainingCharacters} characters remaining
+        </p>
+      </div>
 
       {status === 'error' && errorMessage && (
         <div className="mb-4 rounded bg-red-200 p-4 text-red-800">
@@ -182,9 +217,11 @@ Target Audience:
         </h2>
 
         <Paragraph>
-          Click one of the buttons below to replace the content in the form
-          above with a helpful example. Remember to take note of your own
-          thoughts and ideas so you don’t lose them!
+          If you&apos;re unsure where to start, or if you want to refine your
+          idea further, feel free to use the examples below for guidance. These
+          pre-defined ideas are here to help you define a strong, clear problem
+          statement. Just click a button to fill the form with an example, and
+          tweak it to reflect your unique vision.
         </Paragraph>
 
         <div className="flex flex-wrap gap-2">
