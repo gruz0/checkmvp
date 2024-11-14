@@ -18,11 +18,19 @@ const Template = ({ children }: { children: React.ReactNode }) => (
 
           <div className="flex items-center space-x-4 md:space-x-6">
             <Link
+              href="/about"
+              className="flex items-center space-x-1 text-gray-900 hover:text-blue-500"
+              title="About"
+            >
+              About
+            </Link>
+
+            <Link
               href="/supporters"
               className="flex items-center space-x-1 text-gray-900 hover:text-blue-500"
               title="Supporters"
             >
-              ❤️ Supporters
+              Supporters
             </Link>
           </div>
         </div>
