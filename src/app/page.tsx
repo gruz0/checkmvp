@@ -91,7 +91,7 @@ export default async function LandingPage() {
 
       <Screenshots />
 
-      <div className="mb-8 mt-6 pt-6 text-center md:mt-8">
+      <div className="mb-8 mt-2 pt-6 text-center">
         <Link
           href="/start"
           className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -214,7 +214,7 @@ const Screenshots = () => (
 )
 
 const Section: React.FC<SectionProps> = ({ heading, children }) => (
-  <div className="mt-8 md:mt-10 lg:mt-14">
+  <div className="mt-8 pb-4 md:mt-10 md:pb-6 lg:mt-14 lg:pb-8">
     <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl">
       {heading}
     </h2>
