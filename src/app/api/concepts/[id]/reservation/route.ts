@@ -26,7 +26,15 @@ type ConceptForReservationResponse = z.infer<
 >
 
 export async function GET(_: Request, { params }: { params: { id: string } }) {
+  Sentry.setTag('component', 'HTTP API')
+  Sentry.setTag('concept_id', params.id)
+
   try {
+    Sentry.setContext('concept', {
+      concept_id: params.id,
+      status: 'fetching_for_idea_reservation',
+    })
+
     const concept = await App.Queries.GetConcept.handle({
       id: params.id,
     })

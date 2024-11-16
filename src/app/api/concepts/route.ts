@@ -7,6 +7,8 @@ import { createIdeaLimiterKey, manager } from '@/lib/rateLimiter'
 const createIdeaLimiter = manager.getLimiter(createIdeaLimiterKey)
 
 export async function POST(request: Request) {
+  Sentry.setTag('component', 'HTTP API')
+
   try {
     if (!createIdeaLimiter) {
       throw new Error('Rate limiter is not available')
@@ -15,6 +17,10 @@ export async function POST(request: Request) {
     const formData = await request.json()
 
     const { problem } = formData
+
+    Sentry.setContext('payload', {
+      problem: problem,
+    })
 
     if (!problem) {
       return NextResponse.json(
@@ -37,6 +43,13 @@ export async function POST(request: Request) {
     }
 
     const conceptId = randomUUID()
+
+    Sentry.setTag('concept_id', conceptId)
+
+    Sentry.setContext('concept', {
+      concept_id: conceptId,
+      status: 'creating',
+    })
 
     await App.Commands.EvaluateConcept.handle({
       id: conceptId,

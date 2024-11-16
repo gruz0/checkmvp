@@ -6,7 +6,15 @@ export async function DELETE(
   _: Request,
   { params }: { params: { id: string } }
 ) {
+  Sentry.setTag('component', 'HTTP API')
+  Sentry.setTag('idea_id', params.id)
+
   try {
+    Sentry.setContext('idea', {
+      concept_id: params.id,
+      status: 'archiving',
+    })
+
     await App.Commands.Archive.handle({ ideaId: params.id })
 
     return NextResponse.json(

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { Repository } from '@/idea/domain/Repository'
@@ -35,6 +36,7 @@ interface TargetAudience {
 
 interface AIService {
   evaluateCompetitorAnalysis(
+    ideaId: string,
     problem: string,
     marketExistence: string,
     targetAudiences: TargetAudience[]
@@ -42,44 +44,73 @@ interface AIService {
 }
 
 export class CompetitorAnalysisEvaluationSubscriber implements EventHandler {
+  static className = 'CompetitorAnalysisEvaluationSubscriber'
+
   constructor(
     private readonly repository: Repository,
     private readonly aiService: AIService
   ) {}
 
+  getName(): string {
+    return CompetitorAnalysisEvaluationSubscriber.className
+  }
+
   async handle(event: IdeaCreated): Promise<void> {
-    const idea = await this.repository.getById(event.payload.id)
+    Sentry.setTag('component', 'BackgroundJob')
+    Sentry.setTag('job_type', this.getName())
+    Sentry.setTag('event_type', event.type)
+    Sentry.setTag('idea_id', event.payload.id)
 
-    if (!idea) {
-      throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
-    }
+    Sentry.addBreadcrumb({ message: `${this.getName()} started` })
 
-    const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
-      idea.getId().getValue()
-    )
+    try {
+      const idea = await this.repository.getById(event.payload.id)
 
-    const audiences = targetAudiences.map((targetAudience) => ({
-      segment: targetAudience.getSegment(),
-      description: targetAudience.getDescription(),
-      challenges: targetAudience.getChallenges(),
-    }))
+      if (!idea) {
+        throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
+      }
 
-    const evaluation = await this.aiService.evaluateCompetitorAnalysis(
-      idea.getProblem().getValue(),
-      idea.getMarketExistence(),
-      audiences
-    )
-
-    await this.repository.updateIdea(event.payload.id, (idea): Idea => {
-      idea.addCompetitorAnalysis(
-        CompetitorAnalysis.New(
-          evaluation.competitors,
-          evaluation.comparison,
-          evaluation.differentiationSuggestions
-        )
+      const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
+        idea.getId().getValue()
       )
 
-      return idea
-    })
+      const audiences = targetAudiences.map((targetAudience) => ({
+        segment: targetAudience.getSegment(),
+        description: targetAudience.getDescription(),
+        challenges: targetAudience.getChallenges(),
+      }))
+
+      const evaluation = await this.aiService.evaluateCompetitorAnalysis(
+        idea.getId().getValue(),
+        idea.getProblem().getValue(),
+        idea.getMarketExistence(),
+        audiences
+      )
+
+      await this.repository.updateIdea(event.payload.id, (idea): Idea => {
+        idea.addCompetitorAnalysis(
+          CompetitorAnalysis.New(
+            evaluation.competitors,
+            evaluation.comparison,
+            evaluation.differentiationSuggestions
+          )
+        )
+
+        return idea
+      })
+
+      // TODO: Emit Event
+    } catch (e) {
+      Sentry.captureException(e, {
+        contexts: {
+          idea: {
+            idea_id: event.payload.id,
+            status: 'competitor_analysis_evaluation_error',
+          },
+        },
+      })
+
+      throw e
+    }
   }
 }

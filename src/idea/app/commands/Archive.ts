@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
 import { Repository } from '@/idea/domain/Repository'
 import { IdeaArchived } from '@/idea/domain/events/IdeaArchived'
@@ -14,18 +15,37 @@ export class ArchivationHandler {
   ) {}
 
   async handle(command: Command): Promise<void> {
-    const idea = await this.repository.getById(command.ideaId)
+    Sentry.setTag('component', 'Command')
+    Sentry.setTag('command_type', 'Archive')
+    Sentry.setTag('idea_id', command.ideaId)
 
-    if (!idea) {
-      throw new Error(`Idea ${command.ideaId} does not exist`)
+    try {
+      const idea = await this.repository.getById(command.ideaId)
+
+      if (!idea) {
+        throw new Error(`Idea ${command.ideaId} does not exist`)
+      }
+
+      await this.repository.updateIdea(command.ideaId, (idea: Idea): Idea => {
+        idea.archive()
+
+        return idea
+      })
+
+      this.eventBus.emit(new IdeaArchived(command.ideaId))
+
+      Sentry.setContext('idea', {
+        idea_id: command.ideaId,
+        status: 'archived',
+      })
+    } catch (e) {
+      Sentry.captureException(e, {
+        contexts: {
+          idea: { idea_id: command.ideaId, status: 'archivation_error' },
+        },
+      })
+
+      throw e
     }
-
-    await this.repository.updateIdea(command.ideaId, (idea: Idea): Idea => {
-      idea.archive()
-
-      return idea
-    })
-
-    this.eventBus.emit(new IdeaArchived(command.ideaId))
   }
 }

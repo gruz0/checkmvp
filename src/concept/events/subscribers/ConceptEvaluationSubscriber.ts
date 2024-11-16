@@ -1,7 +1,10 @@
+import * as Sentry from '@sentry/nextjs'
 import { Concept } from '@/concept/domain/Aggregate'
 import { Evaluation } from '@/concept/domain/Evaluation'
 import { Repository } from '@/concept/domain/Repository'
 import { ConceptCreated } from '@/concept/domain/events/ConceptCreated'
+import { ConceptEvaluated } from '@/concept/domain/events/ConceptEvaluated'
+import { EventBus } from '@/concept/events/EventBus'
 import { EventHandler } from '@/concept/events/EventHandler'
 
 type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
@@ -22,43 +25,72 @@ interface TargetAudience {
 }
 
 interface AIService {
-  evaluateConcept(problem: string): Promise<ConceptEvaluation>
+  evaluateConcept(
+    conceptId: string,
+    problem: string
+  ): Promise<ConceptEvaluation>
 }
 
-// TODO: Emit event ConceptEvaluated
 export class ConceptEvaluationSubscriber implements EventHandler {
+  static className = 'ConceptEvaluationSubscriber'
+
   constructor(
     private readonly repository: Repository,
-    private readonly aiService: AIService
+    private readonly aiService: AIService,
+    private readonly eventBus: EventBus
   ) {}
 
+  getName(): string {
+    return ConceptEvaluationSubscriber.className
+  }
+
   async handle(event: ConceptCreated): Promise<void> {
-    const concept = await this.repository.getById(event.payload.id)
+    Sentry.setTag('component', 'BackgroundJob')
+    Sentry.setTag('job_type', this.getName())
+    Sentry.setTag('event_type', event.type)
+    Sentry.setTag('concept_id', event.payload.id)
 
-    if (!concept) {
-      throw new Error(`Unable to get concept by ID: ${event.payload.id}`)
-    }
+    Sentry.addBreadcrumb({ message: `${this.getName()} started` })
 
-    const evaluation = await this.aiService.evaluateConcept(
-      concept.getProblem().getValue()
-    )
+    try {
+      const concept = await this.repository.getById(event.payload.id)
 
-    await this.repository.updateConcept(
-      event.payload.id,
-      (concept): Concept => {
-        concept.evaluate(
-          new Evaluation(
-            evaluation.status,
-            evaluation.suggestions,
-            evaluation.recommendations,
-            evaluation.painPoints,
-            evaluation.marketExistence,
-            evaluation.targetAudience
-          )
-        )
-
-        return concept
+      if (!concept) {
+        throw new Error(`Unable to get concept by ID: ${event.payload.id}`)
       }
-    )
+
+      const evaluation = await this.aiService.evaluateConcept(
+        concept.getId().getValue(),
+        concept.getProblem().getValue()
+      )
+
+      await this.repository.updateConcept(
+        event.payload.id,
+        (concept): Concept => {
+          concept.evaluate(
+            new Evaluation(
+              evaluation.status,
+              evaluation.suggestions,
+              evaluation.recommendations,
+              evaluation.painPoints,
+              evaluation.marketExistence,
+              evaluation.targetAudience
+            )
+          )
+
+          return concept
+        }
+      )
+
+      this.eventBus.emit(new ConceptEvaluated(concept.getId().getValue()))
+    } catch (e) {
+      Sentry.captureException(e, {
+        contexts: {
+          concept: { concept_id: event.payload.id, status: 'evaluation_error' },
+        },
+      })
+
+      throw e
+    }
   }
 }

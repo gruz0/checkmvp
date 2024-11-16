@@ -87,7 +87,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
       )}
 
       <Section header="How To Improve Your Problem Statement:">
-        <div className="grid grid-cols-1 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
           {evaluation.suggestions.map((item, index) => (
             <div
               key={index}
@@ -101,7 +101,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
 
       {evaluation.recommendations.length > 0 && (
         <Section header="Alternative Problem Statements:">
-          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+          <div className="mb-6 grid grid-cols-1 gap-4 md:gap-6">
             {evaluation.recommendations.map((item, index) => (
               <div
                 key={index}
@@ -147,7 +147,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
           </button>
         </div>
       ) : (
-        <ConceptForm problem={problem} />
+        <ConceptForm problem={problem} hideExamples />
       )}
     </div>
   )

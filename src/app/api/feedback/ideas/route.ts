@@ -3,10 +3,19 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 export async function POST(request: Request) {
+  Sentry.setTag('component', 'HTTP API')
+
   try {
     const formData = await request.json()
 
     const { idea_id, section, feedback, contact } = formData
+
+    // NOTE: We don't want to send the person's contact to Sentry
+    Sentry.setContext('payload', {
+      idea_id: idea_id,
+      section: section,
+      feedback: feedback,
+    })
 
     if (!idea_id) {
       return NextResponse.json(
@@ -21,6 +30,8 @@ export async function POST(request: Request) {
         { status: 422 }
       )
     }
+
+    Sentry.setTag('idea_id', idea_id)
 
     await prisma.feedback.create({
       data: {

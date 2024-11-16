@@ -1,4 +1,6 @@
+import * as Sentry from '@sentry/nextjs'
 import OpenAI from 'openai'
+import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
 import { getPromptContent } from '@/lib/prompts'
 
@@ -37,6 +39,12 @@ const ResponseSchema = z.object({
 })
 
 export class ConceptEvaluator {
+  static className = 'ConceptEvaluator'
+  static prompt = '00-problem-evaluation'
+  static model = 'gpt-4o-mini'
+  static nucleusSampling = 0.9
+  static maxCompletionTokens = 3000
+
   private openai: OpenAI
 
   constructor(apiKey: string) {
@@ -45,58 +53,90 @@ export class ConceptEvaluator {
     })
   }
 
-  async evaluateConcept(problem: string): Promise<Evaluation> {
-    const promptContent = getPromptContent('00-problem-evaluation')
+  async evaluateConcept(
+    conceptId: string,
+    problem: string
+  ): Promise<Evaluation> {
+    Sentry.setTag('component', 'AIService')
+    Sentry.setTag('ai_service_type', ConceptEvaluator.className)
+    Sentry.setTag('concept_id', conceptId)
 
-    if (!promptContent) {
-      throw new Error('Prompt content not found')
-    }
+    try {
+      const promptContent = getPromptContent(ConceptEvaluator.prompt)
 
-    const response = await this.openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: [
-            {
-              type: 'text',
-              text: promptContent.trim(),
-            },
-          ],
+      if (!promptContent) {
+        throw new Error(`Prompt content ${ConceptEvaluator.prompt} not found`)
+      }
+
+      const response = await this.openai.beta.chat.completions.parse({
+        model: ConceptEvaluator.model,
+        messages: [
+          {
+            role: 'system',
+            content: [
+              {
+                type: 'text',
+                text: promptContent.trim(),
+              },
+            ],
+          },
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: problem.trim(),
+              },
+            ],
+          },
+        ],
+        top_p: ConceptEvaluator.nucleusSampling,
+        max_completion_tokens: ConceptEvaluator.maxCompletionTokens,
+        response_format: zodResponseFormat(
+          ResponseSchema,
+          'problem_evaluation'
+        ),
+        n: 1,
+      })
+
+      Sentry.addBreadcrumb({
+        message: `OpenAI ${ConceptEvaluator.className} called`,
+        data: {
+          model: ConceptEvaluator.model,
+          top_p: ConceptEvaluator.nucleusSampling,
+          max_completion_tokens: ConceptEvaluator.maxCompletionTokens,
+          usage: response.usage,
+          choices: response.choices.length,
         },
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: `Here is the problem my product aims to solve: """
-${problem.trim()}"""`,
-            },
-          ],
-        },
-      ],
-      // For most factual use cases such as data extraction, and truthful Q&A, the temperature of 0 is best.
-      // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api
-      temperature: 0.7,
-      max_tokens: 2000,
-      response_format: {
-        type: 'json_object',
-      },
-    })
+        level: 'info',
+      })
 
-    // TODO: Store response.usage for better analysis
+      const message = response.choices[0].message
 
-    const content = response.choices[0].message.content ?? ''
+      if (message.refusal) {
+        // TODO: Handle refusal
+        throw new Error('Message refusal: ' + message.refusal)
+      }
 
-    const analysis = ResponseSchema.parse(JSON.parse(content))
+      if (!message.parsed) {
+        // TODO: Add Sentry message context
+        throw new Error('Message was not parsed')
+      }
 
-    return {
-      status: analysis.problem_evaluation.status,
-      suggestions: analysis.problem_evaluation.suggestions,
-      recommendations: analysis.problem_evaluation.recommendations,
-      painPoints: analysis.problem_evaluation.pain_points,
-      marketExistence: analysis.problem_evaluation.market_existence.trim(),
-      targetAudience: analysis.problem_evaluation.target_audience,
+      const problemEvaluation = message.parsed.problem_evaluation
+
+      return {
+        status: problemEvaluation.status,
+        suggestions: problemEvaluation.suggestions,
+        recommendations: problemEvaluation.recommendations,
+        painPoints: problemEvaluation.pain_points,
+        marketExistence: problemEvaluation.market_existence,
+        targetAudience: problemEvaluation.target_audience,
+      }
+    } catch (e) {
+      Sentry.captureException(e)
+
+      throw e
     }
   }
 }

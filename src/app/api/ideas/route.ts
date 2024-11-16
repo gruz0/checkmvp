@@ -3,10 +3,17 @@ import { NextResponse } from 'next/server'
 import { App } from '@/idea/service/Service'
 
 export async function POST(request: Request) {
+  Sentry.setTag('component', 'HTTP API')
+
   try {
     const formData = await request.json()
 
     const { idea_id, concept_id } = formData
+
+    Sentry.setContext('payload', {
+      idea_id: idea_id,
+      concept_id: concept_id,
+    })
 
     if (!idea_id) {
       return NextResponse.json(
@@ -21,6 +28,16 @@ export async function POST(request: Request) {
         { status: 422 }
       )
     }
+
+    Sentry.setTags({
+      idea_id: idea_id,
+      concept_id: concept_id,
+    })
+
+    Sentry.setContext('idea', {
+      idea_id: idea_id,
+      status: 'creating',
+    })
 
     await App.Commands.MakeReservation.handle({
       ideaId: idea_id,
