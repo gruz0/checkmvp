@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import HorizontalLine from '@/components/HorizontalLine'
+
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
 import IdeaReport01 from '../../screenshots/idea-report-01.png'
 import IdeaReport02 from '../../screenshots/idea-report-02.png'
@@ -37,20 +37,33 @@ export default async function LandingPage() {
   return (
     <div className="p-4 md:p-6 lg:p-8">
       <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl">
-        Validate Your Product or Startup Idea Fast
+        Can Your Startup Idea Pass The Test?
       </h1>
 
       <div className="mb-6 flex flex-col md:flex-row md:space-x-10 lg:mb-8">
-        <div className="w-full text-justify md:w-1/2">
-          <p className="mb-4 text-lg md:mb-6 md:text-xl lg:mb-8 lg:text-2xl">
-            What if you could know your product or startup idea&apos;s potential
-            before you start building? Yes, that&apos;s absolutely possible.
+        <div className="w-full pl-2 md:w-1/2">
+          <p className="mb-4 text-lg font-semibold md:mb-6 md:text-xl lg:mb-8 lg:text-2xl">
+            Let&apos;s find out in three simple steps:
           </p>
 
-          <p className="mb-4 text-lg md:mb-6 md:text-xl lg:mb-8 lg:text-2xl">
-            Start by answering one question, and we&apos;ll tell you if we got
-            something valuable about your product idea and target audience.
-          </p>
+          <ol className="mb-4 list-decimal pl-4 text-lg md:pl-6 md:text-xl lg:text-2xl">
+            <li className="mb-2 pl-1 md:pl-2">
+              Share your idea and target market
+            </li>
+            <li className="mb-2 pl-1 md:pl-2">Receive expert feedback fast</li>
+            <li className="mb-2 pl-1 md:pl-2">
+              Get a detailed validation report
+            </li>
+          </ol>
+
+          <div className="mb-10 pt-6 text-center md:mb-6">
+            <Link
+              href="/start"
+              className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Start Now
+            </Link>
+          </div>
         </div>
 
         <div className="mt-2 flex w-full justify-center md:mt-0 md:w-1/2">
@@ -74,19 +87,6 @@ export default async function LandingPage() {
         </p>
       </div>
 
-      <div className="mb-12 pt-6 text-center md:mb-14">
-        <Link
-          href="/start"
-          className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          Take the First Step
-        </Link>
-      </div>
-
-      <HorizontalLine />
-
-      <HowDoesItWork />
-
       <WhatIsInside />
 
       <Screenshots />
@@ -102,30 +102,6 @@ export default async function LandingPage() {
     </div>
   )
 }
-
-const HowDoesItWork = () => (
-  <Section heading="How Does It Work?">
-    <SectionGrid>
-      <SectionCell
-        number="1"
-        heading="Enter Your Idea Details"
-        description="Describe your product concept or startup idea in detail. The more detailed you are, the better the feedback you'll receive."
-      />
-
-      <SectionCell
-        number="2"
-        heading="Verify the Concept"
-        description="Review our first feedback to ensure we understand your idea correctly. This step verifies we capture your vision accurately."
-      />
-
-      <SectionCell
-        number="3"
-        heading="Receive Your Report"
-        description="Get a comprehensive report based on your input, with insights and feedback built to help you move forward fast."
-      />
-    </SectionGrid>
-  </Section>
-)
 
 const WhatIsInside = () => (
   <Section heading="What Is Inside Your Report?">
@@ -151,13 +127,13 @@ const WhatIsInside = () => (
       />
 
       <SectionCell
-        heading="Plan Your Launch"
+        heading="Soon: Plan Your Launch"
         description="A simple roadmap, testing plan, cost estimates, and clear next steps. Everything you need to go live with confidence."
       />
 
       <SectionCell
-        heading="Tools and Resources"
-        description="Essential tools and resources to make building and launching your idea easier, all in one place."
+        heading="Soon: Tools & Resources"
+        description="Essential tools and resources to make building and launching your idea easier, all in one place. Hidden gems are included!"
       />
     </SectionGrid>
   </Section>
