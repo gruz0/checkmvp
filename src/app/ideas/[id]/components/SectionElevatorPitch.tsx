@@ -7,6 +7,7 @@ import Section from '@/components/Section'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
+import SocialShareButton from '@/components/SocialShareButton'
 
 interface ElevatorPitch {
   hook: string
@@ -107,7 +108,7 @@ const Pitch: React.FC<PitchProps> = ({ idx, pitch, onReport }) => {
         <Paragraph>{pitch.cta}</Paragraph>
       </div>
 
-      <div className="py-2 text-right">
+      <div className="flex justify-end space-x-2 py-2">
         {isSpeaking ? (
           <button
             onClick={handleStop}
@@ -129,6 +130,16 @@ const Pitch: React.FC<PitchProps> = ({ idx, pitch, onReport }) => {
             🎙️ Pitch It
           </button>
         )}
+
+        <SocialShareButton
+          platform="twitter"
+          content={`${pitch.problem}\n\n${pitch.solution} ${pitch.valueProposition}\n\n${pitch.cta}`}
+        />
+
+        <SocialShareButton
+          platform="linkedin"
+          content={`${pitch.problem}\n\n${pitch.solution} ${pitch.valueProposition}\n\n${pitch.cta}`}
+        />
       </div>
     </Section>
   )
