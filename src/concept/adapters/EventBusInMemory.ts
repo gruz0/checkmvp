@@ -25,7 +25,9 @@ export class EventBusInMemory implements EventBus {
     listenersForEvent.forEach((handler) => {
       handler.handle(event)
 
-      console.debug(`EventHandler called for event type: ${event.type}`)
+      console.debug(
+        `EventHandler ${handler.getName()} called for event type: ${event.type}`
+      )
     })
   }
 }

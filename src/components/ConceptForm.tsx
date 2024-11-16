@@ -6,6 +6,7 @@ import Paragraph from '@/components/Paragraph'
 
 interface Props {
   problem: string
+  hideExamples?: boolean
 }
 
 const examples = [
@@ -83,7 +84,7 @@ Target Audience:
   },
 ]
 
-const DefineConceptForm = ({ problem }: Props) => {
+const DefineConceptForm = ({ problem, hideExamples }: Props) => {
   const [status, setStatus] = useState<string>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [showHint, setShowHint] = useState<boolean>(false)
@@ -149,27 +150,28 @@ const DefineConceptForm = ({ problem }: Props) => {
           Tell Us About The Specific Issue Your Product Addresses
         </label>
 
-        {showHint ? (
-          <div className="mb-4 rounded-lg border bg-white p-4 shadow-sm md:p-6">
-            <p className="text-lg text-gray-700">
-              The clearer the problem, the more valuable our feedback will be.
-              Focus on the challenges or frustrations that people face, and how
-              your product intends to alleviate them. Check out our examples
-              below to get inspired!
-            </p>
-          </div>
-        ) : (
-          <button
-            onClick={(e) => {
-              e.preventDefault()
-              setShowHint(!showHint)
-            }}
-            aria-label="Show Help"
-            className="mb-2 rounded bg-gray-100 p-2 hover:bg-green-100"
-          >
-            Need Help Getting Started?
-          </button>
-        )}
+        {!hideExamples &&
+          (showHint ? (
+            <div className="mb-4 rounded-lg border bg-white p-4 shadow-sm md:p-6">
+              <p className="text-lg text-gray-700">
+                The clearer the problem, the more valuable our feedback will be.
+                Focus on the challenges or frustrations that people face, and
+                how your product intends to alleviate them. Check out our
+                examples below to get inspired!
+              </p>
+            </div>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                setShowHint(!showHint)
+              }}
+              aria-label="Show Help"
+              className="mb-2 rounded bg-gray-100 p-2 hover:bg-green-100"
+            >
+              Need Help Getting Started?
+            </button>
+          ))}
 
         <textarea
           id="problem"
@@ -209,37 +211,41 @@ Target Audience:
         </button>
       </div>
 
-      <hr className="my-6 md:my-8" />
+      {!hideExamples && (
+        <>
+          <hr className="my-6 md:my-8" />
 
-      <div>
-        <h2 className="mb-2 text-xl font-bold">
-          A Few Examples For Inspiration
-        </h2>
+          <div>
+            <h2 className="mb-2 text-xl font-bold">
+              A Few Examples For Inspiration
+            </h2>
 
-        <Paragraph>
-          If you&apos;re unsure where to start, or if you want to refine your
-          idea further, feel free to use the examples below for guidance. These
-          pre-defined ideas are here to help you define a strong, clear problem
-          statement. Just click a button to fill the form with an example, and
-          tweak it to reflect your unique vision.
-        </Paragraph>
+            <Paragraph>
+              If you&apos;re unsure where to start, or if you want to refine
+              your idea further, feel free to use the examples below for
+              guidance. These pre-defined ideas are here to help you define a
+              strong, clear problem statement. Just click a button to fill the
+              form with an example, and tweak it to reflect your unique vision.
+            </Paragraph>
 
-        <div className="flex flex-wrap gap-2">
-          {examples.map((example, index) => (
-            <button
-              type="button"
-              key={index}
-              className="inline-flex cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white px-4 py-2 shadow transition-all duration-200 hover:bg-gray-200"
-              onClick={(e) => {
-                e.preventDefault()
-                setFormData({ problem: example.description })
-              }}
-            >
-              {example.title}
-            </button>
-          ))}
-        </div>
-      </div>
+            <div className="flex flex-wrap gap-2">
+              {examples.map((example, index) => (
+                <button
+                  type="button"
+                  key={index}
+                  className="inline-flex cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white px-4 py-2 shadow transition-all duration-200 hover:bg-gray-200"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setFormData({ problem: example.description })
+                  }}
+                >
+                  {example.title}
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </form>
   )
 }

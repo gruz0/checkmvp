@@ -53,7 +53,7 @@ const SectionValueProposition: React.FC<SectionValuePropositionProps> = ({
               </Section>
 
               <Section
-                header="Problem Solving:"
+                header="How to Pitch It:"
                 onReport={() => onReport('value_proposition.problem_solving')}
               >
                 <Paragraph>{data.problemSolving}</Paragraph>

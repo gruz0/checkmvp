@@ -94,6 +94,11 @@ const SectionCompetitors: React.FC<SectionCompetitorsProps> = ({
                     <Paragraph>{competitor.userAcquisition}</Paragraph>
 
                     <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                      Core Features:
+                    </h3>
+                    <SimpleUnorderedList items={competitor.coreFeatures} />
+
+                    <h3 className="mb-2 text-lg font-semibold md:text-xl">
                       Strengths:
                     </h3>
                     <SimpleUnorderedList items={competitor.strengths} />

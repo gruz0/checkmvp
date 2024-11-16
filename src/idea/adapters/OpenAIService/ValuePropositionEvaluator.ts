@@ -1,4 +1,6 @@
+import * as Sentry from '@sentry/nextjs'
 import OpenAI from 'openai'
+import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
 import { getPromptContent } from '@/lib/prompts'
 
@@ -23,6 +25,12 @@ const ResponseSchema = z.object({
 })
 
 export class ValuePropositionEvaluator {
+  static className = 'ValuePropositionEvaluator'
+  static prompt = '00-value-proposition-evaluation'
+  static model = 'gpt-4o-mini'
+  static nucleusSampling = 0.9
+  static maxCompletionTokens = 2000
+
   private readonly openai: OpenAI
 
   constructor(apiKey: string) {
@@ -32,33 +40,41 @@ export class ValuePropositionEvaluator {
   }
 
   async evaluateValueProposition(
+    ideaId: string,
     problem: string,
     targetAudiences: TargetAudience[]
   ): Promise<Evaluation> {
-    const promptContent = getPromptContent('00-value-proposition-evaluation')
+    Sentry.setTag('component', 'AIService')
+    Sentry.setTag('ai_service_type', ValuePropositionEvaluator.className)
+    Sentry.setTag('idea_id', ideaId)
 
-    if (!promptContent) {
-      throw new Error('Prompt content not found')
-    }
+    try {
+      const promptContent = getPromptContent(ValuePropositionEvaluator.prompt)
 
-    const response = await this.openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: [
-            {
-              type: 'text',
-              text: promptContent.trim(),
-            },
-          ],
-        },
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: `Here is the problem my product aims to solve: """
+      if (!promptContent) {
+        throw new Error(
+          `Prompt content ${ValuePropositionEvaluator.prompt} not found`
+        )
+      }
+
+      const response = await this.openai.beta.chat.completions.parse({
+        model: ValuePropositionEvaluator.model,
+        messages: [
+          {
+            role: 'system',
+            content: [
+              {
+                type: 'text',
+                text: promptContent.trim(),
+              },
+            ],
+          },
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: `Here is the problem my product aims to solve: """
 ${problem.trim()}"""
 
 Here are my segments: """
@@ -74,29 +90,51 @@ ${targetAudiences
   })
   .join('\n\n')}
 """`,
-            },
-          ],
+              },
+            ],
+          },
+        ],
+        top_p: ValuePropositionEvaluator.nucleusSampling,
+        max_completion_tokens: ValuePropositionEvaluator.maxCompletionTokens,
+        response_format: zodResponseFormat(ResponseSchema, 'value_proposition'),
+        n: 1,
+      })
+
+      Sentry.addBreadcrumb({
+        message: `OpenAI ${ValuePropositionEvaluator.className} called`,
+        data: {
+          model: ValuePropositionEvaluator.model,
+          top_p: ValuePropositionEvaluator.nucleusSampling,
+          max_completion_tokens: ValuePropositionEvaluator.maxCompletionTokens,
+          usage: response.usage,
+          choices: response.choices.length,
         },
-      ],
-      // For most factual use cases such as data extraction, and truthful Q&A, the temperature of 0 is best.
-      // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api
-      temperature: 0.7,
-      max_tokens: 2000,
-      response_format: {
-        type: 'json_object',
-      },
-    })
+        level: 'info',
+      })
 
-    // TODO: Store response.usage for better analysis
+      const message = response.choices[0].message
 
-    const content = response.choices[0].message.content ?? ''
+      if (message.refusal) {
+        // TODO: Handle refusal
+        throw new Error('Message refusal: ' + message.refusal)
+      }
 
-    const analysis = ResponseSchema.parse(JSON.parse(content))
+      if (!message.parsed) {
+        // TODO: Add Sentry message context
+        throw new Error('Message was not parsed')
+      }
 
-    return {
-      mainBenefit: analysis.value_proposition.main_benefit,
-      problemSolving: analysis.value_proposition.problem_solving,
-      differentiation: analysis.value_proposition.differentiation,
+      const valueProposition = message.parsed.value_proposition
+
+      return {
+        mainBenefit: valueProposition.main_benefit,
+        problemSolving: valueProposition.problem_solving,
+        differentiation: valueProposition.differentiation,
+      }
+    } catch (e) {
+      Sentry.captureException(e)
+
+      throw e
     }
   }
 }

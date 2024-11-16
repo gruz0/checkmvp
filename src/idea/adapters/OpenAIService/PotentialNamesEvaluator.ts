@@ -1,4 +1,6 @@
+import * as Sentry from '@sentry/nextjs'
 import OpenAI from 'openai'
+import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
 import { getPromptContent } from '@/lib/prompts'
 
@@ -35,6 +37,12 @@ const ResponseSchema = z.object({
 })
 
 export class PotentialNamesEvaluator {
+  static className = 'PotentialNamesEvaluator'
+  static prompt = '00-product-names-analysis'
+  static model = 'gpt-4o-mini'
+  static nucleusSampling = 0.9
+  static maxCompletionTokens = 2000
+
   private readonly openai: OpenAI
 
   constructor(apiKey: string) {
@@ -44,34 +52,42 @@ export class PotentialNamesEvaluator {
   }
 
   async evaluatePotentialNames(
+    ideaId: string,
     problem: string,
     marketExistence: string,
     targetAudiences: TargetAudience[]
   ): Promise<Evaluation> {
-    const promptContent = getPromptContent('00-product-names-analysis')
+    Sentry.setTag('component', 'AIService')
+    Sentry.setTag('ai_service_type', PotentialNamesEvaluator.className)
+    Sentry.setTag('idea_id', ideaId)
 
-    if (!promptContent) {
-      throw new Error('Prompt content not found')
-    }
+    try {
+      const promptContent = getPromptContent(PotentialNamesEvaluator.prompt)
 
-    const response = await this.openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: [
-            {
-              type: 'text',
-              text: promptContent.trim(),
-            },
-          ],
-        },
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: `Here is the problem my product aims to solve: """
+      if (!promptContent) {
+        throw new Error(
+          `Prompt content ${PotentialNamesEvaluator.prompt} not found`
+        )
+      }
+
+      const response = await this.openai.beta.chat.completions.parse({
+        model: PotentialNamesEvaluator.model,
+        messages: [
+          {
+            role: 'system',
+            content: [
+              {
+                type: 'text',
+                text: promptContent.trim(),
+              },
+            ],
+          },
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: `Here is the problem my product aims to solve: """
 ${problem.trim()}"""
 
 Also I have a market existence research: """
@@ -90,33 +106,53 @@ ${targetAudiences
   })
   .join('\n\n')}
 """`,
-            },
-          ],
+              },
+            ],
+          },
+        ],
+        top_p: PotentialNamesEvaluator.nucleusSampling,
+        max_completion_tokens: PotentialNamesEvaluator.maxCompletionTokens,
+        response_format: zodResponseFormat(ResponseSchema, 'product_names'),
+        n: 1,
+      })
+
+      Sentry.addBreadcrumb({
+        message: `OpenAI ${PotentialNamesEvaluator.className} called`,
+        data: {
+          model: PotentialNamesEvaluator.model,
+          top_p: PotentialNamesEvaluator.nucleusSampling,
+          max_completion_tokens: PotentialNamesEvaluator.maxCompletionTokens,
+          usage: response.usage,
+          choices: response.choices.length,
         },
-      ],
-      // For most factual use cases such as data extraction, and truthful Q&A, the temperature of 0 is best.
-      // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api
-      temperature: 0.7,
-      max_tokens: 2000,
-      response_format: {
-        type: 'json_object',
-      },
-    })
+        level: 'info',
+      })
 
-    // TODO: Store response.usage for better analysis
+      const message = response.choices[0].message
 
-    const content = response.choices[0].message.content ?? ''
+      if (message.refusal) {
+        // TODO: Handle refusal
+        throw new Error('Message refusal: ' + message.refusal)
+      }
 
-    const analysis = ResponseSchema.parse(JSON.parse(content))
+      if (!message.parsed) {
+        // TODO: Add Sentry message context
+        throw new Error('Message was not parsed')
+      }
 
-    return analysis.product_names.map((product) => ({
-      productName: product.product_name,
-      domains: product.domains,
-      why: product.why,
-      tagline: product.tagline,
-      targetAudienceInsight: product.target_audience_insight,
-      similarNames: product.similar_names,
-      brandingPotential: product.branding_potential,
-    }))
+      return message.parsed.product_names.map((product) => ({
+        productName: product.product_name,
+        domains: product.domains,
+        why: product.why,
+        tagline: product.tagline,
+        targetAudienceInsight: product.target_audience_insight,
+        similarNames: product.similar_names,
+        brandingPotential: product.branding_potential,
+      }))
+    } catch (e) {
+      Sentry.captureException(e)
+
+      throw e
+    }
   }
 }

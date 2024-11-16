@@ -5,6 +5,8 @@ import { createIdeaLimiterKey, manager } from '@/lib/rateLimiter'
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
+  Sentry.setTag('component', 'HTTP API')
+
   try {
     const createIdeaLimiter = manager.getLimiter(createIdeaLimiterKey)
 

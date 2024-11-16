@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
@@ -112,126 +113,140 @@ export class GetIdeaHandler {
   constructor(private readonly readModel: ReadModel) {}
 
   async handle(query: Query): Promise<FullIdeaDTO> {
-    const idea = await this.readModel.getById(query.id)
+    Sentry.setTag('component', 'Query')
+    Sentry.setTag('query_type', 'GetIdea')
+    Sentry.setTag('idea_id', query.id)
 
-    if (!idea) {
-      throw new Error(`Idea ${query.id} does not exist`)
-    }
+    try {
+      const idea = await this.readModel.getById(query.id)
 
-    const targetAudiences = await this.readModel.getTargetAudiencesByIdeaId(
-      query.id
-    )
+      if (!idea) {
+        throw new Error(`Idea ${query.id} does not exist`)
+      }
 
-    const valueProposition = await this.readModel.getValuePropositionByIdeaId(
-      query.id
-    )
+      const targetAudiences = await this.readModel.getTargetAudiencesByIdeaId(
+        query.id
+      )
 
-    const marketAnalysis = await this.readModel.getMarketAnalysisByIdeaId(
-      query.id
-    )
+      const valueProposition = await this.readModel.getValuePropositionByIdeaId(
+        query.id
+      )
 
-    const competitorAnalysis =
-      await this.readModel.getCompetitorAnalysisByIdeaId(query.id)
+      const marketAnalysis = await this.readModel.getMarketAnalysisByIdeaId(
+        query.id
+      )
 
-    const productNames = await this.readModel.getProductNamesByIdeaId(query.id)
+      const competitorAnalysis =
+        await this.readModel.getCompetitorAnalysisByIdeaId(query.id)
 
-    const swotAnalysis = await this.readModel.getSWOTAnalysisByIdeaId(query.id)
+      const productNames = await this.readModel.getProductNamesByIdeaId(
+        query.id
+      )
 
-    const elevatorPitches = await this.readModel.getElevatorPitchesByIdeaId(
-      query.id
-    )
+      const swotAnalysis = await this.readModel.getSWOTAnalysisByIdeaId(
+        query.id
+      )
 
-    const googleTrendsKeywords =
-      await this.readModel.getGoogleTrendsKeywordsByIdeaId(query.id)
+      const elevatorPitches = await this.readModel.getElevatorPitchesByIdeaId(
+        query.id
+      )
 
-    const contentIdeas =
-      await this.readModel.getContentIdeasForMarketingByIdeaId(query.id)
+      const googleTrendsKeywords =
+        await this.readModel.getGoogleTrendsKeywordsByIdeaId(query.id)
 
-    return {
-      id: idea.getId().getValue(),
-      problem: idea.getProblem().getValue(),
-      marketExistence: idea.getMarketExistence(),
-      valueProposition: valueProposition
-        ? {
-            mainBenefit: valueProposition.getMainBenefit(),
-            problemSolving: valueProposition.getProblemSolving(),
-            differentiation: valueProposition.getDifferentiation(),
-          }
-        : null,
-      targetAudiences: targetAudiences.map((audience) => ({
-        id: audience.getId().getValue(),
-        segment: audience.getSegment(),
-        description: audience.getDescription(),
-        challenges: audience.getChallenges(),
-        why: audience.getWhy(),
-        painPoints: audience.getPainPoints(),
-        targetingStrategy: audience.getTargetingStrategy(),
-      })),
-      marketAnalysis: marketAnalysis
-        ? {
-            trends: marketAnalysis.getTrends(),
-            userBehaviors: marketAnalysis.getUserBehaviors(),
-            marketGaps: marketAnalysis.getMarketGaps(),
-            innovationOpportunities:
-              marketAnalysis.getInnovationOpportunities(),
-            strategicDirection: marketAnalysis.getStrategicDirection(),
-          }
-        : null,
-      competitorAnalysis: competitorAnalysis
-        ? {
-            competitors: competitorAnalysis.getCompetitors(),
-            comparison: competitorAnalysis.getComparison(),
-            differentiationSuggestions:
-              competitorAnalysis.getDifferentiationSuggestions(),
-          }
-        : null,
-      productNames: productNames
-        ? productNames.map((product) => ({
-            productName: product.getProductName(),
-            domains: product.getDomains(),
-            why: product.getWhy(),
-            tagline: product.getTagline(),
-            targetAudienceInsight: product.getTargetAudienceInsight(),
-            similarNames: product.getSimilarNames(),
-            brandingPotential: product.getBrandingPotential(),
-          }))
-        : null,
-      swotAnalysis: swotAnalysis
-        ? {
-            strengths: swotAnalysis.getStrengths(),
-            weaknesses: swotAnalysis.getWeaknesses(),
-            opportunities: swotAnalysis.getOpportunities(),
-            threats: swotAnalysis.getThreats(),
-          }
-        : null,
-      elevatorPitches: elevatorPitches
-        ? elevatorPitches.map((pitch) => ({
-            hook: pitch.getHook(),
-            problem: pitch.getProblem(),
-            solution: pitch.getSolution(),
-            valueProposition: pitch.getValueProposition(),
-            cta: pitch.getCTA(),
-          }))
-        : null,
-      googleTrendsKeywords: googleTrendsKeywords
-        ? googleTrendsKeywords.map((keyword) => keyword.getKeyword())
-        : null,
-      contentIdeasForMarketing: contentIdeas
-        ? contentIdeas.getContentIdeas().reduce(
-            (acc, contentIdea) => {
-              const section = contentIdea.getSection().getName()
+      const contentIdeas =
+        await this.readModel.getContentIdeasForMarketingByIdeaId(query.id)
 
-              acc[section] = {
-                platforms: contentIdea.getPlatforms(),
-                ideas: contentIdea.getIdeas(),
-                benefits: contentIdea.getBenefits(),
-              }
+      return {
+        id: idea.getId().getValue(),
+        problem: idea.getProblem().getValue(),
+        marketExistence: idea.getMarketExistence(),
+        valueProposition: valueProposition
+          ? {
+              mainBenefit: valueProposition.getMainBenefit(),
+              problemSolving: valueProposition.getProblemSolving(),
+              differentiation: valueProposition.getDifferentiation(),
+            }
+          : null,
+        targetAudiences: targetAudiences.map((audience) => ({
+          id: audience.getId().getValue(),
+          segment: audience.getSegment(),
+          description: audience.getDescription(),
+          challenges: audience.getChallenges(),
+          why: audience.getWhy(),
+          painPoints: audience.getPainPoints(),
+          targetingStrategy: audience.getTargetingStrategy(),
+        })),
+        marketAnalysis: marketAnalysis
+          ? {
+              trends: marketAnalysis.getTrends(),
+              userBehaviors: marketAnalysis.getUserBehaviors(),
+              marketGaps: marketAnalysis.getMarketGaps(),
+              innovationOpportunities:
+                marketAnalysis.getInnovationOpportunities(),
+              strategicDirection: marketAnalysis.getStrategicDirection(),
+            }
+          : null,
+        competitorAnalysis: competitorAnalysis
+          ? {
+              competitors: competitorAnalysis.getCompetitors(),
+              comparison: competitorAnalysis.getComparison(),
+              differentiationSuggestions:
+                competitorAnalysis.getDifferentiationSuggestions(),
+            }
+          : null,
+        productNames: productNames
+          ? productNames.map((product) => ({
+              productName: product.getProductName(),
+              domains: product.getDomains(),
+              why: product.getWhy(),
+              tagline: product.getTagline(),
+              targetAudienceInsight: product.getTargetAudienceInsight(),
+              similarNames: product.getSimilarNames(),
+              brandingPotential: product.getBrandingPotential(),
+            }))
+          : null,
+        swotAnalysis: swotAnalysis
+          ? {
+              strengths: swotAnalysis.getStrengths(),
+              weaknesses: swotAnalysis.getWeaknesses(),
+              opportunities: swotAnalysis.getOpportunities(),
+              threats: swotAnalysis.getThreats(),
+            }
+          : null,
+        elevatorPitches: elevatorPitches
+          ? elevatorPitches.map((pitch) => ({
+              hook: pitch.getHook(),
+              problem: pitch.getProblem(),
+              solution: pitch.getSolution(),
+              valueProposition: pitch.getValueProposition(),
+              cta: pitch.getCTA(),
+            }))
+          : null,
+        googleTrendsKeywords: googleTrendsKeywords
+          ? googleTrendsKeywords.map((keyword) => keyword.getKeyword())
+          : null,
+        contentIdeasForMarketing: contentIdeas
+          ? contentIdeas.getContentIdeas().reduce(
+              (acc, contentIdea) => {
+                const section = contentIdea.getSection().getName()
 
-              return acc
-            },
-            {} as Record<string, ContentIdeaDTO>
-          )
-        : null,
+                acc[section] = {
+                  platforms: contentIdea.getPlatforms(),
+                  ideas: contentIdea.getIdeas(),
+                  benefits: contentIdea.getBenefits(),
+                }
+
+                return acc
+              },
+              {} as Record<string, ContentIdeaDTO>
+            )
+          : null,
+      }
+    } catch (e) {
+      Sentry.captureException(e)
+
+      throw e
     }
   }
 }

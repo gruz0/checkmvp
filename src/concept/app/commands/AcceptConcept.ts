@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { Concept } from '@/concept/domain/Aggregate'
 import { Repository } from '@/concept/domain/Repository'
 import { ConceptAccepted } from '@/concept/domain/events/ConceptAccepted'
@@ -25,30 +26,50 @@ export class AcceptConceptHandler {
   ) {}
 
   async handle(command: Command): Promise<void> {
-    const concept = await this.repository.getById(command.id)
+    Sentry.setTag('component', 'Command')
+    Sentry.setTag('command_type', 'AcceptConcept')
+    Sentry.setTag('concept_id', command.id)
+    Sentry.setTag('idea_id', command.newIdeaId)
 
-    if (!concept) {
-      throw new Error(`Concept with ID ${command.id} does not exist`)
-    }
+    try {
+      const concept = await this.repository.getById(command.id)
 
-    const reservation = await this.ideaService.reserve(
-      command.newIdeaId,
-      command.id
-    )
-
-    if (!reservation.success) {
-      throw new Error(`Unable to reserve idea ID: ${reservation.message}`)
-    }
-
-    await this.repository.updateConcept(
-      command.id,
-      (concept: Concept): Concept => {
-        concept.accept(command.newIdeaId)
-
-        return concept
+      if (!concept) {
+        throw new Error(`Concept with ID ${command.id} does not exist`)
       }
-    )
 
-    this.eventBus.emit(new ConceptAccepted(command.id))
+      const reservation = await this.ideaService.reserve(
+        command.newIdeaId,
+        command.id
+      )
+
+      if (!reservation.success) {
+        throw new Error(`Unable to reserve idea ID: ${reservation.message}`)
+      }
+
+      await this.repository.updateConcept(
+        command.id,
+        (concept: Concept): Concept => {
+          concept.accept(command.newIdeaId)
+
+          return concept
+        }
+      )
+
+      this.eventBus.emit(new ConceptAccepted(command.id))
+
+      Sentry.setContext('concept', {
+        concept_id: command.id,
+        status: 'accepted',
+      })
+    } catch (e) {
+      Sentry.captureException(e, {
+        contexts: {
+          concept: { concept_id: command.id, status: 'acception_error' },
+        },
+      })
+
+      throw e
+    }
   }
 }

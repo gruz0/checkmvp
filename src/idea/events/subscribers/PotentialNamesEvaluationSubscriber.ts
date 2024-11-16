@@ -1,5 +1,5 @@
+import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
-
 import { ProductName } from '@/idea/domain/ProductName'
 import { Repository } from '@/idea/domain/Repository'
 import { IdeaCreated } from '@/idea/domain/events/IdeaCreated'
@@ -25,6 +25,7 @@ interface TargetAudience {
 
 interface AIService {
   evaluatePotentialNames(
+    ideaId: string,
     problem: string,
     marketExistence: string,
     targetAudiences: TargetAudience[]
@@ -32,50 +33,79 @@ interface AIService {
 }
 
 export class PotentialNamesEvaluationSubscriber implements EventHandler {
+  static className = 'PotentialNamesEvaluationSubscriber'
+
   constructor(
     private readonly repository: Repository,
     private readonly aiService: AIService
   ) {}
 
+  getName(): string {
+    return PotentialNamesEvaluationSubscriber.className
+  }
+
   async handle(event: IdeaCreated): Promise<void> {
-    const idea = await this.repository.getById(event.payload.id)
+    Sentry.setTag('component', 'BackgroundJob')
+    Sentry.setTag('job_type', this.getName())
+    Sentry.setTag('event_type', event.type)
+    Sentry.setTag('idea_id', event.payload.id)
 
-    if (!idea) {
-      throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
-    }
+    Sentry.addBreadcrumb({ message: `${this.getName()} started` })
 
-    const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
-      idea.getId().getValue()
-    )
+    try {
+      const idea = await this.repository.getById(event.payload.id)
 
-    const audiences = targetAudiences.map((targetAudience) => ({
-      segment: targetAudience.getSegment(),
-      description: targetAudience.getDescription(),
-      challenges: targetAudience.getChallenges(),
-    }))
+      if (!idea) {
+        throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
+      }
 
-    const evaluation = await this.aiService.evaluatePotentialNames(
-      idea.getProblem().getValue(),
-      idea.getMarketExistence(),
-      audiences
-    )
+      const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
+        idea.getId().getValue()
+      )
 
-    await this.repository.updateIdea(event.payload.id, (idea): Idea => {
-      evaluation.forEach((product) => {
-        idea.addProductName(
-          ProductName.New(
-            product.productName,
-            product.domains,
-            product.why,
-            product.tagline,
-            product.targetAudienceInsight,
-            product.similarNames,
-            product.brandingPotential
+      const audiences = targetAudiences.map((targetAudience) => ({
+        segment: targetAudience.getSegment(),
+        description: targetAudience.getDescription(),
+        challenges: targetAudience.getChallenges(),
+      }))
+
+      const evaluation = await this.aiService.evaluatePotentialNames(
+        idea.getId().getValue(),
+        idea.getProblem().getValue(),
+        idea.getMarketExistence(),
+        audiences
+      )
+
+      await this.repository.updateIdea(event.payload.id, (idea): Idea => {
+        evaluation.forEach((product) => {
+          idea.addProductName(
+            ProductName.New(
+              product.productName,
+              product.domains,
+              product.why,
+              product.tagline,
+              product.targetAudienceInsight,
+              product.similarNames,
+              product.brandingPotential
+            )
           )
-        )
+        })
+
+        return idea
       })
 
-      return idea
-    })
+      // TODO: Emit Event
+    } catch (e) {
+      Sentry.captureException(e, {
+        contexts: {
+          idea: {
+            idea_id: event.payload.id,
+            status: 'potential_names_evaluation_error',
+          },
+        },
+      })
+
+      throw e
+    }
   }
 }

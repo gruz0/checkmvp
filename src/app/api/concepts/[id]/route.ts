@@ -4,13 +4,21 @@ import { NextResponse } from 'next/server'
 import { App } from '@/concept/service/Service'
 
 export async function POST(_: Request, { params }: { params: { id: string } }) {
-  try {
-    const { id } = params
+  Sentry.setTag('component', 'HTTP API')
+  Sentry.setTag('concept_id', params.id)
 
+  try {
     const newIdeaId = randomUUID()
 
+    Sentry.setTag('idea_id', newIdeaId)
+
+    Sentry.setContext('concept', {
+      concept_id: params.id,
+      status: 'accepting',
+    })
+
     await App.Commands.AcceptConcept.handle({
-      id: id,
+      id: params.id,
       newIdeaId: newIdeaId,
     })
 

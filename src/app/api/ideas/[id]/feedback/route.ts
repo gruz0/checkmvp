@@ -10,10 +10,19 @@ export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
+  Sentry.setTag('component', 'HTTP API')
+  Sentry.setTag('idea_id', params.id)
+
   try {
     const formData = await request.json()
 
     const { section, feedback, contact } = formData
+
+    // NOTE: We don't expose contact to Sentry!
+    Sentry.setContext('payload', {
+      section: section,
+      feedback: feedback,
+    })
 
     if (!section) {
       return NextResponse.json(

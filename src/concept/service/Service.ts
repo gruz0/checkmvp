@@ -17,7 +17,8 @@ const registerApp = (): Application => {
 
   const conceptEvaluationSubscriber = new ConceptEvaluationSubscriber(
     conceptRepository,
-    new ConceptEvaluator(env.OPENAI_API_KEY)
+    new ConceptEvaluator(env.OPENAI_API_KEY),
+    eventBus
   )
 
   const conceptTransitionSubscriber = new ConceptTransitionSubscriber(

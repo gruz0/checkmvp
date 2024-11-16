@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
 import { ContentIdea, Strategy } from '@/idea/domain/ContentIdea'
 import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
@@ -35,11 +36,11 @@ interface TargetAudience {
 interface ValueProposition {
   mainBenefit: string
   problemSolving: string
-  differentiation: string
 }
 
 interface AIService {
   evaluateContentIdeas(
+    ideaId: string,
     problem: string,
     targetAudiences: TargetAudience[],
     valueProposition: ValueProposition
@@ -47,69 +48,100 @@ interface AIService {
 }
 
 export class ContentIdeasEvaluationSubscriber implements EventHandler {
+  static className = 'ContentIdeasEvaluationSubscriber'
+
   constructor(
     private readonly repository: Repository,
     private readonly aiService: AIService
   ) {}
 
+  getName(): string {
+    return ContentIdeasEvaluationSubscriber.className
+  }
+
   async handle(event: ValuePropositionEvaluated): Promise<void> {
-    const idea = await this.repository.getById(event.payload.id)
+    Sentry.setTag('component', 'BackgroundJob')
+    Sentry.setTag('job_type', this.getName())
+    Sentry.setTag('event_type', event.type)
+    Sentry.setTag('idea_id', event.payload.id)
 
-    if (!idea) {
-      throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
-    }
+    Sentry.addBreadcrumb({ message: `${this.getName()} started` })
 
-    const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
-      idea.getId().getValue()
-    )
+    try {
+      const idea = await this.repository.getById(event.payload.id)
 
-    if (targetAudiences.length === 0) {
-      throw new Error(`Idea ${event.payload.id} does not have target audiences`)
-    }
-
-    const audiences = targetAudiences.map((targetAudience) => ({
-      segment: targetAudience.getSegment(),
-      description: targetAudience.getDescription(),
-      challenges: targetAudience.getChallenges(),
-    }))
-
-    const valueProposition = await this.repository.getValuePropositionByIdeaId(
-      idea.getId().getValue()
-    )
-
-    if (!valueProposition) {
-      throw new Error(
-        `Idea ${event.payload.id} does not have value proposition`
-      )
-    }
-
-    const evaluation = await this.aiService.evaluateContentIdeas(
-      idea.getProblem().getValue(),
-      audiences,
-      {
-        mainBenefit: valueProposition.getMainBenefit(),
-        problemSolving: valueProposition.getProblemSolving(),
-        differentiation: valueProposition.getDifferentiation(),
+      if (!idea) {
+        throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
-    )
 
-    const contentIdeasForMarketing = ContentIdeasForMarketing.New()
-
-    evaluation.forEach((strategy) => {
-      contentIdeasForMarketing.addContentIdea(
-        ContentIdea.New(
-          Strategy.New(strategy.section),
-          strategy.platforms,
-          strategy.ideas,
-          strategy.benefits
-        )
+      const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
+        idea.getId().getValue()
       )
-    })
 
-    await this.repository.updateIdea(event.payload.id, (idea): Idea => {
-      idea.addContentIdeasForMarketing(contentIdeasForMarketing)
+      if (targetAudiences.length === 0) {
+        throw new Error(
+          `Idea ${event.payload.id} does not have target audiences`
+        )
+      }
 
-      return idea
-    })
+      const audiences = targetAudiences.map((targetAudience) => ({
+        segment: targetAudience.getSegment(),
+        description: targetAudience.getDescription(),
+        challenges: targetAudience.getChallenges(),
+      }))
+
+      const valueProposition =
+        await this.repository.getValuePropositionByIdeaId(
+          idea.getId().getValue()
+        )
+
+      if (!valueProposition) {
+        throw new Error(
+          `Idea ${event.payload.id} does not have value proposition`
+        )
+      }
+
+      const evaluation = await this.aiService.evaluateContentIdeas(
+        idea.getId().getValue(),
+        idea.getProblem().getValue(),
+        audiences,
+        {
+          mainBenefit: valueProposition.getMainBenefit(),
+          problemSolving: valueProposition.getProblemSolving(),
+        }
+      )
+
+      const contentIdeasForMarketing = ContentIdeasForMarketing.New()
+
+      evaluation.forEach((strategy) => {
+        contentIdeasForMarketing.addContentIdea(
+          ContentIdea.New(
+            Strategy.New(strategy.section),
+            strategy.platforms,
+            strategy.ideas,
+            strategy.benefits
+          )
+        )
+      })
+
+      await this.repository.updateIdea(event.payload.id, (idea): Idea => {
+        idea.addContentIdeasForMarketing(contentIdeasForMarketing)
+
+        return idea
+      })
+
+      // TODO: Emit Event
+    } catch (e) {
+      Sentry.captureException(e, {
+        contexts: {
+          idea: {
+            idea_id: event.payload.id,
+            status: 'content_ideas_evaluation_error',
+          },
+        },
+      })
+
+      throw e
+    }
   }
 }
