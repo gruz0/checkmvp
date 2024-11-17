@@ -27,7 +27,13 @@ const ResponseSchema = z.object({
     suggestions: z.array(z.string()),
     recommendations: z.array(z.string()),
     pain_points: z.array(z.string()),
-    market_existence: z.string(),
+    market_existence: z.object({
+      market_size_and_growth_trends: z.string(),
+      existing_solutions_and_competitors: z.string(),
+      market_gaps_and_opportunities: z.string(),
+      target_users: z.string(),
+      challenges_and_barriers_to_entry: z.string(),
+    }),
     target_audience: z.array(
       z.object({
         segment: z.string(),
@@ -125,12 +131,59 @@ export class ConceptEvaluator {
 
       const problemEvaluation = message.parsed.problem_evaluation
 
+      if (problemEvaluation.status === 'not-well-defined') {
+        return {
+          status: problemEvaluation.status,
+          suggestions: problemEvaluation.suggestions,
+          recommendations: [],
+          painPoints: [],
+          marketExistence: '',
+          targetAudience: [],
+        }
+      }
+
+      const marketExistence: string[] = []
+
+      const marketExistenceData = problemEvaluation.market_existence
+
+      if (marketExistenceData) {
+        if (marketExistenceData.market_size_and_growth_trends) {
+          marketExistence.push(
+            `📈 Market Size and Growth Trends:\n\n${marketExistenceData.market_size_and_growth_trends}`
+          )
+        }
+
+        if (marketExistenceData.existing_solutions_and_competitors) {
+          marketExistence.push(
+            `🏆 Existing Solutions and Competitors:\n\n${marketExistenceData.existing_solutions_and_competitors}`
+          )
+        }
+
+        if (marketExistenceData.market_gaps_and_opportunities) {
+          marketExistence.push(
+            `💡 Market Gaps and Opportunities:\n\n${marketExistenceData.market_gaps_and_opportunities}`
+          )
+        }
+
+        if (marketExistenceData.target_users) {
+          marketExistence.push(
+            `🎯 Target Users:\n\n${marketExistenceData.target_users}`
+          )
+        }
+
+        if (marketExistenceData.challenges_and_barriers_to_entry) {
+          marketExistence.push(
+            `🧱 Challenges and Barriers to Entry:\n\n${marketExistenceData.challenges_and_barriers_to_entry}`
+          )
+        }
+      }
+
       return {
         status: problemEvaluation.status,
         suggestions: problemEvaluation.suggestions,
         recommendations: problemEvaluation.recommendations,
         painPoints: problemEvaluation.pain_points,
-        marketExistence: problemEvaluation.market_existence,
+        marketExistence: marketExistence.join('\n\n'),
         targetAudience: problemEvaluation.target_audience,
       }
     } catch (e) {

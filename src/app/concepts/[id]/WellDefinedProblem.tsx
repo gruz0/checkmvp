@@ -64,7 +64,14 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
   return (
     <div>
       <Section header="Here's What We've Found:">
-        <Paragraph>{evaluation.marketExistence}</Paragraph>
+        <Paragraph>
+          {evaluation.marketExistence.split('\n').map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </Paragraph>
       </Section>
 
       <Section header="Common Pain Points That Are Relevant to The Problem:">
@@ -74,7 +81,9 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
               key={index}
               className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:px-6 md:text-lg"
             >
-              {item}
+              <p className="first-letter:float-left first-letter:pr-3 first-letter:text-5xl first-letter:font-bold">
+                {item}
+              </p>
             </div>
           ))}
         </div>

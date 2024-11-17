@@ -76,14 +76,6 @@ export class Evaluation {
   }
 
   private validateWellDefined(): void {
-    if (this.suggestions.length !== 0) {
-      throw new Error(`Suggestions for ${this.status} must be empty`)
-    }
-
-    if (this.recommendations.length !== 0) {
-      throw new Error(`Recommendations for ${this.status} must be empty`)
-    }
-
     if (this.painPoints.length === 0) {
       throw new Error(`Pain points for ${this.status} must not be empty`)
     }
@@ -106,12 +98,12 @@ export class Evaluation {
       throw new Error(`Recommendations for ${this.status} must not be empty`)
     }
 
-    if (this.painPoints.length !== 0) {
-      throw new Error(`Pain points for ${this.status} must be empty`)
+    if (this.painPoints.length === 0) {
+      throw new Error(`Pain points for ${this.status} must not be empty`)
     }
 
-    if (this.targetAudience.length !== 0) {
-      throw new Error(`Target audience for ${this.status} must be empty`)
+    if (this.targetAudience.length === 0) {
+      throw new Error(`Target audience for ${this.status} must not be empty`)
     }
   }
 
