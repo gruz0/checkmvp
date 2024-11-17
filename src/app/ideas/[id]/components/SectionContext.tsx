@@ -54,7 +54,14 @@ const SectionContext: React.FC<SectionContextProps> = ({ onReport, data }) => {
             header="Market Existence:"
             onReport={() => onReport('market_existence')}
           >
-            <Paragraph>{data.marketExistence}</Paragraph>
+            <Paragraph>
+              {data.marketExistence.split('\n').map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
+            </Paragraph>
           </Section>
         </div>
       )}
