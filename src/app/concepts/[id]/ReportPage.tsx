@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
+import RandomMessage from '@/components/RandomMessage'
 import ProblemEvaluationPage from './ProblemEvaluationPage'
 import type { ProblemEvaluationProps } from './ProblemEvaluationPage'
 
@@ -35,7 +36,7 @@ const ReportPage = ({ concept }: Props) => {
   }, [concept.evaluation, router])
 
   return (
-    <div className="p-4 md:p-6 lg:p-8">
+    <div className="p-4 md:p-6">
       <h1 className="mb-6 text-3xl font-bold md:text-4xl">
         Concept Evaluation:{' '}
         {concept.evaluation ? (
@@ -70,7 +71,11 @@ const ReportPage = ({ concept }: Props) => {
           />
         </>
       ) : (
-        <FetchingDataMessage />
+        <>
+          <FetchingDataMessage />
+
+          <RandomMessage />
+        </>
       )}
     </div>
   )

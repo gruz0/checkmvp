@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+import RandomMessage from '@/components/RandomMessage'
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
 import IdeaReport01 from '../../screenshots/idea-report-01.png'
 import IdeaReport02 from '../../screenshots/idea-report-02.png'
@@ -80,12 +81,14 @@ export default async function LandingPage() {
         </div>
       </div>
 
-      <div className="mb-4 rounded-lg border border-green-300 bg-green-50 p-4 text-lg text-green-800 md:mb-4 lg:mb-6">
+      <div className="mb-4 rounded-lg border border-green-300 bg-green-50 p-4 text-lg text-green-800 md:mb-4 lg:mb-8">
         <p>
           We&apos;ve analyzed <strong>{totalConceptsCount} ideas</strong> so
           far! Let&apos;s see how we can help you today 🤗
         </p>
       </div>
+
+      <RandomMessage />
 
       <WhatIsInside />
 
