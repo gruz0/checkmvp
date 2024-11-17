@@ -27,7 +27,6 @@ interface FullIdeaDTO {
     id: string
     segment: string
     description: string
-    challenges: string[]
     why: string | null
     painPoints: string[] | null
     targetingStrategy: string | null
@@ -172,7 +171,6 @@ export class GetIdeaHandler {
           id: audience.getId().getValue(),
           segment: audience.getSegment(),
           description: audience.getDescription(),
-          challenges: audience.getChallenges(),
           why: audience.getWhy(),
           painPoints: audience.getPainPoints(),
           targetingStrategy: audience.getTargetingStrategy(),

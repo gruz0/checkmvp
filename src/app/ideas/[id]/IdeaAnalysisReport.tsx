@@ -42,7 +42,6 @@ interface Props {
       id: string
       segment: string
       description: string
-      challenges: string[]
       why: string | null
       painPoints: string[] | null
       targetingStrategy: string | null

@@ -15,7 +15,6 @@ interface SectionTargetAudiencesProps {
     id: string
     segment: string
     description: string
-    challenges: string[]
     why: string | null
     painPoints: string[] | null
     targetingStrategy: string | null
@@ -60,11 +59,6 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
                   Description:
                 </h3>
                 <Paragraph>{audience.description}</Paragraph>
-
-                <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Challenges:
-                </h3>
-                <SimpleUnorderedList items={audience.challenges} />
 
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">Why:</h3>
                 {audience.why ? (
