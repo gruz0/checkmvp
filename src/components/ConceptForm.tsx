@@ -127,7 +127,6 @@ const DefineConceptForm = ({ problem, hideExamples }: Props) => {
       if (res.status === 201) {
         const data = await res.json()
         router.push(`/concepts/${data.id}`)
-        setStatus('success')
       } else {
         const errorData = await res.json()
         setErrorMessage(errorData.error || 'Something went wrong.')
