@@ -165,59 +165,57 @@ export const IdeaPDFReport = ({ data }: Report) => (
         </Text>
 
         <View style={styles.view}>
-          <Text style={styles.subsection}>
-            Ready to Find Your First Customers? Try This:
-          </Text>
+          <Text style={styles.subsection}>Table of Contents:</Text>
 
-          <Text style={styles.description}>
-            {data.valueProposition.mainBenefit}{' '}
-            {data.valueProposition.problemSolving}
-          </Text>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.text}>
+                <Link href="#market_analysis">01. Market Analysis</Link>
+                {'\n'}
+                <Link href="#competitors">02. Competitors</Link>
+                {'\n'}
+                <Link href="#value_proposition">03. Value Proposition</Link>
+                {'\n'}
+                <Link href="#target_audiences">04. Target Audiences</Link>
+                {'\n'}
+                <Link href="#swot_analysis">05. SWOT Analysis</Link>
+              </Text>
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.text}>
+                <Link href="#elevator_pitches">06. Elevator Pitches</Link>
+                {'\n'}
+                <Link href="#product_names">07. Product Names</Link>
+                {'\n'}
+                <Link href="#google_trends_keywords">
+                  08. Google Trends Keywords
+                </Link>
+                {'\n'}
+                <Link href="#content_ideas">09. Content Ideas</Link>
+                {'\n'}
+                <Link
+                  href={`${env.NEXT_PUBLIC_URL}/ideas/${data.id}?utm_source=report&utm_medium=pdf&utm_campaign=idea&utm_content=web_version_link`}
+                >
+                  Full Web version
+                </Link>
+              </Text>
+            </View>
+          </View>
         </View>
 
         <View style={styles.view}>
-          <Text style={styles.subsection}>Table of Contents</Text>
-
-          <Text style={styles.text}>
-            <Link href="#context">01. Context</Link>
-            {'\n'}
-            <Link href="#market_analysis">02. Market Analysis</Link>
-            {'\n'}
-            <Link href="#competitors">03. Competitors</Link>
-            {'\n'}
-            <Link href="#value_proposition">04. Value Proposition</Link>
-            {'\n'}
-            <Link href="#target_audiences">05. Target Audiences</Link>
-            {'\n'}
-            <Link href="#swot_analysis">06. SWOT Analysis</Link>
-            {'\n'}
-            <Link href="#elevator_pitches">07. Elevator Pitches</Link>
-            {'\n'}
-            <Link href="#product_names">08. Product Names</Link>
-            {'\n'}
-            <Link href="#google_trends_keywords">
-              09. Google Trends Keywords
-            </Link>
-            {'\n'}
-            <Link href="#content_ideas">10. Content Ideas</Link>
-            {'\n'}
-            <Link
-              href={`${env.NEXT_PUBLIC_URL}/ideas/${data.id}?utm_source=report&utm_medium=pdf&utm_campaign=idea&utm_content=web_version_link`}
-            >
-              Full Web version
-            </Link>
-          </Text>
+          <Text style={styles.subsection}>How You Defined The Problem:</Text>
+          <Text style={styles.text}>{data.problem}</Text>
         </View>
       </View>
 
       <SectionWelcome />
 
-      <SectionContext
-        problem={data.problem}
+      <SectionMarketAnalysis
         marketExistence={data.marketExistence}
+        marketAnalysis={data.marketAnalysis}
       />
-
-      <SectionMarketAnalysis data={data.marketAnalysis} />
 
       <SectionCompetitors data={data.competitorAnalysis} />
 
@@ -272,40 +270,15 @@ const SectionWelcome = () => (
   </View>
 )
 
-type SectionContextProps = {
-  problem: string
-  marketExistence: string
-}
-
-const SectionContext = ({ problem, marketExistence }: SectionContextProps) => (
-  <View style={styles.view} break>
-    <Text id="context" style={styles.section}>
-      Context
-    </Text>
-
-    <Text style={styles.description}>
-      In this section, we summarize your original problem and analyze the market
-      existence. It sets the stage for your idea by giving you a clearer
-      understanding of what you&apos;re aiming to solve and whether others are
-      facing similar challenges. Knowing the context helps you see how your
-      product can fit into the larger picture.
-    </Text>
-
-    <Text style={styles.subsection}>How You Defined The Problem:</Text>
-
-    <Text style={styles.text}>{problem}</Text>
-
-    <Text style={styles.subsection}>Market Existence:</Text>
-
-    <Text style={styles.text}>{marketExistence}</Text>
-  </View>
-)
-
 type SectionMarketAnalysisProps = {
-  data: MarketAnalysis
+  marketExistence: string
+  marketAnalysis: MarketAnalysis
 }
 
-const SectionMarketAnalysis = ({ data }: SectionMarketAnalysisProps) => (
+const SectionMarketAnalysis = ({
+  marketExistence,
+  marketAnalysis,
+}: SectionMarketAnalysisProps) => (
   <View style={styles.view} break>
     <Text id="market_analysis" style={styles.section}>
       Market Analysis Overview
@@ -319,25 +292,29 @@ const SectionMarketAnalysis = ({ data }: SectionMarketAnalysisProps) => (
       opportunities are out there.
     </Text>
 
+    <Text style={styles.subsection}>Market Existence:</Text>
+
+    <Text style={styles.text}>{marketExistence}</Text>
+
     <Text style={styles.subsection}>Trends:</Text>
 
-    <Text style={styles.text}>{data.trends}</Text>
+    <Text style={styles.text}>{marketAnalysis.trends}</Text>
 
     <Text style={styles.subsection}>User Behaviors:</Text>
 
-    <Text style={styles.text}>{data.userBehaviors}</Text>
+    <Text style={styles.text}>{marketAnalysis.userBehaviors}</Text>
 
     <Text style={styles.subsection}>Market Gaps:</Text>
 
-    <Text style={styles.text}>{data.marketGaps}</Text>
+    <Text style={styles.text}>{marketAnalysis.marketGaps}</Text>
 
     <Text style={styles.subsection}>Innovation Opportunities:</Text>
 
-    <Text style={styles.text}>{data.innovationOpportunities}</Text>
+    <Text style={styles.text}>{marketAnalysis.innovationOpportunities}</Text>
 
     <Text style={styles.subsection}>Strategic Direction:</Text>
 
-    <Text style={styles.text}>{data.strategicDirection}</Text>
+    <Text style={styles.text}>{marketAnalysis.strategicDirection}</Text>
   </View>
 )
 
@@ -588,7 +565,19 @@ const SectionProductNames = ({ data }: SectionProductNamesProps) => (
 
         <Text style={styles.subsectionHeader}>Potential Domains:</Text>
 
-        <SimpleList items={productName.domains} />
+        <Text style={styles.text}>
+          {productName.domains.map((item, idx) => (
+            <React.Fragment key={idx}>
+              -{' '}
+              <Link
+                href={`https://www.namecheap.com/domains/registration/results/?domain=${item}`}
+              >
+                {item}
+              </Link>
+              {'\n'}
+            </React.Fragment>
+          ))}
+        </Text>
 
         <Text style={styles.subsectionHeader}>Similar Product Names:</Text>
 
@@ -743,6 +732,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   view: {},
+  row: {
+    flexDirection: 'row',
+  },
+  column: {
+    flex: 1,
+    padding: 5,
+  },
   header: {
     fontSize: 12,
     marginBottom: 20,
