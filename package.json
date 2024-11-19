@@ -13,7 +13,7 @@
     "next-lint-fix": "next lint --fix",
     "lint:prisma": "npx prisma validate",
     "prettier": "npx prettier --check .",
-    "prepare": "if [ -d .git ]; then npx husky; fi",
+    "prepare": "npx husky",
     "knip": "npx knip",
     "lint": "npm run next-lint && npm run prettier && npm run knip",
     "prisma:generate_client": "prisma generate",

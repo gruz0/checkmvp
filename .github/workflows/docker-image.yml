@@ -8,6 +8,8 @@ jobs:
 
     env:
       UID: 1001
+      # NOTE: https://typicode.github.io/husky/how-to.html#ci-server-and-docker
+      HUSKY: 0
 
     steps:
       - uses: actions/checkout@v4
