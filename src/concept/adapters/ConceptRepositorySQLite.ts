@@ -78,6 +78,21 @@ export class ConceptRepositorySQLite implements Repository {
     if (conceptModel.evaluation) {
       const json = JSON.parse(conceptModel.evaluation)
 
+      // FIXME: As many changes have applied since 17 Nov, we don't want to support them
+      // This condition can be removed once we go live on production.
+      const createdAtDate = new Date(conceptModel.createdAt)
+      const thresholdDate = new Date('2024-11-17T00:00:00Z')
+
+      if (
+        json.status === 'requires_changes' &&
+        json.painPoints.length === 0 &&
+        createdAtDate < thresholdDate
+      ) {
+        throw new Error(
+          'The concept was created before November 17, 2024, and is no longer supported. Please create a new one.'
+        )
+      }
+
       const evaluation = new Evaluation(
         json.status,
         json.suggestions,
