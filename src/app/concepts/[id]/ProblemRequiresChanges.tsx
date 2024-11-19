@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { usePlausible } from 'next-plausible'
 import React, { useState } from 'react'
 import ConceptForm from '@/components/ConceptForm'
 import Paragraph from '@/components/Paragraph'
@@ -28,6 +29,8 @@ interface Props {
 }
 
 const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
+  const plausible = usePlausible()
+
   const [status, setStatus] = useState<string>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -39,6 +42,12 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
     try {
       setStatus('loading')
       setErrorMessage(null)
+
+      plausible('analysis', {
+        props: {
+          buttonId: 'requires_changes',
+        },
+      })
 
       const res = await fetch(`/api/concepts/${conceptId}`, {
         method: 'POST',

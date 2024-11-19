@@ -1,5 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import { usePlausible } from 'next-plausible'
 import React, { useState } from 'react'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
@@ -26,6 +27,8 @@ interface Props {
 }
 
 const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
+  const plausible = usePlausible()
+
   const [status, setStatus] = useState<string>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -37,6 +40,12 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
     try {
       setStatus('loading')
       setErrorMessage(null)
+
+      plausible('analysis', {
+        props: {
+          buttonId: 'well_defined',
+        },
+      })
 
       const res = await fetch(`/api/concepts/${conceptId}`, {
         method: 'POST',
