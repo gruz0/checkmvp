@@ -36,7 +36,7 @@ const ReportPage = ({ concept }: Props) => {
   }, [concept.evaluation, router])
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-6 lg:p-8">
       <h1 className="mb-6 text-3xl font-bold md:text-4xl">
         Concept Evaluation:{' '}
         {concept.evaluation ? (
