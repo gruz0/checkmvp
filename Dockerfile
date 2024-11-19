@@ -54,7 +54,7 @@ ARG FEEDBACK_SERVICE_API_BASE
 ENV FEEDBACK_SERVICE_API_BASE=$FEEDBACK_SERVICE_API_BASE
 
 RUN npm run prisma:generate_client && \
-    npm run build
+    npm ci
 
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS prod_builder
 WORKDIR /app
