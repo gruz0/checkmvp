@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { usePlausible } from 'next-plausible'
 import React, { useEffect, useState } from 'react'
 import BackToTopButton from '@/components/BackToTopButton'
 import FeedbackForm from '@/components/FeedbackForm'
@@ -108,6 +109,7 @@ interface ContentIdeaProps {
 const reloadInterval = 5000
 
 export const IdeaAnalysisReport = ({ data }: Props) => {
+  const plausible = usePlausible()
   const router = useRouter()
 
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
@@ -157,6 +159,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     }
 
     try {
+      plausible('archive_report')
+
       const res = await fetch(`/api/ideas/${data.id}`, {
         method: 'DELETE',
         headers: {
@@ -239,6 +243,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             {readyForReport ? (
               <Link
                 href={`/api/ideas/${data.id}/pdf`}
+                onClick={() => plausible('download_pdf')}
                 target="_blank"
                 className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
               >
