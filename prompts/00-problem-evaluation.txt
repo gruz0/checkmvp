@@ -36,7 +36,7 @@ I want to create an app that helps people with their work.
 Based on the classification, follow the guidelines below.
 
 - **status**: "well-defined" or "requires_changes" or "not-well-defined"
-- **suggestions**: Provide an array with 4 specific actionable suggestions. Each suggestion should consist of 3 sentences that detail what the user should improve and why. Ensure that each suggestion is distinct and offers valuable guidance
+- **suggestions**: Provide an array with 4 specific actionable suggestions how to make a problem definition better. Each suggestion should consist of 3 sentences that detail what the user should improve and why. Ensure that each suggestion is distinct and offers valuable guidance
 - **recommendations**: Provide an array with 3 unique, refined versions of the problem statement phrased as value propositions from the user's perspective, directed toward the potential target audience.
   - Must be well-defined to pass your **initial assessment**.
   - Consist of 3 paragraphs.
