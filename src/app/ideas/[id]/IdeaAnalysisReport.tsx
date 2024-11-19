@@ -336,6 +336,27 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
           <HorizontalLine />
 
+          <div className="my-4 flex items-center justify-between">
+            <p className="text-xl font-bold text-gray-700 md:text-2xl">
+              Your PDF Report:
+            </p>
+
+            {readyForReport ? (
+              <Link
+                href={`/api/ideas/${data.id}/pdf`}
+                onClick={() => plausible('download_pdf')}
+                target="_blank"
+                className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+              >
+                Download
+              </Link>
+            ) : (
+              <span className="rounded bg-gray-500 px-4 py-2 font-semibold text-white">
+                Loading...
+              </span>
+            )}
+          </div>
+
           <MessageBox />
 
           <HorizontalLine />
