@@ -1,12 +1,12 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import BackToTopButton from '@/components/BackToTopButton'
 import FeedbackForm from '@/components/FeedbackForm'
 import HorizontalLine from '@/components/HorizontalLine'
 import MessageBox from '@/components/MessageBox'
-import WaitlistForm from '@/components/WaitlistForm'
 import { NavBar } from './components/NavBar'
 import SectionActionableNextSteps from './components/SectionActionableNextSteps'
 import SectionCompetitors from './components/SectionCompetitors'
@@ -110,9 +110,9 @@ const reloadInterval = 5000
 export const IdeaAnalysisReport = ({ data }: Props) => {
   const router = useRouter()
 
-  const [showPopup, setShowPopup] = useState(false)
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
   const [wrongSection, setWrongSection] = useState<string | null>(null)
+  const [readyForReport, setReadyForReport] = useState<boolean>(false)
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout
@@ -131,6 +131,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
       intervalId = setInterval(() => {
         router.refresh()
       }, reloadInterval)
+    } else {
+      setReadyForReport(true)
     }
 
     return () => {
@@ -148,18 +150,6 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     data.contentIdeasForMarketing,
     router,
   ])
-
-  const handleSaveClick = () => {
-    setShowPopup(true)
-  }
-
-  const handleSubmit = (email: string) => {
-    console.debug('Email saved:', email)
-
-    alert('Thanks! I will add this feature a bit later <3')
-
-    setShowPopup(false)
-  }
 
   const handleRemove = async () => {
     if (!window.confirm('Are you sure?')) {
@@ -246,26 +236,22 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
               Your Idea Report
             </h1>
 
-            <button
-              onClick={handleSaveClick}
-              className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
-            >
-              Join Waitlist
-            </button>
+            {readyForReport ? (
+              <Link
+                href={`/api/ideas/${data.id}/pdf`}
+                target="_blank"
+                className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+              >
+                Download PDF
+              </Link>
+            ) : (
+              <span className="rounded bg-gray-500 px-4 py-2 font-semibold text-white">
+                Loading report...
+              </span>
+            )}
           </div>
 
           <HorizontalLine />
-
-          {showPopup && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-800/50">
-              <div className="max-w-2xl rounded bg-white p-4 shadow-md md:p-8">
-                <WaitlistForm
-                  onSubmit={handleSubmit}
-                  onClose={() => setShowPopup(false)}
-                />
-              </div>
-            </div>
-          )}
 
           {showFeedbackForm && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-800/50">

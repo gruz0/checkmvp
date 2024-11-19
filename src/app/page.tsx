@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-
 import RandomMessage from '@/components/RandomMessage'
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
 import IdeaReport01 from '../../screenshots/idea-report-01.png'
