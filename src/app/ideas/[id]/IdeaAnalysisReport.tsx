@@ -242,11 +242,11 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
                 target="_blank"
                 className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
               >
-                Download PDF
+                PDF
               </Link>
             ) : (
               <span className="rounded bg-gray-500 px-4 py-2 font-semibold text-white">
-                Loading report...
+                Loading...
               </span>
             )}
           </div>

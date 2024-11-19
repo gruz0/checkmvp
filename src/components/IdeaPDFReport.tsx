@@ -1,6 +1,7 @@
 import {
   Document,
   Font,
+  Image,
   Link,
   Page,
   StyleSheet,
@@ -149,53 +150,64 @@ export const IdeaPDFReport = ({ data }: Report) => (
         ~
       </Text>
 
-      <Text style={styles.title}>Your Personalized Startup Idea Report</Text>
-
-      <Text style={styles.subtitle}>
-        Comprehensive Analysis and Validation of Your Business Concept
-      </Text>
-
       <View style={styles.view}>
-        <Text style={styles.subsection}>
-          Ready to Find Your First Customers? Try This:
+        <Text style={styles.logo}>
+          <Image
+            src={`${env.NEXT_PUBLIC_URL}/CheckMVP-Logo.png`}
+            style={{ width: 150, height: 40 }}
+          />
         </Text>
 
-        <Text style={styles.description}>
-          {data.valueProposition.mainBenefit}{' '}
-          {data.valueProposition.problemSolving}
-        </Text>
-      </View>
+        <Text style={styles.title}>Your Personalized Startup Idea Report</Text>
 
-      <View style={styles.view}>
-        <Text style={styles.subsection}>Table of Contents</Text>
-
-        <Text style={styles.text}>
-          <Link href="#context">01. Context</Link>
-          {'\n'}
-          <Link href="#market_analysis">02. Market Analysis</Link>
-          {'\n'}
-          <Link href="#competitors">03. Competitors</Link>
-          {'\n'}
-          <Link href="#value_proposition">04. Value Proposition</Link>
-          {'\n'}
-          <Link href="#target_audiences">05. Target Audiences</Link>
-          {'\n'}
-          <Link href="#swot_analysis">06. SWOT Analysis</Link>
-          {'\n'}
-          <Link href="#elevator_pitches">07. Elevator Pitches</Link>
-          {'\n'}
-          <Link href="#product_names">08. Product Names</Link>
-          {'\n'}
-          <Link href="#google_trends_keywords">09. Google Trends Keywords</Link>
-          {'\n'}
-          <Link href="#content_ideas">10. Content Ideas</Link>
-          {'\n'}
-          <Link
-            href={`${env.NEXT_PUBLIC_URL}/ideas/${data.id}?utm_source=report&utm_medium=pdf&utm_campaign=idea&utm_content=web_version_link`}
-          >
-            Full Web version
-          </Link>
+        <Text style={styles.subtitle}>
+          Comprehensive Analysis and Validation of Your Business Concept
         </Text>
+
+        <View style={styles.view}>
+          <Text style={styles.subsection}>
+            Ready to Find Your First Customers? Try This:
+          </Text>
+
+          <Text style={styles.description}>
+            {data.valueProposition.mainBenefit}{' '}
+            {data.valueProposition.problemSolving}
+          </Text>
+        </View>
+
+        <View style={styles.view}>
+          <Text style={styles.subsection}>Table of Contents</Text>
+
+          <Text style={styles.text}>
+            <Link href="#context">01. Context</Link>
+            {'\n'}
+            <Link href="#market_analysis">02. Market Analysis</Link>
+            {'\n'}
+            <Link href="#competitors">03. Competitors</Link>
+            {'\n'}
+            <Link href="#value_proposition">04. Value Proposition</Link>
+            {'\n'}
+            <Link href="#target_audiences">05. Target Audiences</Link>
+            {'\n'}
+            <Link href="#swot_analysis">06. SWOT Analysis</Link>
+            {'\n'}
+            <Link href="#elevator_pitches">07. Elevator Pitches</Link>
+            {'\n'}
+            <Link href="#product_names">08. Product Names</Link>
+            {'\n'}
+            <Link href="#google_trends_keywords">
+              09. Google Trends Keywords
+            </Link>
+            {'\n'}
+            <Link href="#content_ideas">10. Content Ideas</Link>
+            {'\n'}
+            <Link
+              href={`${env.NEXT_PUBLIC_URL}/ideas/${data.id}?utm_source=report&utm_medium=pdf&utm_campaign=idea&utm_content=web_version_link`}
+            >
+              Full Web version
+            </Link>
+          </Text>
+        </View>
       </View>
 
       <SectionWelcome />
@@ -609,12 +621,24 @@ const SectionGoogleTrendsKeywords = ({
 
     <Text style={styles.text}>
       These AI-suggested keywords are a starting point for exploring market
-      trends. Be sure to conduct your own research as well.
+      trends. Click any keyword to view its popularity on Google Trends. We
+      recommend checking different time periods like 1 week and 90 days. Be sure
+      to conduct your own research as well.
     </Text>
 
-    <SimpleList items={data} />
-
-    <Text style={styles.subsection}>How to Use It:</Text>
+    <Text style={styles.text}>
+      {data.map((item, idx) => (
+        <React.Fragment key={idx}>
+          -{' '}
+          <Link
+            href={`https://trends.google.com/trends/explore?date=today%201-m&q=${item}&hl=en`}
+          >
+            {item}
+          </Link>
+          {'\n'}
+        </React.Fragment>
+      ))}
+    </Text>
   </View>
 )
 
@@ -725,6 +749,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'grey',
     fontFamily: 'Roboto',
+  },
+  logo: {
+    textAlign: 'center',
   },
   title: {
     fontSize: 24,
