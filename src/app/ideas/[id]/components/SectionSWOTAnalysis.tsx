@@ -68,8 +68,8 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({
               </div>
 
               <div className="flex flex-col">
-                <div className="flex flex-1 flex-col rounded-lg bg-red-50 p-4 shadow transition-shadow duration-200 hover:shadow-lg md:p-6">
-                  <h3 className="mb-4 flex items-center text-xl font-semibold text-red-700 md:text-2xl">
+                <div className="flex flex-1 flex-col rounded-lg bg-yellow-50 p-4 shadow transition-shadow duration-200 hover:shadow-lg md:p-6">
+                  <h3 className="mb-4 flex items-center text-xl font-semibold text-yellow-700 md:text-2xl">
                     ⚠️ Weaknesses
                   </h3>
 
@@ -112,8 +112,8 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({
               </div>
 
               <div className="flex flex-col">
-                <div className="flex flex-1 flex-col rounded-lg bg-yellow-50 p-4 shadow transition-shadow duration-200 hover:shadow-lg md:p-6">
-                  <h3 className="mb-4 flex items-center text-xl font-semibold text-yellow-700 md:text-2xl">
+                <div className="flex flex-1 flex-col rounded-lg bg-red-50 p-4 shadow transition-shadow duration-200 hover:shadow-lg md:p-6">
+                  <h3 className="mb-4 flex items-center text-xl font-semibold text-red-700 md:text-2xl">
                     🔥 Threats
                   </h3>
 
