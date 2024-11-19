@@ -28,7 +28,6 @@ const SectionMarketAnalysis: React.FC<SectionMarketAnalysisProps> = ({
   return (
     <SectionWrapper id="market_analysis">
       <SectionHeader
-        color="text-blue-600"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_market_analysis_overview"

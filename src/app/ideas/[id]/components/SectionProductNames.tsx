@@ -32,7 +32,6 @@ const SectionProductNames: React.FC<SectionProductNamesProps> = ({
   return (
     <SectionWrapper id="product_names">
       <SectionHeader
-        color="text-blue-600"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_potential_product_names"
@@ -57,7 +56,7 @@ const SectionProductNames: React.FC<SectionProductNamesProps> = ({
                   header={`${idx + 1}. ${productName.productName} - ${productName.tagline}`}
                   onReport={() => onReport(`potential_product_names.${idx}`)}
                 >
-                  <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
+                  <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0 dark:bg-gray-900">
                     <Paragraph>
                       {productName.why} {productName.targetAudienceInsight}
                     </Paragraph>
@@ -81,7 +80,7 @@ const SectionProductNames: React.FC<SectionProductNamesProps> = ({
                             href={`https://www.namecheap.com/domains/registration/results/?domain=${item}`}
                             target="_blank"
                             rel="nofollow noopener noreferrer"
-                            className="text-blue-500 underline hover:text-blue-700"
+                            className="text-blue-700 underline hover:text-blue-600 dark:text-blue-300 dark:hover:text-blue-400"
                           >
                             {item}
                           </Link>

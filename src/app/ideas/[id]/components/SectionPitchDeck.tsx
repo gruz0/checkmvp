@@ -11,7 +11,6 @@ const SectionPitchDeck = () => {
   return (
     <SectionWrapper id="pitch_deck">
       <SectionHeader
-        color="text-gray-400"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_pitch_deck_outline"

@@ -26,7 +26,6 @@ const SectionValueProposition: React.FC<SectionValuePropositionProps> = ({
   return (
     <SectionWrapper id="value_proposition">
       <SectionHeader
-        color="text-blue-600"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_value_proposition"

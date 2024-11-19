@@ -11,7 +11,6 @@ const SectionEarlyAdopters = () => {
   return (
     <SectionWrapper id="early_adopters">
       <SectionHeader
-        color="text-gray-400"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_early_adopters_acquisition_ideas"

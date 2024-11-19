@@ -11,7 +11,6 @@ const SectionNetworkingOpportunities = () => {
   return (
     <SectionWrapper id="networking_opportunities">
       <SectionHeader
-        color="text-gray-400"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_networking_opportunities"

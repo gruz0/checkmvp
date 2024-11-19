@@ -6,7 +6,7 @@ import Photo from './photo.jpeg'
 export default async function AboutPage() {
   return (
     <div className="p-4 md:p-6 lg:p-8">
-      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl">
+      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl dark:text-gray-100">
         About CheckMVP
       </h1>
 
@@ -42,7 +42,7 @@ export default async function AboutPage() {
       </div>
 
       <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
-        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl">
+        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
           Just Talk to Your Customers!
         </h2>
 
@@ -64,7 +64,7 @@ export default async function AboutPage() {
       </div>
 
       <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
-        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl">
+        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
           What We Bring to The Table?
         </h2>
 

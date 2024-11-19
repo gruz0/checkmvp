@@ -3,7 +3,6 @@
 import React from 'react'
 
 interface SectionHeaderProps {
-  color: string
   children: React.ReactNode
   sectionId: string
   onClick?: () => void
@@ -11,7 +10,6 @@ interface SectionHeaderProps {
 }
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({
-  color,
   children,
   sectionId,
   onClick,
@@ -19,8 +17,10 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
 }) => (
   <button
     type="button"
-    className={`${isExpanded ? 'mb-6' : 'mb-0'} text-xl font-semibold md:text-2xl ${color} cursor-pointer ${
-      isExpanded ? 'text-blue-700' : 'text-blue-600'
+    className={`${isExpanded ? 'mb-6' : 'mb-0'} cursor-pointer text-xl font-semibold md:text-2xl ${
+      isExpanded
+        ? 'text-blue-700 dark:text-blue-300'
+        : 'text-blue-600 dark:text-blue-400'
     }`}
     onClick={onClick}
     aria-expanded={isExpanded}

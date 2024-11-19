@@ -40,7 +40,6 @@ const SectionCompetitors: React.FC<SectionCompetitorsProps> = ({
   return (
     <SectionWrapper id="competitor_overview">
       <SectionHeader
-        color="text-blue-600"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_competitor_overview"
@@ -68,7 +67,7 @@ const SectionCompetitors: React.FC<SectionCompetitorsProps> = ({
                     onReport(`competitor_analysis.competitors.${idx}`)
                   }
                 >
-                  <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
+                  <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0 dark:bg-gray-900">
                     <h3 className="mb-2 text-lg font-semibold md:text-xl">
                       Product:
                     </h3>
@@ -77,7 +76,7 @@ const SectionCompetitors: React.FC<SectionCompetitorsProps> = ({
                         href={competitor.url}
                         target="_blank"
                         rel="nofollow noopener noreferrer"
-                        className="text-blue-700 underline hover:text-blue-600"
+                        className="text-blue-700 underline hover:text-blue-600 dark:text-blue-300 dark:hover:text-blue-400"
                       >
                         {competitor.productName}
                       </a>

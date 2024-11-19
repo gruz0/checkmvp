@@ -11,7 +11,6 @@ const SectionRoadmap = () => {
   return (
     <SectionWrapper id="roadmap">
       <SectionHeader
-        color="text-gray-400"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_roadmap_suggestions"

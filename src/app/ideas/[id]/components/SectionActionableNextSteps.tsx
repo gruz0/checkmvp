@@ -11,7 +11,6 @@ const SectionActionableNextSteps = () => {
   return (
     <SectionWrapper id="actionable_next_steps">
       <SectionHeader
-        color="text-gray-400"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_actionable_next_steps"

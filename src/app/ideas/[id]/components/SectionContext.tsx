@@ -21,7 +21,6 @@ const SectionContext: React.FC<SectionContextProps> = ({ onReport, data }) => {
   return (
     <SectionWrapper id="context">
       <SectionHeader
-        color="text-blue-600"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_context"

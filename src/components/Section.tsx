@@ -15,7 +15,7 @@ const Section: React.FC<SectionProps> = ({ header, children, onReport }) => (
           <button
             onClick={onReport}
             aria-label="Report"
-            className="flex items-center justify-center rounded bg-gray-50 px-2 py-1 text-sm hover:bg-red-100"
+            className="flex items-center justify-center rounded bg-gray-50 px-2 py-1 text-sm hover:bg-red-100 dark:bg-gray-600 dark:hover:bg-red-700"
           >
             Dislike
           </button>

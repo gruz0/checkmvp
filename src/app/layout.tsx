@@ -1,4 +1,5 @@
 import PlausibleProvider from 'next-plausible'
+import { ThemeProvider } from 'next-themes'
 import React from 'react'
 import { env } from '@/lib/env'
 import type { Metadata } from 'next'
@@ -17,12 +18,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <PlausibleProvider domain={env.DOMAIN} />
       </head>
 
-      <body>{children}</body>
+      <body>
+        <ThemeProvider attribute="data-mode">{children}</ThemeProvider>
+      </body>
     </html>
   )
 }

@@ -230,13 +230,13 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
   return (
     <div className="p-4 md:p-6 lg:p-8">
       <div className="flex flex-col md:flex-row">
-        <aside className="sticky top-4 hidden self-start rounded-lg bg-gray-100 p-2 shadow-lg md:block md:w-1/4">
+        <aside className="sticky top-4 hidden self-start rounded-lg bg-gray-100 p-2 shadow-lg md:block md:w-1/4 dark:bg-gray-900">
           <NavBar />
         </aside>
 
         <div className="flex-1 md:pl-8">
           <div className="mb-2 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-700 md:text-3xl lg:text-4xl">
+            <h1 className="text-2xl font-bold text-gray-700 md:text-3xl lg:text-4xl dark:text-gray-200">
               Your Idea Report
             </h1>
 
@@ -260,7 +260,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
           {showFeedbackForm && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-800/50">
-              <div className="max-w-2xl rounded bg-white p-4 shadow-md md:p-8">
+              <div className="max-w-2xl rounded bg-white p-4 shadow-md md:p-8 dark:bg-gray-900">
                 <FeedbackForm
                   onSubmit={handleFeedbackSubmit}
                   onClose={() => setShowFeedbackForm(false)}
@@ -337,7 +337,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
           <HorizontalLine />
 
           <div className="my-4 flex items-center justify-between">
-            <p className="text-xl font-bold text-gray-700 md:text-2xl">
+            <p className="text-xl font-bold text-gray-700 md:text-2xl dark:text-gray-300">
               Your PDF Report:
             </p>
 

@@ -87,7 +87,7 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
           {evaluation.painPoints.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:px-6 md:text-lg"
+              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:px-6 md:text-lg dark:bg-gray-900"
             >
               <p className="first-letter:float-left first-letter:pr-3 first-letter:text-5xl first-letter:font-bold">
                 {item}
@@ -102,7 +102,7 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
           {evaluation.targetAudience.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 md:p-6 md:pb-0"
+              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 md:p-6 md:pb-0 dark:bg-gray-900"
             >
               <p className="mb-4 text-lg font-bold md:text-xl">
                 {item.segment}

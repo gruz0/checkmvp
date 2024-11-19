@@ -25,7 +25,6 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({
   return (
     <SectionWrapper id="swot_analysis">
       <SectionHeader
-        color="text-blue-600"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_swot_analysis"

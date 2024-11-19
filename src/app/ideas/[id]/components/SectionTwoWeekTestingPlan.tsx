@@ -11,7 +11,6 @@ const SectionTwoWeekTestingPlan = () => {
   return (
     <SectionWrapper id="two_week_testing_plan">
       <SectionHeader
-        color="text-gray-400"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_two_week_testing_plan"

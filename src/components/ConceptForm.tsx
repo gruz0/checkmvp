@@ -151,8 +151,8 @@ const DefineConceptForm = ({ problem, hideExamples }: Props) => {
 
         {!hideExamples &&
           (showHint ? (
-            <div className="mb-4 rounded-lg border bg-white p-4 shadow-sm md:p-6">
-              <p className="text-lg text-gray-700">
+            <div className="mb-4 rounded-lg border bg-white p-4 shadow-sm md:p-6 dark:bg-gray-800">
+              <p className="text-lg text-gray-700 dark:text-gray-300">
                 The clearer the problem, the more valuable our feedback will be.
                 Focus on the challenges or frustrations that people face, and
                 how your product intends to alleviate them. Check out our
@@ -166,7 +166,7 @@ const DefineConceptForm = ({ problem, hideExamples }: Props) => {
                 setShowHint(!showHint)
               }}
               aria-label="Show Help"
-              className="mb-2 rounded bg-gray-100 p-2 hover:bg-green-100"
+              className="mb-2 rounded bg-gray-100 p-2 hover:bg-green-100 dark:bg-gray-700 dark:hover:bg-gray-600"
             >
               Need Help Getting Started?
             </button>
@@ -175,7 +175,7 @@ const DefineConceptForm = ({ problem, hideExamples }: Props) => {
         <textarea
           id="problem"
           name="problem"
-          className="mt-1 block h-64 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block h-64 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-900 dark:text-gray-200"
           value={formData.problem}
           onChange={handleChange}
           required
@@ -189,7 +189,7 @@ Target Audience:
           maxLength={2048}
         />
 
-        <p className="mt-2 text-right text-sm text-gray-600">
+        <p className="mt-2 text-right text-sm text-gray-600 dark:text-gray-300">
           {remainingCharacters} characters remaining
         </p>
       </div>
@@ -232,7 +232,7 @@ Target Audience:
                 <button
                   type="button"
                   key={index}
-                  className="inline-flex cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white px-4 py-2 shadow transition-all duration-200 hover:bg-gray-200"
+                  className="inline-flex cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white px-4 py-2 shadow transition-all duration-200 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800"
                   onClick={(e) => {
                     e.preventDefault()
                     setFormData({ problem: example.description })
