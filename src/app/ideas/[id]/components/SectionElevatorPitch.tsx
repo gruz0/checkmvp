@@ -31,7 +31,6 @@ const SectionElevatorPitch: React.FC<SectionElevatorPitchProps> = ({
   return (
     <SectionWrapper id="elevator_pitch">
       <SectionHeader
-        color="text-blue-600"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_elevator_pitch"
@@ -100,7 +99,7 @@ const Pitch: React.FC<PitchProps> = ({ idx, pitch, onReport }) => {
       header={`${idx + 1}. ${pitch.hook}`}
       onReport={() => onReport(`elevator_pitch.${idx}`)}
     >
-      <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0">
+      <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0 dark:bg-gray-900">
         <Paragraph>
           {pitch.problem} {pitch.solution} {pitch.valueProposition}
         </Paragraph>

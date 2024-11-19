@@ -36,7 +36,7 @@ export default async function LandingPage() {
 
   return (
     <div className="p-4 md:p-6 lg:p-8">
-      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl">
+      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl lg:mb-12 dark:text-gray-100">
         Can Your Startup Idea Pass The Test?
       </h1>
 
@@ -80,7 +80,7 @@ export default async function LandingPage() {
         </div>
       </div>
 
-      <div className="mb-4 rounded-lg border border-green-300 bg-green-50 p-4 text-lg text-green-800 md:mb-4 lg:mb-8">
+      <div className="mb-4 rounded-lg border border-green-300 bg-green-50 p-4 text-lg text-green-800 md:mb-4 lg:mb-12">
         <p>
           We&apos;ve analyzed <strong>{totalConceptsCount} ideas</strong> so
           far! Let&apos;s see how we can help you today 🤗
@@ -144,7 +144,7 @@ const WhatIsInside = () => (
 const Screenshots = () => (
   <Section heading="Screenshots">
     <div className="grid grid-cols-1 gap-6 text-left md:grid-cols-2 md:gap-6 lg:gap-8">
-      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100">
+      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
         <Link href={IdeaReport01.src} target="_blank">
           <Image
             src={IdeaReport01.src}
@@ -155,7 +155,7 @@ const Screenshots = () => (
         </Link>
       </div>
 
-      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100">
+      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
         <Link href={IdeaReport02.src} target="_blank">
           <Image
             src={IdeaReport02.src}
@@ -166,7 +166,7 @@ const Screenshots = () => (
         </Link>
       </div>
 
-      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100">
+      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
         <Link href={IdeaReport03.src} target="_blank">
           <Image
             src={IdeaReport03.src}
@@ -177,7 +177,7 @@ const Screenshots = () => (
         </Link>
       </div>
 
-      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100">
+      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
         <Link href={IdeaReport04.src} target="_blank">
           <Image
             src={IdeaReport04.src}
@@ -193,7 +193,7 @@ const Screenshots = () => (
 
 const Section: React.FC<SectionProps> = ({ heading, children }) => (
   <div className="mt-8 pb-4 md:mt-10 md:pb-6 lg:mt-14 lg:pb-8">
-    <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl">
+    <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
       {heading}
     </h2>
 
@@ -212,7 +212,7 @@ const SectionCell: React.FC<SectionCellProps> = ({
   heading,
   description,
 }) => (
-  <div className="rounded-lg bg-gray-50 px-6 py-5 shadow-lg lg:hover:bg-gray-100">
+  <div className="rounded-lg bg-gray-50 px-6 py-5 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
     {number && (
       <div className="mb-2 text-center text-4xl font-bold text-blue-600 md:mb-4 md:text-5xl">
         {number}

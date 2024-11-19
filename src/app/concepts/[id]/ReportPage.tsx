@@ -16,7 +16,7 @@ interface Props {
   concept: Concept
 }
 
-const reloadInterval = 5000
+const reloadInterval = 500000
 
 const ReportPage = ({ concept }: Props) => {
   const router = useRouter()

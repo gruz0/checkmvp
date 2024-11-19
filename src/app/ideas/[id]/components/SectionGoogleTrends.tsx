@@ -23,7 +23,6 @@ const SectionGoogleTrends: React.FC<SectionGoogleTrendsProps> = ({
   return (
     <SectionWrapper id="google_trends">
       <SectionHeader
-        color="text-blue-600"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_google_trends_keywords"
@@ -59,7 +58,7 @@ const SectionGoogleTrends: React.FC<SectionGoogleTrendsProps> = ({
                   <Link
                     href={`https://trends.google.com/trends/explore?date=today%201-m&q=${keyword}&hl=en`}
                     key={keyword}
-                    className="inline-flex cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white px-4 py-2 shadow transition-all duration-200 hover:bg-gray-200"
+                    className="inline-flex cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white px-4 py-2 shadow transition-all duration-200 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800"
                     target="_blank"
                     rel="nofollow noopener noreferrer"
                   >

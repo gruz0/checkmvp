@@ -11,7 +11,6 @@ const SectionEstimatedCosts = () => {
   return (
     <SectionWrapper id="estimated_costs">
       <SectionHeader
-        color="text-gray-400"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_estimated_costs_and_timeline"

@@ -131,6 +131,8 @@ export class ConceptEvaluator {
 
       const problemEvaluation = message.parsed.problem_evaluation
 
+      console.log(JSON.stringify(problemEvaluation, null, 2))
+
       if (problemEvaluation.status === 'not-well-defined') {
         return {
           status: problemEvaluation.status,

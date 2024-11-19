@@ -11,7 +11,6 @@ const SectionFeedbackTemplates = () => {
   return (
     <SectionWrapper id="feedback_templates">
       <SectionHeader
-        color="text-gray-400"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_initial_feedback_templates"

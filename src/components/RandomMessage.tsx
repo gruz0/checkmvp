@@ -28,7 +28,7 @@ const RandomMessage: React.FC = () => {
     <div className="my-8 flex justify-center">
       {message && (
         <div className="max-w-3xl border-l-4 border-gray-300 px-4 md:px-6">
-          <p className="py-2 text-lg italic text-gray-800 md:text-xl">
+          <p className="py-2 text-lg italic text-gray-800 md:text-xl dark:text-gray-100">
             {message}
           </p>
         </div>

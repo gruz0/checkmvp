@@ -11,7 +11,6 @@ const SectionToolsAndResources = () => {
   return (
     <SectionWrapper id="tools_and_resources">
       <SectionHeader
-        color="text-gray-400"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_suggested_tools_and_resources"

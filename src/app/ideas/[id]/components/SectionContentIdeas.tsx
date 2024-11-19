@@ -35,7 +35,6 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
   return (
     <SectionWrapper id="content_ideas">
       <SectionHeader
-        color="text-blue-600"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_content_ideas_for_marketing"
@@ -143,7 +142,7 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
     header={header}
     onReport={() => onReport(`content_ideas_for_marketing.${section}`)}
   >
-    <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-4">
+    <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-4 dark:bg-gray-900">
       <h3 className="mb-2 text-lg font-semibold">Platforms:</h3>
 
       <Paragraph>{data.platforms.join(', ')}</Paragraph>
