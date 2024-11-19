@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation'
 import React from 'react'
 import { App } from '@/idea/service/Service'
 import { IdeaAnalysisReport } from './IdeaAnalysisReport'
@@ -12,9 +13,14 @@ export default async function Page({ params }: { params: { id: string } }) {
 
     return <IdeaAnalysisReport data={dto} />
   } catch (e) {
-    // FIXME: Add more fancy errors handling.
-    // Also don't forget to catch real errors and app layer errors.
+    if (e instanceof Error) {
+      if ('isNotFoundError' in e) {
+        notFound()
+      }
 
-    return <p>{(e as Error).message}</p>
+      return <p className="p-6 text-lg">{e.message}</p>
+    }
+
+    return <p className="p-6 text-lg">An unexpected error occurred</p>
   }
 }

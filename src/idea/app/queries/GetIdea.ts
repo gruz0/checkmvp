@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/nextjs'
+import { NotFoundError } from '@/common/errors/NotFoundError'
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
@@ -120,7 +121,7 @@ export class GetIdeaHandler {
       const idea = await this.readModel.getById(query.id)
 
       if (!idea) {
-        throw new Error(`Idea ${query.id} does not exist`)
+        throw new NotFoundError(`Idea ${query.id} does not exist`)
       }
 
       const targetAudiences = await this.readModel.getTargetAudiencesByIdeaId(

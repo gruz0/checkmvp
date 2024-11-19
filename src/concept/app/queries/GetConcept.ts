@@ -1,4 +1,6 @@
 import * as Sentry from '@sentry/nextjs'
+import { ApplicationError } from '@/common/errors/ApplicationError'
+import { NotFoundError } from '@/common/errors/NotFoundError'
 import { Concept } from '@/concept/domain/Aggregate'
 
 type Query = {
@@ -21,11 +23,11 @@ export class GetConceptHandler {
       const concept = await this.readModel.getById(query.id)
 
       if (!concept) {
-        throw new Error(`Concept ${query.id} does not exist`)
+        throw new NotFoundError(`Concept ${query.id} does not exist`)
       }
 
       if (!concept.isAvailable()) {
-        throw new Error('Concept is not available anymore')
+        throw new ApplicationError('Concept is not available anymore')
       }
 
       return concept
