@@ -117,7 +117,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
           {evaluation.suggestions.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:px-6 md:text-lg dark:bg-gray-900"
+              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:px-6 md:text-lg dark:bg-gray-900/50"
             >
               <p className="first-letter:float-left first-letter:pr-3 first-letter:text-5xl first-letter:font-bold">
                 {item}
@@ -133,7 +133,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
             {evaluation.recommendations.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 dark:bg-gray-900"
+                className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 dark:bg-gray-900/50"
               >
                 <p className="grow md:text-lg">{item}</p>
 

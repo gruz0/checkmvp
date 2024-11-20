@@ -46,7 +46,7 @@ const NotWellDefinedProblem = ({ problem, evaluation }: Props) => (
         {evaluation.suggestions.map((item, index) => (
           <div
             key={index}
-            className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:px-6 md:text-lg dark:bg-gray-900"
+            className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:px-6 md:text-lg dark:bg-gray-900/50"
           >
             {item}
           </div>

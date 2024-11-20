@@ -67,7 +67,7 @@ const SectionCompetitors: React.FC<SectionCompetitorsProps> = ({
                     onReport(`competitor_analysis.competitors.${idx}`)
                   }
                 >
-                  <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0 dark:bg-gray-900">
+                  <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0 dark:bg-gray-900/50">
                     <h3 className="mb-2 text-lg font-semibold md:text-xl">
                       Product:
                     </h3>
