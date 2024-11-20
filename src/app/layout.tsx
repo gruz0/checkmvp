@@ -2,6 +2,7 @@ import PlausibleProvider from 'next-plausible'
 import { ThemeProvider } from 'next-themes'
 import React from 'react'
 import { env } from '@/lib/env'
+import OpenGraphImage from '../../public/opengraph-image.png'
 import type { Metadata } from 'next'
 import '@/app/globals.css'
 
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
   title: 'Validate Your Product or Startup Idea Fast | CheckMVP',
   description:
     'Stop wasting time on product ideas without a market. CheckMVP helps you validate your concept in just a minute.',
+  openGraph: {
+    images: [
+      {
+        url: OpenGraphImage.src,
+        alt: 'Validate Your Product or Startup Idea Fast with CheckMVP',
+        width: OpenGraphImage.width,
+        height: OpenGraphImage.height,
+        type: 'image/png',
+      },
+    ],
+  },
 }
 
 export default function RootLayout({
