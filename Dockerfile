@@ -1,9 +1,9 @@
-ARG NODE_VERSION="node:22.11.0"
-ARG ALPINE_VERSION="alpine3.20"
+ARG NODE_VERSION="22.11.0"
+ARG ALPINE_VERSION="3.20"
 ARG NPM_SHARP_VERSION="0.33.5"
 
 # Install dependencies only when needed
-FROM "${NODE_VERSION}-${ALPINE_VERSION}" AS base
+FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS base
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY package.json package-lock.json ./
 RUN npm install "sharp@${NPM_SHARP_VERSION}" && npm ci
 
 # Rebuild the source code only when needed
-FROM "${NODE_VERSION}-${ALPINE_VERSION}" AS builder
+FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS builder
 WORKDIR /app
 
 COPY --from=base /app/node_modules ./node_modules
@@ -57,7 +57,7 @@ ENV FEEDBACK_SERVICE_API_BASE=$FEEDBACK_SERVICE_API_BASE
 
 RUN npm run build
 
-FROM "${NODE_VERSION}-${ALPINE_VERSION}" AS prod_builder
+FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS prod_builder
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -68,7 +68,7 @@ COPY . .
 RUN npm install && cp -R node_modules prod_node_modules
 
 # Production image, copy all the files and run next
-FROM "${NODE_VERSION}-${ALPINE_VERSION}" AS runner
+FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS runner
 
 WORKDIR /app
 
