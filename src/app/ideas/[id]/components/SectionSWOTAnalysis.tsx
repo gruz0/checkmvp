@@ -43,7 +43,7 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({
           </SectionDescription>
 
           {data ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-4">
               <div className="flex flex-col">
                 <div className="flex flex-1 flex-col rounded-lg bg-green-50 p-4 shadow transition-shadow duration-200 hover:shadow-lg md:p-6">
                   <h3 className="mb-4 flex items-center text-xl font-semibold text-green-700 md:text-2xl">

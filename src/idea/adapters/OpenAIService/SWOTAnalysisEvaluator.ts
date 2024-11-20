@@ -26,9 +26,19 @@ interface ValueProposition {
 const ResponseSchema = z.object({
   swot_analysis: z.object({
     strengths: z.array(z.string()),
-    weaknesses: z.array(z.string()),
+    weaknesses: z.array(
+      z.object({
+        description: z.string(),
+        action: z.string(),
+      })
+    ),
     opportunities: z.array(z.string()),
-    threats: z.array(z.string()),
+    threats: z.array(
+      z.object({
+        description: z.string(),
+        action: z.string(),
+      })
+    ),
   }),
 })
 
@@ -146,9 +156,13 @@ And here is my value proposition:
 
       return {
         strengths: swotAnalysis.strengths,
-        weaknesses: swotAnalysis.weaknesses,
+        weaknesses: swotAnalysis.weaknesses.map(
+          (weakness) => `${weakness.description} Action: ${weakness.action}`
+        ),
         opportunities: swotAnalysis.opportunities,
-        threats: swotAnalysis.threats,
+        threats: swotAnalysis.threats.map(
+          (threat) => `${threat.description} Action: ${threat.action}`
+        ),
       }
     } catch (e) {
       Sentry.captureException(e)

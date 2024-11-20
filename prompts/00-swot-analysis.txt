@@ -9,7 +9,11 @@ Based on the following information, please generate a response that outlines the
 
 ### Field guidelines
 
-- **strengths** (array of strings): Strengths.
-- **weaknesses** (array of strings): Weaknesses.
-- **opportunities** (array of strings): Opportunities.
-- **threats** (array of strings): Threats.
+- **strengths** (array of strings): List the strengths of the product.
+- **weaknesses** (array of objects): For each weakness, provide:
+  - **description** (string): A brief description of the weakness.
+  - **action** (string): A suggested action to address or mitigate the weakness.
+- **opportunities** (array of strings): List the opportunities available.
+- **threats** (array of objects): For each threat, provide:
+  - **description** (string): A brief description of the threat.
+  - **action** (string): A suggested action to address or mitigate the threat.
