@@ -34,4 +34,8 @@ export default withSentryConfig(bundleAnalyzer(nextConfig), {
 
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
+
+  // The authentication token to use for all communication with Sentry.
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#configure-source-maps
+  authToken: process.env.SENTRY_AUTH_TOKEN,
 })
