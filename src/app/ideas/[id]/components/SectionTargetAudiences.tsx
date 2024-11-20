@@ -53,7 +53,7 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
               header={`${idx + 1}. ${audience.segment}`}
               onReport={() => onReport(`target_audiences.${audience.id}`)}
             >
-              <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 dark:bg-gray-900">
+              <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">
                   Description:
                 </h3>
