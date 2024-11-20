@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import {
   Document,
   Font,
@@ -11,18 +13,46 @@ import {
 import React from 'react'
 import { env } from '@/lib/env'
 
+let base64Logo = ''
+
+try {
+  const imagePath = path.join(process.cwd(), 'public', 'CheckMVP-Logo.png')
+  const imageData = fs.readFileSync(imagePath)
+  base64Logo = `data:image/png;base64,${imageData.toString('base64')}`
+} catch (error) {
+  console.error('Error reading logo:', error)
+
+  throw Error('Error reading logo')
+}
+
 // List of available and supported fonts:
 // https://gist.github.com/sadikay/d5457c52e7fb2347077f5b0fe5ba9300
 
-Font.register({
-  family: 'Roboto',
-  src: 'http://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf',
-})
+try {
+  const fontPath = path.join(process.cwd(), 'assets', 'Roboto.ttf')
 
-Font.register({
-  family: 'Roboto Slab',
-  src: 'http://fonts.gstatic.com/s/robotoslab/v6/y7lebkjgREBJK96VQi37Zp0EAVxt0G0biEntp43Qt6E.ttf',
-})
+  Font.register({
+    family: 'Roboto',
+    src: fontPath,
+  })
+} catch (error) {
+  console.error('Error registering Roboto font:', error)
+
+  throw Error('Error registering Roboto font')
+}
+
+try {
+  const fontPath = path.join(process.cwd(), 'assets', 'RobotoSlab.ttf')
+
+  Font.register({
+    family: 'Roboto Slab',
+    src: fontPath,
+  })
+} catch (error) {
+  console.error('Error registering Roboto Slab font:', error)
+
+  throw Error('Error registering Roboto Slab font')
+}
 
 Font.registerEmojiSource({
   format: 'png',
@@ -152,10 +182,7 @@ export const IdeaPDFReport = ({ data }: Report) => (
 
       <View style={styles.view}>
         <Text style={styles.logo}>
-          <Image
-            src={`${env.NEXT_PUBLIC_URL}/CheckMVP-Logo.png`}
-            style={{ width: 150, height: 40 }}
-          />
+          <Image src={base64Logo} style={{ width: 150, height: 40 }} />
         </Text>
 
         <Text style={styles.title}>Your Personalized Startup Idea Report</Text>
