@@ -6,7 +6,7 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=true next build",
     "dev": "NODE_OPTIONS='--inspect --trace-deprecation' next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "next-lint": "next lint --no-cache",
     "eslint": "npx eslint . --ext .ts,.tsx,.js,.jsx",

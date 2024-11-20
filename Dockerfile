@@ -3,20 +3,22 @@ ARG ALPINE_VERSION="3.20"
 ARG NPM_SHARP_VERSION="0.33.5"
 
 # Install dependencies only when needed
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS base
+FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS base
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm install sharp@${NPM_SHARP_VERSION} && npm ci
+RUN npm install "sharp@${NPM_SHARP_VERSION}" && npm ci
 
 # Rebuild the source code only when needed
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
+FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS builder
 WORKDIR /app
 
 COPY --from=base /app/node_modules ./node_modules
 COPY . .
+
+ENV NODE_ENV production
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -53,10 +55,9 @@ ENV CONCEPT_SERVICE_API_BASE=$CONCEPT_SERVICE_API_BASE
 ARG FEEDBACK_SERVICE_API_BASE
 ENV FEEDBACK_SERVICE_API_BASE=$FEEDBACK_SERVICE_API_BASE
 
-RUN npm run prisma:generate_client && \
-    npm run build
+RUN npm run build
 
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS prod_builder
+FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS prod_builder
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -64,12 +65,10 @@ ENV NODE_ENV production
 COPY --from=base /app/node_modules ./node_modules
 COPY . .
 
-RUN npm install && \
-    npm run prisma:generate_client && \
-    cp -R node_modules prod_node_modules
+RUN npm install && cp -R node_modules prod_node_modules
 
 # Production image, copy all the files and run next
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS runner
+FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS runner
 
 WORKDIR /app
 
