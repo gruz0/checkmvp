@@ -8,12 +8,15 @@ import { GoogleTrendsKeywordsEvaluator } from '@/idea/adapters/OpenAIService/Goo
 import { MarketAnalysisEvaluator } from '@/idea/adapters/OpenAIService/MarketAnalysisEvaluator'
 import { PotentialNamesEvaluator } from '@/idea/adapters/OpenAIService/PotentialNamesEvaluator'
 import { SWOTAnalysisEvaluator } from '@/idea/adapters/OpenAIService/SWOTAnalysisEvaluator'
+import { SocialMediaCampaignsEvaluator } from '@/idea/adapters/OpenAIService/SocialMediaCampaignsEvaluator'
 import { TargetAudienceEvaluator } from '@/idea/adapters/OpenAIService/TargetAudienceEvaluator'
 import { ValuePropositionEvaluator } from '@/idea/adapters/OpenAIService/ValuePropositionEvaluator'
 import { Application } from '@/idea/app/App'
 import { ArchivationHandler } from '@/idea/app/commands/Archive'
 import { MakeReservationHandler } from '@/idea/app/commands/MakeReservation'
+import { RequestSocialMediaCampaignsHandler } from '@/idea/app/commands/RequestSocialMediaCampaigns'
 import { GetIdeaHandler } from '@/idea/app/queries/GetIdea'
+import { GetSocialMediaCampaignsHandler } from '@/idea/app/queries/GetSocialMediaCampaigns'
 import { CompetitorAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/CompetitorAnalysisEvaluationSubscriber'
 import { ContentIdeasEvaluationSubscriber } from '@/idea/events/subscribers/ContentIdeasEvaluationSubscriber'
 import { ElevatorPitchesEvaluationSubscriber } from '@/idea/events/subscribers/ElevatorPitchesEvaluationSubscriber'
@@ -21,6 +24,7 @@ import { GoogleTrendsKeywordsEvaluationSubscriber } from '@/idea/events/subscrib
 import { MarketAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/MarketAnalysisEvaluationSubscriber'
 import { PotentialNamesEvaluationSubscriber } from '@/idea/events/subscribers/PotentialNamesEvaluationSubscriber'
 import { SWOTAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/SWOTAnalysisEvaluationSubscriber'
+import { SocialMediaCampaignsSubscriber } from '@/idea/events/subscribers/SocialMediaCampaignsSubscriber'
 import { TargetAudienceEvaluationSubscriber } from '@/idea/events/subscribers/TargetAudienceEvaluationSubscriber'
 import { ValuePropositionEvaluationSubscriber } from '@/idea/events/subscribers/ValuePropositionEvaluationSubscriber'
 import { env } from '@/lib/env'
@@ -83,6 +87,11 @@ const registerApp = (): Application => {
     new ContentIdeasEvaluator(env.OPENAI_API_KEY)
   )
 
+  const socialMediaCampaignsSubscriber = new SocialMediaCampaignsSubscriber(
+    ideaRepository,
+    new SocialMediaCampaignsEvaluator(env.OPENAI_API_KEY)
+  )
+
   eventBus.subscribe('IdeaCreated', targetAudienceEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', valuePropositionEvaluationSubscriber)
   eventBus.subscribe('IdeaCreated', marketAnalysisEvaluationSubscriber)
@@ -104,6 +113,10 @@ const registerApp = (): Application => {
     'ValuePropositionEvaluated',
     contentIdeasEvaluationSubscriber
   )
+  eventBus.subscribe(
+    'SocialMediaCampaignsRequested',
+    socialMediaCampaignsSubscriber
+  )
 
   return {
     Commands: {
@@ -113,9 +126,16 @@ const registerApp = (): Application => {
         eventBus
       ),
       Archive: new ArchivationHandler(ideaRepository, eventBus),
+      RequestSocialMediaCampaigns: new RequestSocialMediaCampaignsHandler(
+        ideaRepository,
+        eventBus
+      ),
     },
     Queries: {
       GetIdea: new GetIdeaHandler(ideaRepository),
+      GetSocialMediaCampaigns: new GetSocialMediaCampaignsHandler(
+        ideaRepository
+      ),
     },
   }
 }
