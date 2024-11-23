@@ -38,7 +38,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit, onClose }) => {
         placeholder="Enter your feedback here (optional)"
         value={feedback}
         onChange={handleFeedbackChange}
-        className="mb-4 w-full rounded border p-2 md:text-lg"
+        className="mb-4 w-full rounded border p-2 md:text-lg dark:text-gray-900"
         rows={4}
         maxLength={4096}
       />
@@ -48,7 +48,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit, onClose }) => {
         placeholder="Your contact details (optional)"
         value={contact}
         onChange={handleContactChange}
-        className="mb-4 w-full rounded border p-2 md:text-lg"
+        className="mb-4 w-full rounded border p-2 md:text-lg dark:text-gray-900"
         maxLength={128}
       />
 
