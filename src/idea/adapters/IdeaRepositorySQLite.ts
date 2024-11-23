@@ -8,6 +8,7 @@ import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { ProductName } from '@/idea/domain/ProductName'
 import { Repository } from '@/idea/domain/Repository'
 import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
+import { SocialMediaCampaigns } from '@/idea/domain/SocialMediaCampaigns'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { prisma } from '@/lib/prisma'
@@ -229,6 +230,27 @@ export class IdeaRepositorySQLite implements Repository {
           },
           update: {
             value: JSON.stringify(contentIdeas),
+            updatedAt: new Date(),
+          },
+        })
+      }
+
+      const socialMediaCampaigns = updatedIdea.getSocialMediaCampaigns()
+      if (socialMediaCampaigns) {
+        await prisma.ideaContent.upsert({
+          where: {
+            ideaId_key: {
+              ideaId: id,
+              key: 'social_media_campaigns',
+            },
+          },
+          create: {
+            ideaId: id,
+            key: 'social_media_campaigns',
+            value: JSON.stringify(socialMediaCampaigns),
+          },
+          update: {
+            value: JSON.stringify(socialMediaCampaigns),
             updatedAt: new Date(),
           },
         })
@@ -583,6 +605,67 @@ export class IdeaRepositorySQLite implements Repository {
           strategy.benefits
         )
       )
+    })
+
+    return contentIdeasForMarketing
+  }
+
+  async getSocialMediaCampaignsByIdeaId(
+    ideaId: string
+  ): Promise<SocialMediaCampaigns | null> {
+    const socialMediaCampaignsModel = await prisma.ideaContent.findUnique({
+      where: {
+        ideaId_key: {
+          ideaId: ideaId,
+          key: 'social_media_campaigns',
+        },
+      },
+    })
+
+    if (!socialMediaCampaignsModel) {
+      return null
+    }
+
+    interface campaigns {
+      shortFormContents: Array<{
+        header: string
+        platform: string
+        content: string
+        tips: string[]
+        imagePrompt: string
+      }>
+      longFormContents: Array<{
+        header: string
+        platform: string
+        title: string
+        content: string
+        tips: string[]
+        imagePrompt: string
+      }>
+      videoContents: Array<{
+        header: string
+        platform: string
+        title: string
+        script: string[]
+        tips: string[]
+        imagePrompt: string
+      }>
+    }
+
+    const data = JSON.parse(socialMediaCampaignsModel.value) as campaigns
+
+    const contentIdeasForMarketing = SocialMediaCampaigns.New()
+
+    data.shortFormContents.forEach((content) => {
+      contentIdeasForMarketing.addShortFormContent(content)
+    })
+
+    data.longFormContents.forEach((content) => {
+      contentIdeasForMarketing.addLongFormContent(content)
+    })
+
+    data.videoContents.forEach((content) => {
+      contentIdeasForMarketing.addVideoContent(content)
     })
 
     return contentIdeasForMarketing

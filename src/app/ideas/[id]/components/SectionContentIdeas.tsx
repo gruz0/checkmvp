@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import React, { useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Paragraph from '@/components/Paragraph'
@@ -15,18 +16,22 @@ interface ContentIdeaProps {
 }
 
 interface SectionContentIdeasProps {
+  ideaId: string
   onReport: (section: string) => void
   data: Record<string, ContentIdeaProps> | null
 }
 
 interface ContentIdeaSectionProps {
+  ideaId: string
   onReport: (section: string) => void
   section: string
   header: string
+  downloadableContent?: boolean
   data: ContentIdeaProps
 }
 
 const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
+  ideaId,
   onReport,
   data,
 }) => {
@@ -54,13 +59,16 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
           {data ? (
             <>
               <ContentIdea
+                ideaId={ideaId}
                 header="Social Media Campaigns"
                 section="social_media_campaigns"
                 onReport={onReport}
                 data={data['socialMediaCampaigns']}
+                downloadableContent
               />
 
               <ContentIdea
+                ideaId={ideaId}
                 header="Blogging and Guest Posts"
                 section="blogging_and_guest_posts"
                 onReport={onReport}
@@ -68,6 +76,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
               />
 
               <ContentIdea
+                ideaId={ideaId}
                 header="Email Marketing"
                 section="email_marketing"
                 onReport={onReport}
@@ -75,6 +84,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
               />
 
               <ContentIdea
+                ideaId={ideaId}
                 header="Surveys & Polls"
                 section="surveys_and_polls"
                 onReport={onReport}
@@ -82,6 +92,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
               />
 
               <ContentIdea
+                ideaId={ideaId}
                 header="Video Content"
                 section="video_content"
                 onReport={onReport}
@@ -89,6 +100,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
               />
 
               <ContentIdea
+                ideaId={ideaId}
                 header="Infographics and Visual Content"
                 section="infographics_and_visual_content"
                 onReport={onReport}
@@ -96,6 +108,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
               />
 
               <ContentIdea
+                ideaId={ideaId}
                 header="Community Engagement"
                 section="community_engagement"
                 onReport={onReport}
@@ -103,6 +116,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
               />
 
               <ContentIdea
+                ideaId={ideaId}
                 header="Paid Advertising"
                 section="paid_advertising"
                 onReport={onReport}
@@ -110,6 +124,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
               />
 
               <ContentIdea
+                ideaId={ideaId}
                 header="Webinars & Live Streams"
                 section="webinars_and_live_streams"
                 onReport={onReport}
@@ -117,6 +132,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
               />
 
               <ContentIdea
+                ideaId={ideaId}
                 header="Partnerships & Collaborations"
                 section="partnerships_and_collaborations"
                 onReport={onReport}
@@ -133,10 +149,12 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
 }
 
 const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
+  ideaId,
   onReport,
   section,
   header,
   data,
+  downloadableContent = false,
 }) => (
   <Section
     header={header}
@@ -166,6 +184,18 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
           </li>
         ))}
       </ul>
+
+      {downloadableContent && (
+        <div className="mb-2">
+          <Link
+            href={`/ideas/${ideaId}/${section}`}
+            target="_blank"
+            className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+          >
+            Generate Content
+          </Link>
+        </div>
+      )}
     </div>
   </Section>
 )

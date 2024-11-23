@@ -330,6 +330,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
           <HorizontalLine />
 
           <SectionContentIdeas
+            ideaId={data.id}
             onReport={onReport}
             data={data.contentIdeasForMarketing}
           />

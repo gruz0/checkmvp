@@ -6,6 +6,7 @@ import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { Problem } from '@/idea/domain/Problem'
 import { ProductName } from '@/idea/domain/ProductName'
 import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
+import { SocialMediaCampaigns } from '@/idea/domain/SocialMediaCampaigns'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { Identity } from '@/shared/Identity'
@@ -25,6 +26,7 @@ export class Idea {
   private elevatorPitches: ElevatorPitch[] | null = null
   private googleTrendsKeywords: GoogleTrendsKeyword[] | null = null
   private contentIdeasForMarketing: ContentIdeasForMarketing | null = null
+  private socialMediaCampaigns: SocialMediaCampaigns | null = null
   private migrated: boolean = false
   private archived: boolean = false
 
@@ -105,6 +107,12 @@ export class Idea {
     this.contentIdeasForMarketing = contentIdeas
   }
 
+  public addSocialMediaCampaigns(
+    socialMediaCampaigns: SocialMediaCampaigns
+  ): void {
+    this.socialMediaCampaigns = socialMediaCampaigns
+  }
+
   public finalizeMigration(): void {
     if (this.migrated) {
       throw new Error('Idea was migrated')
@@ -171,6 +179,10 @@ export class Idea {
 
   public getContentIdeasForMarketing(): ContentIdeasForMarketing | null {
     return this.contentIdeasForMarketing
+  }
+
+  public getSocialMediaCampaigns(): SocialMediaCampaigns | null {
+    return this.socialMediaCampaigns
   }
 
   public isMigrated(): boolean {
