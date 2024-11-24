@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { usePlausible } from 'next-plausible'
 import React, { useEffect, useState } from 'react'
 import BackToTopButton from '@/components/BackToTopButton'
 import FeedbackForm from '@/components/FeedbackForm'
@@ -46,6 +47,7 @@ const reloadInterval = 5000
 
 export const SocialMediaCampaigns = ({ data }: Props) => {
   const router = useRouter()
+  const plausible = usePlausible()
 
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
   const [wrongSection, setWrongSection] = useState<string | null>(null)
@@ -103,6 +105,8 @@ export const SocialMediaCampaigns = ({ data }: Props) => {
     setStatus('loading')
 
     try {
+      plausible('request_social_media_campaigns')
+
       const res = await fetch(`/api/ideas/${data.id}/social_media_campaigns`, {
         method: 'POST',
         headers: {
