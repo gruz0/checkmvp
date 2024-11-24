@@ -7,6 +7,7 @@ import BackToTopButton from '@/components/BackToTopButton'
 import FeedbackForm from '@/components/FeedbackForm'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import HorizontalLine from '@/components/HorizontalLine'
+import { Goals } from '@/lib/goals'
 import { NavBar } from './components/NavBar'
 import SectionLongFormContent from './components/SectionLongFormContent'
 import SectionShortFormContent from './components/SectionShortFormContent'
@@ -105,7 +106,7 @@ export const SocialMediaCampaigns = ({ data }: Props) => {
     setStatus('loading')
 
     try {
-      plausible('request_social_media_campaigns')
+      plausible(Goals.RequestSocialMediaCampaigns)
 
       const res = await fetch(`/api/ideas/${data.id}/social_media_campaigns`, {
         method: 'POST',

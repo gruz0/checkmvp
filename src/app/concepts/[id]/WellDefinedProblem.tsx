@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
+import { Goals } from '@/lib/goals'
 
 interface TargetAudience {
   segment: string
@@ -41,8 +42,9 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
       setStatus('loading')
       setErrorMessage(null)
 
-      plausible('analysis', {
+      plausible(Goals.Analysis, {
         props: {
+          page: 'WellDefinedProblem',
           buttonId: 'well_defined',
         },
       })
