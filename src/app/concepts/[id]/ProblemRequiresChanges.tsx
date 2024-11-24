@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import ConceptForm from '@/components/ConceptForm'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import { Goals } from '@/lib/goals'
 
 interface TargetAudience {
   segment: string
@@ -43,8 +44,9 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
       setStatus('loading')
       setErrorMessage(null)
 
-      plausible('analysis', {
+      plausible(Goals.Analysis, {
         props: {
+          page: 'ProblemRequiresChanges',
           buttonId: 'requires_changes',
         },
       })

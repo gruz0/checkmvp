@@ -8,6 +8,7 @@ import BackToTopButton from '@/components/BackToTopButton'
 import FeedbackForm from '@/components/FeedbackForm'
 import HorizontalLine from '@/components/HorizontalLine'
 import MessageBox from '@/components/MessageBox'
+import { Goals } from '@/lib/goals'
 import { NavBar } from './components/NavBar'
 import SectionActionableNextSteps from './components/SectionActionableNextSteps'
 import SectionCompetitors from './components/SectionCompetitors'
@@ -159,7 +160,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     }
 
     try {
-      plausible('archive_report')
+      plausible(Goals.ArchiveReport)
 
       const res = await fetch(`/api/ideas/${data.id}`, {
         method: 'DELETE',
@@ -243,7 +244,13 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             {readyForReport ? (
               <Link
                 href={`/api/ideas/${data.id}/pdf`}
-                onClick={() => plausible('download_pdf')}
+                onClick={() =>
+                  plausible(Goals.DownloadPDF, {
+                    props: {
+                      buttonId: 'top_button',
+                    },
+                  })
+                }
                 target="_blank"
                 className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
               >
@@ -345,7 +352,13 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             {readyForReport ? (
               <Link
                 href={`/api/ideas/${data.id}/pdf`}
-                onClick={() => plausible('download_pdf')}
+                onClick={() =>
+                  plausible(Goals.DownloadPDF, {
+                    props: {
+                      buttonId: 'bottom_button',
+                    },
+                  })
+                }
                 target="_blank"
                 className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
               >
