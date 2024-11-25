@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import ConceptForm from '@/components/ConceptForm'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 import { Goals } from '@/lib/goals'
 
 interface TargetAudience {
@@ -151,6 +152,31 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
                     Validate This Problem Instead
                   </Link>
                 </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {evaluation.targetAudience.length > 0 && (
+        <Section header="Target Audiences:">
+          <div className="grid grid-cols-1 gap-6">
+            {evaluation.targetAudience.map((item, index) => (
+              <div
+                key={index}
+                className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 md:p-6 md:pb-0 dark:bg-gray-900/50"
+              >
+                <p className="mb-4 text-lg font-bold md:text-xl">
+                  {item.segment}
+                </p>
+
+                <p className="mb-4 md:text-lg">{item.description}</p>
+
+                <p className="mb-4 font-semibold md:text-lg">
+                  Their Challenges:
+                </p>
+
+                <SimpleUnorderedList items={item.challenges} />
               </div>
             ))}
           </div>
