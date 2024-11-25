@@ -53,29 +53,23 @@ export class GetSocialMediaCampaignsHandler {
     Sentry.setTag('query_type', 'GetSocialMediaCampaigns')
     Sentry.setTag('idea_id', query.id)
 
-    try {
-      const idea = await this.readModel.getById(query.id)
+    const idea = await this.readModel.getById(query.id)
 
-      if (!idea) {
-        throw new NotFoundError(`Idea ${query.id} does not exist`)
-      }
+    if (!idea) {
+      throw new NotFoundError(`Idea ${query.id} does not exist`)
+    }
 
-      const socialMediaCampaigns = idea.getSocialMediaCampaigns()
+    const socialMediaCampaigns = idea.getSocialMediaCampaigns()
 
-      return {
-        id: idea.getId().getValue(),
-        contents: socialMediaCampaigns
-          ? {
-              shortFormContent: socialMediaCampaigns.getShortFormContents(),
-              longFormContent: socialMediaCampaigns.getLongFormContents(),
-              videoContent: socialMediaCampaigns.getVideoContents(),
-            }
-          : null,
-      }
-    } catch (e) {
-      Sentry.captureException(e)
-
-      throw e
+    return {
+      id: idea.getId().getValue(),
+      contents: socialMediaCampaigns
+        ? {
+            shortFormContent: socialMediaCampaigns.getShortFormContents(),
+            longFormContent: socialMediaCampaigns.getLongFormContents(),
+            videoContent: socialMediaCampaigns.getVideoContents(),
+          }
+        : null,
     }
   }
 }
