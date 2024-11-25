@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { usePlausible } from 'next-plausible'
 import React, { useEffect, useState } from 'react'
@@ -9,6 +8,7 @@ import FeedbackForm from '@/components/FeedbackForm'
 import HorizontalLine from '@/components/HorizontalLine'
 import MessageBox from '@/components/MessageBox'
 import { Goals } from '@/lib/goals'
+import DownloadPDFButton from './components/DownloadPDFButton'
 import { NavBar } from './components/NavBar'
 import SectionActionableNextSteps from './components/SectionActionableNextSteps'
 import SectionCompetitors from './components/SectionCompetitors'
@@ -242,8 +242,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             </h1>
 
             {readyForReport ? (
-              <Link
-                href={`/api/ideas/${data.id}/pdf`}
+              <DownloadPDFButton
+                ideaId={data.id}
                 onClick={() =>
                   plausible(Goals.DownloadPDF, {
                     props: {
@@ -251,11 +251,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
                     },
                   })
                 }
-                target="_blank"
-                className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
-              >
-                PDF
-              </Link>
+              />
             ) : (
               <span className="rounded bg-gray-500 px-4 py-2 font-semibold text-white">
                 Loading...
@@ -350,8 +346,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             </p>
 
             {readyForReport ? (
-              <Link
-                href={`/api/ideas/${data.id}/pdf`}
+              <DownloadPDFButton
+                ideaId={data.id}
                 onClick={() =>
                   plausible(Goals.DownloadPDF, {
                     props: {
@@ -359,11 +355,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
                     },
                   })
                 }
-                target="_blank"
-                className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
-              >
-                Download
-              </Link>
+              />
             ) : (
               <span className="rounded bg-gray-500 px-4 py-2 font-semibold text-white">
                 Loading...
