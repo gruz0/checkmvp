@@ -26,7 +26,7 @@ interface ContentIdeaSectionProps {
   onReport: (section: string) => void
   section: string
   header: string
-  downloadableContent?: boolean
+  generatableContent?: boolean
   data: ContentIdeaProps
 }
 
@@ -64,7 +64,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
                 section="social_media_campaigns"
                 onReport={onReport}
                 data={data['socialMediaCampaigns']}
-                downloadableContent
+                generatableContent
               />
 
               <ContentIdea
@@ -154,7 +154,7 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
   section,
   header,
   data,
-  downloadableContent = false,
+  generatableContent = false,
 }) => (
   <Section
     header={header}
@@ -185,7 +185,7 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
         ))}
       </ul>
 
-      {downloadableContent && (
+      {generatableContent && (
         <div className="mb-2">
           <Link
             href={`/ideas/${ideaId}/${section}`}
