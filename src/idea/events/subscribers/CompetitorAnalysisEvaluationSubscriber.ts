@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { Repository } from '@/idea/domain/Repository'
-import { IdeaCreated } from '@/idea/domain/events/IdeaCreated'
+import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEvaluated'
 import { EventHandler } from '@/idea/events/EventHandler'
 
 interface Competitor {
@@ -55,7 +55,7 @@ export class CompetitorAnalysisEvaluationSubscriber implements EventHandler {
     return CompetitorAnalysisEvaluationSubscriber.className
   }
 
-  async handle(event: IdeaCreated): Promise<void> {
+  async handle(event: TargetAudiencesEvaluated): Promise<void> {
     Sentry.setTag('component', 'BackgroundJob')
     Sentry.setTag('job_type', this.getName())
     Sentry.setTag('event_type', event.type)
@@ -70,11 +70,7 @@ export class CompetitorAnalysisEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
-      const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
-        idea.getId().getValue()
-      )
-
-      const audiences = targetAudiences.map((targetAudience) => ({
+      const audiences = idea.getTargetAudiences().map((targetAudience) => ({
         segment: targetAudience.getSegment(),
         description: targetAudience.getDescription(),
         challenges: targetAudience.getChallenges(),
@@ -88,7 +84,7 @@ export class CompetitorAnalysisEvaluationSubscriber implements EventHandler {
       )
 
       await this.repository.updateIdea(event.payload.id, (idea): Idea => {
-        idea.addCompetitorAnalysis(
+        idea.setCompetitorAnalysis(
           CompetitorAnalysis.New(
             evaluation.competitors,
             evaluation.comparison,

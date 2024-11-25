@@ -1,15 +1,6 @@
 import * as Sentry from '@sentry/nextjs'
 import { NotFoundError } from '@/common/errors/NotFoundError'
 import { Idea } from '@/idea/domain/Aggregate'
-import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
-import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
-import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
-import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
-import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
-import { ProductName } from '@/idea/domain/ProductName'
-import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
-import { TargetAudience } from '@/idea/domain/TargetAudience'
-import { ValueProposition } from '@/idea/domain/ValueProposition'
 
 type Query = {
   id: string
@@ -92,21 +83,6 @@ interface ContentIdeaDTO {
 
 interface ReadModel {
   getById(id: string): Promise<Idea | null>
-  getTargetAudiencesByIdeaId(ideaId: string): Promise<TargetAudience[]>
-  getValuePropositionByIdeaId(ideaId: string): Promise<ValueProposition | null>
-  getMarketAnalysisByIdeaId(ideaId: string): Promise<MarketAnalysis | null>
-  getCompetitorAnalysisByIdeaId(
-    ideaId: string
-  ): Promise<CompetitorAnalysis | null>
-  getProductNamesByIdeaId(ideaId: string): Promise<ProductName[] | null>
-  getSWOTAnalysisByIdeaId(ideaId: string): Promise<SWOTAnalysis | null>
-  getElevatorPitchesByIdeaId(ideaId: string): Promise<ElevatorPitch[] | null>
-  getGoogleTrendsKeywordsByIdeaId(
-    ideaId: string
-  ): Promise<GoogleTrendsKeyword[] | null>
-  getContentIdeasForMarketingByIdeaId(
-    ideaId: string
-  ): Promise<ContentIdeasForMarketing | null>
 }
 
 export class GetIdeaHandler {
@@ -124,38 +100,15 @@ export class GetIdeaHandler {
         throw new NotFoundError(`Idea ${query.id} does not exist`)
       }
 
-      const targetAudiences = await this.readModel.getTargetAudiencesByIdeaId(
-        query.id
-      )
-
-      const valueProposition = await this.readModel.getValuePropositionByIdeaId(
-        query.id
-      )
-
-      const marketAnalysis = await this.readModel.getMarketAnalysisByIdeaId(
-        query.id
-      )
-
-      const competitorAnalysis =
-        await this.readModel.getCompetitorAnalysisByIdeaId(query.id)
-
-      const productNames = await this.readModel.getProductNamesByIdeaId(
-        query.id
-      )
-
-      const swotAnalysis = await this.readModel.getSWOTAnalysisByIdeaId(
-        query.id
-      )
-
-      const elevatorPitches = await this.readModel.getElevatorPitchesByIdeaId(
-        query.id
-      )
-
-      const googleTrendsKeywords =
-        await this.readModel.getGoogleTrendsKeywordsByIdeaId(query.id)
-
-      const contentIdeas =
-        await this.readModel.getContentIdeasForMarketingByIdeaId(query.id)
+      const valueProposition = idea.getValueProposition()
+      const targetAudiences = idea.getTargetAudiences()
+      const marketAnalysis = idea.getMarketAnalysis()
+      const competitorAnalysis = idea.getCompetitorAnalysis()
+      const productNames = idea.getProductNames()
+      const swotAnalysis = idea.getSWOTAnalysis()
+      const elevatorPitches = idea.getElevatorPitches()
+      const googleTrendsKeywords = idea.getGoogleTrendsKeywords()
+      const contentIdeasForMarketing = idea.getContentIdeasForMarketing()
 
       return {
         id: idea.getId().getValue(),
@@ -225,8 +178,8 @@ export class GetIdeaHandler {
         googleTrendsKeywords: googleTrendsKeywords
           ? googleTrendsKeywords.map((keyword) => keyword.getKeyword())
           : null,
-        contentIdeasForMarketing: contentIdeas
-          ? contentIdeas.getContentIdeas().reduce(
+        contentIdeasForMarketing: contentIdeasForMarketing
+          ? contentIdeasForMarketing.getContentIdeas().reduce(
               (acc, contentIdea) => {
                 const section = contentIdea.getSection().getName()
 

@@ -16,8 +16,8 @@ export class Idea {
   private readonly conceptId: Identity
   private readonly problem: Problem
   private readonly marketExistence: string
+  private readonly targetAudiences: TargetAudience[] = []
 
-  private targetAudiences: TargetAudience[] = []
   private valueProposition: ValueProposition | null = null
   private marketAnalysis: MarketAnalysis | null = null
   private competitorAnalysis: CompetitorAnalysis | null = null
@@ -34,42 +34,91 @@ export class Idea {
     id: Identity,
     conceptId: Identity,
     problem: Problem,
-    marketExistence: string
+    marketExistence: string,
+    targetAudiences: TargetAudience[]
   ) {
+    if (targetAudiences.length === 0) {
+      throw new Error('Target audiences cannot be empty')
+    }
+
     this.id = id
     this.conceptId = conceptId
     this.problem = problem
     this.marketExistence = marketExistence
+    this.targetAudiences = targetAudiences
   }
 
   static New(
     id: string,
     conceptId: string,
     problem: string,
-    marketExistence: string
+    marketExistence: string,
+    targetAudiences: TargetAudience[]
   ): Idea {
     return new Idea(
       Identity.New(id),
       Identity.New(conceptId),
       Problem.New(problem),
-      marketExistence
+      marketExistence,
+      targetAudiences
     )
   }
 
-  public addTargetAudience(targetAudience: TargetAudience): void {
-    // TODO: If targetAudience already exists by ID - replace it
-    this.targetAudiences.push(targetAudience)
+  public updateTargetAudience(updatedAudience: TargetAudience): void {
+    const index = this.targetAudiences.findIndex(
+      (audience) =>
+        audience.getId().getValue() === updatedAudience.getId().getValue()
+    )
+
+    if (index === -1) {
+      throw new Error(
+        `TargetAudience with ID ${updatedAudience.getId().getValue()} does not exist`
+      )
+    }
+
+    const why = updatedAudience.getWhy()
+    if (why === null) {
+      throw new Error('Why has not been set for this TargetAudience.')
+    }
+
+    const painPoints = updatedAudience.getPainPoints()
+    if (painPoints === null) {
+      throw new Error('PainPoints have not been set for this TargetAudience.')
+    }
+
+    const targetingStrategy = updatedAudience.getTargetingStrategy()
+    if (targetingStrategy === null) {
+      throw new Error(
+        'TargetingStrategy has not been set for this TargetAudience.'
+      )
+    }
+
+    this.targetAudiences[index].setWhy(why)
+    this.targetAudiences[index].setPainPoints(painPoints)
+    this.targetAudiences[index].setTargetingStrategy(targetingStrategy)
   }
 
-  public addValueProposition(valueProposition: ValueProposition): void {
+  public setValueProposition(valueProposition: ValueProposition): void {
+    if (this.valueProposition !== null) {
+      throw new Error('ValueProposition already set')
+    }
+
     this.valueProposition = valueProposition
   }
 
-  public addMarketAnalysis(marketAnalysis: MarketAnalysis): void {
+  public setMarketAnalysis(marketAnalysis: MarketAnalysis): void {
+    if (this.marketAnalysis !== null) {
+      throw new Error('MarketAnalysis already set')
+    }
+
     this.marketAnalysis = marketAnalysis
   }
 
-  public addCompetitorAnalysis(competitorAnalysis: CompetitorAnalysis): void {
+  public setCompetitorAnalysis(competitorAnalysis: CompetitorAnalysis): void {
+    if (this.competitorAnalysis !== null) {
+      throw new Error('CompetitorAnalysis already set')
+    }
+
     this.competitorAnalysis = competitorAnalysis
   }
 
@@ -78,16 +127,36 @@ export class Idea {
       this.productNames = []
     }
 
+    const exists = this.productNames.some(
+      (ta) => ta.getProductName() === productName.getProductName()
+    )
+
+    if (exists) {
+      throw new Error('ProductName already exists')
+    }
+
     this.productNames.push(productName)
   }
 
-  public addSWOTAnalysis(swotAnalysis: SWOTAnalysis): void {
+  public setSWOTAnalysis(swotAnalysis: SWOTAnalysis): void {
+    if (this.swotAnalysis !== null) {
+      throw new Error('SWOTAnalysis already set')
+    }
+
     this.swotAnalysis = swotAnalysis
   }
 
   public addElevatorPitch(elevatorPitch: ElevatorPitch): void {
     if (this.elevatorPitches === null) {
       this.elevatorPitches = []
+    }
+
+    const exists = this.elevatorPitches.some(
+      (ta) => ta.getHook() === elevatorPitch.getHook()
+    )
+
+    if (exists) {
+      throw new Error('ElevatorPitch already exists')
     }
 
     this.elevatorPitches.push(elevatorPitch)
@@ -98,24 +167,40 @@ export class Idea {
       this.googleTrendsKeywords = []
     }
 
+    const exists = this.googleTrendsKeywords.some(
+      (ta) => ta.getKeyword() === keyword.getKeyword()
+    )
+
+    if (exists) {
+      throw new Error('GoogleTrendsKeyword already exists')
+    }
+
     this.googleTrendsKeywords.push(keyword)
   }
 
-  public addContentIdeasForMarketing(
+  public setContentIdeasForMarketing(
     contentIdeas: ContentIdeasForMarketing
   ): void {
+    if (this.contentIdeasForMarketing !== null) {
+      throw new Error('ContentIdeasForMarketing already set')
+    }
+
     this.contentIdeasForMarketing = contentIdeas
   }
 
-  public addSocialMediaCampaigns(
+  public setSocialMediaCampaigns(
     socialMediaCampaigns: SocialMediaCampaigns
   ): void {
+    if (this.socialMediaCampaigns !== null) {
+      throw new Error('SocialMediaCampaigns already set')
+    }
+
     this.socialMediaCampaigns = socialMediaCampaigns
   }
 
   public finalizeMigration(): void {
     if (this.migrated) {
-      throw new Error('Idea was migrated')
+      throw new Error('Idea was already migrated')
     }
 
     this.migrated = true
@@ -123,7 +208,7 @@ export class Idea {
 
   public archive(): void {
     if (this.archived) {
-      throw new Error('Idea was archived')
+      throw new Error('Idea was already archived')
     }
 
     this.archived = true
@@ -145,7 +230,7 @@ export class Idea {
     return this.marketExistence
   }
 
-  public getTargetAudiences(): TargetAudience[] {
+  public getTargetAudiences(): ReadonlyArray<TargetAudience> {
     return this.targetAudiences
   }
 
@@ -161,7 +246,7 @@ export class Idea {
     return this.competitorAnalysis
   }
 
-  public getProductNames(): ProductName[] | null {
+  public getProductNames(): ReadonlyArray<ProductName> | null {
     return this.productNames
   }
 
@@ -169,11 +254,11 @@ export class Idea {
     return this.swotAnalysis
   }
 
-  public getElevatorPitches(): ElevatorPitch[] | null {
+  public getElevatorPitches(): ReadonlyArray<ElevatorPitch> | null {
     return this.elevatorPitches
   }
 
-  public getGoogleTrendsKeywords(): GoogleTrendsKeyword[] | null {
+  public getGoogleTrendsKeywords(): ReadonlyArray<GoogleTrendsKeyword> | null {
     return this.googleTrendsKeywords
   }
 

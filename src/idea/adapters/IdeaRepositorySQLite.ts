@@ -18,6 +18,10 @@ type UpdateFn = (idea: Idea) => Idea
 
 export class IdeaRepositorySQLite implements Repository {
   async addIdea(idea: Idea): Promise<void> {
+    if (idea.getTargetAudiences().length === 0) {
+      throw new Error('Idea does not have target audiences')
+    }
+
     await prisma.idea.create({
       data: {
         id: idea.getId().getValue(),
@@ -261,6 +265,10 @@ export class IdeaRepositorySQLite implements Repository {
   async getById(id: string): Promise<Idea | null> {
     const ideaModel = await prisma.idea.findUnique({
       where: { id },
+      include: {
+        targetAudiences: true,
+        contents: true,
+      },
     })
 
     if (!ideaModel) {
@@ -271,25 +279,10 @@ export class IdeaRepositorySQLite implements Repository {
       return null
     }
 
-    const idea = Idea.New(
-      ideaModel.id,
-      ideaModel.conceptId,
-      ideaModel.problem,
-      ideaModel.marketExistence
-    )
-
-    return idea
-  }
-
-  async getTargetAudiencesByIdeaId(ideaId: string): Promise<TargetAudience[]> {
-    const targetAudienceModels = await prisma.targetAudience.findMany({
-      where: { ideaId },
-    })
-
-    return targetAudienceModels.map((audience) => {
+    const targetAudiences = ideaModel.targetAudiences.map((audience) => {
       const targetAudience = TargetAudience.New(
         audience.id,
-        ideaId,
+        ideaModel.id,
         audience.segment,
         audience.description,
         JSON.parse(audience.challenges)
@@ -309,365 +302,305 @@ export class IdeaRepositorySQLite implements Repository {
 
       return targetAudience
     })
-  }
 
-  async getValuePropositionByIdeaId(
-    ideaId: string
-  ): Promise<ValueProposition | null> {
-    const valuePropositionModel = await prisma.ideaContent.findUnique({
-      where: {
-        ideaId_key: {
-          ideaId: ideaId,
-          key: 'value_proposition',
-        },
-      },
-    })
-
-    if (!valuePropositionModel) {
-      return null
-    }
-
-    interface valueProposition {
-      mainBenefit: string
-      problemSolving: string
-      differentiation: string
-    }
-
-    const data = JSON.parse(valuePropositionModel.value) as valueProposition
-
-    return ValueProposition.New(
-      data.mainBenefit,
-      data.problemSolving,
-      data.differentiation
+    const idea = Idea.New(
+      ideaModel.id,
+      ideaModel.conceptId,
+      ideaModel.problem,
+      ideaModel.marketExistence,
+      targetAudiences
     )
-  }
 
-  async getMarketAnalysisByIdeaId(
-    ideaId: string
-  ): Promise<MarketAnalysis | null> {
-    const marketAnalysisModel = await prisma.ideaContent.findUnique({
-      where: {
-        ideaId_key: {
-          ideaId: ideaId,
-          key: 'market_analysis',
-        },
-      },
-    })
-
-    if (!marketAnalysisModel) {
-      return null
-    }
-
-    interface marketAnalysis {
-      trends: string
-      userBehaviors: string
-      marketGaps: string
-      innovationOpportunities: string
-      strategicDirection: string
-    }
-
-    const data = JSON.parse(marketAnalysisModel.value) as marketAnalysis
-
-    return MarketAnalysis.New(
-      data.trends,
-      data.userBehaviors,
-      data.marketGaps,
-      data.innovationOpportunities,
-      data.strategicDirection
+    // Value proposition
+    const valuePropositionModel = ideaModel.contents.find(
+      (content) => content.key === 'value_proposition'
     )
-  }
 
-  async getCompetitorAnalysisByIdeaId(
-    ideaId: string
-  ): Promise<CompetitorAnalysis | null> {
-    const competitorAnalysisModel = await prisma.ideaContent.findUnique({
-      where: {
-        ideaId_key: {
-          ideaId: ideaId,
-          key: 'competitor_analysis',
-        },
-      },
-    })
-
-    if (!competitorAnalysisModel) {
-      return null
-    }
-
-    interface competitor {
-      name: string
-      productName: string
-      url: string
-      coreFeatures: string[]
-      valueProposition: string
-      userAcquisition: string
-      strengths: string[]
-      weaknesses: string[]
-      differentiationOpportunity: string
-    }
-
-    interface comparison {
-      strengths: string[]
-      weaknesses: string[]
-    }
-
-    interface competitorAnalysis {
-      competitors: competitor[]
-      comparison: comparison
-      differentiationSuggestions: string[]
-    }
-
-    const data = JSON.parse(competitorAnalysisModel.value) as competitorAnalysis
-
-    return CompetitorAnalysis.New(
-      data.competitors,
-      data.comparison,
-      data.differentiationSuggestions
-    )
-  }
-
-  async getProductNamesByIdeaId(ideaId: string): Promise<ProductName[] | null> {
-    const productNamesModel = await prisma.ideaContent.findUnique({
-      where: {
-        ideaId_key: {
-          ideaId: ideaId,
-          key: 'product_names',
-        },
-      },
-    })
-
-    if (!productNamesModel) {
-      return null
-    }
-
-    interface productName {
-      productName: string
-      domains: string[]
-      why: string
-      tagline: string
-      targetAudienceInsight: string
-      similarNames: string[]
-      brandingPotential: string
-    }
-
-    type productNames = productName[]
-
-    const data = JSON.parse(productNamesModel.value) as productNames
-
-    return data.map((product) =>
-      ProductName.New(
-        product.productName,
-        product.domains,
-        product.why,
-        product.tagline,
-        product.targetAudienceInsight,
-        product.similarNames,
-        product.brandingPotential
-      )
-    )
-  }
-
-  async getSWOTAnalysisByIdeaId(ideaId: string): Promise<SWOTAnalysis | null> {
-    const swotAnalysisModel = await prisma.ideaContent.findUnique({
-      where: {
-        ideaId_key: {
-          ideaId: ideaId,
-          key: 'swot_analysis',
-        },
-      },
-    })
-
-    if (!swotAnalysisModel) {
-      return null
-    }
-
-    interface swotAnalysis {
-      strengths: string[]
-      weaknesses: string[]
-      opportunities: string[]
-      threats: string[]
-    }
-
-    const data = JSON.parse(swotAnalysisModel.value) as swotAnalysis
-
-    return SWOTAnalysis.New(
-      data.strengths,
-      data.weaknesses,
-      data.opportunities,
-      data.threats
-    )
-  }
-
-  async getElevatorPitchesByIdeaId(
-    ideaId: string
-  ): Promise<ElevatorPitch[] | null> {
-    const elevatorPitchesModel = await prisma.ideaContent.findUnique({
-      where: {
-        ideaId_key: {
-          ideaId: ideaId,
-          key: 'elevator_pitches',
-        },
-      },
-    })
-
-    if (!elevatorPitchesModel) {
-      return null
-    }
-
-    interface elevatorPitch {
-      hook: string
-      problem: string
-      solution: string
-      valueProposition: string
-      cta: string
-    }
-
-    type elevatorPitches = elevatorPitch[]
-
-    const data = JSON.parse(elevatorPitchesModel.value) as elevatorPitches
-
-    return data.map((pitch) =>
-      ElevatorPitch.New(
-        pitch.hook,
-        pitch.problem,
-        pitch.solution,
-        pitch.valueProposition,
-        pitch.cta
-      )
-    )
-  }
-
-  async getGoogleTrendsKeywordsByIdeaId(
-    ideaId: string
-  ): Promise<GoogleTrendsKeyword[] | null> {
-    const googleTrendsKeywordsModel = await prisma.ideaContent.findUnique({
-      where: {
-        ideaId_key: {
-          ideaId: ideaId,
-          key: 'google_trends_keywords',
-        },
-      },
-    })
-
-    if (!googleTrendsKeywordsModel) {
-      return null
-    }
-
-    type keyword = {
-      keyword: string
-    }
-
-    type keywords = keyword[]
-
-    const data = JSON.parse(googleTrendsKeywordsModel.value) as keywords
-
-    return data.map((value) => GoogleTrendsKeyword.New(value.keyword))
-  }
-
-  async getContentIdeasForMarketingByIdeaId(
-    ideaId: string
-  ): Promise<ContentIdeasForMarketing | null> {
-    const contentIdeasModel = await prisma.ideaContent.findUnique({
-      where: {
-        ideaId_key: {
-          ideaId: ideaId,
-          key: 'content_ideas_for_marketing',
-        },
-      },
-    })
-
-    if (!contentIdeasModel) {
-      return null
-    }
-
-    interface contentIdea {
-      strategy: {
-        name: string
+    if (valuePropositionModel) {
+      interface valueProposition {
+        mainBenefit: string
+        problemSolving: string
+        differentiation: string
       }
-      platforms: string[]
-      ideas: string[]
-      benefits: string[]
-    }
 
-    interface contentIdeas {
-      contentIdeas: contentIdea[]
-    }
+      const data = JSON.parse(valuePropositionModel.value) as valueProposition
 
-    const data = JSON.parse(contentIdeasModel.value) as contentIdeas
-
-    const contentIdeasForMarketing = ContentIdeasForMarketing.New()
-
-    data.contentIdeas.forEach((strategy) => {
-      contentIdeasForMarketing.addContentIdea(
-        ContentIdea.New(
-          Strategy.New(strategy.strategy.name),
-          strategy.platforms,
-          strategy.ideas,
-          strategy.benefits
+      idea.setValueProposition(
+        ValueProposition.New(
+          data.mainBenefit,
+          data.problemSolving,
+          data.differentiation
         )
       )
-    })
-
-    return contentIdeasForMarketing
-  }
-
-  async getSocialMediaCampaignsByIdeaId(
-    ideaId: string
-  ): Promise<SocialMediaCampaigns | null> {
-    const socialMediaCampaignsModel = await prisma.ideaContent.findUnique({
-      where: {
-        ideaId_key: {
-          ideaId: ideaId,
-          key: 'social_media_campaigns',
-        },
-      },
-    })
-
-    if (!socialMediaCampaignsModel) {
-      return null
     }
 
-    interface campaigns {
-      shortFormContents: Array<{
-        header: string
-        platform: string
-        content: string
-        tips: string[]
-        imagePrompt: string
-      }>
-      longFormContents: Array<{
-        header: string
-        platform: string
-        title: string
-        content: string
-        tips: string[]
-        imagePrompt: string
-      }>
-      videoContents: Array<{
-        header: string
-        platform: string
-        title: string
-        script: string[]
-        tips: string[]
-        imagePrompt: string
-      }>
+    // Market analysis
+    const marketAnalysisModel = ideaModel.contents.find(
+      (content) => content.key === 'market_analysis'
+    )
+
+    if (marketAnalysisModel) {
+      interface marketAnalysis {
+        trends: string
+        userBehaviors: string
+        marketGaps: string
+        innovationOpportunities: string
+        strategicDirection: string
+      }
+
+      const data = JSON.parse(marketAnalysisModel.value) as marketAnalysis
+
+      idea.setMarketAnalysis(
+        MarketAnalysis.New(
+          data.trends,
+          data.userBehaviors,
+          data.marketGaps,
+          data.innovationOpportunities,
+          data.strategicDirection
+        )
+      )
     }
 
-    const data = JSON.parse(socialMediaCampaignsModel.value) as campaigns
+    // Competitor analysis
+    const competitorAnalysisModel = ideaModel.contents.find(
+      (content) => content.key === 'competitor_analysis'
+    )
 
-    const contentIdeasForMarketing = SocialMediaCampaigns.New()
+    if (competitorAnalysisModel) {
+      interface competitor {
+        name: string
+        productName: string
+        url: string
+        coreFeatures: string[]
+        valueProposition: string
+        userAcquisition: string
+        strengths: string[]
+        weaknesses: string[]
+        differentiationOpportunity: string
+      }
 
-    data.shortFormContents.forEach((content) => {
-      contentIdeasForMarketing.addShortFormContent(content)
-    })
+      interface comparison {
+        strengths: string[]
+        weaknesses: string[]
+      }
 
-    data.longFormContents.forEach((content) => {
-      contentIdeasForMarketing.addLongFormContent(content)
-    })
+      interface competitorAnalysis {
+        competitors: competitor[]
+        comparison: comparison
+        differentiationSuggestions: string[]
+      }
 
-    data.videoContents.forEach((content) => {
-      contentIdeasForMarketing.addVideoContent(content)
-    })
+      const data = JSON.parse(
+        competitorAnalysisModel.value
+      ) as competitorAnalysis
 
-    return contentIdeasForMarketing
+      idea.setCompetitorAnalysis(
+        CompetitorAnalysis.New(
+          data.competitors,
+          data.comparison,
+          data.differentiationSuggestions
+        )
+      )
+    }
+
+    // Product names
+    const productNamesModel = ideaModel.contents.find(
+      (content) => content.key === 'product_names'
+    )
+
+    if (productNamesModel) {
+      interface productName {
+        productName: string
+        domains: string[]
+        why: string
+        tagline: string
+        targetAudienceInsight: string
+        similarNames: string[]
+        brandingPotential: string
+      }
+
+      type productNames = productName[]
+
+      const data = JSON.parse(productNamesModel.value) as productNames
+
+      data.forEach((product) => {
+        idea.addProductName(
+          ProductName.New(
+            product.productName,
+            product.domains,
+            product.why,
+            product.tagline,
+            product.targetAudienceInsight,
+            product.similarNames,
+            product.brandingPotential
+          )
+        )
+      })
+    }
+
+    // SWOT analysis
+    const swotAnalysisModel = ideaModel.contents.find(
+      (content) => content.key === 'swot_analysis'
+    )
+
+    if (swotAnalysisModel) {
+      interface swotAnalysis {
+        strengths: string[]
+        weaknesses: string[]
+        opportunities: string[]
+        threats: string[]
+      }
+
+      const data = JSON.parse(swotAnalysisModel.value) as swotAnalysis
+
+      idea.setSWOTAnalysis(
+        SWOTAnalysis.New(
+          data.strengths,
+          data.weaknesses,
+          data.opportunities,
+          data.threats
+        )
+      )
+    }
+
+    // Elevator pitches
+    const elevatorPitchesModel = ideaModel.contents.find(
+      (content) => content.key === 'elevator_pitches'
+    )
+
+    if (elevatorPitchesModel) {
+      interface elevatorPitch {
+        hook: string
+        problem: string
+        solution: string
+        valueProposition: string
+        cta: string
+      }
+
+      type elevatorPitches = elevatorPitch[]
+
+      const data = JSON.parse(elevatorPitchesModel.value) as elevatorPitches
+
+      data.forEach((pitch) => {
+        idea.addElevatorPitch(
+          ElevatorPitch.New(
+            pitch.hook,
+            pitch.problem,
+            pitch.solution,
+            pitch.valueProposition,
+            pitch.cta
+          )
+        )
+      })
+    }
+
+    // Google Trends keywords
+    const googleTrendsKeywordsModel = ideaModel.contents.find(
+      (content) => content.key === 'google_trends_keywords'
+    )
+
+    if (googleTrendsKeywordsModel) {
+      type keyword = {
+        keyword: string
+      }
+
+      type keywords = keyword[]
+
+      const data = JSON.parse(googleTrendsKeywordsModel.value) as keywords
+
+      data.forEach((value) => {
+        idea.addGoogleTrendsKeyword(GoogleTrendsKeyword.New(value.keyword))
+      })
+    }
+
+    // Content ideas for marketing
+    const contentIdeasModel = ideaModel.contents.find(
+      (content) => content.key === 'content_ideas_for_marketing'
+    )
+
+    if (contentIdeasModel) {
+      interface contentIdea {
+        strategy: {
+          name: string
+        }
+        platforms: string[]
+        ideas: string[]
+        benefits: string[]
+      }
+
+      interface contentIdeas {
+        contentIdeas: contentIdea[]
+      }
+
+      const data = JSON.parse(contentIdeasModel.value) as contentIdeas
+
+      const contentIdeasForMarketing = ContentIdeasForMarketing.New()
+
+      data.contentIdeas.forEach((strategy) => {
+        contentIdeasForMarketing.addContentIdea(
+          ContentIdea.New(
+            Strategy.New(strategy.strategy.name),
+            strategy.platforms,
+            strategy.ideas,
+            strategy.benefits
+          )
+        )
+      })
+
+      idea.setContentIdeasForMarketing(contentIdeasForMarketing)
+    }
+
+    // Social media campaigns
+    const socialMediaCampaignsModel = ideaModel.contents.find(
+      (content) => content.key === 'social_media_campaigns'
+    )
+
+    if (socialMediaCampaignsModel) {
+      interface campaigns {
+        shortFormContents: Array<{
+          header: string
+          platform: string
+          content: string
+          tips: string[]
+          imagePrompt: string
+        }>
+        longFormContents: Array<{
+          header: string
+          platform: string
+          title: string
+          content: string
+          tips: string[]
+          imagePrompt: string
+        }>
+        videoContents: Array<{
+          header: string
+          platform: string
+          title: string
+          script: string[]
+          tips: string[]
+          imagePrompt: string
+        }>
+      }
+
+      const data = JSON.parse(socialMediaCampaignsModel.value) as campaigns
+
+      const socialMediaCampaigns = SocialMediaCampaigns.New()
+
+      data.shortFormContents.forEach((content) => {
+        socialMediaCampaigns.addShortFormContent(content)
+      })
+
+      data.longFormContents.forEach((content) => {
+        socialMediaCampaigns.addLongFormContent(content)
+      })
+
+      data.videoContents.forEach((content) => {
+        socialMediaCampaigns.addVideoContent(content)
+      })
+
+      idea.setSocialMediaCampaigns(socialMediaCampaigns)
+    }
+
+    return idea
   }
 }

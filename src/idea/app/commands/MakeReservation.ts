@@ -59,15 +59,8 @@ export class MakeReservationHandler {
         )
       }
 
-      const idea = Idea.New(
-        command.ideaId,
-        command.conceptId,
-        concept.content.problem,
-        concept.content.marketExistence
-      )
-
-      concept.content.targetAudience.forEach((targetAudience) => {
-        idea.addTargetAudience(
+      const targetAudiences = concept.content.targetAudience.map(
+        (targetAudience) =>
           TargetAudience.New(
             randomUUID(),
             command.ideaId,
@@ -75,8 +68,15 @@ export class MakeReservationHandler {
             targetAudience.description,
             targetAudience.challenges
           )
-        )
-      })
+      )
+
+      const idea = Idea.New(
+        command.ideaId,
+        command.conceptId,
+        concept.content.problem,
+        concept.content.marketExistence,
+        targetAudiences
+      )
 
       await this.repository.addIdea(idea)
 

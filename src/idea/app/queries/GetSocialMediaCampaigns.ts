@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/nextjs'
 import { NotFoundError } from '@/common/errors/NotFoundError'
 import { Idea } from '@/idea/domain/Aggregate'
-import { SocialMediaCampaigns } from '@/idea/domain/SocialMediaCampaigns'
 
 type Query = {
   id: string
@@ -44,9 +43,6 @@ interface DTO {
 
 interface ReadModel {
   getById(id: string): Promise<Idea | null>
-  getSocialMediaCampaignsByIdeaId(
-    ideaId: string
-  ): Promise<SocialMediaCampaigns | null>
 }
 
 export class GetSocialMediaCampaignsHandler {
@@ -64,8 +60,7 @@ export class GetSocialMediaCampaignsHandler {
         throw new NotFoundError(`Idea ${query.id} does not exist`)
       }
 
-      const socialMediaCampaigns =
-        await this.readModel.getSocialMediaCampaignsByIdeaId(query.id)
+      const socialMediaCampaigns = idea.getSocialMediaCampaigns()
 
       return {
         id: idea.getId().getValue(),

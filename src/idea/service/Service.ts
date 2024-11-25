@@ -17,6 +17,10 @@ import { MakeReservationHandler } from '@/idea/app/commands/MakeReservation'
 import { RequestSocialMediaCampaignsHandler } from '@/idea/app/commands/RequestSocialMediaCampaigns'
 import { GetIdeaHandler } from '@/idea/app/queries/GetIdea'
 import { GetSocialMediaCampaignsHandler } from '@/idea/app/queries/GetSocialMediaCampaigns'
+import { IdeaCreated } from '@/idea/domain/events/IdeaCreated'
+import { SocialMediaCampaignsRequested } from '@/idea/domain/events/SocialMediaCampaignsRequested'
+import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEvaluated'
+import { ValuePropositionEvaluated } from '@/idea/domain/events/ValuePropositionEvaluated'
 import { CompetitorAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/CompetitorAnalysisEvaluationSubscriber'
 import { ContentIdeasEvaluationSubscriber } from '@/idea/events/subscribers/ContentIdeasEvaluationSubscriber'
 import { ElevatorPitchesEvaluationSubscriber } from '@/idea/events/subscribers/ElevatorPitchesEvaluationSubscriber'
@@ -37,7 +41,8 @@ const registerApp = (): Application => {
   const targetAudienceEvaluationSubscriber =
     new TargetAudienceEvaluationSubscriber(
       ideaRepository,
-      new TargetAudienceEvaluator(env.OPENAI_API_KEY)
+      new TargetAudienceEvaluator(env.OPENAI_API_KEY),
+      eventBus
     )
 
   const valuePropositionEvaluationSubscriber =
@@ -92,29 +97,41 @@ const registerApp = (): Application => {
     new SocialMediaCampaignsEvaluator(env.OPENAI_API_KEY)
   )
 
-  eventBus.subscribe('IdeaCreated', targetAudienceEvaluationSubscriber)
-  eventBus.subscribe('IdeaCreated', valuePropositionEvaluationSubscriber)
-  eventBus.subscribe('IdeaCreated', marketAnalysisEvaluationSubscriber)
-  eventBus.subscribe('IdeaCreated', competitorAnalysisEvaluationSubscriber)
-  eventBus.subscribe('IdeaCreated', potentialNamesEvaluationSubscriber)
+  eventBus.subscribe(IdeaCreated.eventName, targetAudienceEvaluationSubscriber)
   eventBus.subscribe(
-    'ValuePropositionEvaluated',
+    TargetAudiencesEvaluated.eventName,
+    valuePropositionEvaluationSubscriber
+  )
+  eventBus.subscribe(
+    TargetAudiencesEvaluated.eventName,
+    marketAnalysisEvaluationSubscriber
+  )
+  eventBus.subscribe(
+    TargetAudiencesEvaluated.eventName,
+    competitorAnalysisEvaluationSubscriber
+  )
+  eventBus.subscribe(
+    TargetAudiencesEvaluated.eventName,
+    potentialNamesEvaluationSubscriber
+  )
+  eventBus.subscribe(
+    ValuePropositionEvaluated.eventName,
     swotAnalysisEvaluationSubscriber
   )
   eventBus.subscribe(
-    'ValuePropositionEvaluated',
+    ValuePropositionEvaluated.eventName,
     elevatorPitchesEvaluationSubscriber
   )
   eventBus.subscribe(
-    'ValuePropositionEvaluated',
+    ValuePropositionEvaluated.eventName,
     googleTrendsKeywordsEvaluationSubscriber
   )
   eventBus.subscribe(
-    'ValuePropositionEvaluated',
+    ValuePropositionEvaluated.eventName,
     contentIdeasEvaluationSubscriber
   )
   eventBus.subscribe(
-    'SocialMediaCampaignsRequested',
+    SocialMediaCampaignsRequested.eventName,
     socialMediaCampaignsSubscriber
   )
 

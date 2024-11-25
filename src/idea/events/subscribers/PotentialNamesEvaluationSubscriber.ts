@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
 import { ProductName } from '@/idea/domain/ProductName'
 import { Repository } from '@/idea/domain/Repository'
-import { IdeaCreated } from '@/idea/domain/events/IdeaCreated'
+import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEvaluated'
 import { EventHandler } from '@/idea/events/EventHandler'
 
 interface PotentialName {
@@ -44,7 +44,7 @@ export class PotentialNamesEvaluationSubscriber implements EventHandler {
     return PotentialNamesEvaluationSubscriber.className
   }
 
-  async handle(event: IdeaCreated): Promise<void> {
+  async handle(event: TargetAudiencesEvaluated): Promise<void> {
     Sentry.setTag('component', 'BackgroundJob')
     Sentry.setTag('job_type', this.getName())
     Sentry.setTag('event_type', event.type)
@@ -59,11 +59,7 @@ export class PotentialNamesEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
-      const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
-        idea.getId().getValue()
-      )
-
-      const audiences = targetAudiences.map((targetAudience) => ({
+      const audiences = idea.getTargetAudiences().map((targetAudience) => ({
         segment: targetAudience.getSegment(),
         description: targetAudience.getDescription(),
         challenges: targetAudience.getChallenges(),

@@ -2,6 +2,8 @@ import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
 import { Repository } from '@/idea/domain/Repository'
 import { IdeaCreated } from '@/idea/domain/events/IdeaCreated'
+import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEvaluated'
+import { EventBus } from '@/idea/events/EventBus'
 import { EventHandler } from '@/idea/events/EventHandler'
 
 type Evaluation = {
@@ -25,7 +27,8 @@ export class TargetAudienceEvaluationSubscriber implements EventHandler {
 
   constructor(
     private readonly repository: Repository,
-    private readonly aiService: AIService
+    private readonly aiService: AIService,
+    private readonly eventBus: EventBus
   ) {}
 
   getName(): string {
@@ -47,11 +50,7 @@ export class TargetAudienceEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
-      const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
-        idea.getId().getValue()
-      )
-
-      const tasks = targetAudiences.map((targetAudience) =>
+      const tasks = idea.getTargetAudiences().map((targetAudience) =>
         this.aiService
           .evaluateTargetAudience(
             idea.getId().getValue(),
@@ -72,13 +71,13 @@ export class TargetAudienceEvaluationSubscriber implements EventHandler {
 
       await this.repository.updateIdea(event.payload.id, (idea): Idea => {
         evaluations.forEach((audience) => {
-          idea.addTargetAudience(audience)
+          idea.updateTargetAudience(audience)
         })
 
         return idea
       })
 
-      // TODO: Emit Event
+      this.eventBus.emit(new TargetAudiencesEvaluated(idea.getId().getValue()))
     } catch (e) {
       Sentry.captureException(e, {
         contexts: {
