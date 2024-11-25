@@ -1,7 +1,9 @@
 import { Event } from '@/idea/events/Event'
 
 export class IdeaCreated implements Event {
-  public readonly type = 'IdeaCreated'
+  static eventName = 'IdeaCreated'
+
+  public readonly type = IdeaCreated.eventName
   public readonly payload: {
     id: string
   }

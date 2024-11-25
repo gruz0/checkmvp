@@ -61,26 +61,13 @@ export class SWOTAnalysisEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
-      const targetAudiences = await this.repository.getTargetAudiencesByIdeaId(
-        idea.getId().getValue()
-      )
-
-      if (targetAudiences.length === 0) {
-        throw new Error(
-          `Idea ${event.payload.id} does not have target audiences`
-        )
-      }
-
-      const audiences = targetAudiences.map((targetAudience) => ({
+      const audiences = idea.getTargetAudiences().map((targetAudience) => ({
         segment: targetAudience.getSegment(),
         description: targetAudience.getDescription(),
         challenges: targetAudience.getChallenges(),
       }))
 
-      const valueProposition =
-        await this.repository.getValuePropositionByIdeaId(
-          idea.getId().getValue()
-        )
+      const valueProposition = idea.getValueProposition()
 
       if (!valueProposition) {
         throw new Error(
@@ -101,7 +88,7 @@ export class SWOTAnalysisEvaluationSubscriber implements EventHandler {
       )
 
       await this.repository.updateIdea(event.payload.id, (idea): Idea => {
-        idea.addSWOTAnalysis(
+        idea.setSWOTAnalysis(
           SWOTAnalysis.New(
             evaluation.strengths,
             evaluation.weaknesses,

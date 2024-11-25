@@ -25,10 +25,7 @@ export class RequestSocialMediaCampaignsHandler {
         throw new Error(`Idea ${command.ideaId} does not exist`)
       }
 
-      const socialMediaCampaigns =
-        await this.repository.getSocialMediaCampaignsByIdeaId(command.ideaId)
-
-      if (socialMediaCampaigns) {
+      if (idea.getSocialMediaCampaigns()) {
         return
       }
 
