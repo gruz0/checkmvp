@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import { App } from '@/concept/service/Service'
@@ -62,8 +63,12 @@ export default async function Page({ params }: { params: { id: string } }) {
         notFound()
       }
 
+      Sentry.captureException(e)
+
       return <p className="p-6 text-lg">{e.message}</p>
     }
+
+    Sentry.captureException(e)
 
     return <p className="p-6 text-lg">An unexpected error occurred</p>
   }

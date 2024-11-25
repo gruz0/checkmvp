@@ -19,22 +19,16 @@ export class GetConceptHandler {
     Sentry.setTag('query_type', 'GetConcept')
     Sentry.setTag('concept_id', query.id)
 
-    try {
-      const concept = await this.readModel.getById(query.id)
+    const concept = await this.readModel.getById(query.id)
 
-      if (!concept) {
-        throw new NotFoundError(`Concept ${query.id} does not exist`)
-      }
-
-      if (!concept.isAvailable()) {
-        throw new ApplicationError('Concept is not available anymore')
-      }
-
-      return concept
-    } catch (e) {
-      Sentry.captureException(e)
-
-      throw e
+    if (!concept) {
+      throw new NotFoundError(`Concept ${query.id} does not exist`)
     }
+
+    if (!concept.isAvailable()) {
+      throw new ApplicationError('Concept is not available anymore')
+    }
+
+    return concept
   }
 }
