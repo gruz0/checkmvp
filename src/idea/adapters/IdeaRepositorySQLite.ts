@@ -1,6 +1,7 @@
 import { Idea } from '@/idea/domain/Aggregate'
+import { Competitor } from '@/idea/domain/Competitor'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
-import { ContentIdea, Strategy } from '@/idea/domain/ContentIdea'
+import { ContentIdea } from '@/idea/domain/ContentIdea'
 import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
 import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
 import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
@@ -9,6 +10,7 @@ import { ProductName } from '@/idea/domain/ProductName'
 import { Repository } from '@/idea/domain/Repository'
 import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { SocialMediaCampaigns } from '@/idea/domain/SocialMediaCampaigns'
+import { Strategy } from '@/idea/domain/Strategy'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { prisma } from '@/lib/prisma'
@@ -394,9 +396,23 @@ export class IdeaRepositorySQLite implements Repository {
         competitorAnalysisModel.value
       ) as competitorAnalysis
 
+      const competitors = data.competitors.map((c) =>
+        Competitor.New(
+          c.name,
+          c.productName,
+          c.url,
+          c.coreFeatures,
+          c.valueProposition,
+          c.userAcquisition,
+          c.strengths,
+          c.weaknesses,
+          c.differentiationOpportunity
+        )
+      )
+
       idea.setCompetitorAnalysis(
         CompetitorAnalysis.New(
-          data.competitors,
+          competitors,
           data.comparison,
           data.differentiationSuggestions
         )

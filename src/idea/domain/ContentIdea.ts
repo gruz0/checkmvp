@@ -1,69 +1,12 @@
-type Section =
-  | 'socialMediaCampaigns'
-  | 'bloggingAndGuestPosts'
-  | 'emailMarketing'
-  | 'surveysAndPolls'
-  | 'videoContent'
-  | 'infographicsAndVisualContent'
-  | 'communityEngagement'
-  | 'paidAdvertising'
-  | 'webinarsAndLiveStreams'
-  | 'partnershipsAndCollaborations'
-
-const Sections: Section[] = [
-  'socialMediaCampaigns',
-  'bloggingAndGuestPosts',
-  'emailMarketing',
-  'surveysAndPolls',
-  'videoContent',
-  'infographicsAndVisualContent',
-  'communityEngagement',
-  'paidAdvertising',
-  'webinarsAndLiveStreams',
-  'partnershipsAndCollaborations',
-]
-
-function isValidSection(name: string): name is Section {
-  return Sections.includes(name as Section)
-}
-
-export class Strategy {
-  private readonly name: Section
-
-  private constructor(name: Section) {
-    this.name = name
-  }
-
-  static New(name: string): Strategy {
-    if (!isValidSection(name)) {
-      throw new Error(`Invalid section name: ${name}`)
-    }
-
-    return new Strategy(name)
-  }
-
-  public getName(): string {
-    return this.name
-  }
-}
+import { Strategy } from '@/idea/domain/Strategy'
 
 export class ContentIdea {
-  private readonly strategy: Strategy
-  private readonly platforms: string[]
-  private readonly ideas: string[]
-  private readonly benefits: string[]
-
   private constructor(
-    strategy: Strategy,
-    platforms: string[],
-    ideas: string[],
-    benefits: string[]
-  ) {
-    this.strategy = strategy
-    this.platforms = platforms
-    this.ideas = ideas
-    this.benefits = benefits
-  }
+    private readonly strategy: Strategy,
+    private readonly platforms: string[],
+    private readonly ideas: string[],
+    private readonly benefits: string[]
+  ) {}
 
   static New(
     strategy: Strategy,
@@ -71,22 +14,63 @@ export class ContentIdea {
     ideas: string[],
     benefits: string[]
   ): ContentIdea {
-    return new ContentIdea(strategy, platforms, ideas, benefits)
+    if (!strategy) {
+      throw new Error('Strategy cannot be null or undefined.')
+    }
+
+    if (!Array.isArray(platforms) || platforms.length === 0) {
+      throw new Error('Platforms cannot be empty.')
+    }
+
+    platforms.forEach((platform, index) => {
+      if (typeof platform !== 'string' || platform.trim() === '') {
+        throw new Error(
+          `Platform at index ${index} must be a non-empty string.`
+        )
+      }
+    })
+
+    if (!Array.isArray(ideas) || ideas.length === 0) {
+      throw new Error('Ideas cannot be empty.')
+    }
+
+    ideas.forEach((idea, index) => {
+      if (typeof idea !== 'string' || idea.trim() === '') {
+        throw new Error(`Idea at index ${index} must be a non-empty string.`)
+      }
+    })
+
+    if (!Array.isArray(benefits) || benefits.length === 0) {
+      throw new Error('Benefits cannot be empty.')
+    }
+
+    benefits.forEach((benefit, index) => {
+      if (typeof benefit !== 'string' || benefit.trim() === '') {
+        throw new Error(`Benefit at index ${index} must be a non-empty string.`)
+      }
+    })
+
+    return new ContentIdea(
+      strategy,
+      platforms.map((p) => p.trim()),
+      ideas.map((i) => i.trim()),
+      benefits.map((b) => b.trim())
+    )
   }
 
-  public getSection(): Strategy {
+  public getStrategy(): Strategy {
     return this.strategy
   }
 
   public getPlatforms(): string[] {
-    return this.platforms
+    return [...this.platforms]
   }
 
   public getIdeas(): string[] {
-    return this.ideas
+    return [...this.ideas]
   }
 
   public getBenefits(): string[] {
-    return this.benefits
+    return [...this.benefits]
   }
 }

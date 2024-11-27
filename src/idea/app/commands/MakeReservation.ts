@@ -1,10 +1,10 @@
-import { randomUUID } from 'crypto'
 import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
 import { Repository } from '@/idea/domain/Repository'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { IdeaCreated } from '@/idea/domain/events/IdeaCreated'
 import { EventBus } from '@/idea/events/EventBus'
+import { Identity } from '@/shared/Identity'
 
 interface ConceptForReservation {
   success: boolean
@@ -62,7 +62,7 @@ export class MakeReservationHandler {
       const targetAudiences = concept.content.targetAudience.map(
         (targetAudience) =>
           TargetAudience.New(
-            randomUUID(),
+            Identity.Generate().getValue(),
             command.ideaId,
             targetAudience.segment,
             targetAudience.description,

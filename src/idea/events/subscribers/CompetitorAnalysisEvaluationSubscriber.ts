@@ -1,11 +1,12 @@
 import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
+import { Competitor } from '@/idea/domain/Competitor'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { Repository } from '@/idea/domain/Repository'
 import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEvaluated'
 import { EventHandler } from '@/idea/events/EventHandler'
 
-interface Competitor {
+interface CompetitorDTO {
   name: string
   productName: string
   url: string
@@ -23,7 +24,7 @@ interface Comparison {
 }
 
 type Evaluation = {
-  competitors: Competitor[]
+  competitors: CompetitorDTO[]
   comparison: Comparison
   differentiationSuggestions: string[]
 }
@@ -83,10 +84,24 @@ export class CompetitorAnalysisEvaluationSubscriber implements EventHandler {
         audiences
       )
 
+      const competitors = evaluation.competitors.map((c) =>
+        Competitor.New(
+          c.name,
+          c.productName,
+          c.url,
+          c.coreFeatures,
+          c.valueProposition,
+          c.userAcquisition,
+          c.strengths,
+          c.weaknesses,
+          c.differentiationOpportunity
+        )
+      )
+
       await this.repository.updateIdea(event.payload.id, (idea): Idea => {
         idea.setCompetitorAnalysis(
           CompetitorAnalysis.New(
-            evaluation.competitors,
+            competitors,
             evaluation.comparison,
             evaluation.differentiationSuggestions
           )

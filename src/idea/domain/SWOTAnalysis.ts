@@ -1,20 +1,10 @@
 export class SWOTAnalysis {
-  private readonly strengths: string[]
-  private readonly weaknesses: string[]
-  private readonly opportunities: string[]
-  private readonly threats: string[]
-
   private constructor(
-    strengths: string[],
-    weaknesses: string[],
-    opportunities: string[],
-    threats: string[]
-  ) {
-    this.strengths = strengths
-    this.weaknesses = weaknesses
-    this.opportunities = opportunities
-    this.threats = threats
-  }
+    private readonly strengths: string[],
+    private readonly weaknesses: string[],
+    private readonly opportunities: string[],
+    private readonly threats: string[]
+  ) {}
 
   static New(
     strengths: string[],
@@ -22,22 +12,69 @@ export class SWOTAnalysis {
     opportunities: string[],
     threats: string[]
   ): SWOTAnalysis {
-    return new SWOTAnalysis(strengths, weaknesses, opportunities, threats)
+    if (!Array.isArray(strengths) || strengths.length === 0) {
+      throw new Error('Strengths cannot be empty')
+    }
+
+    strengths.forEach((item, index) => {
+      if (typeof item !== 'string' || item.trim() === '') {
+        throw new Error(`Strength at index ${index} must be a non-empty string`)
+      }
+    })
+
+    if (!Array.isArray(weaknesses) || weaknesses.length === 0) {
+      throw new Error('Weaknesses cannot be empty')
+    }
+
+    weaknesses.forEach((item, index) => {
+      if (typeof item !== 'string' || item.trim() === '') {
+        throw new Error(`Weakness at index ${index} must be a non-empty string`)
+      }
+    })
+
+    if (!Array.isArray(opportunities) || opportunities.length === 0) {
+      throw new Error('Opportunities cannot be empty')
+    }
+
+    opportunities.forEach((item, index) => {
+      if (typeof item !== 'string' || item.trim() === '') {
+        throw new Error(
+          `Opportunity at index ${index} must be a non-empty string`
+        )
+      }
+    })
+
+    if (!Array.isArray(threats) || threats.length === 0) {
+      throw new Error('Threats cannot be empty')
+    }
+
+    threats.forEach((item, index) => {
+      if (typeof item !== 'string' || item.trim() === '') {
+        throw new Error(`Threat at index ${index} must be a non-empty string`)
+      }
+    })
+
+    return new SWOTAnalysis(
+      strengths.map((item) => item.trim()),
+      weaknesses.map((item) => item.trim()),
+      opportunities.map((item) => item.trim()),
+      threats.map((item) => item.trim())
+    )
   }
 
   public getStrengths(): string[] {
-    return this.strengths
+    return [...this.strengths]
   }
 
   public getWeaknesses(): string[] {
-    return this.weaknesses
+    return [...this.weaknesses]
   }
 
   public getOpportunities(): string[] {
-    return this.opportunities
+    return [...this.opportunities]
   }
 
   public getThreats(): string[] {
-    return this.threats
+    return [...this.threats]
   }
 }

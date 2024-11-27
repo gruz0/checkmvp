@@ -1,23 +1,11 @@
 export class MarketAnalysis {
-  private readonly trends: string
-  private readonly userBehaviors: string
-  private readonly marketGaps: string
-  private readonly innovationOpportunities: string
-  private readonly strategicDirection: string
-
   private constructor(
-    trends: string,
-    userBehaviors: string,
-    marketGaps: string,
-    innovationOpportunities: string,
-    strategicDirection: string
-  ) {
-    this.trends = trends
-    this.userBehaviors = userBehaviors
-    this.marketGaps = marketGaps
-    this.innovationOpportunities = innovationOpportunities
-    this.strategicDirection = strategicDirection
-  }
+    private readonly trends: string,
+    private readonly userBehaviors: string,
+    private readonly marketGaps: string,
+    private readonly innovationOpportunities: string,
+    private readonly strategicDirection: string
+  ) {}
 
   static New(
     trends: string,
@@ -26,12 +14,32 @@ export class MarketAnalysis {
     innovationOpportunities: string,
     strategicDirection: string
   ): MarketAnalysis {
+    if (!trends || trends.trim() === '') {
+      throw new Error('Trends cannot be empty')
+    }
+
+    if (!userBehaviors || userBehaviors.trim() === '') {
+      throw new Error('User behaviors cannot be empty')
+    }
+
+    if (!marketGaps || marketGaps.trim() === '') {
+      throw new Error('Market gaps cannot be empty')
+    }
+
+    if (!innovationOpportunities || innovationOpportunities.trim() === '') {
+      throw new Error('Innovation opportunities cannot be empty')
+    }
+
+    if (!strategicDirection || strategicDirection.trim() === '') {
+      throw new Error('Strategic direction cannot be empty')
+    }
+
     return new MarketAnalysis(
-      trends,
-      userBehaviors,
-      marketGaps,
-      innovationOpportunities,
-      strategicDirection
+      trends.trim(),
+      userBehaviors.trim(),
+      marketGaps.trim(),
+      innovationOpportunities.trim(),
+      strategicDirection.trim()
     )
   }
 
