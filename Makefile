@@ -56,6 +56,10 @@ redis-cli:
 test: # Run test
 	@${NPM_RUN} test
 
+.PHONY: coverage
+coverage: # Run test coverage
+	@${NPM_RUN} test:coverage
+
 #
 # Production environment
 #

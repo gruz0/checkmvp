@@ -140,7 +140,20 @@ export class GetIdeaHandler {
         : null,
       competitorAnalysis: competitorAnalysis
         ? {
-            competitors: competitorAnalysis.getCompetitors(),
+            competitors: competitorAnalysis
+              .getCompetitors()
+              .map((competitor) => ({
+                name: competitor.getName(),
+                productName: competitor.getProductName(),
+                url: competitor.getUrl(),
+                coreFeatures: competitor.getCoreFeatures(),
+                valueProposition: competitor.getValueProposition(),
+                userAcquisition: competitor.getUserAcquisition(),
+                strengths: competitor.getStrengths(),
+                weaknesses: competitor.getWeaknesses(),
+                differentiationOpportunity:
+                  competitor.getDifferentiationOpportunity(),
+              })),
             comparison: competitorAnalysis.getComparison(),
             differentiationSuggestions:
               competitorAnalysis.getDifferentiationSuggestions(),
@@ -180,7 +193,7 @@ export class GetIdeaHandler {
       contentIdeasForMarketing: contentIdeasForMarketing
         ? contentIdeasForMarketing.getContentIdeas().reduce(
             (acc, contentIdea) => {
-              const section = contentIdea.getSection().getName()
+              const section = contentIdea.getStrategy().getName()
 
               acc[section] = {
                 platforms: contentIdea.getPlatforms(),

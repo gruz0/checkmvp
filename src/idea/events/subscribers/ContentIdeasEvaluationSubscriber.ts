@@ -1,8 +1,9 @@
 import * as Sentry from '@sentry/nextjs'
 import { Idea } from '@/idea/domain/Aggregate'
-import { ContentIdea, Strategy } from '@/idea/domain/ContentIdea'
+import { ContentIdea } from '@/idea/domain/ContentIdea'
 import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
 import { Repository } from '@/idea/domain/Repository'
+import { Strategy } from '@/idea/domain/Strategy'
 import { ValuePropositionEvaluated } from '@/idea/domain/events/ValuePropositionEvaluated'
 import { EventHandler } from '@/idea/events/EventHandler'
 

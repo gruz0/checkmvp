@@ -12,12 +12,6 @@ import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { Identity } from '@/shared/Identity'
 
 export class Idea {
-  private readonly id: Identity
-  private readonly conceptId: Identity
-  private readonly problem: Problem
-  private readonly marketExistence: string
-  private readonly targetAudiences: TargetAudience[] = []
-
   private valueProposition: ValueProposition | null = null
   private marketAnalysis: MarketAnalysis | null = null
   private competitorAnalysis: CompetitorAnalysis | null = null
@@ -31,22 +25,12 @@ export class Idea {
   private archived: boolean = false
 
   private constructor(
-    id: Identity,
-    conceptId: Identity,
-    problem: Problem,
-    marketExistence: string,
-    targetAudiences: TargetAudience[]
-  ) {
-    if (targetAudiences.length === 0) {
-      throw new Error('Target audiences cannot be empty')
-    }
-
-    this.id = id
-    this.conceptId = conceptId
-    this.problem = problem
-    this.marketExistence = marketExistence
-    this.targetAudiences = targetAudiences
-  }
+    private readonly id: Identity,
+    private readonly conceptId: Identity,
+    private readonly problem: Problem,
+    private readonly marketExistence: string,
+    private readonly targetAudiences: TargetAudience[]
+  ) {}
 
   static New(
     id: string,
@@ -55,11 +39,23 @@ export class Idea {
     marketExistence: string,
     targetAudiences: TargetAudience[]
   ): Idea {
+    if (!problem || problem.trim() === '') {
+      throw new Error('Problem cannot be empty')
+    }
+
+    if (!marketExistence || marketExistence.trim() === '') {
+      throw new Error('Market existence cannot be empty')
+    }
+
+    if (targetAudiences.length === 0) {
+      throw new Error('Target audiences cannot be empty')
+    }
+
     return new Idea(
       Identity.New(id),
       Identity.New(conceptId),
       Problem.New(problem),
-      marketExistence,
+      marketExistence.trim(),
       targetAudiences
     )
   }

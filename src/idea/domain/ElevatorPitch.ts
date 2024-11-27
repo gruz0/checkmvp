@@ -1,23 +1,11 @@
 export class ElevatorPitch {
-  private readonly hook: string
-  private readonly problem: string
-  private readonly solution: string
-  private readonly valueProposition: string
-  private readonly cta: string
-
   private constructor(
-    hook: string,
-    problem: string,
-    solution: string,
-    valueProposition: string,
-    cta: string
-  ) {
-    this.hook = hook
-    this.problem = problem
-    this.solution = solution
-    this.valueProposition = valueProposition
-    this.cta = cta
-  }
+    private readonly hook: string,
+    private readonly problem: string,
+    private readonly solution: string,
+    private readonly valueProposition: string,
+    private readonly cta: string
+  ) {}
 
   static New(
     hook: string,
@@ -26,7 +14,33 @@ export class ElevatorPitch {
     valueProposition: string,
     cta: string
   ): ElevatorPitch {
-    return new ElevatorPitch(hook, problem, solution, valueProposition, cta)
+    if (!hook || hook.trim() === '') {
+      throw new Error('Hook cannot be empty')
+    }
+
+    if (!problem || problem.trim() === '') {
+      throw new Error('Problem cannot be empty')
+    }
+
+    if (!solution || solution.trim() === '') {
+      throw new Error('Solution cannot be empty')
+    }
+
+    if (!valueProposition || valueProposition.trim() === '') {
+      throw new Error('Value proposition cannot be empty')
+    }
+
+    if (!cta || cta.trim() === '') {
+      throw new Error('Call to action cannot be empty')
+    }
+
+    return new ElevatorPitch(
+      hook.trim(),
+      problem.trim(),
+      solution.trim(),
+      valueProposition.trim(),
+      cta.trim()
+    )
   }
 
   public getHook(): string {

@@ -1,24 +1,32 @@
 export class ValueProposition {
-  private readonly mainBenefit: string
-  private readonly problemSolving: string
-  private readonly differentiation: string
-
   private constructor(
-    mainBenefit: string,
-    problemSolving: string,
-    differentiation: string
-  ) {
-    this.mainBenefit = mainBenefit
-    this.problemSolving = problemSolving
-    this.differentiation = differentiation
-  }
+    private readonly mainBenefit: string,
+    private readonly problemSolving: string,
+    private readonly differentiation: string
+  ) {}
 
   static New(
     mainBenefit: string,
     problemSolving: string,
     differentiation: string
   ): ValueProposition {
-    return new ValueProposition(mainBenefit, problemSolving, differentiation)
+    if (!mainBenefit || mainBenefit.trim() === '') {
+      throw new Error('Main benefit cannot be empty')
+    }
+
+    if (!problemSolving || problemSolving.trim() === '') {
+      throw new Error('Problem solving cannot be empty')
+    }
+
+    if (!differentiation || differentiation.trim() === '') {
+      throw new Error('Differentiation cannot be empty')
+    }
+
+    return new ValueProposition(
+      mainBenefit.trim(),
+      problemSolving.trim(),
+      differentiation.trim()
+    )
   }
 
   public getMainBenefit(): string {

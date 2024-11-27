@@ -18,6 +18,7 @@
     "lint": "npm run next-lint && npm run prettier && npm run knip",
     "prisma:generate_client": "prisma generate",
     "test": "dotenv -e .env.test -- npx prisma migrate deploy && jest --detectOpenHandles -i ./__tests__/",
+    "test:coverage": "dotenv -e .env.test -- npx prisma migrate deploy && jest --coverage --detectOpenHandles -i ./__tests__/",
     "db:migrate": "prisma migrate deploy"
   },
   "dependencies": {
@@ -31,7 +32,8 @@
     "next-themes": "^0.4.3",
     "openai": "^4.65.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.2.5",
@@ -40,6 +42,7 @@
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.13.0",
     "@typescript-eslint/parser": "^8.13.0",
     "cross-env": "^7.0.3",
