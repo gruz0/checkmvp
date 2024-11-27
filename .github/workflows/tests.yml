@@ -1,9 +1,12 @@
-name: Tests
+name: Lint and Tests
 
-on: [push, pull_request]
+on:
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  test:
+  lint_and_test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -13,8 +16,10 @@ jobs:
           node-version: 22.11.0
           cache: npm
 
-      - run: npm install
-      - run: npm run test:coverage
+      - run: cp .env.example .env
+      - run: npm ci
+      - run: make lint
+      - run: make coverage
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
