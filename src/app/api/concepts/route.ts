@@ -1,8 +1,8 @@
-import { randomUUID } from 'crypto'
 import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 import { App } from '@/concept/service/Service'
 import { createIdeaLimiterKey, manager } from '@/lib/rateLimiter'
+import { Identity } from '@/shared/Identity'
 
 const createIdeaLimiter = manager.getLimiter(createIdeaLimiterKey)
 
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const conceptId = randomUUID()
+    const conceptId = Identity.Generate().getValue()
 
     Sentry.setTag('concept_id', conceptId)
 

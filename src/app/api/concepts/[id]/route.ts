@@ -1,14 +1,14 @@
-import { randomUUID } from 'crypto'
 import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 import { App } from '@/concept/service/Service'
+import { Identity } from '@/shared/Identity'
 
 export async function POST(_: Request, { params }: { params: { id: string } }) {
   Sentry.setTag('component', 'HTTP API')
   Sentry.setTag('concept_id', params.id)
 
   try {
-    const newIdeaId = randomUUID()
+    const newIdeaId = Identity.Generate().getValue()
 
     Sentry.setTag('idea_id', newIdeaId)
 
