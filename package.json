@@ -36,7 +36,7 @@
     "uuid": "^11.0.3"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^14.2.5",
+    "@next/bundle-analyzer": "^15.0.3",
     "@types/eslint-plugin-security": "^3.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22",
