@@ -19,9 +19,6 @@ setup: # Install dependencies
 prepare-dev-env:
 	@cp .env.development .env
 
-analyze: prepare-dev-env # Analyze bundles
-	@${NPM_RUN} analyze
-
 build: prepare-dev-env # Build project
 	@${NPM_RUN} build
 

@@ -19,10 +19,10 @@ jest.config.ts
 .prettier*
 .eslint*
 .editorconfig
+knip.json
 LICENSE
 Makefile
 codespell.txt
-architecture
 __tests__
 docker
 

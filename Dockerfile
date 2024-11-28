@@ -1,94 +1,92 @@
 ARG NODE_VERSION="22.11.0"
 ARG ALPINE_VERSION="3.20"
-ARG NPM_SHARP_VERSION="0.33.5"
 
-# Install dependencies only when needed
+#
+# Stage 1: Install dependencies (including devDependencies)
+#
 FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS base
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm install "sharp@${NPM_SHARP_VERSION}" && npm ci
+# We cannot use --omit=dev here because devDependencies are needed for building
+# So, keep this line like that:
+RUN npm ci && \
+    npm cache clean --force && \
+    find . -name "*.map" -delete
 
-# Rebuild the source code only when needed
+#
+# Stage 2: Build the application
+#
 FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS builder
 WORKDIR /app
 
 COPY --from=base /app/node_modules ./node_modules
+
 COPY . .
 
-ENV NODE_ENV production
+# Build-time arguments
+ARG DOMAIN \
+    NEXT_PUBLIC_URL \
+    CREATE_IDEA_LIMITER_LIMIT \
+    CREATE_IDEA_LIMITER_TIMEFRAME \
+    IDEA_SERVICE_API_BASE \
+    CONCEPT_SERVICE_API_BASE \
+    FEEDBACK_SERVICE_API_BASE
 
-ENV NEXT_TELEMETRY_DISABLED 1
+# Set environment variables for the build
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PRISMA_HIDE_UPDATE_MESSAGE=1 \
+    DOMAIN=$DOMAIN \
+    NEXT_PUBLIC_URL=$NEXT_PUBLIC_URL \
+    CREATE_IDEA_LIMITER_LIMIT=$CREATE_IDEA_LIMITER_LIMIT \
+    CREATE_IDEA_LIMITER_TIMEFRAME=$CREATE_IDEA_LIMITER_TIMEFRAME \
+    IDEA_SERVICE_API_BASE=$IDEA_SERVICE_API_BASE \
+    CONCEPT_SERVICE_API_BASE=$CONCEPT_SERVICE_API_BASE \
+    FEEDBACK_SERVICE_API_BASE=$FEEDBACK_SERVICE_API_BASE
 
-ARG DOMAIN
-ENV DOMAIN=$DOMAIN
+RUN npm run build && \
+    rm -rf .next/cache && \
+    find . -name "*.map" -delete
 
-ARG OPENAI_API_KEY
-ENV OPENAI_API_KEY=$OPENAI_API_KEY
-
-ARG REDIS_URL
-ENV REDIS_URL=$REDIS_URL
-
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-
-ARG SENTRY_DSN
-ENV SENTRY_DSN=$SENTRY_DSN
-
-ARG NEXT_PUBLIC_URL
-ENV NEXT_PUBLIC_URL=$NEXT_PUBLIC_URL
-
-ARG CREATE_IDEA_LIMITER_LIMIT
-ENV CREATE_IDEA_LIMITER_LIMIT=$CREATE_IDEA_LIMITER_LIMIT
-
-ARG CREATE_IDEA_LIMITER_TIMEFRAME
-ENV CREATE_IDEA_LIMITER_TIMEFRAME=$CREATE_IDEA_LIMITER_TIMEFRAME
-
-ARG IDEA_SERVICE_API_BASE
-ENV IDEA_SERVICE_API_BASE=$IDEA_SERVICE_API_BASE
-
-ARG CONCEPT_SERVICE_API_BASE
-ENV CONCEPT_SERVICE_API_BASE=$CONCEPT_SERVICE_API_BASE
-
-ARG FEEDBACK_SERVICE_API_BASE
-ENV FEEDBACK_SERVICE_API_BASE=$FEEDBACK_SERVICE_API_BASE
-
-RUN npm run build
-
+#
+# Stage 3: Install only production dependencies
+#
 FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS prod_builder
 WORKDIR /app
 
 ENV NODE_ENV production
 
 COPY --from=base /app/node_modules ./node_modules
-COPY . .
+COPY package.json package-lock.json ./
 
-RUN npm install && cp -R node_modules prod_node_modules
+RUN npm ci --omit=dev && \
+    find . -name "*.map" -delete && \
+    cp -R node_modules prod_node_modules
 
-# Production image, copy all the files and run next
+#
+# Stage 4: Runner - Final image to run the application
+#
 FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS runner
 
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-
+# Default user ID (must be overridden at build time)
 ARG UID=1001
-ENV USER="app"
+
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    USER="app"
 
 RUN adduser -D $USER -u $UID
 
-# You only need to copy next.config.mjs if you are NOT using the default configuration
+COPY --from=prod_builder --chown=$USER:$USER /app/prod_node_modules ./node_modules
 COPY --from=builder --chown=$USER:$USER /app/next.config.mjs ./
 COPY --from=builder --chown=$USER:$USER /app/prisma ./prisma
 COPY --from=builder --chown=$USER:$USER /app/public ./public
 COPY --from=builder --chown=$USER:$USER /app/package.json ./package.json
-COPY --from=prod_builder --chown=$USER:$USER /app/prod_node_modules ./node_modules
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
 COPY --from=builder --chown=$USER:$USER /app/.next/standalone ./
 COPY --from=builder --chown=$USER:$USER /app/.next/static ./.next/static
 
