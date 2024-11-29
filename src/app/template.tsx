@@ -1,7 +1,6 @@
-import Image from 'next/image'
 import Link from 'next/link'
+import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
-import CheckMVPLogo from '../../public/CheckMVP-Logo.png'
 
 const Template = ({ children }: { children: React.ReactNode }) => (
   <div className="flex min-h-screen flex-col bg-gray-100 transition-colors duration-300 dark:bg-gray-900">
@@ -9,13 +8,7 @@ const Template = ({ children }: { children: React.ReactNode }) => (
       <div className="mx-auto max-w-5xl px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <Image
-              src={CheckMVPLogo.src}
-              alt="CheckMVP"
-              width="150"
-              height="40"
-              className="dark:invert"
-            />
+            <Logo />
           </Link>
 
           <div className="flex items-center space-x-4 md:space-x-6">
