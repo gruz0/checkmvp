@@ -4,9 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "analyze": "cross-env ANALYZE=true next build",
     "dev": "NODE_OPTIONS='--inspect --trace-deprecation' next dev",
-    "build": "prisma generate && next build",
+    "build": "prisma generate --no-hints && next build",
     "start": "next start",
     "next-lint": "next lint --no-cache",
     "eslint": "npx eslint . --ext .ts,.tsx,.js,.jsx",
@@ -33,10 +32,10 @@
     "openai": "^4.65.0",
     "react": "^18",
     "react-dom": "^18",
+    "sharp": "^0.33.5",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^14.2.5",
     "@types/eslint-plugin-security": "^3.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22",
@@ -45,7 +44,6 @@
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.13.0",
     "@typescript-eslint/parser": "^8.13.0",
-    "cross-env": "^7.0.3",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.13",
