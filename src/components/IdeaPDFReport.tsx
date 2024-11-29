@@ -775,6 +775,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     textAlign: 'center',
+    marginBottom: '24px',
   },
   title: {
     fontSize: 24,
