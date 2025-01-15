@@ -1,12 +1,7 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import RandomMessage from '@/components/RandomMessage'
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
-import IdeaReport01 from '../../screenshots/idea-report-01.png'
-import IdeaReport02 from '../../screenshots/idea-report-02.png'
-import IdeaReport03 from '../../screenshots/idea-report-03.png'
-import IdeaReport04 from '../../screenshots/idea-report-04.png'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,32 +31,42 @@ export default async function LandingPage() {
 
   return (
     <div className="p-4 md:p-6 lg:p-8">
-      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl lg:mb-12 dark:text-gray-100">
-        Can Your Startup Idea Pass The Test?
+      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl lg:mb-8 dark:text-gray-100">
+        Your AI Co-Founder for Startup Validation
       </h1>
+
+      <p className="mb-6 text-center text-lg font-semibold md:text-xl lg:mb-10 lg:text-2xl">
+        Get clarity and confidence about your product or SaaS idea in 3-5
+        minutes.
+      </p>
 
       <div className="mb-6 flex flex-col md:flex-row md:space-x-10 lg:mb-8">
         <div className="w-full pl-2 md:w-1/2">
-          <p className="mb-4 text-lg font-semibold md:mb-6 md:text-xl lg:mb-8 lg:text-2xl">
-            Let&apos;s find out in three simple steps:
-          </p>
-
-          <ol className="mb-4 list-decimal pl-4 text-lg md:pl-6 md:text-xl lg:text-2xl">
-            <li className="mb-2 pl-1 md:pl-2">
-              Share your idea and target market
-            </li>
-            <li className="mb-2 pl-1 md:pl-2">Receive expert feedback fast</li>
-            <li className="mb-2 pl-1 md:pl-2">
-              Get a detailed validation report
-            </li>
-          </ol>
+          <div className="mb-6 space-y-4 text-lg">
+            <div className="flex items-start space-x-3">
+              <span className="text-green-600">✓</span>
+              <p>Identify your target audience and their pain points</p>
+            </div>
+            <div className="flex items-start space-x-3">
+              <span className="text-green-600">✓</span>
+              <p>Get insights about competitors and opportunities</p>
+            </div>
+            <div className="flex items-start space-x-3">
+              <span className="text-green-600">✓</span>
+              <p>Generate product names and elevator pitches</p>
+            </div>
+            <div className="flex items-start space-x-3">
+              <span className="text-green-600">✓</span>
+              <p>Get a complete SWOT analysis and next steps</p>
+            </div>
+          </div>
 
           <div className="mb-10 pt-6 text-center md:mb-6">
             <Link
               href="/start"
-              className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              Start Now
+              Validate Your Idea Now
             </Link>
           </div>
         </div>
@@ -82,23 +87,38 @@ export default async function LandingPage() {
 
       <div className="mb-4 rounded-lg border border-green-300 bg-green-50 p-4 text-lg text-green-800 md:mb-4 lg:mb-12">
         <p>
-          We&apos;ve analyzed <strong>{totalConceptsCount} ideas</strong> so
-          far! Let&apos;s see how we can help you today 🤗
+          Join <strong>{totalConceptsCount} founders</strong> who&apos;ve
+          already validated their startup ideas with CheckMVP 🚀
         </p>
       </div>
+
+      <Section heading="Why Founders Trust CheckMVP">
+        <SectionGrid>
+          <SectionCell
+            heading="Save Time & Money"
+            description="Get comprehensive market insights in minutes instead of weeks of manual research. Validate before investing."
+          />
+          <SectionCell
+            heading="Reduce Risk"
+            description="Identify potential pitfalls and opportunities early. Make data-driven decisions about your startup's direction."
+          />
+          <SectionCell
+            heading="Clear Next Steps"
+            description="Get friendly suggestions and a structured plan for launching your product successfully. Yes, it's super friendly!"
+          />
+        </SectionGrid>
+      </Section>
 
       <RandomMessage />
 
       <WhatIsInside />
-
-      <Screenshots />
 
       <div className="mb-8 mt-2 pt-6 text-center">
         <Link
           href="/start"
           className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
-          Ready to Start?
+          Start Now
         </Link>
       </div>
     </div>
@@ -138,56 +158,6 @@ const WhatIsInside = () => (
         description="Essential tools and resources to make building and launching your idea easier, all in one place. Hidden gems are included!"
       />
     </SectionGrid>
-  </Section>
-)
-
-const Screenshots = () => (
-  <Section heading="Screenshots">
-    <div className="grid grid-cols-1 gap-6 text-left md:grid-cols-2 md:gap-6 lg:gap-8">
-      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
-        <Link href={IdeaReport01.src} target="_blank">
-          <Image
-            src={IdeaReport01.src}
-            width={IdeaReport01.width}
-            height={IdeaReport01.height}
-            alt="Idea Report 01"
-          />
-        </Link>
-      </div>
-
-      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
-        <Link href={IdeaReport02.src} target="_blank">
-          <Image
-            src={IdeaReport02.src}
-            width={IdeaReport02.width}
-            height={IdeaReport02.height}
-            alt="Idea Report 02"
-          />
-        </Link>
-      </div>
-
-      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
-        <Link href={IdeaReport03.src} target="_blank">
-          <Image
-            src={IdeaReport03.src}
-            width={IdeaReport03.width}
-            height={IdeaReport03.height}
-            alt="Idea Report 03"
-          />
-        </Link>
-      </div>
-
-      <div className="rounded-lg bg-gray-50 p-2 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
-        <Link href={IdeaReport04.src} target="_blank">
-          <Image
-            src={IdeaReport04.src}
-            width={IdeaReport04.width}
-            height={IdeaReport04.height}
-            alt="Idea Report 04"
-          />
-        </Link>
-      </div>
-    </div>
   </Section>
 )
 
