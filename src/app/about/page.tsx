@@ -93,6 +93,48 @@ export default async function AboutPage() {
         </p>
       </div>
 
+      <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
+        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
+          Why Use CheckMVP Instead of ChatGPT?
+        </h2>
+
+        <p className="mb-4">
+          Sure, you could open ChatGPT and type out prompts yourself. But we’ve
+          spent weeks fine-tuning prompts and combining them into a single,
+          hassle-free workflow. The result? You’ll get structured insights
+          specifically tailored for startup validation, without the
+          trial-and-error prompt tweaking or juggling multiple tabs.
+        </p>
+      </div>
+
+      <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
+        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
+          Honest Disclaimer: AI Isn’t Perfect
+        </h2>
+
+        <p className="mb-4">
+          We rely on an older variant of GPT-4o for quick, automated insights.
+          Sometimes the AI may provide outdated info or “hallucinate.” If
+          accuracy is critical for you, we also offer a manually crafted,
+          deep-dive analysis using the latest models, reviewed by a human
+          (that’s me!). It takes a bit longer, but you’ll get more credible,
+          in-depth results.
+        </p>
+      </div>
+
+      <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
+        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
+          Let’s Build Something Great Together
+        </h2>
+
+        <p className="mb-4">
+          I’m constantly refining CheckMVP because I genuinely love helping
+          founders succeed. Whether you’re testing a side project or a big idea,
+          CheckMVP makes it easy to spot red flags early, find new
+          opportunities, and move forward with confidence.
+        </p>
+      </div>
+
       <div className="mb-6 pt-6 text-center">
         <Link
           href="/start"
