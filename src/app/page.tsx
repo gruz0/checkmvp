@@ -44,19 +44,19 @@ export default async function LandingPage() {
         <div className="w-full pl-2 md:w-1/2">
           <div className="mb-6 space-y-4 text-lg">
             <div className="flex items-start space-x-3">
-              <span className="text-green-600">✓</span>
+              <span className="font-bold text-green-600">✓</span>
               <p>Identify your target audience and their pain points</p>
             </div>
             <div className="flex items-start space-x-3">
-              <span className="text-green-600">✓</span>
+              <span className="font-bold text-green-600">✓</span>
               <p>Get insights about competitors and opportunities</p>
             </div>
             <div className="flex items-start space-x-3">
-              <span className="text-green-600">✓</span>
+              <span className="font-bold text-green-600">✓</span>
               <p>Generate product names and elevator pitches</p>
             </div>
             <div className="flex items-start space-x-3">
-              <span className="text-green-600">✓</span>
+              <span className="font-bold text-green-600">✓</span>
               <p>Get a complete SWOT analysis and next steps</p>
             </div>
           </div>
@@ -93,20 +93,24 @@ export default async function LandingPage() {
       </div>
 
       <Section heading="Why Founders Trust CheckMVP">
-        <SectionGrid>
+        <SectionGridTwoColumns>
           <SectionCell
-            heading="Save Time & Money"
-            description="Get comprehensive market insights in minutes instead of weeks of manual research. Validate before investing."
+            heading="100% Free & No Registration"
+            description="No sign-up. No hidden fees. Just type your idea and click “Detailed Analysis.” You can even download a PDF of your findings. I want to make it as easy as possible for anyone to refine their startup idea without getting stuck in complicated onboarding flows."
           />
           <SectionCell
-            heading="Reduce Risk"
-            description="Identify potential pitfalls and opportunities early. Make data-driven decisions about your startup's direction."
+            heading="Instant AI-Powered Insights"
+            description="CheckMVP uses a GPT-4o model behind the scenes, giving you a comprehensive report on your product idea—covering competitors, market trends, potential target audiences, SWOT analysis, ideas for domain names, and more. All it takes is one click."
           />
           <SectionCell
-            heading="Clear Next Steps"
-            description="Get friendly suggestions and a structured plan for launching your product successfully. Yes, it's super friendly!"
+            heading="Built for Founders, by a Founder"
+            description="I know firsthand how important it is to save time and energy when you’re bootstrapping a new startup. That’s why CheckMVP delivers structured insights designed for idea validation, minus the hassle of tinkering with prompts yourself. I spent weeks on polishing prompts."
           />
-        </SectionGrid>
+          <SectionCell
+            heading="Honest Disclaimer (About AI Limitations)"
+            description="Sometimes AI may provide outdated information or “hallucinate.” If you need ultra-accurate or highly customized analysis, I offer a manually curated, deep-dive report using the latest GPT-o1 model (plus my personal experience as a system architect)."
+          />
+        </SectionGridTwoColumns>
       </Section>
 
       <RandomMessage />
@@ -129,33 +133,33 @@ const WhatIsInside = () => (
   <Section heading="What Is Inside Your Report?">
     <SectionGrid>
       <SectionCell
-        heading="Get the Full Picture"
-        description="An overview of your market, trends, and who you’re up against. Know where you stand and what makes idea unique."
+        heading="Competitors & Positioning"
+        description="Spot who’s already tackling a similar problem and find a clear way to stand out."
       />
 
       <SectionCell
-        heading="Define Your Value"
-        description="A clear look at why people would want your product and who’s most likely to use it. Perfect for focusing your efforts."
+        heading="Target Audience & Value"
+        description="Pin down who really needs your product and why they’d pick it over anything else out there."
       />
 
       <SectionCell
-        heading="Show Off Your Idea"
-        description="A quick snapshot of your product’s strengths, plus an elevator pitch and name ideas. Ready to share in seconds."
+        heading="SWOT & Opportunities"
+        description="Lay out strengths, weaknesses, and fresh opportunities, so you know where to focus first."
       />
 
       <SectionCell
-        heading="Connect Your Audience"
-        description="Content ideas and ready-made templates for getting your idea in front of people and gathering early feedback."
+        heading="Market & Trends"
+        description="Check what’s happening in your industry so you can see if your idea makes sense or needs a new angle."
       />
 
       <SectionCell
-        heading="Soon: Plan Your Launch"
-        description="A simple roadmap, testing plan, cost estimates, and clear next steps. Everything you need to go live with confidence."
+        heading="Names & Pitches"
+        description="Explore a few name ideas and grab a quick elevator pitch—handy for sharing your concept in seconds."
       />
 
       <SectionCell
-        heading="Soon: Tools & Resources"
-        description="Essential tools and resources to make building and launching your idea easier, all in one place. Hidden gems are included!"
+        heading="Growth & Content"
+        description="Learn which channels fit best for your launch and get quick tips on content that resonates with early adopters."
       />
     </SectionGrid>
   </Section>
@@ -173,6 +177,12 @@ const Section: React.FC<SectionProps> = ({ heading, children }) => (
 
 const SectionGrid: React.FC<SectionGridProps> = ({ children }) => (
   <div className="grid grid-cols-1 gap-6 text-left md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
+    {children}
+  </div>
+)
+
+const SectionGridTwoColumns: React.FC<SectionGridProps> = ({ children }) => (
+  <div className="grid grid-cols-1 gap-6 text-left md:grid-cols-2 md:gap-6 lg:gap-8">
     {children}
   </div>
 )
