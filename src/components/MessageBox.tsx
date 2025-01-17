@@ -4,7 +4,7 @@ import React from 'react'
 const MessageBox = () => (
   <div className="mb-4 rounded-lg border border-yellow-200 bg-yellow-50 p-4 shadow-lg lg:p-6">
     <h2 className="mb-2 text-lg font-semibold text-gray-800 md:text-xl">
-      I&apos;m super happy you used this simple tool! ❤️
+      Was this report helpful? ❤️
     </h2>
     <p className="mt-4 text-gray-700 md:text-lg">
       <span>
@@ -20,9 +20,19 @@ const MessageBox = () => (
       >
         Twitter (X)
       </Link>
-      <span> or open an issue on </span>
+      {', '}
       <Link
-        href="https://github.com/gruz0/checkmvp"
+        href="https://www.linkedin.com/in/alexanderkadyrov/"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        className="text-blue-500 underline hover:text-blue-700"
+        title="LinkedIn"
+      >
+        LinkedIn
+      </Link>
+      <span>, or open an issue on </span>
+      <Link
+        href="https://github.com/gruz0/checkmvp/issues"
         target="_blank"
         rel="noopener noreferrer nofollow"
         className="text-blue-500 underline hover:text-blue-700"

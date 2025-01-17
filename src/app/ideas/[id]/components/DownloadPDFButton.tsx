@@ -86,7 +86,7 @@ const DownloadPDFButton: React.FC<DownloadPDFButtonProps> = ({
         aria-busy={loading}
         aria-disabled={loading}
       >
-        {loading ? 'Generating PDF...' : 'Download PDF'}
+        {loading ? 'Generating PDF...' : 'Download'}
       </button>
       {error && (
         <p className="mt-2 text-red-500" role="alert">

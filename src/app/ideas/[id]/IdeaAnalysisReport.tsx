@@ -8,6 +8,7 @@ import FeedbackForm from '@/components/FeedbackForm'
 import HorizontalLine from '@/components/HorizontalLine'
 import MessageBox from '@/components/MessageBox'
 import { Goals } from '@/lib/goals'
+import AboutReport from './components/AboutReport'
 import DownloadPDFButton from './components/DownloadPDFButton'
 import { NavBar } from './components/NavBar'
 import SectionActionableNextSteps from './components/SectionActionableNextSteps'
@@ -271,6 +272,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
               </div>
             </div>
           )}
+
+          <AboutReport />
 
           <SectionContext
             onReport={onReport}
