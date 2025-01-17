@@ -8,14 +8,13 @@ import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
 
 interface SectionContextProps {
-  onReport: (section: string) => void
   data: {
     problem: string
     marketExistence: string
   }
 }
 
-const SectionContext: React.FC<SectionContextProps> = ({ onReport, data }) => {
+const SectionContext: React.FC<SectionContextProps> = ({ data }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
 
   return (
@@ -49,10 +48,7 @@ const SectionContext: React.FC<SectionContextProps> = ({ onReport, data }) => {
             </Paragraph>
           </Section>
 
-          <Section
-            header="Market Existence:"
-            onReport={() => onReport('market_existence')}
-          >
+          <Section header="Market Existence:">
             <Paragraph>
               {data.marketExistence.split('\n').map((line, index) => (
                 <React.Fragment key={index}>

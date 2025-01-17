@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import { usePlausible } from 'next-plausible'
 import React, { useEffect, useState } from 'react'
 import BackToTopButton from '@/components/BackToTopButton'
-import FeedbackForm from '@/components/FeedbackForm'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import HorizontalLine from '@/components/HorizontalLine'
 import { Goals } from '@/lib/goals'
@@ -50,57 +49,7 @@ export const SocialMediaCampaigns = ({ data }: Props) => {
   const router = useRouter()
   const plausible = usePlausible()
 
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
-  const [wrongSection, setWrongSection] = useState<string | null>(null)
-
   const [status, setStatus] = useState<string>('idle')
-
-  const onReport = (section: string) => {
-    if (!section) {
-      return
-    }
-
-    setWrongSection(section)
-
-    setShowFeedbackForm(true)
-  }
-
-  const handleFeedbackSubmit = async (feedback: string, contact: string) => {
-    if (!wrongSection) {
-      return
-    }
-
-    try {
-      setWrongSection(null)
-      setShowFeedbackForm(false)
-
-      const res = await fetch(`/api/ideas/${data.id}/feedback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          section: wrongSection,
-          feedback: feedback.trim(),
-          contact: contact.trim(),
-        }),
-      })
-
-      if (res.status === 201) {
-        setWrongSection(null)
-        setShowFeedbackForm(false)
-      } else {
-        const errorData = await res.json()
-
-        alert(errorData.error || 'Something went wrong.')
-
-        setWrongSection(null)
-        setShowFeedbackForm(false)
-      }
-    } catch (error) {
-      alert(`Error submitting report: ${error}`)
-    }
-  }
 
   const handleRequest = async () => {
     setStatus('loading')
@@ -180,33 +129,13 @@ export const SocialMediaCampaigns = ({ data }: Props) => {
 
           <HorizontalLine />
 
-          {showFeedbackForm && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-800/50">
-              <div className="max-w-2xl rounded bg-white p-4 shadow-md md:p-8 dark:bg-gray-900">
-                <FeedbackForm
-                  onSubmit={handleFeedbackSubmit}
-                  onClose={() => setShowFeedbackForm(false)}
-                />
-              </div>
-            </div>
-          )}
-
           {data.contents ? (
             <>
-              <SectionShortFormContent
-                onReport={onReport}
-                data={data.contents.shortFormContent}
-              />
+              <SectionShortFormContent data={data.contents.shortFormContent} />
 
-              <SectionLongFormContent
-                onReport={onReport}
-                data={data.contents.longFormContent}
-              />
+              <SectionLongFormContent data={data.contents.longFormContent} />
 
-              <SectionVideoContent
-                onReport={onReport}
-                data={data.contents.videoContent}
-              />
+              <SectionVideoContent data={data.contents.videoContent} />
             </>
           ) : (
             <>

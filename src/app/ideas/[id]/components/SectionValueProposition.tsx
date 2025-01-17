@@ -9,7 +9,6 @@ import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
 
 interface SectionValuePropositionProps {
-  onReport: (section: string) => void
   data: {
     mainBenefit: string
     problemSolving: string
@@ -18,7 +17,6 @@ interface SectionValuePropositionProps {
 }
 
 const SectionValueProposition: React.FC<SectionValuePropositionProps> = ({
-  onReport,
   data,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
@@ -44,24 +42,15 @@ const SectionValueProposition: React.FC<SectionValuePropositionProps> = ({
 
           {data ? (
             <>
-              <Section
-                header="Main Benefit:"
-                onReport={() => onReport('value_proposition.main_benefit')}
-              >
+              <Section header="Main Benefit:">
                 <Paragraph>{data.mainBenefit}</Paragraph>
               </Section>
 
-              <Section
-                header="How to Pitch It:"
-                onReport={() => onReport('value_proposition.problem_solving')}
-              >
+              <Section header="How to Pitch It:">
                 <Paragraph>{data.problemSolving}</Paragraph>
               </Section>
 
-              <Section
-                header="Differentiation:"
-                onReport={() => onReport('value_proposition.differentiation')}
-              >
+              <Section header="Differentiation:">
                 <Paragraph>{data.differentiation}</Paragraph>
               </Section>
             </>

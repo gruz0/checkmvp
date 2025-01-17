@@ -7,7 +7,6 @@ import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
 
 interface SectionSWOTAnalysisProps {
-  onReport: (section: string) => void
   data: {
     strengths: string[]
     weaknesses: string[]
@@ -16,10 +15,7 @@ interface SectionSWOTAnalysisProps {
   } | null
 }
 
-const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({
-  onReport,
-  data,
-}) => {
+const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({ data }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
@@ -55,14 +51,6 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({
                       <li key={index}>{item}</li>
                     ))}
                   </ul>
-
-                  <button
-                    onClick={() => onReport('swot_analysis.strengths')}
-                    aria-label="Dislike"
-                    className="mt-4 flex items-center self-end rounded bg-gray-100 px-2 py-1 text-sm text-gray-600 hover:bg-red-100"
-                  >
-                    Dislike
-                  </button>
                 </div>
               </div>
 
@@ -77,14 +65,6 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({
                       <li key={index}>{item}</li>
                     ))}
                   </ul>
-
-                  <button
-                    onClick={() => onReport('swot_analysis.weaknesses')}
-                    aria-label="Dislike"
-                    className="mt-4 flex items-center self-end rounded bg-gray-100 px-2 py-1 text-sm text-gray-600 hover:bg-red-100"
-                  >
-                    Dislike
-                  </button>
                 </div>
               </div>
 
@@ -99,14 +79,6 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({
                       <li key={index}>{item}</li>
                     ))}
                   </ul>
-
-                  <button
-                    onClick={() => onReport('swot_analysis.opportunities')}
-                    aria-label="Dislike"
-                    className="mt-4 flex items-center self-end rounded bg-gray-100 px-2 py-1 text-sm text-gray-600 hover:bg-red-100"
-                  >
-                    Dislike
-                  </button>
                 </div>
               </div>
 
@@ -121,14 +93,6 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({
                       <li key={index}>{item}</li>
                     ))}
                   </ul>
-
-                  <button
-                    onClick={() => onReport('swot_analysis.threats')}
-                    aria-label="Dislike"
-                    className="mt-4 flex items-center self-end rounded bg-gray-100 px-2 py-1 text-sm text-gray-600 hover:bg-red-100"
-                  >
-                    Dislike
-                  </button>
                 </div>
               </div>
             </div>
