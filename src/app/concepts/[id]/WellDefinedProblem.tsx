@@ -73,7 +73,25 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
 
   return (
     <div>
-      <Section header="Here's What We've Found:">
+      <h1 className="mb-6 text-3xl font-bold text-green-600 md:text-4xl">
+        Great news! Your Idea Looks Solid!
+      </h1>
+
+      <p className="mb-6 text-lg md:text-2xl">
+        Based on your concept, here&apos;s a quick look at your potential
+        audience, market gaps, and common pain points. This snapshot uses a
+        GPT-4o AI model, so treat it as an informed starting point—not the final
+        word.
+      </p>
+
+      <p className="mb-6 text-lg md:text-2xl">
+        Scroll down to see the highlights and request a detailed report for
+        deeper analysis.
+      </p>
+
+      <hr className="my-6 md:my-8" />
+
+      <Section header="🔎 How Big Could This Get?">
         <Paragraph>
           {evaluation.marketExistence.split('\n').map((line, index) => (
             <React.Fragment key={index}>
@@ -84,7 +102,9 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
         </Paragraph>
       </Section>
 
-      <Section header="Common Pain Points That Are Relevant to The Problem:">
+      <hr className="my-6 md:my-8" />
+
+      <Section header="⚠️ What's Bugging Your Users?">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
           {evaluation.painPoints.map((item, index) => (
             <div
@@ -99,7 +119,9 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
         </div>
       </Section>
 
-      <Section header="Target Audiences:">
+      <hr className="my-6 md:my-8" />
+
+      <Section header="👥 Who's This Really For?">
         <div className="grid grid-cols-1 gap-6">
           {evaluation.targetAudience.map((item, index) => (
             <div
@@ -126,7 +148,13 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
         </div>
       )}
 
-      <div className="py-2 text-center md:py-4">
+      <hr className="my-6 md:my-8" />
+
+      <Section header="Ready for a Full Breakdown?">
+        <p className="mb-6 text-lg md:text-xl">
+          Explore complete competitor breakdowns, marketing angles, and more.
+        </p>
+
         <button
           type="button"
           onClick={handleSubmit}
@@ -135,7 +163,7 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
         >
           {status === 'loading' ? 'Saving...' : 'Go To Detailed Analysis'}
         </button>
-      </div>
+      </Section>
     </div>
   )
 }
