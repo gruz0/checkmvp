@@ -7,6 +7,7 @@ import Paragraph from '@/components/Paragraph'
 interface Props {
   problem: string
   hideExamples?: boolean
+  cta?: string
 }
 
 const examples = [
@@ -84,7 +85,7 @@ Target Audience:
   },
 ]
 
-const DefineConceptForm = ({ problem, hideExamples }: Props) => {
+const DefineConceptForm = ({ problem, hideExamples, cta }: Props) => {
   const [status, setStatus] = useState<string>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [showHint, setShowHint] = useState<boolean>(false)
@@ -206,7 +207,7 @@ Target Audience:
           className="rounded-md border border-transparent bg-blue-600 px-6 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           disabled={status === 'loading'}
         >
-          {status === 'loading' ? 'Saving...' : 'Analyze Idea'}
+          {status === 'loading' ? 'Saving...' : cta || 'Analyze Idea'}
         </button>
       </div>
 
