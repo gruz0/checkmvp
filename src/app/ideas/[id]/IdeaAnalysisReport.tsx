@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import { usePlausible } from 'next-plausible'
 import React, { useEffect, useState } from 'react'
 import BackToTopButton from '@/components/BackToTopButton'
-import FeedbackForm from '@/components/FeedbackForm'
 import HorizontalLine from '@/components/HorizontalLine'
 import MessageBox from '@/components/MessageBox'
 import { Goals } from '@/lib/goals'
@@ -114,8 +113,6 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
   const plausible = usePlausible()
   const router = useRouter()
 
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
-  const [wrongSection, setWrongSection] = useState<string | null>(null)
   const [readyForReport, setReadyForReport] = useState<boolean>(false)
 
   useEffect(() => {
@@ -182,53 +179,6 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     }
   }
 
-  const onReport = (section: string) => {
-    if (!section) {
-      return
-    }
-
-    setWrongSection(section)
-
-    setShowFeedbackForm(true)
-  }
-
-  const handleFeedbackSubmit = async (feedback: string, contact: string) => {
-    if (!wrongSection) {
-      return
-    }
-
-    try {
-      setWrongSection(null)
-      setShowFeedbackForm(false)
-
-      const res = await fetch(`/api/ideas/${data.id}/feedback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          section: wrongSection,
-          feedback: feedback.trim(),
-          contact: contact.trim(),
-        }),
-      })
-
-      if (res.status === 201) {
-        setWrongSection(null)
-        setShowFeedbackForm(false)
-      } else {
-        const errorData = await res.json()
-
-        alert(errorData.error || 'Something went wrong.')
-
-        setWrongSection(null)
-        setShowFeedbackForm(false)
-      }
-    } catch (error) {
-      alert(`Error submitting report: ${error}`)
-    }
-  }
-
   return (
     <div className="p-4 md:p-6 lg:p-8">
       <div className="flex flex-col md:flex-row">
@@ -262,21 +212,9 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
           <HorizontalLine />
 
-          {showFeedbackForm && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-800/50">
-              <div className="max-w-2xl rounded bg-white p-4 shadow-md md:p-8 dark:bg-gray-900">
-                <FeedbackForm
-                  onSubmit={handleFeedbackSubmit}
-                  onClose={() => setShowFeedbackForm(false)}
-                />
-              </div>
-            </div>
-          )}
-
           <AboutReport />
 
           <SectionContext
-            onReport={onReport}
             data={{
               problem: data.problem,
               marketExistence: data.marketExistence,
@@ -285,59 +223,40 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
           <HorizontalLine />
 
-          <SectionMarketAnalysis
-            onReport={onReport}
-            data={data.marketAnalysis}
-          />
+          <SectionMarketAnalysis data={data.marketAnalysis} />
 
           <HorizontalLine />
 
-          <SectionCompetitors
-            onReport={onReport}
-            data={data.competitorAnalysis}
-          />
+          <SectionCompetitors data={data.competitorAnalysis} />
 
           <HorizontalLine />
 
-          <SectionValueProposition
-            onReport={onReport}
-            data={data.valueProposition}
-          />
+          <SectionValueProposition data={data.valueProposition} />
 
           <HorizontalLine />
 
-          <SectionTargetAudiences
-            onReport={onReport}
-            data={data.targetAudiences}
-          />
+          <SectionTargetAudiences data={data.targetAudiences} />
 
           <HorizontalLine />
 
-          <SectionSWOTAnalysis onReport={onReport} data={data.swotAnalysis} />
+          <SectionSWOTAnalysis data={data.swotAnalysis} />
 
           <HorizontalLine />
 
-          <SectionElevatorPitch
-            onReport={onReport}
-            data={data.elevatorPitches}
-          />
+          <SectionElevatorPitch data={data.elevatorPitches} />
 
           <HorizontalLine />
 
-          <SectionProductNames onReport={onReport} data={data.productNames} />
+          <SectionProductNames data={data.productNames} />
 
           <HorizontalLine />
 
-          <SectionGoogleTrends
-            onReport={onReport}
-            data={data.googleTrendsKeywords}
-          />
+          <SectionGoogleTrends data={data.googleTrendsKeywords} />
 
           <HorizontalLine />
 
           <SectionContentIdeas
             ideaId={data.id}
-            onReport={onReport}
             data={data.contentIdeasForMarketing}
           />
 

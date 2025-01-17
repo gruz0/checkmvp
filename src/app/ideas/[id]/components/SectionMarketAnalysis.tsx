@@ -9,7 +9,6 @@ import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
 
 interface SectionMarketAnalysisProps {
-  onReport: (section: string) => void
   data: {
     trends: string
     userBehaviors: string
@@ -20,7 +19,6 @@ interface SectionMarketAnalysisProps {
 }
 
 const SectionMarketAnalysis: React.FC<SectionMarketAnalysisProps> = ({
-  onReport,
   data,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
@@ -47,46 +45,23 @@ const SectionMarketAnalysis: React.FC<SectionMarketAnalysisProps> = ({
 
           {data ? (
             <>
-              <Section
-                header="Trends:"
-                onReport={() => onReport('market_analysis_overview.trends')}
-              >
+              <Section header="Trends:">
                 <Paragraph>{data.trends}</Paragraph>
               </Section>
 
-              <Section
-                header="User Behaviors:"
-                onReport={() =>
-                  onReport('market_analysis_overview.user_behaviors')
-                }
-              >
+              <Section header="User Behaviors:">
                 <Paragraph>{data.userBehaviors}</Paragraph>
               </Section>
 
-              <Section
-                header="Market Gaps:"
-                onReport={() =>
-                  onReport('market_analysis_overview.market_gaps')
-                }
-              >
+              <Section header="Market Gaps:">
                 <Paragraph>{data.marketGaps}</Paragraph>
               </Section>
 
-              <Section
-                header="Innovation Opportunities:"
-                onReport={() =>
-                  onReport('market_analysis_overview.innovation_opportunities')
-                }
-              >
+              <Section header="Innovation Opportunities:">
                 <Paragraph>{data.innovationOpportunities}</Paragraph>
               </Section>
 
-              <Section
-                header="Strategic Direction:"
-                onReport={() =>
-                  onReport('market_analysis_overview.strategic_direction')
-                }
-              >
+              <Section header="Strategic Direction:">
                 <Paragraph>{data.strategicDirection}</Paragraph>
               </Section>
             </>

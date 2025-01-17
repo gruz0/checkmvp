@@ -11,7 +11,6 @@ import SectionWrapper from '@/components/SectionWrapper'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 
 interface SectionProductNamesProps {
-  onReport: (section: string) => void
   data: Array<{
     productName: string
     domains: string[]
@@ -23,10 +22,7 @@ interface SectionProductNamesProps {
   }> | null
 }
 
-const SectionProductNames: React.FC<SectionProductNamesProps> = ({
-  onReport,
-  data,
-}) => {
+const SectionProductNames: React.FC<SectionProductNamesProps> = ({ data }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
@@ -54,7 +50,6 @@ const SectionProductNames: React.FC<SectionProductNamesProps> = ({
                 <Section
                   key={productName.productName}
                   header={`${idx + 1}. ${productName.productName} - ${productName.tagline}`}
-                  onReport={() => onReport(`potential_product_names.${idx}`)}
                 >
                   <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0 dark:bg-gray-900/50">
                     <Paragraph>

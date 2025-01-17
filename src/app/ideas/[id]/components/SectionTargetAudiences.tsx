@@ -10,7 +10,6 @@ import SectionWrapper from '@/components/SectionWrapper'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 
 interface SectionTargetAudiencesProps {
-  onReport: (section: string) => void
   data: Array<{
     id: string
     segment: string
@@ -22,7 +21,6 @@ interface SectionTargetAudiencesProps {
 }
 
 const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
-  onReport,
   data,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
@@ -51,7 +49,6 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
             <Section
               key={audience.id}
               header={`${idx + 1}. ${audience.segment}`}
-              onReport={() => onReport(`target_audiences.${audience.id}`)}
             >
               <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">

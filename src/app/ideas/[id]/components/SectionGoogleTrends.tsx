@@ -10,14 +10,10 @@ import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
 
 interface SectionGoogleTrendsProps {
-  onReport: (section: string) => void
   data: Array<string> | null
 }
 
-const SectionGoogleTrends: React.FC<SectionGoogleTrendsProps> = ({
-  onReport,
-  data,
-}) => {
+const SectionGoogleTrends: React.FC<SectionGoogleTrendsProps> = ({ data }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
@@ -41,10 +37,7 @@ const SectionGoogleTrends: React.FC<SectionGoogleTrendsProps> = ({
           </SectionDescription>
 
           {data !== null ? (
-            <Section
-              header="Suggested Keywords to Analyze:"
-              onReport={() => onReport('google_trends_keywords')}
-            >
+            <Section header="Suggested Keywords to Analyze:">
               <Paragraph>
                 These AI-suggested keywords are a starting point for exploring
                 market trends. Click any keyword to view its popularity on
