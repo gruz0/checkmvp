@@ -4,6 +4,28 @@ interface TargetAudience {
   segment: string
   description: string
   challenges: string[]
+  validationMetrics: {
+    marketSize: string
+    accessibility: number
+    painPointIntensity: number
+    willingnessToPay: number
+  }
+}
+
+interface ClarityScore {
+  overallScore: number
+  metrics: {
+    problemClarity: number
+    targetAudienceClarity: number
+    scopeDefinition: number
+    valuePropositionClarity: number
+  }
+}
+
+interface LanguageAnalysis {
+  vagueTerms: string[]
+  missingContext: string[]
+  ambiguousStatements: string[]
 }
 
 export class Evaluation {
@@ -13,6 +35,8 @@ export class Evaluation {
   private readonly painPoints: string[]
   private readonly marketExistence: string
   private readonly targetAudience: TargetAudience[]
+  private readonly clarityScore: ClarityScore
+  private readonly languageAnalysis: LanguageAnalysis
 
   constructor(
     status: Status,
@@ -20,7 +44,9 @@ export class Evaluation {
     recommendations: string[],
     painPoints: string[],
     marketExistence: string,
-    targetAudience: TargetAudience[]
+    targetAudience: TargetAudience[],
+    clarityScore: ClarityScore,
+    languageAnalysis: LanguageAnalysis
   ) {
     this.status = status
     this.suggestions = suggestions
@@ -28,6 +54,8 @@ export class Evaluation {
     this.painPoints = painPoints
     this.marketExistence = marketExistence
     this.targetAudience = targetAudience
+    this.clarityScore = clarityScore
+    this.languageAnalysis = languageAnalysis
 
     this.validate()
   }
@@ -54,6 +82,14 @@ export class Evaluation {
 
   public getTargetAudience(): TargetAudience[] {
     return this.targetAudience
+  }
+
+  public getClarityScore(): ClarityScore {
+    return this.clarityScore
+  }
+
+  public getLanguageAnalysis(): LanguageAnalysis {
+    return this.languageAnalysis
   }
 
   private validate(): void {

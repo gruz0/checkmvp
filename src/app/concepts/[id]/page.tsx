@@ -12,6 +12,28 @@ interface TargetAudience {
   segment: string
   description: string
   challenges: string[]
+  validationMetrics: {
+    marketSize: string
+    accessibility: number
+    painPointIntensity: number
+    willingnessToPay: number
+  }
+}
+
+interface ClarityScore {
+  overallScore: number
+  metrics: {
+    problemClarity: number
+    targetAudienceClarity: number
+    scopeDefinition: number
+    valuePropositionClarity: number
+  }
+}
+
+interface LanguageAnalysis {
+  vagueTerms: string[]
+  missingContext: string[]
+  ambiguousStatements: string[]
 }
 
 interface Evaluation {
@@ -21,6 +43,8 @@ interface Evaluation {
   painPoints: string[]
   marketExistence: string
   targetAudience: TargetAudience[]
+  clarityScore: ClarityScore
+  languageAnalysis: LanguageAnalysis
 }
 
 interface Concept {
@@ -51,6 +75,8 @@ export default async function Page({ params }: { params: { id: string } }) {
         recommendations: conceptEvaluation.getRecommendations(),
         targetAudience: conceptEvaluation.getTargetAudience(),
         suggestions: conceptEvaluation.getSuggestions(),
+        clarityScore: conceptEvaluation.getClarityScore(),
+        languageAnalysis: conceptEvaluation.getLanguageAnalysis(),
       }
 
       conceptProps.evaluation = evaluation

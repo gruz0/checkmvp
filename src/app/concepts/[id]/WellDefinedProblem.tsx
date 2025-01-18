@@ -6,21 +6,9 @@ import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 import { Goals } from '@/lib/goals'
-
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
-interface ProblemEvaluation {
-  status: 'well-defined' | 'requires_changes' | 'not-well-defined'
-  suggestions: string[]
-  recommendations: string[]
-  painPoints: string[]
-  marketExistence: string
-  targetAudience: TargetAudience[]
-}
+import ClarityScoreSection from './ClarityScoreSection'
+import LanguageAnalysisSection from './LanguageAnalysisSection'
+import { ProblemEvaluation } from './types'
 
 interface Props {
   conceptId: string
@@ -102,6 +90,8 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
         </Paragraph>
       </Section>
 
+      <ClarityScoreSection clarityScore={evaluation.clarityScore} />
+
       <hr className="my-6 md:my-8" />
 
       <Section header="⚠️ What's Bugging Your Users?">
@@ -141,6 +131,8 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
           ))}
         </div>
       </Section>
+
+      <LanguageAnalysisSection languageAnalysis={evaluation.languageAnalysis} />
 
       {status === 'error' && errorMessage && (
         <div className="mb-4 rounded bg-red-200 p-4 text-red-800">

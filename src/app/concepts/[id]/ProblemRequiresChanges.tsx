@@ -8,21 +8,9 @@ import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 import { Goals } from '@/lib/goals'
-
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
-interface ProblemEvaluation {
-  status: 'well-defined' | 'requires_changes' | 'not-well-defined'
-  suggestions: string[]
-  recommendations: string[]
-  painPoints: string[]
-  marketExistence: string
-  targetAudience: TargetAudience[]
-}
+import ClarityScoreSection from './ClarityScoreSection'
+import LanguageAnalysisSection from './LanguageAnalysisSection'
+import { ProblemEvaluation } from './types'
 
 interface Props {
   conceptId: string
@@ -123,6 +111,10 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
           ))}
         </div>
       </Section>
+
+      <ClarityScoreSection clarityScore={evaluation.clarityScore} />
+
+      <LanguageAnalysisSection languageAnalysis={evaluation.languageAnalysis} />
 
       <hr className="my-6 md:my-8" />
 
