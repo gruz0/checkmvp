@@ -4,23 +4,11 @@ import { usePlausible } from 'next-plausible'
 import React, { useState } from 'react'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
-import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 import { Goals } from '@/lib/goals'
-
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
-interface ProblemEvaluation {
-  status: 'well-defined' | 'requires_changes' | 'not-well-defined'
-  suggestions: string[]
-  recommendations: string[]
-  painPoints: string[]
-  marketExistence: string
-  targetAudience: TargetAudience[]
-}
+import ClarityScoreSection from './ClarityScoreSection'
+import LanguageAnalysisSection from './LanguageAnalysisSection'
+import TargetAudienceSection from './TargetAudienceSection'
+import { ProblemEvaluation } from './types'
 
 interface Props {
   conceptId: string
@@ -102,6 +90,8 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
         </Paragraph>
       </Section>
 
+      <ClarityScoreSection clarityScore={evaluation.clarityScore} />
+
       <hr className="my-6 md:my-8" />
 
       <Section header="⚠️ What's Bugging Your Users?">
@@ -119,28 +109,9 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
         </div>
       </Section>
 
-      <hr className="my-6 md:my-8" />
+      <TargetAudienceSection targetAudience={evaluation.targetAudience} />
 
-      <Section header="👥 Who's This Really For?">
-        <div className="grid grid-cols-1 gap-6">
-          {evaluation.targetAudience.map((item, index) => (
-            <div
-              key={index}
-              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 md:p-6 md:pb-0 dark:bg-gray-900/50"
-            >
-              <p className="mb-4 text-lg font-bold md:text-xl">
-                {item.segment}
-              </p>
-
-              <p className="mb-4 md:text-lg">{item.description}</p>
-
-              <p className="mb-4 font-semibold md:text-lg">Their Challenges:</p>
-
-              <SimpleUnorderedList items={item.challenges} />
-            </div>
-          ))}
-        </div>
-      </Section>
+      <LanguageAnalysisSection languageAnalysis={evaluation.languageAnalysis} />
 
       {status === 'error' && errorMessage && (
         <div className="mb-4 rounded bg-red-200 p-4 text-red-800">

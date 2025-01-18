@@ -4,12 +4,12 @@ import React, { useEffect } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import RandomMessage from '@/components/RandomMessage'
 import ProblemEvaluationPage from './ProblemEvaluationPage'
-import type { ProblemEvaluationProps } from './ProblemEvaluationPage'
+import { ProblemEvaluation } from './types'
 
 interface Concept {
   id: string
   problem: string
-  evaluation: ProblemEvaluationProps | null
+  evaluation: ProblemEvaluation | null
 }
 
 interface Props {

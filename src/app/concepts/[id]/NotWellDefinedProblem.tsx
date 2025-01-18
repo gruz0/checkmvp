@@ -3,21 +3,9 @@ import React from 'react'
 import ConceptForm from '@/components/ConceptForm'
 
 import Section from '@/components/Section'
-
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
-interface ProblemEvaluation {
-  status: 'well-defined' | 'requires_changes' | 'not-well-defined'
-  suggestions: string[]
-  recommendations: string[]
-  painPoints: string[]
-  marketExistence: string
-  targetAudience: TargetAudience[]
-}
+import ClarityScoreSection from './ClarityScoreSection'
+import LanguageAnalysisSection from './LanguageAnalysisSection'
+import { ProblemEvaluation } from './types'
 
 interface Props {
   problem: string
@@ -35,6 +23,10 @@ const NotWellDefinedProblem = ({ problem, evaluation }: Props) => (
       fully capture what you&apos;re trying to build, so we can offer the best
       insights.
     </p>
+
+    <ClarityScoreSection clarityScore={evaluation.clarityScore} />
+
+    <LanguageAnalysisSection languageAnalysis={evaluation.languageAnalysis} />
 
     <hr className="my-6 md:my-8" />
 

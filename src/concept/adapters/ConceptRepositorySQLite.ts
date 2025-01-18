@@ -57,6 +57,8 @@ export class ConceptRepositorySQLite implements Repository {
       painPoints: evaluation.getPainPoints(),
       marketExistence: evaluation.getMarketExistence(),
       targetAudience: evaluation.getTargetAudience(),
+      clarityScore: evaluation.getClarityScore(),
+      languageAnalysis: evaluation.getLanguageAnalysis(),
     })
   }
 
@@ -78,10 +80,10 @@ export class ConceptRepositorySQLite implements Repository {
     if (conceptModel.evaluation) {
       const json = JSON.parse(conceptModel.evaluation)
 
-      // FIXME: As many changes have applied since 17 Nov, we don't want to support them
+      // FIXME: As many changes have applied since 17 Jan 2025, we don't want to support them
       // This condition can be removed once we go live on production.
       const createdAtDate = new Date(conceptModel.createdAt)
-      const thresholdDate = new Date('2024-11-17T00:00:00Z')
+      const thresholdDate = new Date('2025-01-18T00:00:00Z')
 
       if (
         json.status === 'requires_changes' &&
@@ -89,7 +91,7 @@ export class ConceptRepositorySQLite implements Repository {
         createdAtDate < thresholdDate
       ) {
         throw new Error(
-          'The concept was created before November 17, 2024, and is no longer supported. Please create a new one.'
+          'The concept was created before January 18, 2025, and is no longer supported. Please create a new one.'
         )
       }
 
@@ -99,7 +101,9 @@ export class ConceptRepositorySQLite implements Repository {
         json.recommendations,
         json.painPoints,
         json.marketExistence,
-        json.targetAudience
+        json.targetAudience,
+        json.clarityScore,
+        json.languageAnalysis
       )
 
       concept.evaluate(evaluation)

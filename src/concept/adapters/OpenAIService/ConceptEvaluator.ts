@@ -13,12 +13,32 @@ interface Evaluation {
   painPoints: string[]
   marketExistence: string
   targetAudience: TargetAudience[]
+  clarityScore: {
+    overallScore: number
+    metrics: {
+      problemClarity: number
+      targetAudienceClarity: number
+      scopeDefinition: number
+      valuePropositionClarity: number
+    }
+  }
+  languageAnalysis: {
+    vagueTerms: string[]
+    missingContext: string[]
+    ambiguousStatements: string[]
+  }
 }
 
 interface TargetAudience {
   segment: string
   description: string
   challenges: string[]
+  validationMetrics: {
+    marketSize: string
+    accessibility: number
+    painPointIntensity: number
+    willingnessToPay: number
+  }
 }
 
 const ResponseSchema = z.object({
@@ -27,6 +47,20 @@ const ResponseSchema = z.object({
     suggestions: z.array(z.string()),
     recommendations: z.array(z.string()),
     pain_points: z.array(z.string()),
+    clarity_score: z.object({
+      overall_score: z.number(),
+      metrics: z.object({
+        problem_clarity: z.number(),
+        target_audience_clarity: z.number(),
+        scope_definition: z.number(),
+        value_proposition_clarity: z.number(),
+      }),
+    }),
+    language_analysis: z.object({
+      vague_terms: z.array(z.string()),
+      missing_context: z.array(z.string()),
+      ambiguous_statements: z.array(z.string()),
+    }),
     market_existence: z.object({
       market_size_and_growth_trends: z.string(),
       existing_solutions_and_competitors: z.string(),
@@ -39,6 +73,12 @@ const ResponseSchema = z.object({
         segment: z.string(),
         description: z.string(),
         challenges: z.array(z.string()),
+        validation_metrics: z.object({
+          market_size: z.string(),
+          accessibility: z.number(),
+          pain_point_intensity: z.number(),
+          willingness_to_pay: z.number(),
+        }),
       })
     ),
   }),
@@ -131,6 +171,8 @@ export class ConceptEvaluator {
 
       const problemEvaluation = message.parsed.problem_evaluation
 
+      console.log(JSON.stringify(problemEvaluation, null, 2))
+
       if (problemEvaluation.status === 'not-well-defined') {
         return {
           status: problemEvaluation.status,
@@ -139,6 +181,20 @@ export class ConceptEvaluator {
           painPoints: [],
           marketExistence: '',
           targetAudience: [],
+          clarityScore: {
+            overallScore: 0,
+            metrics: {
+              problemClarity: 0,
+              targetAudienceClarity: 0,
+              scopeDefinition: 0,
+              valuePropositionClarity: 0,
+            },
+          },
+          languageAnalysis: {
+            vagueTerms: [],
+            missingContext: [],
+            ambiguousStatements: [],
+          },
         }
       }
 
@@ -184,7 +240,37 @@ export class ConceptEvaluator {
         recommendations: problemEvaluation.recommendations,
         painPoints: problemEvaluation.pain_points,
         marketExistence: marketExistence.join('\n\n'),
-        targetAudience: problemEvaluation.target_audience,
+        targetAudience: problemEvaluation.target_audience.map((audience) => ({
+          segment: audience.segment,
+          description: audience.description,
+          challenges: audience.challenges,
+          validationMetrics: {
+            marketSize: audience.validation_metrics.market_size,
+            accessibility: audience.validation_metrics.accessibility,
+            painPointIntensity:
+              audience.validation_metrics.pain_point_intensity,
+            willingnessToPay: audience.validation_metrics.willingness_to_pay,
+          },
+        })),
+        clarityScore: {
+          overallScore: problemEvaluation.clarity_score.overall_score,
+          metrics: {
+            problemClarity:
+              problemEvaluation.clarity_score.metrics.problem_clarity,
+            targetAudienceClarity:
+              problemEvaluation.clarity_score.metrics.target_audience_clarity,
+            scopeDefinition:
+              problemEvaluation.clarity_score.metrics.scope_definition,
+            valuePropositionClarity:
+              problemEvaluation.clarity_score.metrics.value_proposition_clarity,
+          },
+        },
+        languageAnalysis: {
+          vagueTerms: problemEvaluation.language_analysis.vague_terms,
+          missingContext: problemEvaluation.language_analysis.missing_context,
+          ambiguousStatements:
+            problemEvaluation.language_analysis.ambiguous_statements,
+        },
       }
     } catch (e) {
       Sentry.captureException(e)

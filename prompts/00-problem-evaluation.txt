@@ -37,6 +37,17 @@ Based on the classification, follow the guidelines below.
 
 - **status**: "well-defined" or "requires_changes" or "not-well-defined"
 - **suggestions**: Provide an array with 4 specific actionable suggestions how to make a problem definition better. Each suggestion should consist of 3 sentences that detail what the user should improve and why. Ensure that each suggestion is distinct and offers valuable guidance
+- **clarity_score**: Provide a numerical assessment of the problem statement's clarity on a scale of 0-10
+  - **overall_score**: A comprehensive score (0-10) reflecting the overall clarity and completeness
+  - **metrics**: Detailed scoring of specific aspects:
+    - **problem_clarity**: How clearly the core problem is articulated (0-10)
+    - **target_audience_clarity**: How well the target audience is defined (0-10)
+    - **scope_definition**: How well the scope and boundaries are defined (0-10)
+    - **value_proposition_clarity**: How clearly the value proposition is communicated (0-10)
+- **language_analysis**: Analyze the language used in the problem statement
+  - **vague_terms**: Array of words or phrases that are too general or unclear
+  - **missing_context**: Array of areas where additional context would improve understanding
+  - **ambiguous_statements**: Array of statements that could have multiple interpretations
 - **recommendations**: Provide an array with 3 unique, refined versions of the problem statement phrased as value propositions from the user's perspective, directed toward the potential target audience.
   - Must be well-defined to pass your **initial assessment**.
   - Consist of 3 paragraphs.
@@ -52,9 +63,15 @@ Based on the classification, follow the guidelines below.
   - **market_gaps_and_opportunities**: Highlight specific unmet needs or gaps in the market that the user's idea could address.
   - **target_users**: Describe specific target users who would benefit from a new solution, detailing their unique needs and preferences.
   - **challenges_and_barriers_to_entry**: Discuss potential challenges in entering the market and suggest how they might be overcome.
-- **target_audience**: Provide an array with 3-5 different but relevant target audiences for the given problem. Consider different angles, such as primary users, secondary users, and other stakeholders who might benefit from the solution. For each audience, provide an object that concisely states the audience along with a detailed description of their specific challenges, motivations, and how they relate to the proposed solution.
-  - **segment**: A concise name of the target audience segment.
-  - **description**: A detailed description of their specific challenges and motivations.
+- **target_audience**: Provide an array with 3-5 different but relevant target audiences for the given problem. Consider different angles, such as primary users, secondary users, and other stakeholders who might benefit from the solution. For each audience segment, include:
+  - **segment**: A concise name of the target audience segment
+  - **description**: A detailed description of their specific challenges and motivations
+  - **challenges**: Array of 3-5 specific challenges this audience segment faces related to the problem
+  - **validation_metrics**: Quantitative assessment of the segment's potential
+    - **market_size**: Description of the estimated market size for this segment, including source of information where available (e.g., industry reports, market research, public data)
+    - **accessibility**: Score (0-10) indicating how easily this segment can be reached and acquired
+    - **pain_point_intensity**: Score (0-10) indicating how severely this segment experiences the problem
+    - **willingness_to_pay**: Score (0-10) indicating the segment's likelihood to pay for a solution
 
 ### Important Instructions
 
@@ -66,3 +83,9 @@ Based on the classification, follow the guidelines below.
 - **Use Specific Data**: Incorporate relevant statistics, data points, or industry insights to support your analysis. Cite specific sources or reports if possible.
 - **Avoid Generic Statements**: Do not use overused phrases or follow a template; ensure the analysis is specific and tailored to the user's problem.
 - **Use 2025 Data**: Use data from 2025 to make the analysis more relevant and accurate.
+- **Scoring Guidelines**: All numerical scores must be between 0 and 10, where 0 represents complete absence/failure and 10 represents perfect execution
+- **Language Analysis**: Focus on identifying specific instances of unclear language rather than general observations
+- **Validation Metrics**: When scoring target audience metrics:
+  - Accessibility (0-10): Consider factors like marketing channels, geographical reach, and digital presence
+  - Pain Point Intensity (0-10): Evaluate frequency, severity, and impact of the problem
+  - Willingness to Pay (0-10): Consider purchasing power, current spending on alternatives, and problem urgency

@@ -16,12 +16,32 @@ interface ConceptEvaluation {
   painPoints: string[]
   marketExistence: string
   targetAudience: TargetAudience[]
+  clarityScore: {
+    overallScore: number
+    metrics: {
+      problemClarity: number
+      targetAudienceClarity: number
+      scopeDefinition: number
+      valuePropositionClarity: number
+    }
+  }
+  languageAnalysis: {
+    vagueTerms: string[]
+    missingContext: string[]
+    ambiguousStatements: string[]
+  }
 }
 
 interface TargetAudience {
   segment: string
   description: string
   challenges: string[]
+  validationMetrics: {
+    marketSize: string
+    accessibility: number
+    painPointIntensity: number
+    willingnessToPay: number
+  }
 }
 
 interface AIService {
@@ -74,7 +94,9 @@ export class ConceptEvaluationSubscriber implements EventHandler {
               evaluation.recommendations,
               evaluation.painPoints,
               evaluation.marketExistence,
-              evaluation.targetAudience
+              evaluation.targetAudience,
+              evaluation.clarityScore,
+              evaluation.languageAnalysis
             )
           )
 
