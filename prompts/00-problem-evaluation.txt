@@ -47,12 +47,12 @@ Based on the classification, follow the guidelines below.
   - Example format: "I help [target audiences] to [solve a specific problem] by [offering a solution], which allows them to [benefit]. My target audiences: [relevant target audiences]"
 - **pain_points**: Provide an array with 4 specific and concrete reasons why this problem is a significant pain point for users. Focus on real-world implications and challenges that users face due to this problem. Include examples of how this issue affects users' daily lives, productivity, or well-being, and emphasize the urgency or necessity of finding a solution
 - **market_existence**: Provide a comprehensive and unique analysis of the competitive landscape for this specific problem.
-  - **market_size_and_growth_trends**: Incorporate relevant statistics, data, or trends.
+  - **market_size_and_growth_trends**: Incorporate relevant statistics, data, or trends from 2025.
   - **existing_solutions_and_competitors**: Identify key competitors or existing solutions, analyzing their strengths and weaknesses in depth.
   - **market_gaps_and_opportunities**: Highlight specific unmet needs or gaps in the market that the user's idea could address.
   - **target_users**: Describe specific target users who would benefit from a new solution, detailing their unique needs and preferences.
   - **challenges_and_barriers_to_entry**: Discuss potential challenges in entering the market and suggest how they might be overcome.
-- **target_audience**: Provide an array with 3-5 different target audiences for the given problem. Consider different angles, such as primary users, secondary users, and other stakeholders who might benefit from the solution. For each audience, provide an object that concisely states the audience along with a detailed description of their specific challenges, motivations, and how they relate to the proposed solution.
+- **target_audience**: Provide an array with 3-5 different but relevant target audiences for the given problem. Consider different angles, such as primary users, secondary users, and other stakeholders who might benefit from the solution. For each audience, provide an object that concisely states the audience along with a detailed description of their specific challenges, motivations, and how they relate to the proposed solution.
   - **segment**: A concise name of the target audience segment.
   - **description**: A detailed description of their specific challenges and motivations.
 
@@ -65,3 +65,4 @@ Based on the classification, follow the guidelines below.
 - **Provide Unique Insights**: Go beyond surface-level analysis and explore less-discussed aspects of the market that are particularly relevant to the problem.
 - **Use Specific Data**: Incorporate relevant statistics, data points, or industry insights to support your analysis. Cite specific sources or reports if possible.
 - **Avoid Generic Statements**: Do not use overused phrases or follow a template; ensure the analysis is specific and tailored to the user's problem.
+- **Use 2025 Data**: Use data from 2025 to make the analysis more relevant and accurate.
