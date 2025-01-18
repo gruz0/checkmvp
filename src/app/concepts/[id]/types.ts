@@ -1,6 +1,6 @@
 type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
 
-interface TargetAudience {
+export interface TargetAudience {
   segment: string
   description: string
   challenges: string[]

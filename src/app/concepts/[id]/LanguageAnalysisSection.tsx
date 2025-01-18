@@ -35,7 +35,7 @@ const LanguageAnalysisSection = ({ languageAnalysis }: Props) => {
     <>
       <hr className="my-6 md:my-8" />
 
-      <Section header="🔍 Language Analysis">
+      <Section header="🔍 Language Analysis:">
         <div className={`grid gap-6 ${gridColsClass}`}>
           {languageAnalysis.vagueTerms.length > 0 && (
             <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:bg-gray-900/50">

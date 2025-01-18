@@ -6,9 +6,9 @@
 
 **Impact**: Founders will save critical time in the early stages by getting immediate, actionable feedback on their problem statements. This helps avoid the common pitfall of building solutions for poorly defined problems, potentially saving months of misdirected development effort.
 
-- [ ] Improve initial problem statement validation
-- [ ] Add clarity assessment scoring
-- [ ] Implement scope verification checks
+- [x] Improve initial problem statement validation
+- [x] Add clarity assessment scoring
+- [x] Implement scope verification checks
 
 ## Strengthen market analysis
 

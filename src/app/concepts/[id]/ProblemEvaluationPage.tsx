@@ -3,26 +3,12 @@ import React from 'react'
 import NotWellDefinedProblem from './NotWellDefinedProblem'
 import ProblemRequiresChanges from './ProblemRequiresChanges'
 import WellDefinedProblem from './WellDefinedProblem'
-
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
-export interface ProblemEvaluationProps {
-  status: 'well-defined' | 'requires_changes' | 'not-well-defined'
-  suggestions: string[]
-  recommendations: string[]
-  painPoints: string[]
-  marketExistence: string
-  targetAudience: TargetAudience[]
-}
+import { ProblemEvaluation } from './types'
 
 type Props = {
   conceptId: string
   problem: string
-  evaluation: ProblemEvaluationProps
+  evaluation: ProblemEvaluation
 }
 
 const ProblemEvaluationPage = ({ conceptId, problem, evaluation }: Props) => (
