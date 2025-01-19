@@ -8,6 +8,7 @@ import { ProductName } from '@/idea/domain/ProductName'
 import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { SocialMediaCampaigns } from '@/idea/domain/SocialMediaCampaigns'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
+import { TestingPlan } from '@/idea/domain/TestingPlan'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { Identity } from '@/shared/Identity'
 
@@ -21,6 +22,7 @@ export class Idea {
   private googleTrendsKeywords: GoogleTrendsKeyword[] | null = null
   private contentIdeasForMarketing: ContentIdeasForMarketing | null = null
   private socialMediaCampaigns: SocialMediaCampaigns | null = null
+  private testingPlan: TestingPlan | null = null
   private migrated: boolean = false
   private archived: boolean = false
 
@@ -194,6 +196,14 @@ export class Idea {
     this.socialMediaCampaigns = socialMediaCampaigns
   }
 
+  public setTestingPlan(testingPlan: TestingPlan): void {
+    if (this.testingPlan !== null) {
+      throw new Error('TestingPlan already set')
+    }
+
+    this.testingPlan = testingPlan
+  }
+
   public finalizeMigration(): void {
     if (this.migrated) {
       throw new Error('Idea was already migrated')
@@ -264,6 +274,10 @@ export class Idea {
 
   public getSocialMediaCampaigns(): SocialMediaCampaigns | null {
     return this.socialMediaCampaigns
+  }
+
+  public getTestingPlan(): TestingPlan | null {
+    return this.testingPlan
   }
 
   public isMigrated(): boolean {

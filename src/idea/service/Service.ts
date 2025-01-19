@@ -10,6 +10,7 @@ import { PotentialNamesEvaluator } from '@/idea/adapters/OpenAIService/Potential
 import { SWOTAnalysisEvaluator } from '@/idea/adapters/OpenAIService/SWOTAnalysisEvaluator'
 import { SocialMediaCampaignsEvaluator } from '@/idea/adapters/OpenAIService/SocialMediaCampaignsEvaluator'
 import { TargetAudienceEvaluator } from '@/idea/adapters/OpenAIService/TargetAudienceEvaluator'
+import { TestingPlanEvaluator } from '@/idea/adapters/OpenAIService/TestingPlanEvaluator'
 import { ValuePropositionEvaluator } from '@/idea/adapters/OpenAIService/ValuePropositionEvaluator'
 import { Application } from '@/idea/app/App'
 import { ArchivationHandler } from '@/idea/app/commands/Archive'
@@ -30,6 +31,7 @@ import { PotentialNamesEvaluationSubscriber } from '@/idea/events/subscribers/Po
 import { SWOTAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/SWOTAnalysisEvaluationSubscriber'
 import { SocialMediaCampaignsSubscriber } from '@/idea/events/subscribers/SocialMediaCampaignsSubscriber'
 import { TargetAudienceEvaluationSubscriber } from '@/idea/events/subscribers/TargetAudienceEvaluationSubscriber'
+import { TestingPlanEvaluationSubscriber } from '@/idea/events/subscribers/TestingPlanEvaluationSubscriber'
 import { ValuePropositionEvaluationSubscriber } from '@/idea/events/subscribers/ValuePropositionEvaluationSubscriber'
 import { env } from '@/lib/env'
 
@@ -97,6 +99,11 @@ const registerApp = (): Application => {
     new SocialMediaCampaignsEvaluator(env.OPENAI_API_KEY)
   )
 
+  const testingPlanEvaluationSubscriber = new TestingPlanEvaluationSubscriber(
+    ideaRepository,
+    new TestingPlanEvaluator(env.OPENAI_API_KEY)
+  )
+
   eventBus.subscribe(IdeaCreated.eventName, targetAudienceEvaluationSubscriber)
   eventBus.subscribe(
     TargetAudiencesEvaluated.eventName,
@@ -129,6 +136,10 @@ const registerApp = (): Application => {
   eventBus.subscribe(
     ValuePropositionEvaluated.eventName,
     contentIdeasEvaluationSubscriber
+  )
+  eventBus.subscribe(
+    ValuePropositionEvaluated.eventName,
+    testingPlanEvaluationSubscriber
   )
   eventBus.subscribe(
     SocialMediaCampaignsRequested.eventName,

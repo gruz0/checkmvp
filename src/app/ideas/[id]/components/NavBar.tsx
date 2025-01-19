@@ -36,17 +36,14 @@ export const NavBar = () => (
     <Link href="#content_ideas" className={className}>
       Content Ideas
     </Link>
+    <Link href="#two_week_testing_plan" className={className}>
+      Two-Week Testing Plan
+    </Link>
     <Link
       href="#actionable_next_steps"
       className="block rounded px-4 py-2 text-gray-500"
     >
       Next Steps
-    </Link>
-    <Link
-      href="#two_week_testing_plan"
-      className="block rounded px-4 py-2 text-gray-500"
-    >
-      Two-Week Testing Plan
     </Link>
     <Link
       href="#estimated_costs"
