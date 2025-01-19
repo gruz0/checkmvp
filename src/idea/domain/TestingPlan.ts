@@ -187,6 +187,12 @@ export class TestingPlan {
     ) {
       throw new Error('Content template titles cannot be empty')
     }
+    if (
+      !Array.isArray(softLaunchStrategy.engagementTactics) ||
+      softLaunchStrategy.engagementTactics.length === 0
+    ) {
+      throw new Error('Engagement tactics cannot be empty')
+    }
 
     return new TestingPlan(
       coreAssumptions,

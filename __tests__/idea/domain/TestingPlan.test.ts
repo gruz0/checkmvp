@@ -161,6 +161,42 @@ describe('TestingPlan Class', () => {
           )
         ).toThrow('Day 1 tasks cannot be empty')
       })
+
+      it('should throw error when successMetrics are empty', () => {
+        const invalidPlan = validTwoWeekPlan.map((day) => ({
+          ...day,
+          successMetrics: day.day === 1 ? [] : day.successMetrics,
+        }))
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            invalidPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            validResourceOptimization,
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Day 1 success metrics cannot be empty')
+      })
+
+      it('should throw error when toolsNeeded are empty', () => {
+        const invalidPlan = validTwoWeekPlan.map((day) => ({
+          ...day,
+          toolsNeeded: day.day === 1 ? [] : day.toolsNeeded,
+        }))
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            invalidPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            validResourceOptimization,
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Day 1 tools needed cannot be empty')
+      })
     })
 
     describe('KeyMetrics', () => {
@@ -177,6 +213,129 @@ describe('TestingPlan Class', () => {
             validSoftLaunchStrategy
           )
         ).toThrow('Qualitative metrics cannot be empty')
+      })
+
+      it('should throw error when quantitative metrics are empty', () => {
+        const invalidMetrics = { ...validKeyMetrics, quantitative: [] }
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            invalidMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            validResourceOptimization,
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Quantitative metrics cannot be empty')
+      })
+
+      it('should throw error when minimumSuccessCriteria is empty', () => {
+        const invalidMetrics = {
+          ...validKeyMetrics,
+          minimumSuccessCriteria: [],
+        }
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            invalidMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            validResourceOptimization,
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Minimum success criteria cannot be empty')
+      })
+    })
+
+    describe('TestingMethods', () => {
+      it('should throw error when testingMethods is empty', () => {
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            [],
+            validContingencyPlans,
+            validResourceOptimization,
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Testing methods cannot be empty')
+      })
+    })
+
+    describe('ContingencyPlans', () => {
+      it('should throw error when contingencyPlans is empty', () => {
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            [],
+            validResourceOptimization,
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Contingency plans cannot be empty')
+      })
+    })
+
+    describe('ResourceOptimization', () => {
+      it('should throw error when timeSavingTips is empty', () => {
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            { ...validResourceOptimization, timeSavingTips: [] },
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Time saving tips cannot be empty')
+      })
+
+      it('should throw error when freeTools is empty', () => {
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            { ...validResourceOptimization, freeTools: [] },
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Free tools cannot be empty')
+      })
+
+      it('should throw error when minimumBudget is empty', () => {
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            { ...validResourceOptimization, minimumBudget: '' },
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Minimum budget cannot be empty')
+      })
+
+      it('should throw error when minimumBudget is only whitespace', () => {
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            { ...validResourceOptimization, minimumBudget: '   ' },
+            validSoftLaunchStrategy
+          )
+        ).toThrow('Minimum budget cannot be empty')
       })
     })
 
@@ -197,6 +356,95 @@ describe('TestingPlan Class', () => {
             invalidStrategy
           )
         ).toThrow('Soft launch platforms cannot be empty')
+      })
+
+      it('should throw error when preparationSteps is empty', () => {
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            validResourceOptimization,
+            { ...validSoftLaunchStrategy, preparationSteps: [] }
+          )
+        ).toThrow('Preparation steps cannot be empty')
+      })
+
+      it('should throw error when contentTemplates.titles is empty', () => {
+        const invalidStrategy = {
+          ...validSoftLaunchStrategy,
+          contentTemplates: {
+            ...validSoftLaunchStrategy.contentTemplates,
+            titles: [],
+          },
+        }
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            validResourceOptimization,
+            invalidStrategy
+          )
+        ).toThrow('Content template titles cannot be empty')
+      })
+
+      it('should throw error when engagementTactics is empty', () => {
+        const invalidStrategy = {
+          ...validSoftLaunchStrategy,
+          engagementTactics: [],
+        }
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            validResourceOptimization,
+            invalidStrategy
+          )
+        ).toThrow('Engagement tactics cannot be empty')
+      })
+
+      it('should throw error when timing is empty', () => {
+        const invalidStrategy = {
+          ...validSoftLaunchStrategy,
+          timing: '',
+        }
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            validResourceOptimization,
+            invalidStrategy
+          )
+        ).toThrow('Soft launch timing cannot be empty')
+      })
+
+      it('should throw error when timing is only whitespace', () => {
+        const invalidStrategy = {
+          ...validSoftLaunchStrategy,
+          timing: '   ',
+        }
+        expect(() =>
+          TestingPlan.New(
+            validCoreAssumptions,
+            validTwoWeekPlan,
+            validKeyMetrics,
+            validTestingMethods,
+            validContingencyPlans,
+            validResourceOptimization,
+            invalidStrategy
+          )
+        ).toThrow('Soft launch timing cannot be empty')
       })
     })
   })

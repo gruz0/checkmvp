@@ -9,6 +9,7 @@ import { ProductName } from '@/idea/domain/ProductName'
 import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { SocialMediaCampaigns } from '@/idea/domain/SocialMediaCampaigns'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
+import { TestingPlan } from '@/idea/domain/TestingPlan'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { Identity } from '@/shared/Identity'
 
@@ -655,6 +656,93 @@ describe('Idea Class', () => {
       expect(idea.isArchived()).toBeFalse()
       idea.archive()
       expect(idea.isArchived()).toBeTrue()
+    })
+  })
+
+  describe('setTestingPlan', () => {
+    let idea: Idea
+    let testingPlan: TestingPlan
+
+    beforeEach(() => {
+      idea = Idea.New(
+        validId,
+        validConceptId,
+        validProblem,
+        validMarketExistence,
+        validTargetAudiences
+      )
+      testingPlan = TestingPlan.New(
+        [{ assumption: 'test', whyCritical: 'test', validationMethod: 'test' }],
+        Array.from({ length: 14 }, (_, i) => ({
+          day: i + 1,
+          focus: 'test',
+          tasks: ['test'],
+          successMetrics: ['test'],
+          toolsNeeded: ['test'],
+          estimatedTime: 'test',
+        })),
+        {
+          qualitative: ['test'],
+          quantitative: ['test'],
+          minimumSuccessCriteria: ['test'],
+        },
+        [
+          {
+            method: 'test',
+            description: 'test',
+            whenToUse: 'test',
+            expectedOutcome: 'test',
+          },
+        ],
+        [{ scenario: 'test', solution: 'test', alternativeApproach: 'test' }],
+        {
+          minimumBudget: 'test',
+          timeSavingTips: ['test'],
+          freeTools: ['test'],
+          paidAlternatives: ['test'],
+        },
+        {
+          platforms: ['test'],
+          preparationSteps: ['test'],
+          timing: 'test',
+          engagementTactics: ['test'],
+          contentTemplates: {
+            titles: ['test'],
+            shortDescription: 'test',
+            problemStatement: 'test',
+            solutionPreview: 'test',
+            callToAction: {
+              primary: 'test',
+              secondary: 'test',
+              valueHook: 'test',
+            },
+            keyBenefits: ['test'],
+            socialProofPlan: ['test'],
+            engagementHooks: ['test'],
+          },
+          platformSpecific: [
+            {
+              platform: 'test',
+              contentFormat: 'test',
+              bestTiming: 'test',
+              communityRules: ['test'],
+              engagementStrategy: 'test',
+            },
+          ],
+        }
+      )
+    })
+
+    it('should set testing plan when not already set', () => {
+      idea.setTestingPlan(testingPlan)
+      expect(idea.getTestingPlan()).toBe(testingPlan)
+    })
+
+    it('should throw error when testing plan is already set', () => {
+      idea.setTestingPlan(testingPlan)
+      expect(() => idea.setTestingPlan(testingPlan)).toThrow(
+        'TestingPlan already set'
+      )
     })
   })
 })
