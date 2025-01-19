@@ -71,8 +71,71 @@ interface FullIdeaDTO {
     cta: string
   }> | null
   googleTrendsKeywords: Array<string> | null
-  // FIXME: Replace the key with typed value
   contentIdeasForMarketing: Record<string, ContentIdeaDTO> | null
+  testingPlan: {
+    coreAssumptions: Array<{
+      assumption: string
+      whyCritical: string
+      validationMethod: string
+    }>
+    twoWeekPlan: Array<{
+      day: number
+      focus: string
+      tasks: string[]
+      successMetrics: string[]
+      toolsNeeded: string[]
+      estimatedTime: string
+    }>
+    keyMetrics: {
+      qualitative: string[]
+      quantitative: string[]
+      minimumSuccessCriteria: string[]
+    }
+    testingMethods: Array<{
+      method: string
+      description: string
+      whenToUse: string
+      expectedOutcome: string
+    }>
+    contingencyPlans: Array<{
+      scenario: string
+      solution: string
+      alternativeApproach: string
+    }>
+    resourceOptimization: {
+      minimumBudget: string
+      timeSavingTips: string[]
+      freeTools: string[]
+      paidAlternatives: string[]
+    }
+    softLaunchStrategy: {
+      platforms: string[]
+      preparationSteps: string[]
+      timing: string
+      engagementTactics: string[]
+      contentTemplates: {
+        titles: string[]
+        shortDescription: string
+        problemStatement: string
+        solutionPreview: string
+        callToAction: {
+          primary: string
+          secondary: string
+          valueHook: string
+        }
+        keyBenefits: string[]
+        socialProofPlan: string[]
+        engagementHooks: string[]
+      }
+      platformSpecific: Array<{
+        platform: string
+        contentFormat: string
+        bestTiming: string
+        communityRules: string[]
+        engagementStrategy: string
+      }>
+    }
+  } | null
 }
 
 interface ContentIdeaDTO {
@@ -108,6 +171,7 @@ export class GetIdeaHandler {
     const elevatorPitches = idea.getElevatorPitches()
     const googleTrendsKeywords = idea.getGoogleTrendsKeywords()
     const contentIdeasForMarketing = idea.getContentIdeasForMarketing()
+    const testingPlan = idea.getTestingPlan()
 
     return {
       id: idea.getId().getValue(),
@@ -205,6 +269,17 @@ export class GetIdeaHandler {
             },
             {} as Record<string, ContentIdeaDTO>
           )
+        : null,
+      testingPlan: testingPlan
+        ? {
+            coreAssumptions: testingPlan.getCoreAssumptions(),
+            twoWeekPlan: testingPlan.getTwoWeekPlan(),
+            keyMetrics: testingPlan.getKeyMetrics(),
+            testingMethods: testingPlan.getTestingMethods(),
+            contingencyPlans: testingPlan.getContingencyPlans(),
+            resourceOptimization: testingPlan.getResourceOptimization(),
+            softLaunchStrategy: testingPlan.getSoftLaunchStrategy(),
+          }
         : null,
     }
   }

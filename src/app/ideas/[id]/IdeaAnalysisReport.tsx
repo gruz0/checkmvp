@@ -98,6 +98,70 @@ interface Props {
     googleTrendsKeywords: Array<string> | null
     // FIXME: Replace the key with typed value
     contentIdeasForMarketing: Record<string, ContentIdeaProps> | null
+    testingPlan: {
+      coreAssumptions: Array<{
+        assumption: string
+        whyCritical: string
+        validationMethod: string
+      }>
+      twoWeekPlan: Array<{
+        day: number
+        focus: string
+        tasks: string[]
+        successMetrics: string[]
+        toolsNeeded: string[]
+        estimatedTime: string
+      }>
+      keyMetrics: {
+        qualitative: string[]
+        quantitative: string[]
+        minimumSuccessCriteria: string[]
+      }
+      testingMethods: Array<{
+        method: string
+        description: string
+        whenToUse: string
+        expectedOutcome: string
+      }>
+      contingencyPlans: Array<{
+        scenario: string
+        solution: string
+        alternativeApproach: string
+      }>
+      resourceOptimization: {
+        minimumBudget: string
+        timeSavingTips: string[]
+        freeTools: string[]
+        paidAlternatives: string[]
+      }
+      softLaunchStrategy: {
+        platforms: string[]
+        preparationSteps: string[]
+        timing: string
+        engagementTactics: string[]
+        contentTemplates: {
+          titles: string[]
+          shortDescription: string
+          problemStatement: string
+          solutionPreview: string
+          callToAction: {
+            primary: string
+            secondary: string
+            valueHook: string
+          }
+          keyBenefits: string[]
+          socialProofPlan: string[]
+          engagementHooks: string[]
+        }
+        platformSpecific: Array<{
+          platform: string
+          contentFormat: string
+          bestTiming: string
+          communityRules: string[]
+          engagementStrategy: string
+        }>
+      }
+    } | null
   }
 }
 
@@ -127,7 +191,8 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
       !data.elevatorPitches ||
       !data.productNames ||
       !data.googleTrendsKeywords ||
-      !data.contentIdeasForMarketing
+      !data.contentIdeasForMarketing ||
+      !data.testingPlan
     ) {
       intervalId = setInterval(() => {
         router.refresh()
@@ -149,6 +214,7 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
     data.productNames,
     data.googleTrendsKeywords,
     data.contentIdeasForMarketing,
+    data.testingPlan,
     router,
   ])
 
@@ -262,6 +328,10 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
 
           <HorizontalLine />
 
+          <SectionTwoWeekTestingPlan data={data.testingPlan} />
+
+          <HorizontalLine />
+
           <div className="my-4 flex items-center justify-between">
             <p className="text-xl font-bold text-gray-700 md:text-2xl dark:text-gray-300">
               Your PDF Report:
@@ -290,10 +360,6 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
           <HorizontalLine />
 
           <SectionActionableNextSteps />
-
-          <HorizontalLine />
-
-          <SectionTwoWeekTestingPlan />
 
           <HorizontalLine />
 

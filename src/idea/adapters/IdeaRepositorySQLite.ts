@@ -12,6 +12,7 @@ import { SWOTAnalysis } from '@/idea/domain/SWOTAnalysis'
 import { SocialMediaCampaigns } from '@/idea/domain/SocialMediaCampaigns'
 import { Strategy } from '@/idea/domain/Strategy'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
+import { TestingPlan } from '@/idea/domain/TestingPlan'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
 import { prisma } from '@/lib/prisma'
 import type { PrismaClient } from '@prisma/client/extension'
@@ -257,6 +258,27 @@ export class IdeaRepositorySQLite implements Repository {
           },
           update: {
             value: JSON.stringify(socialMediaCampaigns),
+            updatedAt: new Date(),
+          },
+        })
+      }
+
+      const testingPlan = updatedIdea.getTestingPlan()
+      if (testingPlan) {
+        await prisma.ideaContent.upsert({
+          where: {
+            ideaId_key: {
+              ideaId: id,
+              key: 'testing_plan',
+            },
+          },
+          create: {
+            ideaId: id,
+            key: 'testing_plan',
+            value: JSON.stringify(testingPlan),
+          },
+          update: {
+            value: JSON.stringify(testingPlan),
             updatedAt: new Date(),
           },
         })
@@ -615,6 +637,92 @@ export class IdeaRepositorySQLite implements Repository {
       })
 
       idea.setSocialMediaCampaigns(socialMediaCampaigns)
+    }
+
+    // Testing plan
+    const testingPlanModel = ideaModel.contents.find(
+      (content) => content.key === 'testing_plan'
+    )
+
+    if (testingPlanModel) {
+      interface testingPlan {
+        coreAssumptions: Array<{
+          assumption: string
+          whyCritical: string
+          validationMethod: string
+        }>
+        twoWeekPlan: Array<{
+          day: number
+          focus: string
+          tasks: string[]
+          successMetrics: string[]
+          toolsNeeded: string[]
+          estimatedTime: string
+        }>
+        keyMetrics: {
+          qualitative: string[]
+          quantitative: string[]
+          minimumSuccessCriteria: string[]
+        }
+        testingMethods: Array<{
+          method: string
+          description: string
+          whenToUse: string
+          expectedOutcome: string
+        }>
+        contingencyPlans: Array<{
+          scenario: string
+          solution: string
+          alternativeApproach: string
+        }>
+        resourceOptimization: {
+          minimumBudget: string
+          timeSavingTips: string[]
+          freeTools: string[]
+          paidAlternatives: string[]
+        }
+        softLaunchStrategy: {
+          platforms: string[]
+          preparationSteps: string[]
+          timing: string
+          engagementTactics: string[]
+          contentTemplates: {
+            titles: string[]
+            shortDescription: string
+            problemStatement: string
+            solutionPreview: string
+            callToAction: {
+              primary: string
+              secondary: string
+              valueHook: string
+            }
+            keyBenefits: string[]
+            socialProofPlan: string[]
+            engagementHooks: string[]
+          }
+          platformSpecific: Array<{
+            platform: string
+            contentFormat: string
+            bestTiming: string
+            communityRules: string[]
+            engagementStrategy: string
+          }>
+        }
+      }
+
+      const data = JSON.parse(testingPlanModel.value) as testingPlan
+
+      idea.setTestingPlan(
+        TestingPlan.New(
+          data.coreAssumptions,
+          data.twoWeekPlan,
+          data.keyMetrics,
+          data.testingMethods,
+          data.contingencyPlans,
+          data.resourceOptimization,
+          data.softLaunchStrategy
+        )
+      )
     }
 
     return idea
