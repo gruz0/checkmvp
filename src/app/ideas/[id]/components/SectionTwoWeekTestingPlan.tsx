@@ -161,12 +161,12 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                   </h3>
                   <SimpleUnorderedList items={data.keyMetrics.qualitative} />
 
-                  <h3 className="mb-2 mt-4 text-lg font-semibold">
+                  <h3 className="mb-2 text-lg font-semibold">
                     Quantitative Metrics:
                   </h3>
                   <SimpleUnorderedList items={data.keyMetrics.quantitative} />
 
-                  <h3 className="mb-2 mt-4 text-lg font-semibold">
+                  <h3 className="mb-2 text-lg font-semibold">
                     Minimum Success Criteria:
                   </h3>
                   <SimpleUnorderedList
