@@ -40,12 +40,6 @@ export const NavBar = () => (
       Two-Week Testing Plan
     </Link>
     <Link
-      href="#actionable_next_steps"
-      className="block rounded px-4 py-2 text-gray-500"
-    >
-      Next Steps
-    </Link>
-    <Link
       href="#estimated_costs"
       className="block rounded px-4 py-2 text-gray-500"
     >

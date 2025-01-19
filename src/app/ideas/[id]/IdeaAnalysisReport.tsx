@@ -10,7 +10,6 @@ import { Goals } from '@/lib/goals'
 import AboutReport from './components/AboutReport'
 import DownloadPDFButton from './components/DownloadPDFButton'
 import { NavBar } from './components/NavBar'
-import SectionActionableNextSteps from './components/SectionActionableNextSteps'
 import SectionCompetitors from './components/SectionCompetitors'
 import SectionContentIdeas from './components/SectionContentIdeas'
 import SectionContext from './components/SectionContext'
@@ -356,10 +355,6 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
           </div>
 
           <MessageBox />
-
-          <HorizontalLine />
-
-          <SectionActionableNextSteps />
 
           <HorizontalLine />
 
