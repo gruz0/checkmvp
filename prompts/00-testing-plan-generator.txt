@@ -3,13 +3,14 @@ Based on the problem description provided, generate a structured testing plan th
 
 ### Important Instructions
 
-- **Core Focus**: Help founders validate market need and customer interest BEFORE writing any code or building an MVP
-- **Tone**: Use a conversational tone, as if you're chatting with a friend
-- **Language**: Skip formal, sales-like language, and buzzwords such as: streamline, enhance, tailor, leverage, thrill, seamless, etc., in any form
-- **Value**: Ensure the language is clear, practical, and builds confidence in the validation process
-- **Practicality**: Focus on activities that can be completed with minimal resources and NO development
-- **Cost-Effective**: Prioritize free or low-cost validation methods
-- **Time-Efficient**: Structure activities to get meaningful feedback within two weeks
+1. **Core Focus**: Help founders validate market need and customer interest BEFORE writing any code or building an MVP.
+2. **Tone**: Use a conversational tone, as if you're chatting with a friend.
+3. **Language**: Skip formal or sales-like language and avoid buzzwords such as: streamline, enhance, tailor, leverage, thrill, seamless, etc.
+4. **Value**: Use clear, practical language that builds confidence in the validation process.
+5. **Practicality**: Focus on activities that can be completed with minimal resources and NO development.
+6. **Cost-Effective**: Prioritize free or low-cost validation methods.
+7. **Time-Efficient**: Structure activities to get meaningful feedback within two weeks.
+8. **Logical Flow**: **Each day’s tasks and success metrics must clearly follow from the previous day’s results**, avoiding any mismatch (e.g., don’t measure landing page signups on a day before the page is launched).
 
 ### Field guidelines
 
@@ -22,7 +23,7 @@ Based on the problem description provided, generate a structured testing plan th
    - **day** (number): Day number (1-14)
    - **focus** (string): Main focus for the day
    - **tasks** (array of strings): 2-3 specific tasks to complete
-   - **success_metrics** (array of strings): How to measure progress
+   - **success_metrics** (array of strings): Specific, measurable outcomes including target numbers (e.g., "Schedule 5-7 customer interviews", "Collect 100+ survey responses", "Identify 3-5 major pain points from interviews", "Achieve 15%+ email signup rate on landing page")
    - **tools_needed** (array of strings): Required tools or resources (no development tools)
    - **estimated_time** (string): Approximate time needed
 
@@ -116,4 +117,14 @@ The response should be structured to help founders:
 7. Suggest ways to simulate the product experience without building it
 8. Focus on gathering actionable feedback
 9. Help founders avoid premature development
-10. Prepare for successful soft launch on platforms like ProductHunt 
+10. Prepare for successful soft launch on platforms like ProductHunt
+
+### Additional Notes & Requirements
+
+1. **Sequential Planning**: Each day should clearly build on the outcomes and insights from previous days. Don’t set success metrics for tasks that haven’t launched or been set up yet. For example, if you create a landing page on Day 4 but only officially share it on Day 5, the Day 4 success metrics could be around having a working page ready, while Day 5 success metrics involve actual visitor counts or signups.
+2. **No MVP Building**: This plan must NOT include coding or actual product building.
+3. **Market Validation**: Emphasize testing market need over technical feasibility.
+4. **Minimal Resources**: Suggest only free or low-cost tools and methods.
+5. **Actionable Feedback**: Focus on collecting feedback that can help pivot or validate the core assumptions.
+
+Use these guidelines to provide a final, clearly structured 14-day plan with realistic dependencies and metrics that make sense chronologically.
