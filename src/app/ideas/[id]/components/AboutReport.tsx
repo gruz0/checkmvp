@@ -1,5 +1,5 @@
 const AboutReport = () => (
-  <div className="mb-2 rounded-lg border border-blue-100 bg-blue-50 p-6 dark:border-blue-900 dark:bg-blue-900/20">
+  <div className="my-6 rounded-lg bg-blue-50 p-6 dark:border-blue-900 dark:bg-blue-900/20">
     <div className="flex items-start justify-between">
       <div>
         <h2 className="mb-3 flex items-center gap-2 text-xl font-semibold text-blue-900 dark:text-blue-100">

@@ -33,6 +33,7 @@ model Idea {
   updatedAt       DateTime         @updatedAt @map(name: "updated_at")
   migratedAt      DateTime?        @map(name: "migrated_at")
   archivedAt      DateTime?        @map(name: "archived_at")
+  expiresBy       DateTime?        @map(name: "expires_by")
 
   @@map("ideas")
 }
