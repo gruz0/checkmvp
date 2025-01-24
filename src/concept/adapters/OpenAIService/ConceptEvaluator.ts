@@ -234,14 +234,22 @@ export class ConceptEvaluator {
 
       return {
         status: problemEvaluation.status,
-        suggestions: problemEvaluation.suggestions,
-        recommendations: problemEvaluation.recommendations,
-        painPoints: problemEvaluation.pain_points,
+        suggestions: problemEvaluation.suggestions.filter(
+          (suggestion) => suggestion.trim() !== ''
+        ),
+        recommendations: problemEvaluation.recommendations.filter(
+          (recommendation) => recommendation.trim() !== ''
+        ),
+        painPoints: problemEvaluation.pain_points.filter(
+          (painPoint) => painPoint.trim() !== ''
+        ),
         marketExistence: marketExistence.join('\n\n'),
         targetAudience: problemEvaluation.target_audience.map((audience) => ({
           segment: audience.segment,
           description: audience.description,
-          challenges: audience.challenges,
+          challenges: audience.challenges.filter(
+            (challenge) => challenge.trim() !== ''
+          ),
           validationMetrics: {
             marketSize: audience.validation_metrics.market_size,
             accessibility: audience.validation_metrics.accessibility,
@@ -264,10 +272,17 @@ export class ConceptEvaluator {
           },
         },
         languageAnalysis: {
-          vagueTerms: problemEvaluation.language_analysis.vague_terms,
-          missingContext: problemEvaluation.language_analysis.missing_context,
+          vagueTerms: problemEvaluation.language_analysis.vague_terms.filter(
+            (term) => term.trim() !== ''
+          ),
+          missingContext:
+            problemEvaluation.language_analysis.missing_context.filter(
+              (context) => context.trim() !== ''
+            ),
           ambiguousStatements:
-            problemEvaluation.language_analysis.ambiguous_statements,
+            problemEvaluation.language_analysis.ambiguous_statements.filter(
+              (statement) => statement.trim() !== ''
+            ),
         },
       }
     } catch (e) {
