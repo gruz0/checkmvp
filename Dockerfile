@@ -1,5 +1,6 @@
 ARG NODE_VERSION="22.11.0"
 ARG ALPINE_VERSION="3.20"
+ARG NPM_CONFIG_REGISTRY="https://registry.npmjs.org/"
 
 #
 # Stage 1: Install dependencies (including devDependencies)
@@ -10,10 +11,10 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-# We cannot use --omit=dev here because devDependencies are needed for building
+# We cannot use --omit=dev in `npm ci` because devDependencies are needed for building
 # So, keep this line like that:
-RUN npm ci && \
-    npm cache clean --force && \
+RUN npm config set registry "${NPM_CONFIG_REGISTRY}" && \
+    npm ci --no-audit && \
     find . -name "*.map" -delete
 
 #
@@ -26,7 +27,6 @@ COPY --from=base /app/node_modules ./node_modules
 
 COPY . .
 
-# Build-time arguments
 ARG DOMAIN \
     NEXT_PUBLIC_URL \
     CREATE_IDEA_LIMITER_LIMIT \
@@ -34,7 +34,6 @@ ARG DOMAIN \
     IDEA_SERVICE_API_BASE \
     CONCEPT_SERVICE_API_BASE
 
-# Set environment variables for the build
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     PRISMA_HIDE_UPDATE_MESSAGE=1 \
@@ -46,7 +45,6 @@ ENV NODE_ENV=production \
     CONCEPT_SERVICE_API_BASE=$CONCEPT_SERVICE_API_BASE
 
 RUN npm run build && \
-    rm -rf .next/cache && \
     find . -name "*.map" -delete
 
 #
@@ -55,14 +53,13 @@ RUN npm run build && \
 FROM node:"${NODE_VERSION}"-alpine"${ALPINE_VERSION}" AS prod_builder
 WORKDIR /app
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
-COPY --from=base /app/node_modules ./node_modules
 COPY package.json package-lock.json ./
 
-RUN npm ci --omit=dev && \
-    find . -name "*.map" -delete && \
-    cp -R node_modules prod_node_modules
+RUN npm config set registry "${NPM_CONFIG_REGISTRY}" && \
+    npm ci --no-audit --omit=dev && \
+    find . -name "*.map" -delete
 
 #
 # Stage 4: Runner - Final image to run the application
@@ -76,11 +73,13 @@ ARG UID=1001
 
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3000 \
     USER="app"
 
-RUN adduser -D $USER -u $UID
+RUN addgroup --system --gid $UID $USER && \
+    adduser --system --uid $UID $USER
 
-COPY --from=prod_builder --chown=$USER:$USER /app/prod_node_modules ./node_modules
+COPY --from=prod_builder --chown=$USER:$USER /app/node_modules ./node_modules
 COPY --from=builder --chown=$USER:$USER /app/next.config.mjs ./
 COPY --from=builder --chown=$USER:$USER /app/prisma ./prisma
 COPY --from=builder --chown=$USER:$USER /app/public ./public
@@ -90,8 +89,6 @@ COPY --from=builder --chown=$USER:$USER /app/.next/static ./.next/static
 
 USER $USER
 
-EXPOSE 3000
-
-ENV PORT 3000
+EXPOSE $PORT
 
 CMD ["node", "server.js"]
