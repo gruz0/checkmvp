@@ -9,6 +9,7 @@ import MessageBox from '@/components/MessageBox'
 import { Goals } from '@/lib/goals'
 import AboutReport from './components/AboutReport'
 import DownloadPDFButton from './components/DownloadPDFButton'
+import ExpirationNotice from './components/ExpirationNotice'
 import { NavBar } from './components/NavBar'
 import SectionCompetitors from './components/SectionCompetitors'
 import SectionContentIdeas from './components/SectionContentIdeas'
@@ -162,6 +163,7 @@ interface Props {
       }
     } | null
   }
+  expirationDays: number
 }
 
 interface ContentIdeaProps {
@@ -172,7 +174,7 @@ interface ContentIdeaProps {
 
 const reloadInterval = 5000
 
-export const IdeaAnalysisReport = ({ data }: Props) => {
+export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
   const plausible = usePlausible()
   const router = useRouter()
 
@@ -275,9 +277,9 @@ export const IdeaAnalysisReport = ({ data }: Props) => {
             )}
           </div>
 
-          <HorizontalLine />
-
           <AboutReport />
+
+          <ExpirationNotice expirationDays={expirationDays} />
 
           <SectionContext
             data={{

@@ -14,10 +14,13 @@ import { Strategy } from '@/idea/domain/Strategy'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { TestingPlan } from '@/idea/domain/TestingPlan'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
+import { env } from '@/lib/env'
 import { prisma } from '@/lib/prisma'
 import type { PrismaClient } from '@prisma/client/extension'
 
 type UpdateFn = (idea: Idea) => Idea
+
+const IDEA_EXPIRATION_DAYS = env.IDEA_EXPIRATION_DAYS
 
 export class IdeaRepositorySQLite implements Repository {
   async addIdea(idea: Idea): Promise<void> {
@@ -25,12 +28,16 @@ export class IdeaRepositorySQLite implements Repository {
       throw new Error('Idea does not have target audiences')
     }
 
+    const expiresBy = new Date()
+    expiresBy.setDate(expiresBy.getDate() + IDEA_EXPIRATION_DAYS)
+
     await prisma.idea.create({
       data: {
         id: idea.getId().getValue(),
         conceptId: idea.getConceptId().getValue(),
         problem: idea.getProblem().getValue(),
         marketExistence: idea.getMarketExistence(),
+        expiresBy: expiresBy,
         targetAudiences: {
           create: idea.getTargetAudiences().map((audience) => ({
             segment: audience.getSegment(),
@@ -301,6 +308,21 @@ export class IdeaRepositorySQLite implements Repository {
 
     if (ideaModel.archivedAt) {
       return null
+    }
+
+    if (ideaModel.expiresBy && ideaModel.expiresBy < new Date()) {
+      return null
+    } else if (!ideaModel.expiresBy) {
+      // This is a temporary check to ensure that ideas are not expired
+      // We will remove this check once we have a proper expiration mechanism and after making expiresBy required
+      const createdAtPlusThreeDays = new Date(ideaModel.createdAt)
+      createdAtPlusThreeDays.setDate(
+        createdAtPlusThreeDays.getDate() + IDEA_EXPIRATION_DAYS
+      )
+
+      if (createdAtPlusThreeDays < new Date()) {
+        return null
+      }
     }
 
     const targetAudiences = ideaModel.targetAudiences.map((audience) => {
