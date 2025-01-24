@@ -15,7 +15,7 @@ export default async function AboutPage() {
           src={Photo.src}
           width={600}
           height={488}
-          alt="Idea Report 01"
+          alt="Authors of CheckMVP"
           className="float-none mb-4 w-full rounded-lg shadow-lg md:float-right md:ml-8 md:w-2/5"
         />
 
