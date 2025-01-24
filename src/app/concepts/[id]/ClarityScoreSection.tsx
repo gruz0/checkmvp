@@ -24,7 +24,7 @@ const getScoreColorClass = (score: number): string => {
 const ClarityScoreSection = ({ clarityScore }: Props) => (
   <>
     <hr className="my-6 md:my-8" />
-    <Section header="📊 Clarity Analysis:">
+    <Section header="📊 Your Statement Clarity Analysis:">
       <div className="mb-6">
         <div className="mb-4 flex items-center justify-between">
           <span className="text-lg font-semibold">Overall Score</span>

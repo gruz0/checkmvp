@@ -18,7 +18,7 @@ export default async function StartPage({
       {limiter.isAllowed ? (
         <>
           <h1 className="mb-6 text-3xl font-bold text-blue-600 md:mb-8 md:text-4xl dark:text-gray-100">
-            Only One Question
+            Big Insights Start With Small Ideas! 🚀
           </h1>
 
           <ConceptForm problem={problem} />
