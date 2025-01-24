@@ -44,7 +44,7 @@ const SupportersPage: React.FC = () => {
             >
               <Image
                 src={supporter.image}
-                alt={`${supporter.name}'s profile picture`}
+                alt={`Meet ${supporter.name}`}
                 className="mb-4 rounded-full"
                 width={48}
                 height={48}
