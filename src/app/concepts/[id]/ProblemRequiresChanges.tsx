@@ -72,8 +72,8 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
         <>
           <p className="mb-6 text-lg md:text-2xl">
             Your idea is off to a great start. We can either dive into the full
-            analysis now, or you can refine your problem statement for even more
-            accurate insights.
+            analysis now, or you can refine your problem statement below for
+            even more accurate insights.
           </p>
 
           <hr className="my-6 md:my-8" />
@@ -98,19 +98,6 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
           </Paragraph>
         </Section>
       )}
-
-      <hr className="my-6 md:my-8" />
-
-      <Section header="📝 Your Original Statement:">
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 md:px-6 md:text-lg dark:bg-gray-900/50">
-          {problem.split('\n').map((line, index) => (
-            <React.Fragment key={index}>
-              {line}
-              <br />
-            </React.Fragment>
-          ))}
-        </div>
-      </Section>
 
       <ClarityScoreSection clarityScore={evaluation.clarityScore} />
 
@@ -155,7 +142,7 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
                       target="_blank"
                       className="inline-flex items-center gap-2 rounded bg-gray-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-700"
                     >
-                      Validate This Problem Instead
+                      Try This Statement Instead
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
@@ -193,22 +180,44 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
       )}
 
       {evaluation.marketExistence && evaluation.targetAudience.length > 0 ? (
-        <Section header="Ready for a Full Breakdown?">
-          <p className="mb-6 text-lg md:text-xl">
-            Explore complete competitor breakdowns, marketing angles, and more.
-          </p>
+        <>
+          <Section header="🚀 Ready for a Full Breakdown?">
+            <p className="mb-6 text-lg md:text-xl">
+              Explore complete competitor breakdowns, marketing angles, and
+              more. In the next screen, we&apos;ll dive deeper into more than 10
+              sections and prepare a comprehensive report based on your problem.
+              This analysis might take up to a minute, depending on available
+              information.
+            </p>
 
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl"
-            disabled={status === 'loading'}
-          >
-            {status === 'loading' ? 'Saving...' : 'Go To Detailed Analysis'}
-          </button>
-        </Section>
+            <p className="pb-2 text-center">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl"
+                disabled={status === 'loading'}
+              >
+                {status === 'loading' ? 'Saving...' : 'Go To Detailed Analysis'}
+              </button>
+            </p>
+          </Section>
+
+          <hr className="my-6 md:my-8" />
+
+          <Section header="📝 Or You Can Make Changes to Your Original Statement:">
+            <p className="mb-6 text-lg md:text-xl">
+              Feel free to copy any text from this page and add additional
+              information to your prompt. This will help us re-generate a basic
+              analysis that better matches your needs. Just give it one try and
+              see how it goes.
+            </p>
+            <ConceptForm problem={problem} cta="Make Changes" skipIntro />
+          </Section>
+        </>
       ) : (
-        <ConceptForm problem={problem} hideExamples />
+        <Section header="📝 Please Make Changes to Your Original Statement:">
+          <ConceptForm problem={problem} cta="Make Changes" />
+        </Section>
       )}
     </div>
   )
