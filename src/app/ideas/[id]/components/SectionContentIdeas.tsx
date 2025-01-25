@@ -8,6 +8,7 @@ import Section from '@/components/Section'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
+import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 
 interface ContentIdeaProps {
   platforms: string[]
@@ -143,33 +144,21 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
   generatableContent = false,
 }) => (
   <Section header={header}>
-    <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-4 dark:bg-gray-900/50">
+    <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 lg:pb-4 dark:bg-gray-900/50">
       <h3 className="mb-2 text-lg font-semibold">Platforms:</h3>
 
       <Paragraph>{data.platforms.join(', ')}</Paragraph>
 
       <h3 className="mb-2 text-lg font-semibold">Ideas:</h3>
 
-      <ul className="mb-4 list-disc pl-4 md:text-lg">
-        {data.ideas.map((idea, idx) => (
-          <li key={idx} className="mb-2 pl-1 md:pl-2">
-            {idea}
-          </li>
-        ))}
-      </ul>
+      <SimpleUnorderedList items={data.ideas} />
 
       <h3 className="mb-2 text-lg font-semibold">Benefits:</h3>
 
-      <ul className="mb-4 list-disc pl-4 md:text-lg">
-        {data.benefits.map((benefit, idx) => (
-          <li key={idx} className="mb-2 pl-1 md:pl-2">
-            {benefit}
-          </li>
-        ))}
-      </ul>
+      <SimpleUnorderedList items={data.benefits} last />
 
       {generatableContent && (
-        <div className="mb-2">
+        <div className="mb-2 mt-4">
           <Link
             href={`/ideas/${ideaId}/${section}`}
             target="_blank"

@@ -109,7 +109,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                       {idx + 1}. {assumption.assumption}
                     </h3>
 
-                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg dark:bg-gray-900/50">
+                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                       <h3 className="mb-2 text-lg font-semibold">
                         Why Critical:
                       </h3>
@@ -131,7 +131,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                       Day {day.day}: {day.focus}
                     </h3>
 
-                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg dark:bg-gray-900/50">
+                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                       <h3 className="mb-2 text-lg font-semibold">Tasks:</h3>
                       <SimpleUnorderedList items={day.tasks} />
 
@@ -155,7 +155,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
               </Section>
 
               <Section header="Key Metrics:">
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg dark:bg-gray-900/50">
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                   <h3 className="mb-2 text-lg font-semibold">
                     Qualitative Metrics:
                   </h3>
@@ -183,7 +183,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                       {idx + 1}. {method.method}
                     </h3>
 
-                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg dark:bg-gray-900/50">
+                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                       <Paragraph>{method.description}</Paragraph>
 
                       <h3 className="mb-2 text-lg font-semibold">
@@ -207,7 +207,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                       {idx + 1}. {plan.scenario}
                     </h3>
 
-                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg dark:bg-gray-900/50">
+                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                       <h3 className="mb-2 text-lg font-semibold">Solution:</h3>
                       <Paragraph>{plan.solution}</Paragraph>
 
@@ -221,7 +221,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
               </Section>
 
               <Section header="Resource Optimization:">
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg dark:bg-gray-900/50">
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                   <h3 className="mb-2 text-lg font-semibold">
                     Minimum Budget:
                   </h3>
@@ -257,7 +257,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                     Launch Overview
                   </h3>
 
-                  <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg dark:bg-gray-900/50">
+                  <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                     <h3 className="mb-2 text-lg font-semibold">Timing:</h3>
                     <Paragraph>{data.softLaunchStrategy.timing}</Paragraph>
 
@@ -281,7 +281,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                     Content Strategy
                   </h3>
 
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg dark:bg-gray-900/50">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                     <h3 className="mb-2 text-lg font-semibold">
                       Content Titles:
                     </h3>
@@ -352,7 +352,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                           {platform.platform} Launch Strategy
                         </h3>
 
-                        <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg dark:bg-gray-900/50">
+                        <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                           <h3 className="mb-2 text-lg font-semibold">
                             Format:
                           </h3>

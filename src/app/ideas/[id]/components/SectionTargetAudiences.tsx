@@ -50,7 +50,7 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
               key={audience.id}
               header={`${idx + 1}. ${audience.segment}`}
             >
-              <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+              <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">
                   Description:
                 </h3>
@@ -76,7 +76,7 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
                   Targeting Strategy:
                 </h3>
                 {audience.targetingStrategy ? (
-                  <Paragraph>{audience.targetingStrategy}</Paragraph>
+                  <Paragraph last>{audience.targetingStrategy}</Paragraph>
                 ) : (
                   <FetchingDataMessage />
                 )}
