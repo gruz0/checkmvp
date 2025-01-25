@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "Discover your side project's potential before you commit a single line of code. CheckMVP helps busy 9‑to‑5 developers validate ideas fast.",
 }
 
-export default function StartLayout({
+export default function DevelopersLayout({
   children,
 }: {
   children: React.ReactNode
