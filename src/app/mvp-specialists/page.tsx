@@ -49,7 +49,7 @@ export default async function MVPSpecialistLandingPage() {
               utmSource="mvp_specialists"
               utmCampaign="mvp_specialists_landing"
             >
-              Try CheckMVP for Client Projects
+              Impress Your Clients
             </PrimaryCTA>
           </div>
         </div>
