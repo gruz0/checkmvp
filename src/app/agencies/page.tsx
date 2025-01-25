@@ -1,5 +1,15 @@
-import Link from 'next/link'
 import React from 'react'
+import {
+  CheckList,
+  Heading,
+  PrimaryCTA,
+  SecondaryCTA,
+  Section,
+  SectionCell,
+  SectionGrid,
+  SectionGridTwoColumns,
+  Subheading,
+} from '@/components/LandingPage'
 import RandomMessage from '@/components/RandomMessage'
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
 
@@ -11,63 +21,34 @@ async function getTotalConceptsCount(): Promise<number> {
   return await repository.getTotal()
 }
 
-interface SectionProps {
-  heading: string
-  children: React.ReactNode
-}
-
-interface SectionGridProps {
-  children: React.ReactNode
-}
-
-interface SectionCellProps {
-  heading: string
-  description: string
-}
-
 export default async function AgencyLandingPage() {
   const totalConceptsCount = await getTotalConceptsCount()
 
   return (
     <div className="p-4 md:p-6 lg:p-8">
-      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl lg:mb-8 dark:text-gray-100">
-        Help Clients Make Smart Decisions First
-      </h1>
+      <Heading>Help Clients Make Smart Decisions First</Heading>
 
-      <p className="mb-6 text-center text-lg font-semibold md:text-xl lg:mb-10 lg:text-2xl">
+      <Subheading>
         Clients come with big dreams but often lack clarity. CheckMVP gives you
         a solid starting point for any new project—before a single line of code
         is written.
-      </p>
+      </Subheading>
 
       <div className="mb-6 flex flex-col md:flex-row md:space-x-10 lg:mb-8">
         <div className="w-full pl-2 md:w-1/2">
-          <div className="mb-6 space-y-4 text-lg">
-            <div className="flex items-start space-x-3">
-              <span className="font-bold text-green-600">✓</span>
-              <p>Fast Concept Review with AI-powered analysis</p>
-            </div>
-            <div className="flex items-start space-x-3">
-              <span className="font-bold text-green-600">✓</span>
-              <p>Competitor & SWOT Analysis for clear positioning</p>
-            </div>
-            <div className="flex items-start space-x-3">
-              <span className="font-bold text-green-600">✓</span>
-              <p>Scope Control through early validation</p>
-            </div>
-            <div className="flex items-start space-x-3">
-              <span className="font-bold text-green-600">✓</span>
-              <p>Professional PDF Reports for client alignment</p>
-            </div>
-          </div>
+          <CheckList
+            items={[
+              'Fast Concept Review with AI-powered analysis',
+              'Competitor & SWOT Analysis for clear positioning',
+              'Scope Control through early validation',
+              'Professional PDF Reports for client alignment',
+            ]}
+          />
 
           <div className="mb-10 pt-6 text-center md:mb-6">
-            <Link
-              href="/start?utm_source=agencies&utm_medium=primary_cta&utm_campaign=agency_landing"
-              className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
+            <PrimaryCTA utmSource="agencies" utmCampaign="agencies_landing">
               Start Validating Today
-            </Link>
+            </PrimaryCTA>
           </div>
         </div>
 
@@ -118,12 +99,9 @@ export default async function AgencyLandingPage() {
       <WhatIsInside />
 
       <div className="mb-8 mt-2 pt-6 text-center">
-        <Link
-          href="/start?utm_source=agencies&utm_medium=bottom_cta&utm_campaign=agency_landing"
-          className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
+        <SecondaryCTA utmSource="agencies" utmCampaign="agencies_landing">
           Start Now
-        </Link>
+        </SecondaryCTA>
       </div>
     </div>
   )
@@ -163,34 +141,4 @@ const WhatIsInside = () => (
       />
     </SectionGrid>
   </Section>
-)
-
-const Section: React.FC<SectionProps> = ({ heading, children }) => (
-  <div className="mt-8 pb-4 md:mt-10 md:pb-6 lg:mt-14 lg:pb-8">
-    <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
-      {heading}
-    </h2>
-    {children}
-  </div>
-)
-
-const SectionGrid: React.FC<SectionGridProps> = ({ children }) => (
-  <div className="grid grid-cols-1 gap-6 text-left md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
-    {children}
-  </div>
-)
-
-const SectionGridTwoColumns: React.FC<SectionGridProps> = ({ children }) => (
-  <div className="grid grid-cols-1 gap-6 text-left md:grid-cols-2 md:gap-6 lg:gap-8">
-    {children}
-  </div>
-)
-
-const SectionCell: React.FC<SectionCellProps> = ({ heading, description }) => (
-  <div className="rounded-lg bg-gray-50 px-6 py-5 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
-    <h3 className="mb-2 text-center text-xl font-semibold md:mb-3">
-      {heading}
-    </h3>
-    <p className="text-center md:text-left">{description}</p>
-  </div>
 )
