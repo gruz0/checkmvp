@@ -1,5 +1,15 @@
-import Link from 'next/link'
 import React from 'react'
+import {
+  CheckList,
+  Heading,
+  PrimaryCTA,
+  SecondaryCTA,
+  Section,
+  SectionCell,
+  SectionGrid,
+  SectionGridTwoColumns,
+  Subheading,
+} from '@/components/LandingPage'
 import RandomMessage from '@/components/RandomMessage'
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
 
@@ -11,63 +21,33 @@ async function getTotalConceptsCount(): Promise<number> {
   return await repository.getTotal()
 }
 
-interface SectionProps {
-  heading: string
-  children: React.ReactNode
-}
-
-interface SectionGridProps {
-  children: React.ReactNode
-}
-
-interface SectionCellProps {
-  number?: string
-  heading: string
-  description: string
-}
-
 export default async function LandingPage() {
   const totalConceptsCount = await getTotalConceptsCount()
 
   return (
     <div className="p-4 md:p-6 lg:p-8">
-      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl lg:mb-8 dark:text-gray-100">
-        Your AI Co-Founder for Startup Validation
-      </h1>
+      <Heading>Your AI Co-Founder for Startup Validation</Heading>
 
-      <p className="mb-6 text-center text-lg font-semibold md:text-xl lg:mb-10 lg:text-2xl">
+      <Subheading>
         Get clarity and confidence about your product or SaaS idea in 3-5
         minutes.
-      </p>
+      </Subheading>
 
       <div className="mb-6 flex flex-col md:flex-row md:space-x-10 lg:mb-8">
         <div className="w-full pl-2 md:w-1/2">
-          <div className="mb-6 space-y-4 text-lg">
-            <div className="flex items-start space-x-3">
-              <span className="font-bold text-green-600">✓</span>
-              <p>Identify your target audience and their pain points</p>
-            </div>
-            <div className="flex items-start space-x-3">
-              <span className="font-bold text-green-600">✓</span>
-              <p>Get insights about competitors and opportunities</p>
-            </div>
-            <div className="flex items-start space-x-3">
-              <span className="font-bold text-green-600">✓</span>
-              <p>Generate product names and elevator pitches</p>
-            </div>
-            <div className="flex items-start space-x-3">
-              <span className="font-bold text-green-600">✓</span>
-              <p>Get a complete SWOT analysis and next steps</p>
-            </div>
-          </div>
+          <CheckList
+            items={[
+              'Identify your target audience and their pain points',
+              'Get insights about competitors and opportunities',
+              'Generate product names and elevator pitches',
+              'Get a complete SWOT analysis and next steps',
+            ]}
+          />
 
           <div className="mb-10 pt-6 text-center md:mb-6">
-            <Link
-              href="/start"
-              className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
+            <PrimaryCTA utmSource="landing" utmCampaign="landing_page">
               Take The First Step
-            </Link>
+            </PrimaryCTA>
           </div>
         </div>
 
@@ -118,12 +98,9 @@ export default async function LandingPage() {
       <WhatIsInside />
 
       <div className="mb-8 mt-2 pt-6 text-center">
-        <Link
-          href="/start"
-          className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
+        <SecondaryCTA utmSource="landing" utmCampaign="landing_page">
           Start Now
-        </Link>
+        </SecondaryCTA>
       </div>
     </div>
   )
@@ -134,12 +111,12 @@ const WhatIsInside = () => (
     <SectionGrid>
       <SectionCell
         heading="Competitors & Positioning"
-        description="Spot who’s already tackling a similar problem and find a clear way to stand out."
+        description="Spot who's already tackling a similar problem and find a clear way to stand out."
       />
 
       <SectionCell
         heading="Target Audience & Value"
-        description="Pin down who really needs your product and why they’d pick it over anything else out there."
+        description="Pin down who really needs your product and why they'd pick it over anything else out there."
       />
 
       <SectionCell
@@ -149,7 +126,7 @@ const WhatIsInside = () => (
 
       <SectionCell
         heading="Market & Trends"
-        description="Check what’s happening in your industry so you can see if your idea makes sense or needs a new angle."
+        description="Check what's happening in your industry so you can see if your idea makes sense or needs a new angle."
       />
 
       <SectionCell
@@ -163,46 +140,4 @@ const WhatIsInside = () => (
       />
     </SectionGrid>
   </Section>
-)
-
-const Section: React.FC<SectionProps> = ({ heading, children }) => (
-  <div className="mt-8 pb-4 md:mt-10 md:pb-6 lg:mt-14 lg:pb-8">
-    <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
-      {heading}
-    </h2>
-
-    {children}
-  </div>
-)
-
-const SectionGrid: React.FC<SectionGridProps> = ({ children }) => (
-  <div className="grid grid-cols-1 gap-6 text-left md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
-    {children}
-  </div>
-)
-
-const SectionGridTwoColumns: React.FC<SectionGridProps> = ({ children }) => (
-  <div className="grid grid-cols-1 gap-6 text-left md:grid-cols-2 md:gap-6 lg:gap-8">
-    {children}
-  </div>
-)
-
-const SectionCell: React.FC<SectionCellProps> = ({
-  number,
-  heading,
-  description,
-}) => (
-  <div className="rounded-lg bg-gray-50 px-6 py-5 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
-    {number && (
-      <div className="mb-2 text-center text-4xl font-bold text-blue-600 md:mb-4 md:text-5xl">
-        {number}
-      </div>
-    )}
-
-    <h3 className="mb-2 text-center text-xl font-semibold md:mb-3">
-      {heading}
-    </h3>
-
-    <p className="text-center md:text-left">{description}</p>
-  </div>
 )
