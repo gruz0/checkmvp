@@ -256,7 +256,7 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
         <div className="flex-1 md:pl-8">
           <div className="mb-2 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-700 md:text-3xl lg:text-4xl dark:text-gray-200">
-              Your Idea Report
+              Your Report
             </h1>
 
             {readyForReport ? (
