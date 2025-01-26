@@ -227,12 +227,7 @@ const ProblemRequiresChanges = ({
         </>
       ) : (
         <Section header="📝 Please Make Changes to Your Original Statement:">
-          <ConceptForm
-            problem={problem}
-            region={region}
-            cta="Make Changes"
-            skipIntro
-          />
+          <ConceptForm problem={problem} region={region} cta="Make Changes" />
         </Section>
       )}
     </div>
