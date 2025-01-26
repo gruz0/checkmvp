@@ -15,10 +15,16 @@ import { ProblemEvaluation } from './types'
 interface Props {
   conceptId: string
   problem: string
+  region: string
   evaluation: ProblemEvaluation
 }
 
-const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
+const ProblemRequiresChanges = ({
+  conceptId,
+  problem,
+  region,
+  evaluation,
+}: Props) => {
   const plausible = usePlausible()
 
   const [status, setStatus] = useState<string>('idle')
@@ -211,12 +217,22 @@ const ProblemRequiresChanges = ({ conceptId, problem, evaluation }: Props) => {
               analysis that better matches your needs. Just give it one try and
               see how it goes.
             </p>
-            <ConceptForm problem={problem} cta="Make Changes" skipIntro />
+            <ConceptForm
+              problem={problem}
+              region={region}
+              cta="Make Changes"
+              skipIntro
+            />
           </Section>
         </>
       ) : (
         <Section header="📝 Please Make Changes to Your Original Statement:">
-          <ConceptForm problem={problem} cta="Make Changes" />
+          <ConceptForm
+            problem={problem}
+            region={region}
+            cta="Make Changes"
+            skipIntro
+          />
         </Section>
       )}
     </div>

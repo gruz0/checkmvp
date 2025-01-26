@@ -1,11 +1,13 @@
+import { Evaluation } from '@/concept/domain/Evaluation'
 import { Problem } from '@/concept/domain/Problem'
+import { Region } from '@/concept/domain/Region'
 import { Identity } from '@/shared/Identity'
-import { Evaluation } from './Evaluation'
 
 export class Concept {
   private readonly expiryPeriodInDays = 3
   private readonly id: Identity
   private readonly problem: Problem
+  private readonly region: Region
   private readonly createdAt: Date
 
   private evaluation: Evaluation | null = null
@@ -13,16 +15,28 @@ export class Concept {
   private ideaId: Identity | null = null
   private archived: boolean = false
 
-  private constructor(id: Identity, problem: Problem, createdAt: Date) {
+  private constructor(
+    id: Identity,
+    problem: Problem,
+    region: Region,
+    createdAt: Date
+  ) {
     this.id = id
     this.problem = problem
+    this.region = region
     this.createdAt = createdAt
   }
 
-  static New(id: string, problem: string, createdAt?: Date): Concept {
+  static New(
+    id: string,
+    problem: string,
+    region: string,
+    createdAt?: Date
+  ): Concept {
     return new Concept(
       Identity.New(id),
       Problem.New(problem),
+      Region.New(region),
       createdAt ?? new Date()
     )
   }
@@ -78,6 +92,10 @@ export class Concept {
 
   public getProblem(): Problem {
     return this.problem
+  }
+
+  public getRegion(): Region {
+    return this.region
   }
 
   public getEvaluation(): Evaluation | null {

@@ -101,7 +101,8 @@ export class ConceptEvaluator {
 
   async evaluateConcept(
     conceptId: string,
-    problem: string
+    problem: string,
+    region: string
   ): Promise<Evaluation> {
     Sentry.setTag('component', 'AIService')
     Sentry.setTag('ai_service_type', ConceptEvaluator.className)
@@ -132,6 +133,10 @@ export class ConceptEvaluator {
               {
                 type: 'text',
                 text: problem.trim(),
+              },
+              {
+                type: 'text',
+                text: `Region: ${region.trim()}`,
               },
             ],
           },

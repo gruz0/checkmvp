@@ -47,7 +47,8 @@ interface TargetAudience {
 interface AIService {
   evaluateConcept(
     conceptId: string,
-    problem: string
+    problem: string,
+    region: string
   ): Promise<ConceptEvaluation>
 }
 
@@ -81,7 +82,8 @@ export class ConceptEvaluationSubscriber implements EventHandler {
 
       const evaluation = await this.aiService.evaluateConcept(
         concept.getId().getValue(),
-        concept.getProblem().getValue()
+        concept.getProblem().getValue(),
+        concept.getRegion().getValue()
       )
 
       await this.repository.updateConcept(

@@ -7,6 +7,7 @@ import { EventBus } from '@/concept/events/EventBus'
 type Command = {
   id: string
   problem: string
+  region: string
 }
 
 export class EvaluateConceptHandler {
@@ -21,7 +22,7 @@ export class EvaluateConceptHandler {
     Sentry.setTag('concept_id', command.id)
 
     try {
-      const concept = Concept.New(command.id, command.problem)
+      const concept = Concept.New(command.id, command.problem, command.region)
 
       await this.repository.addConcept(concept)
 

@@ -1,27 +1,50 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import HorizontalLine from '@/components/HorizontalLine'
 import Paragraph from '@/components/Paragraph'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 
 interface Props {
   problem: string
+  region: string
   cta?: string
   skipIntro?: boolean
 }
 
-const DefineConceptForm = ({ problem, cta, skipIntro }: Props) => {
+const DefineConceptForm = ({ problem, region, cta, skipIntro }: Props) => {
   const [status, setStatus] = useState<string>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     problem: problem,
+    region: region,
   })
 
+  const regions = [
+    'worldwide',
+    'north_america',
+    'south_america',
+    'europe',
+    'asia',
+    'africa',
+    'oceania',
+  ] as const
+
+  type Region = (typeof regions)[number]
+
+  const formatRegionName = (region: Region): string =>
+    region
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
-    >
+    e:
+      | React.ChangeEvent<
+          HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
+        >
+      | { target: { name: string; value: string } }
   ) => {
     const { name, value } = e.target
     setFormData((prevState) => ({
@@ -46,6 +69,7 @@ const DefineConceptForm = ({ problem, cta, skipIntro }: Props) => {
         },
         body: JSON.stringify({
           problem: formData.problem,
+          region: formData.region,
         }),
       })
 
@@ -91,7 +115,6 @@ const DefineConceptForm = ({ problem, cta, skipIntro }: Props) => {
             <SimpleUnorderedList
               items={[
                 'Your target audience: Who are you solving this for? (e.g., age, profession, demographics)',
-                'Geographic focus: Where will you start? (country, city, or region)',
                 'Current alternatives: How are people solving this problem now?',
               ]}
             />
@@ -120,11 +143,48 @@ Target Audience:
         </p>
       </div>
 
+      <HorizontalLine />
+
+      <div className="mb-6">
+        <h2 className="mb-6 block text-xl font-bold md:text-2xl">
+          Where Will You Start?
+        </h2>
+
+        <Paragraph>
+          Starting with a specific region can help you validate your idea more
+          effectively. It allows you to focus your research, understand local
+          needs, and adapt to specific market conditions before expanding
+          globally.
+        </Paragraph>
+
+        <div className="flex flex-wrap gap-2">
+          {regions.map((region) => (
+            <button
+              key={region}
+              type="button"
+              onClick={() =>
+                handleChange({ target: { name: 'region', value: region } })
+              }
+              className={`rounded-full px-4 py-2 font-medium transition-colors
+                ${
+                  formData.region === region
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:bg-gray-800 dark:text-gray-300 dark:hover:text-gray-800'
+                }`}
+            >
+              {formatRegionName(region)}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {status === 'error' && errorMessage && (
         <div className="mb-4 rounded bg-red-200 p-4 text-red-800">
           {errorMessage}
         </div>
       )}
+
+      <HorizontalLine />
 
       <div className="pb-2 text-center">
         <button

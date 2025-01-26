@@ -12,6 +12,7 @@ export class ConceptRepositorySQLite implements Repository {
       data: {
         id: concept.getId().getValue(),
         problem: concept.getProblem().getValue(),
+        region: concept.getRegion().getValue(),
         createdAt: concept.getCreatedAt(),
       },
     })
@@ -38,6 +39,7 @@ export class ConceptRepositorySQLite implements Repository {
         },
         data: {
           problem: updatedConcept.getProblem().getValue(),
+          region: updatedConcept.getRegion().getValue(),
           ...(evaluation && { evaluation: this.evaluationToJSON(evaluation) }),
           ...(updatedConcept.isEvaluated() && { evaluatedAt: new Date() }),
           ...(updatedConcept.isAccepted() && { acceptedAt: new Date() }),
@@ -74,13 +76,15 @@ export class ConceptRepositorySQLite implements Repository {
     const concept = Concept.New(
       conceptModel.id,
       conceptModel.problem,
+      // FIXME: This is a temporary fix to support the old data.
+      conceptModel.region ?? 'worldwide',
       conceptModel.createdAt
     )
 
     if (conceptModel.evaluation) {
       const json = JSON.parse(conceptModel.evaluation)
 
-      // FIXME: As many changes have applied since 17 Jan 2025, we don't want to support them
+      // FIXME: As many changes have applied since 18 Jan 2025, we don't want to support them
       // This condition can be removed once we go live on production.
       const createdAtDate = new Date(conceptModel.createdAt)
       const thresholdDate = new Date('2025-01-18T00:00:00Z')
