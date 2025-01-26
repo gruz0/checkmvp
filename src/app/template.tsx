@@ -82,6 +82,14 @@ const Template = ({ children }: { children: React.ReactNode }) => (
               </li>
               <li>
                 <Link
+                  href="/freelancers"
+                  className="text-sm text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400"
+                >
+                  Freelancers
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/product-managers"
                   className="text-sm text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400"
                 >
