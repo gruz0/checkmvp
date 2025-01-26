@@ -21,7 +21,7 @@ export default async function StartPage({
             Big Insights Start With Small Ideas! 🚀
           </h1>
 
-          <ConceptForm problem={problem} />
+          <ConceptForm problem={problem} region="worldwide" />
         </>
       ) : (
         <>

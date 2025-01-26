@@ -16,15 +16,23 @@ export async function POST(request: Request) {
 
     const formData = await request.json()
 
-    const { problem } = formData
+    const { problem, region } = formData
 
     Sentry.setContext('payload', {
       problem: problem,
+      region: region,
     })
 
     if (!problem) {
       return NextResponse.json(
         { error: 'Problem must be defined' },
+        { status: 422 }
+      )
+    }
+
+    if (!region) {
+      return NextResponse.json(
+        { error: 'Region must be defined' },
         { status: 422 }
       )
     }
@@ -54,6 +62,7 @@ export async function POST(request: Request) {
     await App.Commands.EvaluateConcept.handle({
       id: conceptId,
       problem: problem,
+      region: region,
     })
 
     await createIdeaLimiter.updateCounter()

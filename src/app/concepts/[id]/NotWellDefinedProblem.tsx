@@ -9,10 +9,11 @@ import { ProblemEvaluation } from './types'
 
 interface Props {
   problem: string
+  region: string
   evaluation: ProblemEvaluation
 }
 
-const NotWellDefinedProblem = ({ problem, evaluation }: Props) => (
+const NotWellDefinedProblem = ({ problem, region, evaluation }: Props) => (
   <div>
     <h1 className="mb-6 text-3xl font-bold text-red-600 md:text-4xl">
       Hmm, We Need More Clarity! 🤔
@@ -56,7 +57,7 @@ const NotWellDefinedProblem = ({ problem, evaluation }: Props) => (
 
     <hr className="my-6 md:my-8" />
 
-    <ConceptForm problem={problem} cta="Give It Another Shot" />
+    <ConceptForm problem={problem} region={region} cta="Give It Another Shot" />
   </div>
 )
 

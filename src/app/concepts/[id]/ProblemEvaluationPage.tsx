@@ -8,19 +8,30 @@ import { ProblemEvaluation } from './types'
 type Props = {
   conceptId: string
   problem: string
+  region: string
   evaluation: ProblemEvaluation
 }
 
-const ProblemEvaluationPage = ({ conceptId, problem, evaluation }: Props) => (
+const ProblemEvaluationPage = ({
+  conceptId,
+  problem,
+  region,
+  evaluation,
+}: Props) => (
   <div>
     {evaluation.status === 'not-well-defined' && (
-      <NotWellDefinedProblem problem={problem} evaluation={evaluation} />
+      <NotWellDefinedProblem
+        problem={problem}
+        region={region}
+        evaluation={evaluation}
+      />
     )}
 
     {evaluation.status === 'requires_changes' && (
       <ProblemRequiresChanges
         conceptId={conceptId}
         problem={problem}
+        region={region}
         evaluation={evaluation}
       />
     )}

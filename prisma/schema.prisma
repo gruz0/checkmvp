@@ -11,6 +11,7 @@ model Concept {
   id          String    @id @default(uuid())
   problem     String
   evaluation  String?
+  region      String?   @default("worldwide")
   // We should validate uniqueness in the repository
   ideaId      String?   @map(name: "idea_id")
   createdAt   DateTime  @default(now()) @map(name: "created_at")

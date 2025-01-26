@@ -2,6 +2,12 @@ import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { App } from '@/concept/service/Service'
+import {
+  ApplicationError,
+  ConceptArchivedError,
+  ConceptEvaluationMissingError,
+  ConceptNotEvaluatedError,
+} from './errors'
 
 const ConceptForReservationResponseSchema = z.object({
   success: z.boolean(),
@@ -9,6 +15,7 @@ const ConceptForReservationResponseSchema = z.object({
   content: z
     .object({
       problem: z.string().min(1),
+      region: z.string().min(1),
       market_existence: z.string().min(1),
       target_audience: z.array(
         z.object({
@@ -40,17 +47,17 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     })
 
     if (!concept.isEvaluated()) {
-      throw new Error(`Concept ${params.id} was not evaluated`)
+      throw new ConceptNotEvaluatedError(params.id)
     }
 
     if (concept.isArchived()) {
-      throw new Error(`Concept ${params.id} was archived`)
+      throw new ConceptArchivedError(params.id)
     }
 
     const evaluation = concept.getEvaluation()
 
     if (!evaluation) {
-      throw new Error(`Concept ${params.id} does not have evaluation`)
+      throw new ConceptEvaluationMissingError(params.id)
     }
 
     const response: ConceptForReservationResponse = {
@@ -58,6 +65,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
       message: 'Concept is ready for the reservation',
       content: {
         problem: concept.getProblem().getValue(),
+        region: concept.getRegion().getValue(),
         market_existence: evaluation.getMarketExistence(),
         target_audience: evaluation
           .getTargetAudience()
@@ -73,9 +81,14 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
 
     return NextResponse.json(response, { status: 200 })
   } catch (error) {
-    console.error('Error while getting the concept for reservation:', error)
-
     Sentry.captureException(error)
+
+    if (error instanceof ApplicationError) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.statusCode }
+      )
+    }
 
     return NextResponse.json(
       { error: 'Error while getting the concept for reservation.' },

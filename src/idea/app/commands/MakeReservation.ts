@@ -11,6 +11,7 @@ interface ConceptForReservation {
   message: string
   content?: {
     problem: string
+    region: string
     marketExistence: string
     targetAudience: {
       segment: string
@@ -73,7 +74,11 @@ export class MakeReservationHandler {
       const idea = Idea.New(
         command.ideaId,
         command.conceptId,
-        concept.content.problem,
+        // FIXME: This is a temporary solution to pass the region to the idea
+        // Later we should refactor the idea to accept a region
+        `${concept.content.problem}\n\nRegion: ${this.formatRegionName(
+          concept.content.region
+        )}`,
         concept.content.marketExistence,
         targetAudiences
       )
@@ -96,4 +101,11 @@ export class MakeReservationHandler {
       throw e
     }
   }
+
+  // This is a temporary solution to format the region name as a human readable string
+  formatRegionName = (region: string): string =>
+    region
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
 }

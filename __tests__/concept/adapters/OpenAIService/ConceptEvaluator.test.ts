@@ -10,6 +10,7 @@ describe('ConceptEvaluator', () => {
   const mockApiKey = 'test-api-key'
   const mockConceptId = 'test-concept-id'
   const mockProblem = 'test problem'
+  const mockRegion = 'worldwide'
 
   beforeEach(() => {
     // Reset mocks
@@ -94,7 +95,11 @@ describe('ConceptEvaluator', () => {
 
   describe('evaluateConcept', () => {
     it('should clean empty strings from array responses and maintain all other fields', async () => {
-      const result = await evaluator.evaluateConcept(mockConceptId, mockProblem)
+      const result = await evaluator.evaluateConcept(
+        mockConceptId,
+        mockProblem,
+        mockRegion
+      )
 
       // Test status
       expect(result.status).toBe('well-defined')
@@ -222,7 +227,11 @@ describe('ConceptEvaluator', () => {
 
       evaluator = new ConceptEvaluator(mockApiKey)
 
-      const result = await evaluator.evaluateConcept(mockConceptId, mockProblem)
+      const result = await evaluator.evaluateConcept(
+        mockConceptId,
+        mockProblem,
+        mockRegion
+      )
 
       // Verify not-well-defined response
       expect(result.status).toBe('not-well-defined')
@@ -316,7 +325,11 @@ describe('ConceptEvaluator', () => {
       )
 
       evaluator = new ConceptEvaluator(mockApiKey)
-      const result = await evaluator.evaluateConcept(mockConceptId, mockProblem)
+      const result = await evaluator.evaluateConcept(
+        mockConceptId,
+        mockProblem,
+        mockRegion
+      )
 
       expect(result.status).toBe('requires_changes')
       // Verify all fields are present and correctly transformed
@@ -346,7 +359,7 @@ describe('ConceptEvaluator', () => {
       evaluator = new ConceptEvaluator(mockApiKey)
 
       await expect(
-        evaluator.evaluateConcept(mockConceptId, mockProblem)
+        evaluator.evaluateConcept(mockConceptId, mockProblem, mockRegion)
       ).rejects.toThrow('API Error')
     })
 
@@ -381,7 +394,7 @@ describe('ConceptEvaluator', () => {
       evaluator = new ConceptEvaluator(mockApiKey)
 
       await expect(
-        evaluator.evaluateConcept(mockConceptId, mockProblem)
+        evaluator.evaluateConcept(mockConceptId, mockProblem, mockRegion)
       ).rejects.toThrow()
     })
 
@@ -405,7 +418,7 @@ describe('ConceptEvaluator', () => {
       evaluator = new ConceptEvaluator(mockApiKey)
 
       await expect(
-        evaluator.evaluateConcept(mockConceptId, mockProblem)
+        evaluator.evaluateConcept(mockConceptId, mockProblem, mockRegion)
       ).rejects.toThrow('Test Error')
 
       expect(Sentry.captureException).toHaveBeenCalledWith(mockError)
@@ -464,7 +477,11 @@ describe('ConceptEvaluator', () => {
       )
 
       evaluator = new ConceptEvaluator(mockApiKey)
-      const result = await evaluator.evaluateConcept(mockConceptId, mockProblem)
+      const result = await evaluator.evaluateConcept(
+        mockConceptId,
+        mockProblem,
+        mockRegion
+      )
 
       expect(result.marketExistence).toBe('')
     })

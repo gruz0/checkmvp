@@ -50,6 +50,7 @@ interface Evaluation {
 interface Concept {
   id: string
   problem: string
+  region: string
   evaluation: Evaluation | null
 }
 
@@ -62,6 +63,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     const conceptProps: Concept = {
       id: concept.getId().getValue(),
       problem: concept.getProblem().getValue(),
+      region: concept.getRegion().getValue(),
       evaluation: null,
     }
 

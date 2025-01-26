@@ -83,6 +83,7 @@ Based on the classification, follow the guidelines below.
 - **Use Specific Data**: Incorporate relevant statistics, data points, or industry insights to support your analysis. Cite specific sources or reports if possible.
 - **Avoid Generic Statements**: Do not use overused phrases or follow a template; ensure the analysis is specific and tailored to the user's problem.
 - **Use 2025 Data**: Use data from 2025 to make the analysis more relevant and accurate.
+- **Region**: Use the region provided by the user to make the analysis more relevant and accurate.
 - **Scoring Guidelines**: All numerical scores must be between 0 and 10, where 0 represents complete absence/failure and 10 represents perfect execution
 - **Language Analysis**: Focus on identifying specific instances of unclear language rather than general observations
 - **Validation Metrics**: When scoring target audience metrics:
