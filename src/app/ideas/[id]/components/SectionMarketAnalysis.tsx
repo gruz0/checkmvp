@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import SectionContainer from '@/components/SectionContainer'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
@@ -46,23 +47,33 @@ const SectionMarketAnalysis: React.FC<SectionMarketAnalysisProps> = ({
           {data ? (
             <>
               <Section header="Trends:">
-                <Paragraph>{data.trends}</Paragraph>
+                <SectionContainer>
+                  <Paragraph>{data.trends}</Paragraph>
+                </SectionContainer>
               </Section>
 
               <Section header="User Behaviors:">
-                <Paragraph>{data.userBehaviors}</Paragraph>
+                <SectionContainer>
+                  <Paragraph>{data.userBehaviors}</Paragraph>
+                </SectionContainer>
               </Section>
 
               <Section header="Market Gaps:">
-                <Paragraph>{data.marketGaps}</Paragraph>
+                <SectionContainer>
+                  <Paragraph>{data.marketGaps}</Paragraph>
+                </SectionContainer>
               </Section>
 
               <Section header="Innovation Opportunities:">
-                <Paragraph>{data.innovationOpportunities}</Paragraph>
+                <SectionContainer>
+                  <Paragraph>{data.innovationOpportunities}</Paragraph>
+                </SectionContainer>
               </Section>
 
               <Section header="Strategic Direction:">
-                <Paragraph>{data.strategicDirection}</Paragraph>
+                <SectionContainer>
+                  <Paragraph>{data.strategicDirection}</Paragraph>
+                </SectionContainer>
               </Section>
             </>
           ) : (

@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import SectionContainer from '@/components/SectionContainer'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
@@ -144,7 +145,7 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
   generatableContent = false,
 }) => (
   <Section header={header}>
-    <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 lg:pb-4 dark:bg-gray-900/50">
+    <SectionContainer>
       <h3 className="mb-2 text-lg font-semibold">Platforms:</h3>
 
       <Paragraph>{data.platforms.join(', ')}</Paragraph>
@@ -155,10 +156,10 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
 
       <h3 className="mb-2 text-lg font-semibold">Benefits:</h3>
 
-      <SimpleUnorderedList items={data.benefits} last />
+      <SimpleUnorderedList items={data.benefits} />
 
       {generatableContent && (
-        <div className="mb-2 mt-4">
+        <div className="mb-6 mt-4 lg:mt-2">
           <Link
             href={`/ideas/${ideaId}/${section}`}
             target="_blank"
@@ -168,7 +169,7 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
           </Link>
         </div>
       )}
-    </div>
+    </SectionContainer>
   </Section>
 )
 

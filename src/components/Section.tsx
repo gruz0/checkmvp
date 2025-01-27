@@ -8,7 +8,7 @@ interface SectionProps {
 const Section: React.FC<SectionProps> = ({ header, children }) => (
   <div className="mb-8">
     {header && (
-      <div className="mb-4 flex items-center justify-between md:mb-6 lg:mb-8">
+      <div className="mb-4 flex items-center justify-between">
         <h3 className="text-xl font-semibold md:text-2xl">{header}</h3>
       </div>
     )}

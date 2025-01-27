@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import SectionContainer from '@/components/SectionContainer'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
@@ -93,13 +94,13 @@ const Pitch: React.FC<PitchProps> = ({ idx, pitch }) => {
 
   return (
     <Section header={`${idx + 1}. ${pitch.hook}`}>
-      <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0 dark:bg-gray-900/50">
+      <SectionContainer>
         <Paragraph>
           {pitch.problem} {pitch.solution} {pitch.valueProposition}
         </Paragraph>
 
         <Paragraph>{pitch.cta}</Paragraph>
-      </div>
+      </SectionContainer>
 
       <div className="flex justify-end space-x-2 py-2">
         {isSpeaking ? (
