@@ -1,5 +1,6 @@
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
+import { ContextAnalysis } from '@/idea/domain/ContextAnalysis'
 import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
 import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
@@ -23,6 +24,7 @@ export class Idea {
   private contentIdeasForMarketing: ContentIdeasForMarketing | null = null
   private socialMediaCampaigns: SocialMediaCampaigns | null = null
   private testingPlan: TestingPlan | null = null
+  private contextAnalysis: ContextAnalysis | null = null
   private migrated: boolean = false
   private archived: boolean = false
 
@@ -204,6 +206,14 @@ export class Idea {
     this.testingPlan = testingPlan
   }
 
+  public setContextAnalysis(contextAnalysis: ContextAnalysis): void {
+    if (this.contextAnalysis !== null) {
+      throw new Error('ContextAnalysis already set')
+    }
+
+    this.contextAnalysis = contextAnalysis
+  }
+
   public finalizeMigration(): void {
     if (this.migrated) {
       throw new Error('Idea was already migrated')
@@ -278,6 +288,10 @@ export class Idea {
 
   public getTestingPlan(): TestingPlan | null {
     return this.testingPlan
+  }
+
+  public getContextAnalysis(): ContextAnalysis | null {
+    return this.contextAnalysis
   }
 
   public isMigrated(): boolean {

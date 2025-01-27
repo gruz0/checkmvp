@@ -136,6 +136,17 @@ interface FullIdeaDTO {
       }>
     }
   } | null
+  contextAnalysis: {
+    problemDefinition: string
+    region: string
+    marketExistence: string[]
+    existingSolutions: string[]
+    mainChallenges: string[]
+    targetUsers: string
+    whyItMatters: string
+    opportunities: string[]
+    callToAction: string[]
+  } | null
 }
 
 interface ContentIdeaDTO {
@@ -172,6 +183,7 @@ export class GetIdeaHandler {
     const googleTrendsKeywords = idea.getGoogleTrendsKeywords()
     const contentIdeasForMarketing = idea.getContentIdeasForMarketing()
     const testingPlan = idea.getTestingPlan()
+    const contextAnalysis = idea.getContextAnalysis()
 
     return {
       id: idea.getId().getValue(),
@@ -279,6 +291,19 @@ export class GetIdeaHandler {
             contingencyPlans: testingPlan.getContingencyPlans(),
             resourceOptimization: testingPlan.getResourceOptimization(),
             softLaunchStrategy: testingPlan.getSoftLaunchStrategy(),
+          }
+        : null,
+      contextAnalysis: contextAnalysis
+        ? {
+            problemDefinition: contextAnalysis.getProblemDefinition(),
+            region: contextAnalysis.getRegion(),
+            marketExistence: contextAnalysis.getMarketExistence(),
+            existingSolutions: contextAnalysis.getExistingSolutions(),
+            mainChallenges: contextAnalysis.getMainChallenges(),
+            targetUsers: contextAnalysis.getTargetUsers(),
+            whyItMatters: contextAnalysis.getWhyItMatters(),
+            opportunities: contextAnalysis.getOpportunities(),
+            callToAction: contextAnalysis.getCallToAction(),
           }
         : null,
     }

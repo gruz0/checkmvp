@@ -3,6 +3,7 @@ import { EventBusInMemory } from '@/idea/adapters/EventBusInMemory'
 import { IdeaRepositorySQLite } from '@/idea/adapters/IdeaRepositorySQLite'
 import { CompetitorAnalysisEvaluator } from '@/idea/adapters/OpenAIService/CompetitorAnalysisEvaluator'
 import { ContentIdeasEvaluator } from '@/idea/adapters/OpenAIService/ContentIdeasEvaluator'
+import { ContextAnalysisEvaluator } from '@/idea/adapters/OpenAIService/ContextAnalysisEvaluator'
 import { ElevatorPitchesEvaluator } from '@/idea/adapters/OpenAIService/ElevatorPitchesEvaluator'
 import { GoogleTrendsKeywordsEvaluator } from '@/idea/adapters/OpenAIService/GoogleTrendsKeywordsEvaluator'
 import { MarketAnalysisEvaluator } from '@/idea/adapters/OpenAIService/MarketAnalysisEvaluator'
@@ -24,6 +25,7 @@ import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEv
 import { ValuePropositionEvaluated } from '@/idea/domain/events/ValuePropositionEvaluated'
 import { CompetitorAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/CompetitorAnalysisEvaluationSubscriber'
 import { ContentIdeasEvaluationSubscriber } from '@/idea/events/subscribers/ContentIdeasEvaluationSubscriber'
+import { ContextAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/ContextAnalysisEvaluationSubscriber'
 import { ElevatorPitchesEvaluationSubscriber } from '@/idea/events/subscribers/ElevatorPitchesEvaluationSubscriber'
 import { GoogleTrendsKeywordsEvaluationSubscriber } from '@/idea/events/subscribers/GoogleTrendsKeywordsEvaluationSubscriber'
 import { MarketAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/MarketAnalysisEvaluationSubscriber'
@@ -39,6 +41,13 @@ const registerApp = (): Application => {
   const ideaRepository = new IdeaRepositorySQLite()
   const eventBus = new EventBusInMemory()
   const ideaService = new IdeaService(env.CONCEPT_SERVICE_API_BASE)
+
+  const contextAnalysisEvaluationSubscriber =
+    new ContextAnalysisEvaluationSubscriber(
+      ideaRepository,
+      new ContextAnalysisEvaluator(env.OPENAI_API_KEY),
+      eventBus
+    )
 
   const targetAudienceEvaluationSubscriber =
     new TargetAudienceEvaluationSubscriber(
@@ -104,6 +113,7 @@ const registerApp = (): Application => {
     new TestingPlanEvaluator(env.OPENAI_API_KEY)
   )
 
+  eventBus.subscribe(IdeaCreated.eventName, contextAnalysisEvaluationSubscriber)
   eventBus.subscribe(IdeaCreated.eventName, targetAudienceEvaluationSubscriber)
   eventBus.subscribe(
     TargetAudiencesEvaluated.eventName,
