@@ -50,28 +50,44 @@ export class TargetAudienceEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
-      const tasks = idea.getTargetAudiences().map((targetAudience) =>
-        this.aiService
-          .evaluateTargetAudience(
+      // FIXME: It must be refactored to analyze all target audiences at once
+
+      // Collect all evaluations first
+      const evaluations = await Promise.all(
+        idea.getTargetAudiences().map(async (targetAudience) => {
+          const evaluation = await this.aiService.evaluateTargetAudience(
             idea.getId().getValue(),
             idea.getProblem().getValue(),
             targetAudience.getSegment(),
             targetAudience.getDescription(),
             targetAudience.getChallenges()
           )
-          .then((evaluation) => {
-            targetAudience.setWhy(evaluation.why)
-            targetAudience.setPainPoints(evaluation.painPoints)
-            targetAudience.setTargetingStrategy(evaluation.targetingStrategy)
-            return targetAudience
-          })
+
+          // Validate evaluation data before proceeding
+          if (
+            !evaluation.why ||
+            !Array.isArray(evaluation.painPoints) ||
+            evaluation.painPoints.length === 0
+          ) {
+            throw new Error(
+              `Invalid evaluation data for target audience ${targetAudience.getId().getValue()}`
+            )
+          }
+
+          return {
+            targetAudience,
+            evaluation,
+          }
+        })
       )
 
-      const evaluations = await Promise.all(tasks)
-
+      // Update idea with validated evaluations
       await this.repository.updateIdea(event.payload.id, (idea): Idea => {
-        evaluations.forEach((audience) => {
-          idea.updateTargetAudience(audience)
+        evaluations.forEach(({ targetAudience, evaluation }) => {
+          targetAudience.setWhy(evaluation.why)
+          targetAudience.setPainPoints(evaluation.painPoints)
+          targetAudience.setTargetingStrategy(evaluation.targetingStrategy)
+          idea.updateTargetAudience(targetAudience)
         })
 
         return idea

@@ -162,6 +162,17 @@ interface Props {
         }>
       }
     } | null
+    contextAnalysis: {
+      problemDefinition: string
+      region: string
+      marketExistence: string[]
+      existingSolutions: string[]
+      mainChallenges: string[]
+      targetUsers: string
+      whyItMatters: string
+      opportunities: string[]
+      callToAction: string[]
+    } | null
   }
   expirationDays: number
 }
@@ -193,7 +204,8 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
       !data.productNames ||
       !data.googleTrendsKeywords ||
       !data.contentIdeasForMarketing ||
-      !data.testingPlan
+      !data.testingPlan ||
+      !data.contextAnalysis
     ) {
       intervalId = setInterval(() => {
         router.refresh()
@@ -216,6 +228,7 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
     data.googleTrendsKeywords,
     data.contentIdeasForMarketing,
     data.testingPlan,
+    data.contextAnalysis,
     router,
   ])
 
@@ -284,7 +297,7 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
           <SectionContext
             data={{
               problem: data.problem,
-              marketExistence: data.marketExistence,
+              contextAnalysis: data.contextAnalysis,
             }}
           />
 

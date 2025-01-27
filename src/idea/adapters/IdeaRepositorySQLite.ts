@@ -3,6 +3,7 @@ import { Competitor } from '@/idea/domain/Competitor'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { ContentIdea } from '@/idea/domain/ContentIdea'
 import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
+import { ContextAnalysis } from '@/idea/domain/ContextAnalysis'
 import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
 import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
@@ -66,20 +67,32 @@ export class IdeaRepositorySQLite implements Repository {
         data: {
           ...(updatedIdea.isMigrated() && { migratedAt: new Date() }),
           ...(updatedIdea.isArchived() && { archivedAt: new Date() }),
-          targetAudiences: {
-            update: idea.getTargetAudiences().map((audience) => ({
-              where: { id: audience.getId().getValue() },
-              data: {
-                why: audience.getWhy(),
-                painPoints: JSON.stringify(audience.getPainPoints()),
-                targetingStrategy: audience.getTargetingStrategy(),
-                updatedAt: new Date(),
-              },
-            })),
-          },
           updatedAt: new Date(),
         },
       })
+
+      // FIXME: We must refactor the entire code below to update only changed fields.
+      // Because now we are updating all fields every time no matter if they have changed or not.
+      // It could be done by using domain events or by adding isChanged flag to each field.
+
+      const targetAudiences = updatedIdea.getTargetAudiences()
+      if (targetAudiences.length > 0) {
+        await Promise.all(
+          targetAudiences.map((audience) =>
+            prisma.targetAudience.update({
+              where: { id: audience.getId().getValue() },
+              data: {
+                why: audience.getWhy() ?? null,
+                painPoints: audience.getPainPoints()
+                  ? JSON.stringify(audience.getPainPoints())
+                  : null,
+                targetingStrategy: audience.getTargetingStrategy() ?? null,
+                updatedAt: new Date(),
+              },
+            })
+          )
+        )
+      }
 
       const valueProposition = updatedIdea.getValueProposition()
       if (valueProposition) {
@@ -286,6 +299,28 @@ export class IdeaRepositorySQLite implements Repository {
           },
           update: {
             value: JSON.stringify(testingPlan),
+            updatedAt: new Date(),
+          },
+        })
+      }
+
+      // Add context analysis handling
+      const contextAnalysis = updatedIdea.getContextAnalysis()
+      if (contextAnalysis) {
+        await prisma.ideaContent.upsert({
+          where: {
+            ideaId_key: {
+              ideaId: id,
+              key: 'context_analysis',
+            },
+          },
+          create: {
+            ideaId: id,
+            key: 'context_analysis',
+            value: JSON.stringify(contextAnalysis),
+          },
+          update: {
+            value: JSON.stringify(contextAnalysis),
             updatedAt: new Date(),
           },
         })
@@ -743,6 +778,41 @@ export class IdeaRepositorySQLite implements Repository {
           data.contingencyPlans,
           data.resourceOptimization,
           data.softLaunchStrategy
+        )
+      )
+    }
+
+    // Add context analysis handling
+    const contextAnalysisModel = ideaModel.contents.find(
+      (content) => content.key === 'context_analysis'
+    )
+
+    if (contextAnalysisModel) {
+      interface contextAnalysis {
+        problemDefinition: string
+        region: string
+        marketExistence: string[]
+        existingSolutions: string[]
+        mainChallenges: string[]
+        targetUsers: string
+        whyItMatters: string
+        opportunities: string[]
+        callToAction: string[]
+      }
+
+      const data = JSON.parse(contextAnalysisModel.value) as contextAnalysis
+
+      idea.setContextAnalysis(
+        ContextAnalysis.New(
+          data.problemDefinition,
+          data.region,
+          data.marketExistence,
+          data.existingSolutions,
+          data.mainChallenges,
+          data.targetUsers,
+          data.whyItMatters,
+          data.opportunities,
+          data.callToAction
         )
       )
     }
