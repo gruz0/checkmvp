@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import SectionContainer from '@/components/SectionContainer'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
@@ -42,16 +43,18 @@ const SectionValueProposition: React.FC<SectionValuePropositionProps> = ({
 
           {data ? (
             <>
-              <Section header="Main Benefit:">
-                <Paragraph>{data.mainBenefit}</Paragraph>
-              </Section>
+              <Section header="How to Pitch Your Idea or Start a Conversation:">
+                <SectionContainer>
+                  <Paragraph>{data.problemSolving}</Paragraph>
 
-              <Section header="How to Pitch It:">
-                <Paragraph>{data.problemSolving}</Paragraph>
+                  <Paragraph>{data.mainBenefit}</Paragraph>
+                </SectionContainer>
               </Section>
 
               <Section header="Differentiation:">
-                <Paragraph>{data.differentiation}</Paragraph>
+                <SectionContainer>
+                  <Paragraph>{data.differentiation}</Paragraph>
+                </SectionContainer>
               </Section>
             </>
           ) : (

@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import SectionContainer from '@/components/SectionContainer'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
@@ -50,7 +51,7 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
               key={audience.id}
               header={`${idx + 1}. ${audience.segment}`}
             >
-              <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+              <SectionContainer>
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">
                   Description:
                 </h3>
@@ -76,11 +77,11 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
                   Targeting Strategy:
                 </h3>
                 {audience.targetingStrategy ? (
-                  <Paragraph last>{audience.targetingStrategy}</Paragraph>
+                  <Paragraph>{audience.targetingStrategy}</Paragraph>
                 ) : (
                   <FetchingDataMessage />
                 )}
-              </div>
+              </SectionContainer>
             </Section>
           ))}
         </div>

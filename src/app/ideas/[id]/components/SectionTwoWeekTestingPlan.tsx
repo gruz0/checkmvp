@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import SectionContainer from '@/components/SectionContainer'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
@@ -104,12 +105,12 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
             <>
               <Section header="Core Assumptions to Test:">
                 {data.coreAssumptions.map((assumption, idx) => (
-                  <React.Fragment key={idx}>
+                  <div key={idx} className="mb-6">
                     <h3 className="mb-4 text-lg font-semibold md:text-xl">
                       {idx + 1}. {assumption.assumption}
                     </h3>
 
-                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+                    <SectionContainer>
                       <h3 className="mb-2 text-lg font-semibold">
                         Why Critical:
                       </h3>
@@ -118,20 +119,20 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                       <h3 className="mb-2 text-lg font-semibold">
                         Validation Method:
                       </h3>
-                      <Paragraph last>{assumption.validationMethod}</Paragraph>
-                    </div>
-                  </React.Fragment>
+                      <Paragraph>{assumption.validationMethod}</Paragraph>
+                    </SectionContainer>
+                  </div>
                 ))}
               </Section>
 
               <Section header="Day-by-Day Plan:">
                 {data.twoWeekPlan.map((day) => (
-                  <React.Fragment key={day.day}>
+                  <div key={day.day} className="mb-6">
                     <h3 className="mb-4 text-lg font-semibold md:text-xl">
                       Day {day.day}: {day.focus}
                     </h3>
 
-                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+                    <SectionContainer>
                       <h3 className="mb-2 text-lg font-semibold">Tasks:</h3>
                       <SimpleUnorderedList items={day.tasks} />
 
@@ -148,14 +149,14 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                       <h3 className="mb-2 text-lg font-semibold">
                         Estimated Time:
                       </h3>
-                      <Paragraph last>{day.estimatedTime}</Paragraph>
-                    </div>
-                  </React.Fragment>
+                      <Paragraph>{day.estimatedTime}</Paragraph>
+                    </SectionContainer>
+                  </div>
                 ))}
               </Section>
 
               <Section header="Key Metrics:">
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+                <SectionContainer>
                   <h3 className="mb-2 text-lg font-semibold">
                     Qualitative Metrics:
                   </h3>
@@ -171,19 +172,18 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                   </h3>
                   <SimpleUnorderedList
                     items={data.keyMetrics.minimumSuccessCriteria}
-                    last
                   />
-                </div>
+                </SectionContainer>
               </Section>
 
               <Section header="Testing Methods:">
                 {data.testingMethods.map((method, idx) => (
-                  <React.Fragment key={idx}>
+                  <div key={idx} className="mb-6">
                     <h3 className="mb-4 text-lg font-semibold md:text-xl">
                       {idx + 1}. {method.method}
                     </h3>
 
-                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+                    <SectionContainer>
                       <Paragraph>{method.description}</Paragraph>
 
                       <h3 className="mb-2 text-lg font-semibold">
@@ -194,34 +194,34 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                       <h3 className="mb-2 text-lg font-semibold">
                         Expected Outcome:
                       </h3>
-                      <Paragraph last>{method.expectedOutcome}</Paragraph>
-                    </div>
-                  </React.Fragment>
+                      <Paragraph>{method.expectedOutcome}</Paragraph>
+                    </SectionContainer>
+                  </div>
                 ))}
               </Section>
 
               <Section header="Contingency Plans:">
                 {data.contingencyPlans.map((plan, idx) => (
-                  <React.Fragment key={idx}>
+                  <div key={idx} className="mb-6">
                     <h3 className="mb-4 text-lg font-semibold md:text-xl">
                       {idx + 1}. {plan.scenario}
                     </h3>
 
-                    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+                    <SectionContainer>
                       <h3 className="mb-2 text-lg font-semibold">Solution:</h3>
                       <Paragraph>{plan.solution}</Paragraph>
 
                       <h3 className="mb-2 text-lg font-semibold">
                         Alternative Approach:
                       </h3>
-                      <Paragraph last>{plan.alternativeApproach}</Paragraph>
-                    </div>
-                  </React.Fragment>
+                      <Paragraph>{plan.alternativeApproach}</Paragraph>
+                    </SectionContainer>
+                  </div>
                 ))}
               </Section>
 
               <Section header="Resource Optimization:">
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+                <SectionContainer>
                   <h3 className="mb-2 text-lg font-semibold">
                     Minimum Budget:
                   </h3>
@@ -246,9 +246,8 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                   </h3>
                   <SimpleUnorderedList
                     items={data.resourceOptimization.paidAlternatives}
-                    last
                   />
-                </div>
+                </SectionContainer>
               </Section>
 
               <Section header="Soft Launch Strategy:">
@@ -257,7 +256,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                     Launch Overview
                   </h3>
 
-                  <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+                  <SectionContainer>
                     <h3 className="mb-2 text-lg font-semibold">Timing:</h3>
                     <Paragraph>{data.softLaunchStrategy.timing}</Paragraph>
 
@@ -273,15 +272,14 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                     </h3>
                     <SimpleUnorderedList
                       items={data.softLaunchStrategy.preparationSteps}
-                      last
                     />
-                  </div>
+                  </SectionContainer>
 
                   <h3 className="mb-4 text-lg font-semibold md:text-xl">
                     Content Strategy
                   </h3>
 
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+                  <SectionContainer>
                     <h3 className="mb-2 text-lg font-semibold">
                       Content Titles:
                     </h3>
@@ -310,29 +308,19 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                       Call to Action:
                     </h3>
 
-                    <ul className="mb-4 list-disc pl-4">
-                      <li className="mb-2 pl-1 md:pl-2 md:text-lg">
-                        Primary:{' '}
-                        {
+                    <SimpleUnorderedList
+                      items={[
+                        'Primary: ' +
                           data.softLaunchStrategy.contentTemplates.callToAction
-                            .primary
-                        }
-                      </li>
-                      <li className="mb-2 pl-1 md:pl-2 md:text-lg">
-                        Secondary:{' '}
-                        {
+                            .primary,
+                        'Secondary: ' +
                           data.softLaunchStrategy.contentTemplates.callToAction
-                            .secondary
-                        }
-                      </li>
-                      <li className="mb-2 pl-1 md:pl-2 md:text-lg">
-                        Value Hook:{' '}
-                        {
+                            .secondary,
+                        'Value Hook: ' +
                           data.softLaunchStrategy.contentTemplates.callToAction
-                            .valueHook
-                        }
-                      </li>
-                    </ul>
+                            .valueHook,
+                      ]}
+                    />
 
                     <h3 className="mb-2 text-lg font-semibold">
                       Key Benefits:
@@ -341,18 +329,17 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                       items={
                         data.softLaunchStrategy.contentTemplates.keyBenefits
                       }
-                      last
                     />
-                  </div>
+                  </SectionContainer>
 
                   {data.softLaunchStrategy.platformSpecific.map(
                     (platform, idx) => (
-                      <React.Fragment key={idx}>
+                      <div key={idx} className="mb-6">
                         <h3 className="mb-4 text-lg font-semibold md:text-xl">
                           {platform.platform} Launch Strategy
                         </h3>
 
-                        <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4 hover:shadow-lg md:p-6 dark:bg-gray-900/50">
+                        <SectionContainer>
                           <h3 className="mb-2 text-lg font-semibold">
                             Format:
                           </h3>
@@ -373,11 +360,9 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
                           <h3 className="mb-2 text-lg font-semibold">
                             Engagement Strategy:
                           </h3>
-                          <Paragraph last>
-                            {platform.engagementStrategy}
-                          </Paragraph>
-                        </div>
-                      </React.Fragment>
+                          <Paragraph>{platform.engagementStrategy}</Paragraph>
+                        </SectionContainer>
+                      </div>
                     )
                   )}
                 </div>

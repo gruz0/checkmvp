@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import SectionContainer from '@/components/SectionContainer'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
@@ -60,7 +61,7 @@ const SectionCompetitors: React.FC<SectionCompetitorsProps> = ({ data }) => {
                   key={competitor.url}
                   header={`${idx + 1}. ${competitor.name}`}
                 >
-                  <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0 dark:bg-gray-900/50">
+                  <SectionContainer>
                     <h3 className="mb-2 text-lg font-semibold md:text-xl">
                       Product:
                     </h3>
@@ -106,24 +107,30 @@ const SectionCompetitors: React.FC<SectionCompetitorsProps> = ({ data }) => {
                     <Paragraph>
                       {competitor.differentiationOpportunity}
                     </Paragraph>
-                  </div>
+                  </SectionContainer>
                 </Section>
               ))}
 
               <Section header="Comparison:">
-                <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Strengths:
-                </h3>
-                <SimpleUnorderedList items={data.comparison.strengths} />
+                <SectionContainer>
+                  <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                    Strengths:
+                  </h3>
+                  <SimpleUnorderedList items={data.comparison.strengths} />
 
-                <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Weaknesses:
-                </h3>
-                <SimpleUnorderedList items={data.comparison.weaknesses} />
+                  <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                    Weaknesses:
+                  </h3>
+                  <SimpleUnorderedList items={data.comparison.weaknesses} />
+                </SectionContainer>
               </Section>
 
               <Section header="Differentiation Suggestions:">
-                <SimpleUnorderedList items={data.differentiationSuggestions} />
+                <SectionContainer>
+                  <SimpleUnorderedList
+                    items={data.differentiationSuggestions}
+                  />
+                </SectionContainer>
               </Section>
             </>
           ) : (

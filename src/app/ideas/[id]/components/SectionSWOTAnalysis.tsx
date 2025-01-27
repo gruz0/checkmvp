@@ -39,14 +39,14 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({ data }) => {
           </SectionDescription>
 
           {data ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-4">
+            <div className="grid grid-cols-1 gap-4 md:gap-4 lg:grid-cols-2">
               <div className="flex flex-col">
                 <div className="flex flex-1 flex-col rounded-lg bg-green-50 p-4 shadow transition-shadow duration-200 hover:shadow-lg md:p-6">
                   <h3 className="mb-4 flex items-center text-xl font-semibold text-green-700 md:text-2xl">
                     💪 Strengths
                   </h3>
 
-                  <ul className="flex-1 list-inside list-disc space-y-2 text-gray-700">
+                  <ul className="flex-1 list-inside list-disc space-y-2 text-gray-700 md:text-lg">
                     {data.strengths.map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}
@@ -60,7 +60,7 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({ data }) => {
                     ⚠️ Weaknesses
                   </h3>
 
-                  <ul className="flex-1 list-inside list-disc space-y-2 text-gray-700">
+                  <ul className="flex-1 list-inside list-disc space-y-2 text-gray-700 md:text-lg">
                     {data.weaknesses.map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}
@@ -74,7 +74,7 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({ data }) => {
                     🚀 Opportunities
                   </h3>
 
-                  <ul className="flex-1 list-inside list-disc space-y-2 text-gray-700">
+                  <ul className="flex-1 list-inside list-disc space-y-2 text-gray-700 md:text-lg">
                     {data.opportunities.map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}
@@ -88,7 +88,7 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({ data }) => {
                     🔥 Threats
                   </h3>
 
-                  <ul className="flex-1 list-inside list-disc space-y-2 text-gray-700">
+                  <ul className="flex-1 list-inside list-disc space-y-2 text-gray-700 md:text-lg">
                     {data.threats.map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}

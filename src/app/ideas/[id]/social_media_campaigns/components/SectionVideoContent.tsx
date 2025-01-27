@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
+import SectionContainer from '@/components/SectionContainer'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
@@ -44,7 +45,7 @@ const SectionVideoContent: React.FC<SectionVideoContentProps> = ({ data }) => {
 
           {data.map((content, idx) => (
             <Section key={`${content.platform}-${idx}`} header={content.header}>
-              <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 pb-0 hover:shadow-lg md:p-6 lg:pb-0 dark:bg-gray-900/50">
+              <SectionContainer>
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">
                   Title:
                 </h3>
@@ -67,7 +68,7 @@ const SectionVideoContent: React.FC<SectionVideoContentProps> = ({ data }) => {
                 </h3>
 
                 <Paragraph>{content.imagePrompt}</Paragraph>
-              </div>
+              </SectionContainer>
             </Section>
           ))}
         </div>
