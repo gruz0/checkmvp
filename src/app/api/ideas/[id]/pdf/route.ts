@@ -16,6 +16,10 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
       id: params.id,
     })
 
+    if (!dto.contextAnalysis) {
+      throw new Error('No context analysis')
+    }
+
     if (!dto.valueProposition) {
       throw new Error('No value proposition')
     }
@@ -73,10 +77,15 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
       throw new Error('No content ideas for marketing')
     }
 
+    if (!dto.testingPlan) {
+      throw new Error('No two week testing plan')
+    }
+
     const report: Report = {
       data: {
         id: dto.id,
         problem: dto.problem,
+        contextAnalysis: dto.contextAnalysis,
         marketExistence: dto.marketExistence,
         valueProposition: dto.valueProposition,
         targetAudiences: targetAudiences,
@@ -87,6 +96,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
         elevatorPitches: dto.elevatorPitches,
         googleTrendsKeywords: dto.googleTrendsKeywords,
         contentIdeasForMarketing: dto.contentIdeasForMarketing,
+        twoWeekTestingPlan: dto.testingPlan,
       },
     }
 
