@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react'
 import FetchingDataMessage from '@/components/FetchingDataMessage'
-import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
 import SectionContainer from '@/components/SectionContainer'
 import SectionDescription from '@/components/SectionDescription'
 import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
+import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 
 interface SectionMarketAnalysisProps {
   data: {
@@ -48,31 +48,35 @@ const SectionMarketAnalysis: React.FC<SectionMarketAnalysisProps> = ({
             <>
               <Section header="Trends:">
                 <SectionContainer>
-                  <Paragraph>{data.trends}</Paragraph>
+                  <SimpleUnorderedList items={data.trends.split('\n')} />
                 </SectionContainer>
               </Section>
 
               <Section header="User Behaviors:">
                 <SectionContainer>
-                  <Paragraph>{data.userBehaviors}</Paragraph>
+                  <SimpleUnorderedList items={data.userBehaviors.split('\n')} />
                 </SectionContainer>
               </Section>
 
               <Section header="Market Gaps:">
                 <SectionContainer>
-                  <Paragraph>{data.marketGaps}</Paragraph>
+                  <SimpleUnorderedList items={data.marketGaps.split('\n')} />
                 </SectionContainer>
               </Section>
 
               <Section header="Innovation Opportunities:">
                 <SectionContainer>
-                  <Paragraph>{data.innovationOpportunities}</Paragraph>
+                  <SimpleUnorderedList
+                    items={data.innovationOpportunities.split('\n')}
+                  />
                 </SectionContainer>
               </Section>
 
               <Section header="Strategic Direction:">
                 <SectionContainer>
-                  <Paragraph>{data.strategicDirection}</Paragraph>
+                  <SimpleUnorderedList
+                    items={data.strategicDirection.split('\n')}
+                  />
                 </SectionContainer>
               </Section>
             </>
