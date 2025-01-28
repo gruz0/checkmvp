@@ -6,24 +6,32 @@ import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEv
 import { EventBus } from '@/idea/events/EventBus'
 import { EventHandler } from '@/idea/events/EventHandler'
 
-type Evaluation = {
+type TargetAudienceEvaluation = {
+  id: string
   why: string
   painPoints: string[]
   targetingStrategy: string
+}
+
+type Evaluation = TargetAudienceEvaluation[]
+
+interface TargetAudience {
+  id: string
+  segment: string
+  description: string
+  challenges: string[]
 }
 
 interface AIService {
   evaluateTargetAudience(
     ideaId: string,
     problem: string,
-    segment: string,
-    description: string,
-    challenges: string[]
+    targetAudiences: TargetAudience[]
   ): Promise<Evaluation>
 }
 
-export class TargetAudienceEvaluationSubscriber implements EventHandler {
-  static className = 'TargetAudienceEvaluationSubscriber'
+export class TargetAudiencesEvaluationSubscriber implements EventHandler {
+  static className = 'TargetAudiencesEvaluationSubscriber'
 
   constructor(
     private readonly repository: Repository,
@@ -32,7 +40,7 @@ export class TargetAudienceEvaluationSubscriber implements EventHandler {
   ) {}
 
   getName(): string {
-    return TargetAudienceEvaluationSubscriber.className
+    return TargetAudiencesEvaluationSubscriber.className
   }
 
   async handle(event: IdeaCreated): Promise<void> {
@@ -50,43 +58,42 @@ export class TargetAudienceEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
-      // FIXME: It must be refactored to analyze all target audiences at once
+      const targetAudiences = idea.getTargetAudiences()
 
-      // Collect all evaluations first
-      const evaluations = await Promise.all(
-        idea.getTargetAudiences().map(async (targetAudience) => {
-          const evaluation = await this.aiService.evaluateTargetAudience(
-            idea.getId().getValue(),
-            idea.getProblem().getValue(),
-            targetAudience.getSegment(),
-            targetAudience.getDescription(),
-            targetAudience.getChallenges()
-          )
+      const audiences = targetAudiences.map((targetAudience) => ({
+        id: targetAudience.getId().getValue(),
+        segment: targetAudience.getSegment(),
+        description: targetAudience.getDescription(),
+        challenges: targetAudience.getChallenges(),
+      }))
 
-          // Validate evaluation data before proceeding
-          if (
-            !evaluation.why ||
-            !Array.isArray(evaluation.painPoints) ||
-            evaluation.painPoints.length === 0
-          ) {
-            throw new Error(
-              `Invalid evaluation data for target audience ${targetAudience.getId().getValue()}`
-            )
-          }
-
-          return {
-            targetAudience,
-            evaluation,
-          }
-        })
+      const evaluation = await this.aiService.evaluateTargetAudience(
+        idea.getId().getValue(),
+        idea.getProblem().getValue(),
+        audiences
       )
 
-      // Update idea with validated evaluations
+      targetAudiences.forEach((targetAudience) => {
+        const id = targetAudience.getId().getValue()
+        const targetAudienceEvaluation = evaluation.find(
+          (evaluation) => evaluation.id === id
+        )
+
+        if (!targetAudienceEvaluation) {
+          throw new Error(
+            `TargetAudienceEvaluation with ID ${id} does not exist`
+          )
+        }
+
+        targetAudience.setWhy(targetAudienceEvaluation.why)
+        targetAudience.setPainPoints(targetAudienceEvaluation.painPoints)
+        targetAudience.setTargetingStrategy(
+          targetAudienceEvaluation.targetingStrategy
+        )
+      })
+
       await this.repository.updateIdea(event.payload.id, (idea): Idea => {
-        evaluations.forEach(({ targetAudience, evaluation }) => {
-          targetAudience.setWhy(evaluation.why)
-          targetAudience.setPainPoints(evaluation.painPoints)
-          targetAudience.setTargetingStrategy(evaluation.targetingStrategy)
+        targetAudiences.forEach((targetAudience) => {
           idea.updateTargetAudience(targetAudience)
         })
 
