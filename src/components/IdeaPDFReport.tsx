@@ -59,6 +59,18 @@ Font.registerEmojiSource({
   url: 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/',
 })
 
+type ContextAnalysis = {
+  problemDefinition: string
+  region: string
+  marketExistence: string[]
+  existingSolutions: string[]
+  mainChallenges: string[]
+  targetUsers: string
+  whyItMatters: string
+  opportunities: string[]
+  callToAction: string[]
+}
+
 type ValueProposition = {
   mainBenefit: string
   problemSolving: string
@@ -144,10 +156,76 @@ type ContentIdeaForMarketing = {
   benefits: string[]
 }
 
+type TwoWeekTestingPlan = {
+  coreAssumptions: Array<{
+    assumption: string
+    whyCritical: string
+    validationMethod: string
+  }>
+  twoWeekPlan: Array<{
+    day: number
+    focus: string
+    tasks: string[]
+    successMetrics: string[]
+    toolsNeeded: string[]
+    estimatedTime: string
+  }>
+  keyMetrics: {
+    qualitative: string[]
+    quantitative: string[]
+    minimumSuccessCriteria: string[]
+  }
+  testingMethods: Array<{
+    method: string
+    description: string
+    whenToUse: string
+    expectedOutcome: string
+  }>
+  contingencyPlans: Array<{
+    scenario: string
+    solution: string
+    alternativeApproach: string
+  }>
+  resourceOptimization: {
+    minimumBudget: string
+    timeSavingTips: string[]
+    freeTools: string[]
+    paidAlternatives: string[]
+  }
+  softLaunchStrategy: {
+    platforms: string[]
+    preparationSteps: string[]
+    timing: string
+    engagementTactics: string[]
+    contentTemplates: {
+      titles: string[]
+      shortDescription: string
+      problemStatement: string
+      solutionPreview: string
+      callToAction: {
+        primary: string
+        secondary: string
+        valueHook: string
+      }
+      keyBenefits: string[]
+      socialProofPlan: string[]
+      engagementHooks: string[]
+    }
+    platformSpecific: Array<{
+      platform: string
+      contentFormat: string
+      bestTiming: string
+      communityRules: string[]
+      engagementStrategy: string
+    }>
+  }
+}
+
 export type Report = {
   data: {
     id: string
     problem: string
+    contextAnalysis: ContextAnalysis
     marketExistence: string
     valueProposition: ValueProposition
     targetAudiences: TargetAudiences
@@ -158,6 +236,7 @@ export type Report = {
     elevatorPitches: ElevatorPitches
     googleTrendsKeywords: GoogleTrendsKeywords
     contentIdeasForMarketing: Record<string, ContentIdeaForMarketing>
+    twoWeekTestingPlan: TwoWeekTestingPlan
   }
 }
 
@@ -187,44 +266,40 @@ export const IdeaPDFReport = ({ data }: Report) => (
 
         <Text style={styles.title}>Your Personalized Startup Idea Report</Text>
 
-        <Text style={styles.subtitle}>
-          Comprehensive Analysis and Validation of Your Business Concept
-        </Text>
-
         <View style={styles.view}>
           <Text style={styles.subsection}>Table of Contents:</Text>
 
           <View style={styles.row}>
             <View style={styles.column}>
               <Text style={styles.text}>
-                <Link href="#market_analysis">01. Market Analysis</Link>
+                <Link href="#market_analysis">01. Context</Link>
                 {'\n'}
-                <Link href="#competitors">02. Competitors</Link>
+                <Link href="#market_analysis">02. Market Analysis</Link>
                 {'\n'}
-                <Link href="#value_proposition">03. Value Proposition</Link>
+                <Link href="#competitors">03. Competitors</Link>
                 {'\n'}
-                <Link href="#target_audiences">04. Target Audiences</Link>
+                <Link href="#value_proposition">04. Value Proposition</Link>
                 {'\n'}
-                <Link href="#swot_analysis">05. SWOT Analysis</Link>
+                <Link href="#target_audiences">05. Target Audiences</Link>
+                {'\n'}
+                <Link href="#swot_analysis">06. SWOT Analysis</Link>
               </Text>
             </View>
 
             <View style={styles.column}>
               <Text style={styles.text}>
-                <Link href="#elevator_pitches">06. Elevator Pitches</Link>
+                <Link href="#elevator_pitches">07. Elevator Pitches</Link>
                 {'\n'}
-                <Link href="#product_names">07. Product Names</Link>
+                <Link href="#product_names">08. Product Names</Link>
                 {'\n'}
                 <Link href="#google_trends_keywords">
-                  08. Google Trends Keywords
+                  09. Google Trends Keywords
                 </Link>
                 {'\n'}
-                <Link href="#content_ideas">09. Content Ideas</Link>
+                <Link href="#content_ideas">10. Content Ideas</Link>
                 {'\n'}
-                <Link
-                  href={`${env.NEXT_PUBLIC_URL}/ideas/${data.id}?utm_source=report&utm_medium=pdf&utm_campaign=idea&utm_content=web_version_link`}
-                >
-                  Full Web version
+                <Link href="#two_week_testing_plan">
+                  11. Two Week Testing Plan
                 </Link>
               </Text>
             </View>
@@ -238,6 +313,8 @@ export const IdeaPDFReport = ({ data }: Report) => (
       </View>
 
       <SectionWelcome />
+
+      <SectionContextAnalysis data={data.contextAnalysis} />
 
       <SectionMarketAnalysis
         marketExistence={data.marketExistence}
@@ -259,6 +336,8 @@ export const IdeaPDFReport = ({ data }: Report) => (
       <SectionGoogleTrendsKeywords data={data.googleTrendsKeywords} />
 
       <SectionContentIdeasForMarketing data={data.contentIdeasForMarketing} />
+
+      <SectionTwoWeekTestingPlan data={data.twoWeekTestingPlan} />
 
       <Text
         style={styles.pageNumber}
@@ -282,18 +361,90 @@ const SectionWelcome = () => (
       of your startup journey.
       {'\n'}
       {'\n'}
-      If you have any questions, feedback, or ideas on how we can improve
-      CheckMVP together, I&apos;d love to hear from you! Your insights help make
-      this tool better for everyone. Feel free to reach out to me on X at{' '}
-      <Link href="https://x.com/itmistakes_com">@itmistakes_com</Link>.{'\n'}
-      {'\n'}
-      Wishing you the best of success with your venture!
+      If you need help with your idea - whether it&apos;s brainstorming,
+      development, or anything else - just reach out to me on social media or
+      book a call. I&apos;d be happy to help!
       {'\n'}
       {'\n'}
-      Warm regards,
+      Please keep in mind, this analysis is powered by OpenAI. While the
+      insights are valuable, they should complement - not replace - your own
+      research and intuition.
+      {'\n'}
+      {'\n'}
+      Best,
       {'\n'}
       Alex
+      {'\n'}
+      {'\n'}
+      <Link href="https://x.com/itmistakes_com">Twitter (X)</Link> |{' '}
+      <Link href="https://www.linkedin.com/in/alexanderkadyrov">LinkedIn</Link>{' '}
+      | <Link href="https://t.me/gruz0">Telegram</Link> |{' '}
+      <Link href="https://cal.com/alexkadyrov/checkmvp">Book a call</Link>
     </Text>
+  </View>
+)
+
+type SectionContextAnalysisProps = {
+  data: ContextAnalysis
+}
+
+const SectionContextAnalysis = ({ data }: SectionContextAnalysisProps) => (
+  <View style={styles.view} break>
+    <Text id="context" style={styles.section}>
+      Context Analysis
+    </Text>
+
+    <Text style={styles.description}>
+      In this section, we summarize your original problem and analyze the market
+      existence. It sets the stage for your idea by giving you a clearer
+      understanding of what you&apos;re aiming to solve and whether others are
+      facing similar challenges. Knowing the context helps you see how your
+      product can fit into the larger picture.
+    </Text>
+
+    <Text style={styles.subsection}>Region:</Text>
+    <Text style={styles.text}>{data.region}</Text>
+
+    <Text style={styles.subsection}>Market Existence:</Text>
+    {data.marketExistence.map((market, index) => (
+      <Text style={styles.text} key={index}>
+        {market}
+      </Text>
+    ))}
+
+    <Text style={styles.subsection}>Existing Solutions:</Text>
+    {data.existingSolutions.map((solution, index) => (
+      <Text style={styles.text} key={index}>
+        {solution}
+      </Text>
+    ))}
+
+    <Text style={styles.subsection}>Main Challenges:</Text>
+    {data.mainChallenges.map((challenge, index) => (
+      <Text style={styles.text} key={index}>
+        {challenge}
+      </Text>
+    ))}
+
+    <Text style={styles.subsection}>Target Users:</Text>
+    <Text style={styles.text}>{data.targetUsers}</Text>
+
+    <Text style={styles.subsection}>Why It Matters:</Text>
+    <Text style={styles.text}>{data.whyItMatters}</Text>
+
+    <Text style={styles.subsection}>Opportunities:</Text>
+    {data.opportunities.map((opportunity, index) => (
+      <Text style={styles.text} key={index}>
+        {opportunity}
+      </Text>
+    ))}
+
+    <Text style={styles.subsection}>Call To Action:</Text>
+    {data.callToAction.map((callToAction, index) => (
+      <Text style={styles.text} key={index}>
+        {callToAction}
+      </Text>
+    ))}
   </View>
 )
 
@@ -456,11 +607,11 @@ const SectionValueProposition = ({ data }: SectionValuePropositionProps) => (
       someone should choose your product over others.
     </Text>
 
-    <Text style={styles.subsection}>Main Benefit:</Text>
+    <Text style={styles.subsection}>
+      How to Pitch Your Idea or Start a Conversation:
+    </Text>
 
     <Text style={styles.text}>{data.mainBenefit}</Text>
-
-    <Text style={styles.subsection}>How to Pitch It:</Text>
 
     <Text style={styles.text}>{data.problemSolving}</Text>
 
@@ -771,6 +922,112 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({ header, data }) => (
   </>
 )
 
+type SectionTwoWeekTestingPlanProps = {
+  data: TwoWeekTestingPlan
+}
+
+const SectionTwoWeekTestingPlan = ({
+  data,
+}: SectionTwoWeekTestingPlanProps) => (
+  <View style={styles.view} break>
+    <Text id="two_week_testing_plan" style={styles.section}>
+      Two-Week Testing Plan
+    </Text>
+
+    <Text style={styles.description}>
+      This section outlines a simple plan for testing your product idea with
+      real users over two weeks. Getting feedback early can save you time and
+      resources later on. It&apos;s about learning quickly and adjusting your
+      approach based on what you discover.
+    </Text>
+
+    <Text style={styles.subsection}>Core Assumptions to Test:</Text>
+    {data.coreAssumptions.map((assumption, idx) => (
+      <React.Fragment key={idx}>
+        <Text style={styles.subsectionHeader}>
+          {idx + 1}. {assumption.assumption}
+        </Text>
+
+        <Text style={styles.subsectionHeader2}>Why Critical:</Text>
+        <Text style={styles.text}>{assumption.whyCritical}</Text>
+
+        <Text style={styles.subsectionHeader2}>Validation Method:</Text>
+        <Text style={styles.text}>{assumption.validationMethod}</Text>
+      </React.Fragment>
+    ))}
+
+    <Text style={styles.subsection}>Day-by-Day Plan:</Text>
+    {data.twoWeekPlan.map((day) => (
+      <React.Fragment key={day.day}>
+        <Text style={styles.subsectionHeader}>
+          Day {day.day}: {day.focus}
+        </Text>
+
+        <Text style={styles.subsectionHeader2}>Tasks:</Text>
+        <SimpleList items={day.tasks} />
+
+        <Text style={styles.subsectionHeader2}>Success Metrics:</Text>
+        <SimpleList items={day.successMetrics} />
+
+        <Text style={styles.subsectionHeader2}>Tools Needed:</Text>
+        <SimpleList items={day.toolsNeeded} />
+
+        <Text style={styles.subsectionHeader2}>Estimated Time:</Text>
+        <Text style={styles.text}>{day.estimatedTime}</Text>
+      </React.Fragment>
+    ))}
+
+    <Text style={styles.subsection}>Key Metrics:</Text>
+    <Text style={styles.subsectionHeader}>Qualitative Metrics:</Text>
+    <SimpleList items={data.keyMetrics.qualitative} />
+
+    <Text style={styles.subsectionHeader}>Quantitative Metrics:</Text>
+    <SimpleList items={data.keyMetrics.quantitative} />
+
+    <Text style={styles.subsectionHeader}>Minimum Success Criteria:</Text>
+    <SimpleList items={data.keyMetrics.minimumSuccessCriteria} />
+
+    <Text style={styles.subsection}>Testing Methods:</Text>
+    {data.testingMethods.map((method, idx) => (
+      <React.Fragment key={idx}>
+        <Text style={styles.subsectionHeader}>
+          {idx + 1}. {method.method}
+        </Text>
+        <Text style={styles.text}>{method.description}</Text>
+
+        <Text style={styles.subsectionHeader2}>When to Use:</Text>
+        <Text style={styles.text}>{method.whenToUse}</Text>
+
+        <Text style={styles.subsectionHeader2}>Expected Outcome:</Text>
+        <Text style={styles.text}>{method.expectedOutcome}</Text>
+      </React.Fragment>
+    ))}
+
+    <Text style={styles.subsection}>Resource Optimization:</Text>
+    <Text style={styles.subsectionHeader}>Minimum Budget:</Text>
+    <Text style={styles.text}>{data.resourceOptimization.minimumBudget}</Text>
+
+    <Text style={styles.subsectionHeader}>Time-Saving Tips:</Text>
+    <SimpleList items={data.resourceOptimization.timeSavingTips} />
+
+    <Text style={styles.subsectionHeader}>Free Tools:</Text>
+    <SimpleList items={data.resourceOptimization.freeTools} />
+
+    <Text style={styles.subsectionHeader}>Paid Alternatives:</Text>
+    <SimpleList items={data.resourceOptimization.paidAlternatives} />
+
+    <Text style={styles.subsection}>Soft Launch Strategy:</Text>
+    <Text style={styles.subsectionHeader}>Timing:</Text>
+    <Text style={styles.text}>{data.softLaunchStrategy.timing}</Text>
+
+    <Text style={styles.subsectionHeader}>Target Platforms:</Text>
+    <SimpleList items={data.softLaunchStrategy.platforms} />
+
+    <Text style={styles.subsectionHeader}>Preparation Steps:</Text>
+    <SimpleList items={data.softLaunchStrategy.preparationSteps} />
+  </View>
+)
+
 const styles = StyleSheet.create({
   body: {
     paddingTop: 35,
@@ -803,12 +1060,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto Slab',
     marginBottom: '12px',
   },
-  subtitle: {
-    fontSize: 12,
-    textAlign: 'center',
-    fontFamily: 'Roboto',
-    margin: '0px 12px 40px 12px',
-  },
   section: {
     fontSize: 24,
     margin: 12,
@@ -837,6 +1088,15 @@ const styles = StyleSheet.create({
     margin: '10px 12px 4px 12px',
     padding: '3px 10px',
     fontFamily: 'Roboto',
+    color: '#222',
+  },
+  subsectionHeader2: {
+    fontSize: 15,
+    margin: '8px 12px 4px 12px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    fontFamily: 'Roboto',
+    lineHeight: '1.5',
     color: '#222',
   },
   description: {

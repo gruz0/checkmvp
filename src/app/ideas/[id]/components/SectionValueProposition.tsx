@@ -45,9 +45,9 @@ const SectionValueProposition: React.FC<SectionValuePropositionProps> = ({
             <>
               <Section header="How to Pitch Your Idea or Start a Conversation:">
                 <SectionContainer>
-                  <Paragraph>{data.problemSolving}</Paragraph>
-
                   <Paragraph>{data.mainBenefit}</Paragraph>
+
+                  <Paragraph>{data.problemSolving}</Paragraph>
                 </SectionContainer>
               </Section>
 
