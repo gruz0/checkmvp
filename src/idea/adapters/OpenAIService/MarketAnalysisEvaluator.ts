@@ -1,8 +1,5 @@
-import * as Sentry from '@sentry/nextjs'
-import OpenAI from 'openai'
-import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
-import { getPromptContent } from '@/lib/prompts'
+import { BaseEvaluator } from './BaseEvaluator'
 
 interface Evaluation {
   trends: string
@@ -28,19 +25,30 @@ const ResponseSchema = z.object({
   }),
 })
 
-export class MarketAnalysisEvaluator {
-  static className = 'MarketAnalysisEvaluator'
-  static prompt = '00-market-analysis-overview'
-  static model = 'gpt-4o-mini'
-  static nucleusSampling = 0.9
-  static maxCompletionTokens = 2000
-
-  private readonly openai: OpenAI
-
-  constructor(apiKey: string) {
-    this.openai = new OpenAI({
-      apiKey: apiKey,
-    })
+export class MarketAnalysisEvaluator extends BaseEvaluator<
+  z.infer<typeof ResponseSchema>,
+  Evaluation
+> {
+  protected get className() {
+    return 'MarketAnalysisEvaluator'
+  }
+  protected get promptName() {
+    return '00-market-analysis-overview'
+  }
+  protected get model() {
+    return 'gpt-4o-mini'
+  }
+  protected get nucleusSampling() {
+    return 0.9
+  }
+  protected get maxCompletionTokens() {
+    return 2000
+  }
+  protected get responseSchema() {
+    return ResponseSchema
+  }
+  protected get responseKey() {
+    return 'market_analysis_overview'
   }
 
   async evaluateMarketAnalysis(
@@ -49,37 +57,13 @@ export class MarketAnalysisEvaluator {
     marketExistence: string,
     targetAudiences: TargetAudience[]
   ): Promise<Evaluation> {
-    Sentry.setTag('component', 'AIService')
-    Sentry.setTag('ai_service_type', MarketAnalysisEvaluator.className)
-    Sentry.setTag('idea_id', ideaId)
-
-    try {
-      const promptContent = getPromptContent(MarketAnalysisEvaluator.prompt)
-
-      if (!promptContent) {
-        throw new Error(
-          `Prompt content ${MarketAnalysisEvaluator.prompt} not found`
-        )
-      }
-
-      const response = await this.openai.beta.chat.completions.parse({
-        model: MarketAnalysisEvaluator.model,
-        messages: [
+    const messages = [
+      {
+        role: 'user' as const,
+        content: [
           {
-            role: 'system',
-            content: [
-              {
-                type: 'text',
-                text: promptContent.trim(),
-              },
-            ],
-          },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: `Here is the problem my product aims to solve: """
+            type: 'text' as const,
+            text: `Here is the problem my product aims to solve: """
 ${problem.trim()}"""
 
 Also I have a market existence research: """
@@ -98,54 +82,26 @@ ${targetAudiences
   })
   .join('\n\n')}
 """`,
-              },
-            ],
           },
         ],
-        top_p: MarketAnalysisEvaluator.nucleusSampling,
-        max_completion_tokens: MarketAnalysisEvaluator.maxCompletionTokens,
-        response_format: zodResponseFormat(ResponseSchema, 'market_analysis'),
-        n: 1,
-      })
+      },
+    ]
 
-      Sentry.addBreadcrumb({
-        message: `OpenAI ${MarketAnalysisEvaluator.className} called`,
-        data: {
-          model: MarketAnalysisEvaluator.model,
-          top_p: MarketAnalysisEvaluator.nucleusSampling,
-          max_completion_tokens: MarketAnalysisEvaluator.maxCompletionTokens,
-          usage: response.usage,
-          choices: response.choices.length,
-        },
-        level: 'info',
-      })
+    return this.evaluate(ideaId, messages)
+  }
 
-      const message = response.choices[0].message
-
-      if (message.refusal) {
-        // TODO: Handle refusal
-        throw new Error('Message refusal: ' + message.refusal)
-      }
-
-      if (!message.parsed) {
-        // TODO: Add Sentry message context
-        throw new Error('Message was not parsed')
-      }
-
-      const marketAnalysis = message.parsed.market_analysis_overview
-
-      return {
-        trends: marketAnalysis.trends.join('\n'),
-        userBehaviors: marketAnalysis.user_behaviors.join('\n'),
-        marketGaps: marketAnalysis.market_gaps.join('\n'),
-        innovationOpportunities:
-          marketAnalysis.innovation_opportunities.join('\n'),
-        strategicDirection: marketAnalysis.strategic_direction.join('\n'),
-      }
-    } catch (e) {
-      Sentry.captureException(e)
-
-      throw e
+  protected transformResponse(
+    response: z.infer<typeof ResponseSchema>
+  ): Evaluation {
+    return {
+      trends: response.market_analysis_overview.trends.join('\n'),
+      userBehaviors:
+        response.market_analysis_overview.user_behaviors.join('\n'),
+      marketGaps: response.market_analysis_overview.market_gaps.join('\n'),
+      innovationOpportunities:
+        response.market_analysis_overview.innovation_opportunities.join('\n'),
+      strategicDirection:
+        response.market_analysis_overview.strategic_direction.join('\n'),
     }
   }
 }

@@ -1,8 +1,5 @@
-import * as Sentry from '@sentry/nextjs'
-import OpenAI from 'openai'
-import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
-import { getPromptContent } from '@/lib/prompts'
+import { BaseEvaluator } from './BaseEvaluator'
 
 type Section =
   | 'socialMediaCampaigns'
@@ -71,19 +68,30 @@ const ResponseSchema = z.object({
   }),
 })
 
-export class ContentIdeasEvaluator {
-  static className = 'ContentIdeasEvaluator'
-  static prompt = '00-content-ideas-for-marketing'
-  static model = 'gpt-4o-mini'
-  static nucleusSampling = 0.9
-  static maxCompletionTokens = 4000
-
-  private readonly openai: OpenAI
-
-  constructor(apiKey: string) {
-    this.openai = new OpenAI({
-      apiKey: apiKey,
-    })
+export class ContentIdeasEvaluator extends BaseEvaluator<
+  z.infer<typeof ResponseSchema>,
+  Evaluation
+> {
+  protected get className() {
+    return 'ContentIdeasEvaluator'
+  }
+  protected get promptName() {
+    return '00-content-ideas-for-marketing'
+  }
+  protected get model() {
+    return 'gpt-4o-mini'
+  }
+  protected get nucleusSampling() {
+    return 0.9
+  }
+  protected get maxCompletionTokens() {
+    return 4000
+  }
+  protected get responseSchema() {
+    return ResponseSchema
+  }
+  protected get responseKey() {
+    return 'marketing_strategies'
   }
 
   async evaluateContentIdeas(
@@ -92,37 +100,13 @@ export class ContentIdeasEvaluator {
     targetAudiences: TargetAudience[],
     valueProposition: ValueProposition
   ): Promise<Evaluation> {
-    Sentry.setTag('component', 'AIService')
-    Sentry.setTag('ai_service_type', ContentIdeasEvaluator.className)
-    Sentry.setTag('idea_id', ideaId)
-
-    try {
-      const promptContent = getPromptContent(ContentIdeasEvaluator.prompt)
-
-      if (!promptContent) {
-        throw new Error(
-          `Prompt content ${ContentIdeasEvaluator.prompt} not found`
-        )
-      }
-
-      const response = await this.openai.beta.chat.completions.parse({
-        model: ContentIdeasEvaluator.model,
-        messages: [
+    const messages = [
+      {
+        role: 'user' as const,
+        content: [
           {
-            role: 'system',
-            content: [
-              {
-                type: 'text',
-                text: promptContent.trim(),
-              },
-            ],
-          },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: `Here is the problem my product aims to solve: """
+            type: 'text' as const,
+            text: `Here is the problem my product aims to solve: """
 ${problem.trim()}"""
 
 Here are my segments: """
@@ -142,68 +126,35 @@ ${targetAudiences
 And here is my value proposition:
 - Main benefit: ${valueProposition.mainBenefit}
 - Problem solving: ${valueProposition.problemSolving}`,
-              },
-            ],
           },
         ],
-        temperature: ContentIdeasEvaluator.nucleusSampling,
-        max_completion_tokens: ContentIdeasEvaluator.maxCompletionTokens,
-        response_format: zodResponseFormat(
-          ResponseSchema,
-          'marketing_strategies'
-        ),
-        n: 1,
+      },
+    ]
+
+    return this.evaluate(ideaId, messages)
+  }
+
+  protected transformResponse(
+    response: z.infer<typeof ResponseSchema>
+  ): Evaluation {
+    const strategies: ContentStrategy[] = []
+
+    for (const [key, value] of Object.entries(response.marketing_strategies)) {
+      const camelCasedName =
+        snakeToCamelCaseMapping[key as keyof typeof snakeToCamelCaseMapping]
+
+      if (!camelCasedName) {
+        throw new Error(`Invalid snake_cased name: ${key}`)
+      }
+
+      strategies.push({
+        section: camelCasedName,
+        platforms: value.platforms,
+        ideas: value.ideas,
+        benefits: value.benefits,
       })
-
-      Sentry.addBreadcrumb({
-        message: `OpenAI ${ContentIdeasEvaluator.className} called`,
-        data: {
-          model: ContentIdeasEvaluator.model,
-          top_p: ContentIdeasEvaluator.nucleusSampling,
-          max_completion_tokens: ContentIdeasEvaluator.maxCompletionTokens,
-          usage: response.usage,
-          choices: response.choices.length,
-        },
-        level: 'info',
-      })
-
-      const message = response.choices[0].message
-
-      if (message.refusal) {
-        // TODO: Handle refusal
-        throw new Error('Message refusal: ' + message.refusal)
-      }
-
-      if (!message.parsed) {
-        // TODO: Add Sentry message context
-        throw new Error('Message was not parsed')
-      }
-
-      const marketingStrategies = message.parsed.marketing_strategies
-
-      const strategies: ContentStrategy[] = []
-
-      for (const [key, value] of Object.entries(marketingStrategies)) {
-        const camelCasedName =
-          snakeToCamelCaseMapping[key as keyof typeof snakeToCamelCaseMapping]
-
-        if (!camelCasedName) {
-          throw new Error(`Invalid snake_cased name: ${key}`)
-        }
-
-        strategies.push({
-          section: camelCasedName,
-          platforms: value.platforms,
-          ideas: value.ideas,
-          benefits: value.benefits,
-        })
-      }
-
-      return strategies
-    } catch (e) {
-      Sentry.captureException(e)
-
-      throw e
     }
+
+    return strategies
   }
 }

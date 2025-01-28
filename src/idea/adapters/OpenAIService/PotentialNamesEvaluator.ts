@@ -1,8 +1,5 @@
-import * as Sentry from '@sentry/nextjs'
-import OpenAI from 'openai'
-import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
-import { getPromptContent } from '@/lib/prompts'
+import { BaseEvaluator } from './BaseEvaluator'
 
 interface PotentialName {
   productName: string
@@ -36,19 +33,30 @@ const ResponseSchema = z.object({
   ),
 })
 
-export class PotentialNamesEvaluator {
-  static className = 'PotentialNamesEvaluator'
-  static prompt = '00-product-names-analysis'
-  static model = 'gpt-4o-mini'
-  static nucleusSampling = 0.9
-  static maxCompletionTokens = 2000
-
-  private readonly openai: OpenAI
-
-  constructor(apiKey: string) {
-    this.openai = new OpenAI({
-      apiKey: apiKey,
-    })
+export class PotentialNamesEvaluator extends BaseEvaluator<
+  z.infer<typeof ResponseSchema>,
+  Evaluation
+> {
+  protected get className() {
+    return 'PotentialNamesEvaluator'
+  }
+  protected get promptName() {
+    return '00-product-names-analysis'
+  }
+  protected get model() {
+    return 'gpt-4o-mini'
+  }
+  protected get nucleusSampling() {
+    return 0.9
+  }
+  protected get maxCompletionTokens() {
+    return 2000
+  }
+  protected get responseSchema() {
+    return ResponseSchema
+  }
+  protected get responseKey() {
+    return 'product_names'
   }
 
   async evaluatePotentialNames(
@@ -57,37 +65,13 @@ export class PotentialNamesEvaluator {
     marketExistence: string,
     targetAudiences: TargetAudience[]
   ): Promise<Evaluation> {
-    Sentry.setTag('component', 'AIService')
-    Sentry.setTag('ai_service_type', PotentialNamesEvaluator.className)
-    Sentry.setTag('idea_id', ideaId)
-
-    try {
-      const promptContent = getPromptContent(PotentialNamesEvaluator.prompt)
-
-      if (!promptContent) {
-        throw new Error(
-          `Prompt content ${PotentialNamesEvaluator.prompt} not found`
-        )
-      }
-
-      const response = await this.openai.beta.chat.completions.parse({
-        model: PotentialNamesEvaluator.model,
-        messages: [
+    const messages = [
+      {
+        role: 'user' as const,
+        content: [
           {
-            role: 'system',
-            content: [
-              {
-                type: 'text',
-                text: promptContent.trim(),
-              },
-            ],
-          },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: `Here is the problem my product aims to solve: """
+            type: 'text' as const,
+            text: `Here is the problem my product aims to solve: """
 ${problem.trim()}"""
 
 Also I have a market existence research: """
@@ -106,53 +90,25 @@ ${targetAudiences
   })
   .join('\n\n')}
 """`,
-              },
-            ],
           },
         ],
-        top_p: PotentialNamesEvaluator.nucleusSampling,
-        max_completion_tokens: PotentialNamesEvaluator.maxCompletionTokens,
-        response_format: zodResponseFormat(ResponseSchema, 'product_names'),
-        n: 1,
-      })
+      },
+    ]
 
-      Sentry.addBreadcrumb({
-        message: `OpenAI ${PotentialNamesEvaluator.className} called`,
-        data: {
-          model: PotentialNamesEvaluator.model,
-          top_p: PotentialNamesEvaluator.nucleusSampling,
-          max_completion_tokens: PotentialNamesEvaluator.maxCompletionTokens,
-          usage: response.usage,
-          choices: response.choices.length,
-        },
-        level: 'info',
-      })
+    return this.evaluate(ideaId, messages)
+  }
 
-      const message = response.choices[0].message
-
-      if (message.refusal) {
-        // TODO: Handle refusal
-        throw new Error('Message refusal: ' + message.refusal)
-      }
-
-      if (!message.parsed) {
-        // TODO: Add Sentry message context
-        throw new Error('Message was not parsed')
-      }
-
-      return message.parsed.product_names.map((product) => ({
-        productName: product.product_name,
-        domains: product.domains,
-        why: product.why,
-        tagline: product.tagline,
-        targetAudienceInsight: product.target_audience_insight,
-        similarNames: product.similar_names,
-        brandingPotential: product.branding_potential,
-      }))
-    } catch (e) {
-      Sentry.captureException(e)
-
-      throw e
-    }
+  protected transformResponse(
+    response: z.infer<typeof ResponseSchema>
+  ): Evaluation {
+    return response.product_names.map((product) => ({
+      productName: product.product_name,
+      domains: product.domains,
+      why: product.why,
+      tagline: product.tagline,
+      targetAudienceInsight: product.target_audience_insight,
+      similarNames: product.similar_names,
+      brandingPotential: product.branding_potential,
+    }))
   }
 }
