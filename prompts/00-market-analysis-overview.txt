@@ -10,8 +10,8 @@ Use the following details to generate insights that will help the user understan
 
 ### Field guidelines
 
-- **trends** (string): Discuss relevant trends in the market related to the problem being solved.
-- **user_behaviors** (string): Provide insights into how potential users engage with similar products.
-- **market_gaps** (string): Identify specific gaps in the market that the product can address.
-- **innovation_opportunities** (string): Suggest innovative features or strategies that could enhance the product's appeal.
-- **strategic_direction** (string): Summarize key takeaways and propose a strategic direction for the product based on the analysis.
+- **trends** (array of paragraphs): Discuss relevant trends in the market related to the problem being solved.
+- **user_behaviors** (array of paragraphs): Provide insights into how potential users engage with similar products.
+- **market_gaps** (array of paragraphs): Identify specific gaps in the market that the product can address.
+- **innovation_opportunities** (array of paragraphs): Suggest innovative features or strategies that could enhance the product's appeal.
+- **strategic_direction** (array of paragraphs): Summarize key takeaways and propose a strategic direction for the product based on the analysis.

@@ -325,23 +325,43 @@ const SectionMarketAnalysis = ({
 
     <Text style={styles.subsection}>Trends:</Text>
 
-    <Text style={styles.text}>{marketAnalysis.trends}</Text>
+    {marketAnalysis.trends.split('\n').map((line, index) => (
+      <Text style={styles.text} key={index}>
+        {line}
+      </Text>
+    ))}
 
     <Text style={styles.subsection}>User Behaviors:</Text>
 
-    <Text style={styles.text}>{marketAnalysis.userBehaviors}</Text>
+    {marketAnalysis.userBehaviors.split('\n').map((line, index) => (
+      <Text style={styles.text} key={index}>
+        {line}
+      </Text>
+    ))}
 
     <Text style={styles.subsection}>Market Gaps:</Text>
 
-    <Text style={styles.text}>{marketAnalysis.marketGaps}</Text>
+    {marketAnalysis.marketGaps.split('\n').map((line, index) => (
+      <Text style={styles.text} key={index}>
+        {line}
+      </Text>
+    ))}
 
     <Text style={styles.subsection}>Innovation Opportunities:</Text>
 
-    <Text style={styles.text}>{marketAnalysis.innovationOpportunities}</Text>
+    {marketAnalysis.innovationOpportunities.split('\n').map((line, index) => (
+      <Text style={styles.text} key={index}>
+        {line}
+      </Text>
+    ))}
 
     <Text style={styles.subsection}>Strategic Direction:</Text>
 
-    <Text style={styles.text}>{marketAnalysis.strategicDirection}</Text>
+    {marketAnalysis.strategicDirection.split('\n').map((line, index) => (
+      <Text style={styles.text} key={index}>
+        {line}
+      </Text>
+    ))}
   </View>
 )
 

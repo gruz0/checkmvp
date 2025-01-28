@@ -20,11 +20,11 @@ interface TargetAudience {
 
 const ResponseSchema = z.object({
   market_analysis_overview: z.object({
-    trends: z.string(),
-    user_behaviors: z.string(),
-    market_gaps: z.string(),
-    innovation_opportunities: z.string(),
-    strategic_direction: z.string(),
+    trends: z.array(z.string()),
+    user_behaviors: z.array(z.string()),
+    market_gaps: z.array(z.string()),
+    innovation_opportunities: z.array(z.string()),
+    strategic_direction: z.array(z.string()),
   }),
 })
 
@@ -135,11 +135,12 @@ ${targetAudiences
       const marketAnalysis = message.parsed.market_analysis_overview
 
       return {
-        trends: marketAnalysis.trends,
-        userBehaviors: marketAnalysis.user_behaviors,
-        marketGaps: marketAnalysis.market_gaps,
-        innovationOpportunities: marketAnalysis.innovation_opportunities,
-        strategicDirection: marketAnalysis.strategic_direction,
+        trends: marketAnalysis.trends.join('\n'),
+        userBehaviors: marketAnalysis.user_behaviors.join('\n'),
+        marketGaps: marketAnalysis.market_gaps.join('\n'),
+        innovationOpportunities:
+          marketAnalysis.innovation_opportunities.join('\n'),
+        strategicDirection: marketAnalysis.strategic_direction.join('\n'),
       }
     } catch (e) {
       Sentry.captureException(e)
