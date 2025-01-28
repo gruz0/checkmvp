@@ -1,8 +1,5 @@
-import * as Sentry from '@sentry/nextjs'
-import OpenAI from 'openai'
-import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
-import { getPromptContent } from '@/lib/prompts'
+import { BaseEvaluator } from './BaseEvaluator'
 
 interface Evaluation {
   strengths: string[]
@@ -42,19 +39,30 @@ const ResponseSchema = z.object({
   }),
 })
 
-export class SWOTAnalysisEvaluator {
-  static className = 'SWOTAnalysisEvaluator'
-  static prompt = '00-swot-analysis'
-  static model = 'gpt-4o-mini'
-  static nucleusSampling = 0.9
-  static maxCompletionTokens = 2000
-
-  private readonly openai: OpenAI
-
-  constructor(apiKey: string) {
-    this.openai = new OpenAI({
-      apiKey: apiKey,
-    })
+export class SWOTAnalysisEvaluator extends BaseEvaluator<
+  z.infer<typeof ResponseSchema>,
+  Evaluation
+> {
+  protected get className() {
+    return 'SWOTAnalysisEvaluator'
+  }
+  protected get promptName() {
+    return '00-swot-analysis'
+  }
+  protected get model() {
+    return 'gpt-4o-mini'
+  }
+  protected get nucleusSampling() {
+    return 0.9
+  }
+  protected get maxCompletionTokens() {
+    return 2000
+  }
+  protected get responseSchema() {
+    return ResponseSchema
+  }
+  protected get responseKey() {
+    return 'swot_analysis'
   }
 
   async evaluateSWOTAnalysis(
@@ -64,37 +72,13 @@ export class SWOTAnalysisEvaluator {
     targetAudiences: TargetAudience[],
     valueProposition: ValueProposition
   ): Promise<Evaluation> {
-    Sentry.setTag('component', 'AIService')
-    Sentry.setTag('ai_service_type', SWOTAnalysisEvaluator.className)
-    Sentry.setTag('idea_id', ideaId)
-
-    try {
-      const promptContent = getPromptContent(SWOTAnalysisEvaluator.prompt)
-
-      if (!promptContent) {
-        throw new Error(
-          `Prompt content ${SWOTAnalysisEvaluator.prompt} not found`
-        )
-      }
-
-      const response = await this.openai.beta.chat.completions.parse({
-        model: SWOTAnalysisEvaluator.model,
-        messages: [
+    const messages = [
+      {
+        role: 'user' as const,
+        content: [
           {
-            role: 'system',
-            content: [
-              {
-                type: 'text',
-                text: promptContent.trim(),
-              },
-            ],
-          },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: `Here is the problem my product aims to solve: """
+            type: 'text' as const,
+            text: `Here is the problem my product aims to solve: """
 ${problem.trim()}"""
 
 Also I have a market existence research: """
@@ -118,56 +102,26 @@ And here is my value proposition:
 - Main benefit: ${valueProposition.mainBenefit}
 - Problem solving: ${valueProposition.problemSolving}
 - Differentiation: ${valueProposition.differentiation}`,
-              },
-            ],
           },
         ],
-        top_p: SWOTAnalysisEvaluator.nucleusSampling,
-        max_completion_tokens: SWOTAnalysisEvaluator.maxCompletionTokens,
-        response_format: zodResponseFormat(ResponseSchema, 'swot_analysis'),
-        n: 1,
-      })
+      },
+    ]
 
-      Sentry.addBreadcrumb({
-        message: `OpenAI ${SWOTAnalysisEvaluator.className} called`,
-        data: {
-          model: SWOTAnalysisEvaluator.model,
-          top_p: SWOTAnalysisEvaluator.nucleusSampling,
-          max_completion_tokens: SWOTAnalysisEvaluator.maxCompletionTokens,
-          usage: response.usage,
-          choices: response.choices.length,
-        },
-        level: 'info',
-      })
+    return this.evaluate(ideaId, messages)
+  }
 
-      const message = response.choices[0].message
-
-      if (message.refusal) {
-        // TODO: Handle refusal
-        throw new Error('Message refusal: ' + message.refusal)
-      }
-
-      if (!message.parsed) {
-        // TODO: Add Sentry message context
-        throw new Error('Message was not parsed')
-      }
-
-      const swotAnalysis = message.parsed.swot_analysis
-
-      return {
-        strengths: swotAnalysis.strengths,
-        weaknesses: swotAnalysis.weaknesses.map(
-          (weakness) => `${weakness.description} Action: ${weakness.action}`
-        ),
-        opportunities: swotAnalysis.opportunities,
-        threats: swotAnalysis.threats.map(
-          (threat) => `${threat.description} Action: ${threat.action}`
-        ),
-      }
-    } catch (e) {
-      Sentry.captureException(e)
-
-      throw e
+  protected transformResponse(
+    response: z.infer<typeof ResponseSchema>
+  ): Evaluation {
+    return {
+      strengths: response.swot_analysis.strengths,
+      weaknesses: response.swot_analysis.weaknesses.map(
+        (weakness) => `${weakness.description} Action: ${weakness.action}`
+      ),
+      opportunities: response.swot_analysis.opportunities,
+      threats: response.swot_analysis.threats.map(
+        (threat) => `${threat.description} Action: ${threat.action}`
+      ),
     }
   }
 }

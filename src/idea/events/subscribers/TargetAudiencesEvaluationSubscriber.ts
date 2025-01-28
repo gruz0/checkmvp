@@ -23,7 +23,7 @@ interface TargetAudience {
 }
 
 interface AIService {
-  evaluateTargetAudience(
+  evaluateTargetAudiences(
     ideaId: string,
     problem: string,
     targetAudiences: TargetAudience[]
@@ -67,7 +67,7 @@ export class TargetAudiencesEvaluationSubscriber implements EventHandler {
         challenges: targetAudience.getChallenges(),
       }))
 
-      const evaluation = await this.aiService.evaluateTargetAudience(
+      const evaluation = await this.aiService.evaluateTargetAudiences(
         idea.getId().getValue(),
         idea.getProblem().getValue(),
         audiences

@@ -1,8 +1,5 @@
-import * as Sentry from '@sentry/nextjs'
-import OpenAI from 'openai'
-import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
-import { getPromptContent } from '@/lib/prompts'
+import { BaseEvaluator } from './BaseEvaluator'
 
 interface ShortFormContent {
   header: string
@@ -81,19 +78,30 @@ const ResponseSchema = z.object({
   }),
 })
 
-export class SocialMediaCampaignsEvaluator {
-  static className = 'SocialMediaCampaignsEvaluator'
-  static prompt = '00-social-media-campaigns'
-  static model = 'gpt-4o-mini'
-  static nucleusSampling = 0.9
-  static maxCompletionTokens = 4000
-
-  private readonly openai: OpenAI
-
-  constructor(apiKey: string) {
-    this.openai = new OpenAI({
-      apiKey: apiKey,
-    })
+export class SocialMediaCampaignsEvaluator extends BaseEvaluator<
+  z.infer<typeof ResponseSchema>,
+  Evaluation
+> {
+  protected get className() {
+    return 'SocialMediaCampaignsEvaluator'
+  }
+  protected get promptName() {
+    return '00-social-media-campaigns'
+  }
+  protected get model() {
+    return 'gpt-4o-mini'
+  }
+  protected get nucleusSampling() {
+    return 0.9
+  }
+  protected get maxCompletionTokens() {
+    return 4000
+  }
+  protected get responseSchema() {
+    return ResponseSchema
+  }
+  protected get responseKey() {
+    return 'social_media_campaigns'
   }
 
   async evaluateSocialMediaCampaigns(
@@ -102,39 +110,13 @@ export class SocialMediaCampaignsEvaluator {
     targetAudiences: TargetAudience[],
     valueProposition: ValueProposition
   ): Promise<Evaluation> {
-    Sentry.setTag('component', 'AIService')
-    Sentry.setTag('ai_service_type', SocialMediaCampaignsEvaluator.className)
-    Sentry.setTag('idea_id', ideaId)
-
-    try {
-      const promptContent = getPromptContent(
-        SocialMediaCampaignsEvaluator.prompt
-      )
-
-      if (!promptContent) {
-        throw new Error(
-          `Prompt content ${SocialMediaCampaignsEvaluator.prompt} not found`
-        )
-      }
-
-      const response = await this.openai.beta.chat.completions.parse({
-        model: SocialMediaCampaignsEvaluator.model,
-        messages: [
+    const messages = [
+      {
+        role: 'user' as const,
+        content: [
           {
-            role: 'system',
-            content: [
-              {
-                type: 'text',
-                text: promptContent.trim(),
-              },
-            ],
-          },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: `Here is the problem my product aims to solve: """
+            type: 'text' as const,
+            text: `Here is the problem my product aims to solve: """
 ${problem.trim()}"""
 
 Here are my segments: """
@@ -154,80 +136,46 @@ ${targetAudiences
 And here is my value proposition:
 - Main benefit: ${valueProposition.mainBenefit}
 - Problem solving: ${valueProposition.problemSolving}`,
-              },
-            ],
           },
         ],
-        temperature: SocialMediaCampaignsEvaluator.nucleusSampling,
-        max_completion_tokens:
-          SocialMediaCampaignsEvaluator.maxCompletionTokens,
-        response_format: zodResponseFormat(
-          ResponseSchema,
-          'social_media_campaigns'
-        ),
-        n: 1,
-      })
+      },
+    ]
 
-      Sentry.addBreadcrumb({
-        message: `OpenAI ${SocialMediaCampaignsEvaluator.className} called`,
-        data: {
-          model: SocialMediaCampaignsEvaluator.model,
-          top_p: SocialMediaCampaignsEvaluator.nucleusSampling,
-          max_completion_tokens:
-            SocialMediaCampaignsEvaluator.maxCompletionTokens,
-          usage: response.usage,
-          choices: response.choices.length,
-        },
-        level: 'info',
-      })
+    return this.evaluate(ideaId, messages)
+  }
 
-      const message = response.choices[0].message
-
-      if (message.refusal) {
-        // TODO: Handle refusal
-        throw new Error('Message refusal: ' + message.refusal)
-      }
-
-      if (!message.parsed) {
-        // TODO: Add Sentry message context
-        throw new Error('Message was not parsed')
-      }
-
-      const socialMediaCampaigns = message.parsed.social_media_campaigns
-
-      return {
-        shortFormContents: socialMediaCampaigns.short_form_content.map(
-          (content) => ({
-            header: content.header,
-            platform: content.platform,
-            content: content.content,
-            tips: content.tips,
-            imagePrompt: content.image_prompt,
-          })
-        ),
-        longFormContents: socialMediaCampaigns.long_form_content.map(
-          (content) => ({
-            header: content.header,
-            platform: content.platform,
-            title: content.title,
-            content: content.content,
-            tips: content.tips,
-            imagePrompt: content.image_prompt,
-          })
-        ),
-        videoContents: socialMediaCampaigns.video_content.map((content) => ({
+  protected transformResponse(
+    response: z.infer<typeof ResponseSchema>
+  ): Evaluation {
+    const socialMediaCampaigns = response.social_media_campaigns
+    return {
+      shortFormContents: socialMediaCampaigns.short_form_content.map(
+        (content) => ({
+          header: content.header,
+          platform: content.platform,
+          content: content.content,
+          tips: content.tips,
+          imagePrompt: content.image_prompt,
+        })
+      ),
+      longFormContents: socialMediaCampaigns.long_form_content.map(
+        (content) => ({
           header: content.header,
           platform: content.platform,
           title: content.title,
-          script: content.script,
+          content: content.content,
           tips: content.tips,
           imagePrompt: content.image_prompt,
-        })),
-      }
-    } catch (e) {
-      Sentry.captureException(e)
-
-      throw e
+        })
+      ),
+      videoContents: socialMediaCampaigns.video_content.map((content) => ({
+        header: content.header,
+        platform: content.platform,
+        title: content.title,
+        script: content.script,
+        tips: content.tips,
+        imagePrompt: content.image_prompt,
+      })),
     }
   }
 }

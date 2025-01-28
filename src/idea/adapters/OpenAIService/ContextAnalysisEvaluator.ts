@@ -1,8 +1,5 @@
-import * as Sentry from '@sentry/nextjs'
-import OpenAI from 'openai'
-import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
-import { getPromptContent } from '@/lib/prompts'
+import { BaseEvaluator } from './BaseEvaluator'
 
 interface Evaluation {
   problemDefinition: string
@@ -30,19 +27,30 @@ const ResponseSchema = z.object({
   }),
 })
 
-export class ContextAnalysisEvaluator {
-  static className = 'ContextAnalysisEvaluator'
-  static prompt = '00-context-analysis'
-  static model = 'gpt-4o-mini'
-  static nucleusSampling = 0.9
-  static maxCompletionTokens = 2000
-
-  private readonly openai: OpenAI
-
-  constructor(apiKey: string) {
-    this.openai = new OpenAI({
-      apiKey: apiKey,
-    })
+export class ContextAnalysisEvaluator extends BaseEvaluator<
+  z.infer<typeof ResponseSchema>,
+  Evaluation
+> {
+  protected get className() {
+    return 'ContextAnalysisEvaluator'
+  }
+  protected get promptName() {
+    return '00-context-analysis'
+  }
+  protected get model() {
+    return 'gpt-4o-mini'
+  }
+  protected get nucleusSampling() {
+    return 0.9
+  }
+  protected get maxCompletionTokens() {
+    return 2000
+  }
+  protected get responseSchema() {
+    return ResponseSchema
+  }
+  protected get responseKey() {
+    return 'context_analysis'
   }
 
   async evaluateContext(
@@ -50,89 +58,38 @@ export class ContextAnalysisEvaluator {
     problem: string,
     marketExistence: string
   ): Promise<Evaluation> {
-    Sentry.setTag('component', 'AIService')
-    Sentry.setTag('ai_service_type', ContextAnalysisEvaluator.className)
-    Sentry.setTag('idea_id', ideaId)
-
-    try {
-      const promptContent = getPromptContent(ContextAnalysisEvaluator.prompt)
-
-      if (!promptContent) {
-        throw new Error(
-          `Prompt content ${ContextAnalysisEvaluator.prompt} not found`
-        )
-      }
-
-      const response = await this.openai.beta.chat.completions.parse({
-        model: ContextAnalysisEvaluator.model,
-        messages: [
+    const messages = [
+      {
+        role: 'user' as const,
+        content: [
           {
-            role: 'system',
-            content: [
-              {
-                type: 'text',
-                text: promptContent.trim(),
-              },
-            ],
-          },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: `Here is the problem my product aims to solve: """
+            type: 'text' as const,
+            text: `Here is the problem my product aims to solve: """
 ${problem.trim()}"""
 
 Also I have a market existence research: """
 ${marketExistence.trim()}"""`,
-              },
-            ],
           },
         ],
-        top_p: ContextAnalysisEvaluator.nucleusSampling,
-        max_completion_tokens: ContextAnalysisEvaluator.maxCompletionTokens,
-        response_format: zodResponseFormat(ResponseSchema, 'context_analysis'),
-        n: 1,
-      })
+      },
+    ]
 
-      Sentry.addBreadcrumb({
-        message: `OpenAI ${ContextAnalysisEvaluator.className} called`,
-        data: {
-          model: ContextAnalysisEvaluator.model,
-          top_p: ContextAnalysisEvaluator.nucleusSampling,
-          max_completion_tokens: ContextAnalysisEvaluator.maxCompletionTokens,
-          usage: response.usage,
-          choices: response.choices.length,
-        },
-        level: 'info',
-      })
+    return this.evaluate(ideaId, messages)
+  }
 
-      const message = response.choices[0].message
-
-      if (message.refusal) {
-        throw new Error('Message refusal: ' + message.refusal)
-      }
-
-      if (!message.parsed) {
-        throw new Error('Message was not parsed')
-      }
-
-      const contextAnalysis = message.parsed.context_analysis
-
-      return {
-        problemDefinition: contextAnalysis.problem_definition,
-        region: contextAnalysis.region,
-        marketExistence: contextAnalysis.market_existence,
-        existingSolutions: contextAnalysis.existing_solutions,
-        mainChallenges: contextAnalysis.main_challenges,
-        targetUsers: contextAnalysis.target_users,
-        whyItMatters: contextAnalysis.why_it_matters,
-        opportunities: contextAnalysis.opportunities,
-        callToAction: contextAnalysis.call_to_action,
-      }
-    } catch (e) {
-      Sentry.captureException(e)
-      throw e
+  protected transformResponse(
+    response: z.infer<typeof ResponseSchema>
+  ): Evaluation {
+    return {
+      problemDefinition: response.context_analysis.problem_definition,
+      region: response.context_analysis.region,
+      marketExistence: response.context_analysis.market_existence,
+      existingSolutions: response.context_analysis.existing_solutions,
+      mainChallenges: response.context_analysis.main_challenges,
+      targetUsers: response.context_analysis.target_users,
+      whyItMatters: response.context_analysis.why_it_matters,
+      opportunities: response.context_analysis.opportunities,
+      callToAction: response.context_analysis.call_to_action,
     }
   }
 }

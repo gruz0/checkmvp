@@ -77,7 +77,7 @@ describe('TargetAudiencesEvaluator', () => {
 
   describe('evaluateTargetAudience', () => {
     it('should successfully evaluate target audiences', async () => {
-      const result = await evaluator.evaluateTargetAudience(
+      const result = await evaluator.evaluateTargetAudiences(
         'idea-1',
         mockProblem,
         mockTargetAudiences
@@ -256,7 +256,7 @@ Challenges: Challenge 3
       evaluator = new TargetAudiencesEvaluator(mockApiKey)
 
       await expect(
-        evaluator.evaluateTargetAudience(
+        evaluator.evaluateTargetAudiences(
           'idea-1',
           mockProblem,
           mockTargetAudiences
@@ -295,7 +295,7 @@ Challenges: Challenge 3
       evaluator = new TargetAudiencesEvaluator(mockApiKey)
 
       await expect(
-        evaluator.evaluateTargetAudience(
+        evaluator.evaluateTargetAudiences(
           'idea-1',
           mockProblem,
           mockTargetAudiences
@@ -324,7 +324,7 @@ Challenges: Challenge 3
       evaluator = new TargetAudiencesEvaluator(mockApiKey)
 
       await expect(
-        evaluator.evaluateTargetAudience(
+        evaluator.evaluateTargetAudiences(
           'idea-1',
           mockProblem,
           mockTargetAudiences
@@ -335,7 +335,7 @@ Challenges: Challenge 3
     })
 
     it('should correctly build user message', async () => {
-      await evaluator.evaluateTargetAudience(
+      await evaluator.evaluateTargetAudiences(
         'idea-1',
         mockProblem,
         mockTargetAudiences
