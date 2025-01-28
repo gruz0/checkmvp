@@ -10,7 +10,7 @@ import { MarketAnalysisEvaluator } from '@/idea/adapters/OpenAIService/MarketAna
 import { PotentialNamesEvaluator } from '@/idea/adapters/OpenAIService/PotentialNamesEvaluator'
 import { SWOTAnalysisEvaluator } from '@/idea/adapters/OpenAIService/SWOTAnalysisEvaluator'
 import { SocialMediaCampaignsEvaluator } from '@/idea/adapters/OpenAIService/SocialMediaCampaignsEvaluator'
-import { TargetAudienceEvaluator } from '@/idea/adapters/OpenAIService/TargetAudienceEvaluator'
+import { TargetAudiencesEvaluator } from '@/idea/adapters/OpenAIService/TargetAudiencesEvaluator'
 import { TestingPlanEvaluator } from '@/idea/adapters/OpenAIService/TestingPlanEvaluator'
 import { ValuePropositionEvaluator } from '@/idea/adapters/OpenAIService/ValuePropositionEvaluator'
 import { Application } from '@/idea/app/App'
@@ -32,7 +32,7 @@ import { MarketAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/Ma
 import { PotentialNamesEvaluationSubscriber } from '@/idea/events/subscribers/PotentialNamesEvaluationSubscriber'
 import { SWOTAnalysisEvaluationSubscriber } from '@/idea/events/subscribers/SWOTAnalysisEvaluationSubscriber'
 import { SocialMediaCampaignsSubscriber } from '@/idea/events/subscribers/SocialMediaCampaignsSubscriber'
-import { TargetAudienceEvaluationSubscriber } from '@/idea/events/subscribers/TargetAudienceEvaluationSubscriber'
+import { TargetAudiencesEvaluationSubscriber } from '@/idea/events/subscribers/TargetAudiencesEvaluationSubscriber'
 import { TestingPlanEvaluationSubscriber } from '@/idea/events/subscribers/TestingPlanEvaluationSubscriber'
 import { ValuePropositionEvaluationSubscriber } from '@/idea/events/subscribers/ValuePropositionEvaluationSubscriber'
 import { env } from '@/lib/env'
@@ -49,10 +49,10 @@ const registerApp = (): Application => {
       eventBus
     )
 
-  const targetAudienceEvaluationSubscriber =
-    new TargetAudienceEvaluationSubscriber(
+  const targetAudiencesEvaluationSubscriber =
+    new TargetAudiencesEvaluationSubscriber(
       ideaRepository,
-      new TargetAudienceEvaluator(env.OPENAI_API_KEY),
+      new TargetAudiencesEvaluator(env.OPENAI_API_KEY),
       eventBus
     )
 
@@ -114,7 +114,7 @@ const registerApp = (): Application => {
   )
 
   eventBus.subscribe(IdeaCreated.eventName, contextAnalysisEvaluationSubscriber)
-  eventBus.subscribe(IdeaCreated.eventName, targetAudienceEvaluationSubscriber)
+  eventBus.subscribe(IdeaCreated.eventName, targetAudiencesEvaluationSubscriber)
   eventBus.subscribe(
     TargetAudiencesEvaluated.eventName,
     valuePropositionEvaluationSubscriber
