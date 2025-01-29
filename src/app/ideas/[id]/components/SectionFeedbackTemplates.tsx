@@ -15,7 +15,7 @@ const SectionFeedbackTemplates = () => {
         isExpanded={isExpanded}
         sectionId="section_initial_feedback_templates"
       >
-        Soon: Initial Feedback Templates
+        📝 Soon: Initial Feedback Templates
       </SectionHeader>
 
       {isExpanded && (

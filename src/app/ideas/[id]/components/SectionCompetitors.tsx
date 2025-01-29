@@ -41,7 +41,7 @@ const SectionCompetitors: React.FC<SectionCompetitorsProps> = ({ data }) => {
         isExpanded={isExpanded}
         sectionId="section_competitor_overview"
       >
-        Competitor Overview
+        👥 Competitor Overview
       </SectionHeader>
 
       {isExpanded && (

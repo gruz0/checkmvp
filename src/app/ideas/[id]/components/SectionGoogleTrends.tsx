@@ -24,7 +24,7 @@ const SectionGoogleTrends: React.FC<SectionGoogleTrendsProps> = ({ data }) => {
         isExpanded={isExpanded}
         sectionId="section_google_trends_keywords"
       >
-        Google Trends Keywords
+        📈 Google Trends Keywords
       </SectionHeader>
 
       {isExpanded && (

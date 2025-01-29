@@ -25,7 +25,7 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({ data }) => {
         isExpanded={isExpanded}
         sectionId="section_swot_analysis"
       >
-        SWOT Analysis
+        ⚖️ SWOT Analysis
       </SectionHeader>
 
       {isExpanded && (

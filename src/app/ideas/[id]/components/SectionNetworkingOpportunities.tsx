@@ -15,7 +15,7 @@ const SectionNetworkingOpportunities = () => {
         isExpanded={isExpanded}
         sectionId="section_networking_opportunities"
       >
-        Soon: Networking Opportunities
+        🤝 Soon: Networking Opportunities
       </SectionHeader>
 
       {isExpanded && (

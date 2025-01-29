@@ -43,7 +43,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
         isExpanded={isExpanded}
         sectionId="section_content_ideas_for_marketing"
       >
-        Content Ideas For Marketing
+        💡 Content Ideas For Marketing
       </SectionHeader>
 
       {isExpanded && (

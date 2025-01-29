@@ -33,7 +33,7 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
         isExpanded={isExpanded}
         sectionId="section_target_audiences"
       >
-        Target Audiences
+        🎯 Target Audiences
       </SectionHeader>
 
       {isExpanded && (

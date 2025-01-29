@@ -33,7 +33,7 @@ const SectionProductNames: React.FC<SectionProductNamesProps> = ({ data }) => {
         isExpanded={isExpanded}
         sectionId="section_potential_product_names"
       >
-        Potential Product Names
+        ✨ Potential Product Names
       </SectionHeader>
 
       {isExpanded && (

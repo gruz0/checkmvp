@@ -7,73 +7,73 @@ const className =
 export const NavBar = () => (
   <nav className="space-y-1">
     <Link href="#context" className={className}>
-      Context
+      <span className="inline-block w-6">🔎</span> Context
     </Link>
     <Link href="#market_analysis" className={className}>
-      Market Analysis
+      <span className="inline-block w-6">📊</span> Market Analysis
     </Link>
     <Link href="#competitor_overview" className={className}>
-      Competitors
+      <span className="inline-block w-6">👥</span> Competitors
     </Link>
     <Link href="#value_proposition" className={className}>
-      Value Proposition
+      <span className="inline-block w-6">💎</span> Value Proposition
     </Link>
     <Link href="#target_audiences" className={className}>
-      Target Audiences
+      <span className="inline-block w-6">🎯</span> Target Audiences
     </Link>
     <Link href="#swot_analysis" className={className}>
-      SWOT Analysis
+      <span className="inline-block w-6">⚖️</span> SWOT Analysis
     </Link>
     <Link href="#elevator_pitch" className={className}>
-      Elevator Pitch
+      <span className="inline-block w-6">🎤</span> Elevator Pitch
     </Link>
     <Link href="#product_names" className={className}>
-      Product Names
+      <span className="inline-block w-6">✨</span> Product Names
     </Link>
     <Link href="#google_trends" className={className}>
-      Google Trends
+      <span className="inline-block w-6">📈</span> Google Trends
     </Link>
     <Link href="#content_ideas" className={className}>
-      Content Ideas
+      <span className="inline-block w-6">💡</span> Content Ideas
     </Link>
     <Link href="#two_week_testing_plan" className={className}>
-      Two-Week Testing Plan
+      <span className="inline-block w-6">📅</span> Two-Week Plan
     </Link>
     <Link
       href="#estimated_costs"
       className="block rounded px-4 py-2 text-gray-500"
     >
-      Estimated Costs
+      <span className="inline-block w-6">💰</span> Estimated Costs
     </Link>
     <Link
       href="#early_adopters"
       className="block rounded px-4 py-2 text-gray-500"
     >
-      Early Adopters
+      <span className="inline-block w-6">🚀</span> Early Adopters
     </Link>
     <Link
       href="#networking_opportunities"
       className="block rounded px-4 py-2 text-gray-500"
     >
-      Networking
+      <span className="inline-block w-6">🤝</span> Networking
     </Link>
     <Link
       href="#feedback_templates"
       className="block rounded px-4 py-2 text-gray-500"
     >
-      Feedback Templates
+      <span className="inline-block w-6">📝</span> Feedback Templates
     </Link>
     <Link href="#pitch_deck" className="block rounded px-4 py-2 text-gray-500">
-      Pitch Deck
+      <span className="inline-block w-6">🎪</span> Pitch Deck
     </Link>
     <Link href="#roadmap" className="block rounded px-4 py-2 text-gray-500">
-      Roadmap
+      <span className="inline-block w-6">🗺️</span> Roadmap
     </Link>
     <Link
       href="#tools_and_resources"
       className="block rounded px-4 py-2 text-gray-500"
     >
-      Tools & Resources
+      <span className="inline-block w-6">🛠️</span> Tools & Resources
     </Link>
   </nav>
 )

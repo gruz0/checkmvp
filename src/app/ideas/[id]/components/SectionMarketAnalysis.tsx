@@ -31,7 +31,7 @@ const SectionMarketAnalysis: React.FC<SectionMarketAnalysisProps> = ({
         isExpanded={isExpanded}
         sectionId="section_market_analysis_overview"
       >
-        Market Analysis Overview
+        📊 Market Analysis Overview
       </SectionHeader>
 
       {isExpanded && (

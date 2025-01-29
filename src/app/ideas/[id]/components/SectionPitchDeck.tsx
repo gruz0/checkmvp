@@ -15,7 +15,7 @@ const SectionPitchDeck = () => {
         isExpanded={isExpanded}
         sectionId="section_pitch_deck_outline"
       >
-        Soon: Pitch Deck Outline
+        🎪 Soon: Pitch Deck Outline
       </SectionHeader>
 
       {isExpanded && (

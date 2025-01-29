@@ -89,7 +89,7 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
         isExpanded={isExpanded}
         sectionId="section_two_week_testing_plan"
       >
-        Two-Week Testing Plan
+        📅 Two-Week Testing Plan
       </SectionHeader>
 
       {isExpanded && (

@@ -15,7 +15,7 @@ const SectionEstimatedCosts = () => {
         isExpanded={isExpanded}
         sectionId="section_estimated_costs_and_timeline"
       >
-        Soon: Estimated Costs and Timeline for MVP Launch
+        💰 Soon: Estimated Costs and Timeline for MVP Launch
       </SectionHeader>
 
       {isExpanded && (

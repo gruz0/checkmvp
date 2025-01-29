@@ -29,7 +29,7 @@ const SectionValueProposition: React.FC<SectionValuePropositionProps> = ({
         isExpanded={isExpanded}
         sectionId="section_value_proposition"
       >
-        Value Proposition
+        💎 Value Proposition
       </SectionHeader>
 
       {isExpanded && (

@@ -15,7 +15,7 @@ const SectionEarlyAdopters = () => {
         isExpanded={isExpanded}
         sectionId="section_early_adopters_acquisition_ideas"
       >
-        Soon: Early Adopters Acquisition Ideas
+        🚀 Soon: Early Adopters Acquisition Ideas
       </SectionHeader>
 
       {isExpanded && (
