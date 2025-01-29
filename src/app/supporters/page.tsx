@@ -18,7 +18,7 @@ const SupportersPage: React.FC = () => {
   return (
     <div className="p-4 md:p-6 lg:p-8">
       <header className="mb-8 text-center">
-        <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl dark:text-gray-100">
+        <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-[#023840] md:mb-8 md:mt-4 md:text-4xl dark:text-gray-100">
           Meet the Supporters of CheckMVP ❤️
         </h1>
 
