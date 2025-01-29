@@ -1,4 +1,5 @@
 import React from 'react'
+import AnalyticsBanner from '@/components/AnalyticsBanner'
 import {
   CheckList,
   Heading,
@@ -65,12 +66,7 @@ export default async function LandingPage() {
         </div>
       </div>
 
-      <div className="mb-4 rounded-lg border border-green-300 bg-green-50 p-4 text-lg text-green-800 md:mb-4 lg:mb-12">
-        <p>
-          Join <strong>{totalConceptsCount} founders</strong> who&apos;ve
-          already validated their startup ideas with CheckMVP 🚀
-        </p>
-      </div>
+      <AnalyticsBanner totalConceptsCount={totalConceptsCount} />
 
       <RandomMessage />
 
@@ -78,7 +74,7 @@ export default async function LandingPage() {
         <SectionGridTwoColumns>
           <SectionCell
             heading="100% Free & No Registration"
-            description="No sign-up. No hidden fees. Just type your idea and click “Detailed Analysis.” You can even download a PDF of your findings. I want to make it as easy as possible for anyone to refine their startup idea without getting stuck in complicated onboarding flows."
+            description="No sign-up. No hidden fees. Just type your idea and click 'Detailed Analysis.' You can even download a PDF of your findings. I want to make it as easy as possible for anyone to refine their startup idea without getting stuck in complicated onboarding flows."
           />
           <SectionCell
             heading="Instant AI-Powered Insights"
@@ -86,11 +82,11 @@ export default async function LandingPage() {
           />
           <SectionCell
             heading="Built for Founders, by a Founder"
-            description="I know firsthand how important it is to save time and energy when you’re bootstrapping a new startup. That’s why CheckMVP delivers structured insights designed for idea validation, minus the hassle of tinkering with prompts yourself. I spent weeks on polishing prompts."
+            description="I know firsthand how important it is to save time and energy when you're bootstrapping a new startup. That's why CheckMVP delivers structured insights designed for idea validation, minus the hassle of tinkering with prompts yourself. I spent weeks on polishing prompts."
           />
           <SectionCell
             heading="Honest Disclaimer (About AI Limitations)"
-            description="Sometimes AI may provide outdated information or “hallucinate.” If you need ultra-accurate or highly customized analysis, I offer a manually curated, deep-dive report using the latest GPT-o1 model (plus my personal experience as a system architect)."
+            description="Sometimes AI may provide outdated information or 'hallucinate.' If you need ultra-accurate or highly customized analysis, I offer a manually curated, deep-dive report using the latest GPT-o1 model (plus my personal experience as a system architect)."
           />
         </SectionGridTwoColumns>
       </Section>

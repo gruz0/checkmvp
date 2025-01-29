@@ -1,4 +1,5 @@
 import React from 'react'
+import AnalyticsBanner from '@/components/AnalyticsBanner'
 import {
   CheckList,
   Heading,
@@ -68,12 +69,7 @@ export default async function IndieHackerLandingPage() {
         </div>
       </div>
 
-      <div className="mb-4 rounded-lg border border-green-300 bg-green-50 p-4 text-lg text-green-800 md:mb-4 lg:mb-12">
-        <p>
-          Join <strong>{totalConceptsCount} indie hackers</strong> who&apos;ve
-          already validated their ideas with CheckMVP 🚀
-        </p>
-      </div>
+      <AnalyticsBanner totalConceptsCount={totalConceptsCount} />
 
       <RandomMessage />
 
