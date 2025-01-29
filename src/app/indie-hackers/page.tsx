@@ -75,6 +75,8 @@ export default async function IndieHackerLandingPage() {
         </p>
       </div>
 
+      <RandomMessage />
+
       <Section heading="Why Validate Now?">
         <SectionGridTwoColumns>
           <SectionCell
@@ -95,8 +97,6 @@ export default async function IndieHackerLandingPage() {
           />
         </SectionGridTwoColumns>
       </Section>
-
-      <RandomMessage />
 
       <WhatIsInside />
 

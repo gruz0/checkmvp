@@ -75,6 +75,8 @@ export default async function ProductManagerLandingPage() {
         </p>
       </div>
 
+      <RandomMessage />
+
       <Section heading="Make Better Decisions Sooner">
         <SectionGridTwoColumns>
           <SectionCell
@@ -95,8 +97,6 @@ export default async function ProductManagerLandingPage() {
           />
         </SectionGridTwoColumns>
       </Section>
-
-      <RandomMessage />
 
       <WhatIsInside />
 

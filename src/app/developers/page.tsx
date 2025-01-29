@@ -72,6 +72,8 @@ export default async function DeveloperLandingPage() {
         </p>
       </div>
 
+      <RandomMessage />
+
       <Section heading="Why Validate Before Coding?">
         <SectionGridTwoColumns>
           <SectionCell
@@ -92,8 +94,6 @@ export default async function DeveloperLandingPage() {
           />
         </SectionGridTwoColumns>
       </Section>
-
-      <RandomMessage />
 
       <WhatIsInside />
 
