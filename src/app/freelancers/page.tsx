@@ -75,6 +75,8 @@ export default async function FreelancerLandingPage() {
         </p>
       </div>
 
+      <RandomMessage />
+
       <Section heading="Why Use CheckMVP Before You Bid?">
         <SectionGridTwoColumns>
           <SectionCell
@@ -95,8 +97,6 @@ export default async function FreelancerLandingPage() {
           />
         </SectionGridTwoColumns>
       </Section>
-
-      <RandomMessage />
 
       <WhatIsInside />
 

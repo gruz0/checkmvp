@@ -72,6 +72,8 @@ export default async function LandingPage() {
         </p>
       </div>
 
+      <RandomMessage />
+
       <Section heading="Why Founders Trust CheckMVP">
         <SectionGridTwoColumns>
           <SectionCell
@@ -92,8 +94,6 @@ export default async function LandingPage() {
           />
         </SectionGridTwoColumns>
       </Section>
-
-      <RandomMessage />
 
       <WhatIsInside />
 

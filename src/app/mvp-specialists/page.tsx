@@ -75,6 +75,8 @@ export default async function MVPSpecialistLandingPage() {
         </p>
       </div>
 
+      <RandomMessage />
+
       <Section heading="Keep Clients Happy & Informed">
         <SectionGridTwoColumns>
           <SectionCell
@@ -95,8 +97,6 @@ export default async function MVPSpecialistLandingPage() {
           />
         </SectionGridTwoColumns>
       </Section>
-
-      <RandomMessage />
 
       <WhatIsInside />
 

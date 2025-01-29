@@ -72,6 +72,8 @@ export default async function StartupLandingPage() {
         </p>
       </div>
 
+      <RandomMessage />
+
       <Section heading="Save Time and Resources">
         <SectionGridTwoColumns>
           <SectionCell
@@ -92,8 +94,6 @@ export default async function StartupLandingPage() {
           />
         </SectionGridTwoColumns>
       </Section>
-
-      <RandomMessage />
 
       <WhatIsInside />
 
