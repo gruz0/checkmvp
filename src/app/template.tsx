@@ -40,8 +40,8 @@ const Template = ({ children }: { children: React.ReactNode }) => (
       </div>
     </main>
 
-    <footer className="bg-gray-200 px-2 py-6 transition-colors duration-300 md:px-6 dark:bg-gray-800">
-      <div className="mx-auto max-w-5xl px-4 md:px-8">
+    <footer className="bg-gray-100 px-2 py-6 transition-colors duration-300 md:px-6 dark:bg-gray-900">
+      <div className="mx-auto max-w-5xl px-4 md:px-8 lg:px-12">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-16">
           <div>
             <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">

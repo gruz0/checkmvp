@@ -146,7 +146,7 @@ const ProblemRequiresChanges = ({
                         query: { problem: item },
                       }}
                       target="_blank"
-                      className="inline-flex items-center gap-2 rounded bg-gray-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-700"
+                      className="inline-flex items-center gap-2 rounded bg-gray-500 px-4 py-2 text-white transition duration-300 hover:bg-[#023840]"
                     >
                       Try This Statement Instead
                       <svg
@@ -200,7 +200,7 @@ const ProblemRequiresChanges = ({
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl"
+                className="rounded-md border border-transparent bg-[#023840] px-4 py-2 text-xl font-medium text-[#7bf179] shadow-sm hover:bg-[#034e59] focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]"
                 disabled={status === 'loading'}
               >
                 {status === 'loading' ? 'Saving...' : 'Go To Detailed Analysis'}

@@ -114,7 +114,7 @@ export const SocialMediaCampaigns = ({ data }: Props) => {
                 {status === 'idle' ? (
                   <button
                     onClick={handleRequest}
-                    className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+                    className="rounded bg-[#023840] px-4 py-2 font-semibold text-[#7bf179] hover:bg-[#034e59] dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]"
                   >
                     Request
                   </button>
@@ -127,18 +127,22 @@ export const SocialMediaCampaigns = ({ data }: Props) => {
             )}
           </div>
 
-          <HorizontalLine />
-
           {data.contents ? (
             <>
               <SectionShortFormContent data={data.contents.shortFormContent} />
 
+              <HorizontalLine />
+
               <SectionLongFormContent data={data.contents.longFormContent} />
+
+              <HorizontalLine />
 
               <SectionVideoContent data={data.contents.videoContent} />
             </>
           ) : (
             <>
+              <HorizontalLine />
+
               {status === 'idle' ? (
                 <p className="pt-6 text-lg">
                   Please click &quot;Request&quot; button above to fetch your

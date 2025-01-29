@@ -19,8 +19,8 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     type="button"
     className={`${isExpanded ? 'mb-6' : 'mb-0'} cursor-pointer text-xl font-semibold md:text-2xl ${
       isExpanded
-        ? 'text-blue-700 dark:text-blue-300'
-        : 'text-blue-600 dark:text-blue-400'
+        ? 'text-[#034e59] dark:text-blue-300'
+        : 'text-[#023840] dark:text-blue-400'
     }`}
     onClick={onClick}
     aria-expanded={isExpanded}

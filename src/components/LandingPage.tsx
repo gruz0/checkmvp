@@ -40,7 +40,7 @@ interface SecondaryCTAProps {
 
 export const Section: React.FC<SectionProps> = ({ heading, children }) => (
   <div className="mt-8 pb-4 md:mt-10 md:pb-6 lg:mt-14 lg:pb-8">
-    <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
+    <h2 className="mb-4 text-center text-2xl font-bold text-[#023840] md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
       {heading}
     </h2>
     {children}
@@ -74,7 +74,7 @@ export const SectionCell: React.FC<SectionCellProps> = ({
 )
 
 export const Heading: React.FC<HeadingProps> = ({ children }) => (
-  <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl lg:mb-8 dark:text-gray-100">
+  <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-[#023840] md:mb-8 md:mt-4 md:text-4xl lg:mb-8 dark:text-gray-100">
     {children}
   </h1>
 )
@@ -103,7 +103,7 @@ export const PrimaryCTA: React.FC<PrimaryCTAProps> = ({
 }) => (
   <Link
     href={`/start?utm_source=${utmSource}&utm_medium=primary_cta&utm_campaign=${utmCampaign}`}
-    className={`justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+    className={`justify-center rounded-md border border-transparent bg-[#023840] px-8 py-4 text-xl font-medium text-[#7bf179] shadow-sm hover:bg-[#034e59] focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]`}
   >
     {children}
   </Link>
@@ -116,7 +116,7 @@ export const SecondaryCTA: React.FC<SecondaryCTAProps> = ({
 }) => (
   <Link
     href={`/start?utm_source=${utmSource}&utm_medium=secondary_cta&utm_campaign=${utmCampaign}`}
-    className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+    className={`justify-center rounded-md border border-transparent bg-[#023840] px-8 py-4 text-2xl font-medium text-[#7bf179] shadow-sm hover:bg-[#034e59] focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]`}
   >
     {children}
   </Link>

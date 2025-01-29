@@ -78,10 +78,10 @@ const DownloadPDFButton: React.FC<DownloadPDFButtonProps> = ({
       <button
         onClick={handleDownload}
         disabled={loading}
-        className={`flex items-center gap-2 rounded px-4 py-2 font-semibold text-white transition-colors duration-200 ${
+        className={`flex items-center gap-2 rounded px-4 py-2 font-semibold transition-colors duration-200 ${
           loading
-            ? 'cursor-not-allowed bg-blue-400'
-            : 'bg-blue-600 hover:bg-blue-700'
+            ? 'cursor-not-allowed bg-gray-400 text-gray-200'
+            : 'bg-[#023840] text-[#7bf179] hover:bg-[#034e59] dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]'
         }`}
         aria-busy={loading}
         aria-disabled={loading}

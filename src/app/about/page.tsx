@@ -6,7 +6,7 @@ import Photo from './photo.jpeg'
 export default async function AboutPage() {
   return (
     <div className="p-4 md:p-6 lg:p-8">
-      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl dark:text-gray-100">
+      <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-[#023840] md:mb-8 md:mt-4 md:text-4xl dark:text-gray-100">
         About CheckMVP
       </h1>
 
@@ -42,7 +42,7 @@ export default async function AboutPage() {
       </div>
 
       <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
-        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
+        <h2 className="mb-4 text-center text-2xl font-bold text-[#023840] md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
           Just Talk to Your Customers!
         </h2>
 
@@ -64,7 +64,7 @@ export default async function AboutPage() {
       </div>
 
       <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
-        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
+        <h2 className="mb-4 text-center text-2xl font-bold text-[#023840] md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
           What We Bring to The Table?
         </h2>
 
@@ -94,43 +94,43 @@ export default async function AboutPage() {
       </div>
 
       <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
-        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
+        <h2 className="mb-4 text-center text-2xl font-bold text-[#023840] md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
           Why Use CheckMVP Instead of ChatGPT?
         </h2>
 
         <p className="mb-4">
-          Sure, you could open ChatGPT and type out prompts yourself. But we’ve
-          spent weeks fine-tuning prompts and combining them into a single,
-          hassle-free workflow. The result? You’ll get structured insights
-          specifically tailored for startup validation, without the
+          Sure, you could open ChatGPT and type out prompts yourself. But
+          we&apos;ve spent weeks fine-tuning prompts and combining them into a
+          single, hassle-free workflow. The result? You&apos;ll get structured
+          insights specifically tailored for startup validation, without the
           trial-and-error prompt tweaking or juggling multiple tabs.
         </p>
       </div>
 
       <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
-        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
-          Honest Disclaimer: AI Isn’t Perfect
+        <h2 className="mb-4 text-center text-2xl font-bold text-[#023840] md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
+          Honest Disclaimer: AI Isn&apos;t Perfect
         </h2>
 
         <p className="mb-4">
           We rely on an older variant of GPT-4o for quick, automated insights.
-          Sometimes the AI may provide outdated info or “hallucinate.” If
-          accuracy is critical for you, we also offer a manually crafted,
+          Sometimes the AI may provide outdated info or &quot;hallucinate.&quot;
+          If accuracy is critical for you, we also offer a manually crafted,
           deep-dive analysis using the latest models, reviewed by a human
-          (that’s me!). It takes a bit longer, but you’ll get more credible,
-          in-depth results.
+          (that&apos;s me!). It takes a bit longer, but you&apos;ll get more
+          credible, in-depth results.
         </p>
       </div>
 
       <div className="mt-8 text-justify text-lg md:mt-10 lg:mt-14">
-        <h2 className="mb-4 text-center text-2xl font-bold text-gray-700 md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
-          Let’s Build Something Great Together
+        <h2 className="mb-4 text-center text-2xl font-bold text-[#023840] md:mb-8 md:text-3xl lg:text-4xl dark:text-gray-100">
+          Let&apos;s Build Something Great Together
         </h2>
 
         <p className="mb-4">
-          I’m constantly refining CheckMVP because I genuinely love helping
-          founders succeed. Whether you’re testing a side project or a big idea,
-          CheckMVP makes it easy to spot red flags early, find new
+          I&apos;m constantly refining CheckMVP because I genuinely love helping
+          founders succeed. Whether you&apos;re testing a side project or a big
+          idea, CheckMVP makes it easy to spot red flags early, find new
           opportunities, and move forward with confidence.
         </p>
       </div>
@@ -138,7 +138,7 @@ export default async function AboutPage() {
       <div className="mb-6 pt-6 text-center">
         <Link
           href="/start"
-          className="justify-center rounded-md border border-transparent bg-blue-600 px-8 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="justify-center rounded-md border border-transparent bg-[#023840] px-8 py-4 text-2xl font-medium text-[#7bf179] shadow-sm hover:bg-[#034e59] focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]"
         >
           Take the First Step
         </Link>

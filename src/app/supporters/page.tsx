@@ -18,7 +18,7 @@ const SupportersPage: React.FC = () => {
   return (
     <div className="p-4 md:p-6 lg:p-8">
       <header className="mb-8 text-center">
-        <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-blue-600 md:mb-8 md:mt-4 md:text-4xl dark:text-gray-100">
+        <h1 className="mb-6 mt-2 text-center text-3xl font-bold text-[#023840] md:mb-8 md:mt-4 md:text-4xl dark:text-gray-100">
           Meet the Supporters of CheckMVP ❤️
         </h1>
 
@@ -71,14 +71,14 @@ const SupportersPage: React.FC = () => {
       <hr className="my-6" />
 
       <div className="my-6 text-center">
-        <p className="mb-6 text-lg text-gray-700 dark:text-gray-300">
+        <p className="mb-8 text-lg text-gray-700 dark:text-gray-300">
           Want to be featured as a supporter?
         </p>
 
         <p className="text-lg text-gray-600">
           <Link
             href="https://x.com/itmistakes_com"
-            className="mt-4 rounded-lg bg-blue-600 px-6 py-3 text-white transition duration-200 hover:bg-blue-500"
+            className="justify-center rounded-md border border-transparent bg-[#023840] px-8 py-4 text-2xl font-medium text-[#7bf179] shadow-sm hover:bg-[#034e59] focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]"
             target="_blank"
             rel="nofollow noopener noreferrer"
           >
