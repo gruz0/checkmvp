@@ -15,7 +15,7 @@ const SectionToolsAndResources = () => {
         isExpanded={isExpanded}
         sectionId="section_suggested_tools_and_resources"
       >
-        Soon: Suggested Tools and Resources
+        🛠️ Soon: Suggested Tools and Resources
       </SectionHeader>
 
       {isExpanded && (

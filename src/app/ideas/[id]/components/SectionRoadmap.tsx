@@ -15,7 +15,7 @@ const SectionRoadmap = () => {
         isExpanded={isExpanded}
         sectionId="section_roadmap_suggestions"
       >
-        Soon: Roadmap Suggestions
+        🗺️ Soon: Roadmap Suggestions
       </SectionHeader>
 
       {isExpanded && (

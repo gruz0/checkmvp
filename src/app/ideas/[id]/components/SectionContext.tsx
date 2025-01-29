@@ -37,7 +37,7 @@ const SectionContext: React.FC<SectionContextProps> = ({ data }) => {
         isExpanded={isExpanded}
         sectionId="section_context"
       >
-        Context
+        🔎 Context
       </SectionHeader>
 
       {isExpanded && (

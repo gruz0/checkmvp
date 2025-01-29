@@ -34,7 +34,7 @@ const SectionElevatorPitch: React.FC<SectionElevatorPitchProps> = ({
         isExpanded={isExpanded}
         sectionId="section_elevator_pitch"
       >
-        Elevator Pitch
+        🎤 Elevator Pitch
       </SectionHeader>
 
       {isExpanded && (
