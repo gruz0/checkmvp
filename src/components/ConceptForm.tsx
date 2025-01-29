@@ -124,7 +124,7 @@ const DefineConceptForm = ({ problem, region, cta, skipIntro }: Props) => {
         <textarea
           id="problem"
           name="problem"
-          className="mt-1 block h-64 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-900 dark:text-gray-200"
+          className="mt-1 block h-64 w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-[#023840] focus:ring-[#023840] dark:bg-gray-900 dark:text-gray-200 dark:focus:border-[#7bf179] dark:focus:ring-[#7bf179]"
           value={formData.problem}
           onChange={handleChange}
           required
@@ -168,7 +168,7 @@ Target Audience:
               className={`rounded-full px-4 py-2 font-medium transition-colors
                 ${
                   formData.region === region
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-[#023840] text-[#7bf179] dark:bg-[#7bf179] dark:text-[#023840]'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:bg-gray-800 dark:text-gray-300 dark:hover:text-gray-800'
                 }`}
             >
@@ -189,7 +189,7 @@ Target Audience:
       <div className="pb-2 text-center">
         <button
           type="submit"
-          className="rounded-md border border-transparent bg-blue-600 px-6 py-4 text-2xl font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="rounded-md border border-transparent bg-[#023840] px-6 py-4 text-2xl font-medium text-[#7bf179] shadow-sm hover:bg-[#034e59] focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]"
           disabled={status === 'loading'}
         >
           {status === 'loading' ? 'Saving...' : cta || 'Show Me Insights'}

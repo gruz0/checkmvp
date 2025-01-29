@@ -163,7 +163,7 @@ const ContentIdea: React.FC<ContentIdeaSectionProps> = ({
           <Link
             href={`/ideas/${ideaId}/${section}`}
             target="_blank"
-            className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+            className="rounded bg-[#023840] px-4 py-2 font-semibold text-[#7bf179] hover:bg-[#034e59] dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]"
           >
             Generate Content
           </Link>
