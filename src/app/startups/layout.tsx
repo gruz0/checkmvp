@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     title: 'CheckMVP for Startup Founders and Early-Stage Entrepreneurs',
     description:
       "You're excited about your new venture, but investors and potential co-founders want proof your idea has legs. Going in blind could mean burning through your runway without clear traction.",
+    type: 'website',
   },
 }
 

@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     title: 'CheckMVP for Developers',
     description:
       "If you're juggling a full-time job yet itching to build a side project, the last thing you want is to waste your limited free time.",
+    type: 'website',
   },
 }
 

@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     title: 'CheckMVP for Freelancers',
     description:
       "When you bid for a project online, you're competing with dozens—sometimes hundreds—of other freelancers. Standing out is essential.",
+    type: 'website',
   },
 }
 

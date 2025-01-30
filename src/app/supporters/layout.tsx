@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: 'Meet the Supporters of CheckMVP',
   description:
     'These amazing individuals may not have directly contributed to building CheckMVP, but their support has been invaluable to me on this journey.',
+  openGraph: {
+    type: 'website',
+  },
 }
 
 export default function SupportersLayout({

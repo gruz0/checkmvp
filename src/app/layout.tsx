@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: 'Validate Your Product or Startup Idea Fast | CheckMVP',
   description:
     'Stop wasting time on product ideas without a market. CheckMVP helps you validate your concept in just a minute.',
+  openGraph: {
+    type: 'website',
+  },
 }
 
 export default function RootLayout({
