@@ -4,10 +4,13 @@ import React from 'react'
 const className =
   'block rounded px-4 py-2 text-gray-900 dark:text-gray-200 dark:hover:bg-gray-700 hover:bg-gray-200'
 
+const hotClassName = className + ' relative'
+
 export const NavBar = () => (
   <nav className="space-y-1">
-    <Link href="#context" className={className}>
+    <Link href="#context" className={hotClassName}>
       <span className="inline-block w-6">🔎</span> Context
+      <span className="absolute right-2 top-1 text-xs">🔥</span>
     </Link>
     <Link href="#market_analysis" className={className}>
       <span className="inline-block w-6">📊</span> Market Analysis
@@ -15,11 +18,13 @@ export const NavBar = () => (
     <Link href="#competitor_overview" className={className}>
       <span className="inline-block w-6">👥</span> Competitors
     </Link>
-    <Link href="#value_proposition" className={className}>
+    <Link href="#value_proposition" className={hotClassName}>
       <span className="inline-block w-6">💎</span> Value Proposition
+      <span className="absolute right-2 top-1 text-xs">🔥</span>
     </Link>
-    <Link href="#target_audiences" className={className}>
+    <Link href="#target_audiences" className={hotClassName}>
       <span className="inline-block w-6">🎯</span> Target Audiences
+      <span className="absolute right-2 top-1 text-xs">🔥</span>
     </Link>
     <Link href="#swot_analysis" className={className}>
       <span className="inline-block w-6">⚖️</span> SWOT Analysis
