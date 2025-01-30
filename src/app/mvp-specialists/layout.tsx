@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     title: 'CheckMVP for MVP Specialists and Consultants',
     description:
       "Your clients trust you to guide them from zero to a tangible product. If they question your direction, or if the product doesn't connect with users, your credibility is on the line.",
+    type: 'website',
   },
 }
 

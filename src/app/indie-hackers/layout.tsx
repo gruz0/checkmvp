@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     title: 'CheckMVP for Indie Hackers',
     description:
       "As an indie hacker, you're often working alone or with a tiny team. Every step you take counts, and building a product nobody wants could burn you out fast.",
+    type: 'website',
   },
 }
 

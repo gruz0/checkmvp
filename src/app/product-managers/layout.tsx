@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     title: 'CheckMVP for Product Managers',
     description:
       "You're tasked with juggling multiple features, stakeholder demands, and strategic deadlines. Making the wrong call on what to build next can cost your team time and credibility.",
+    type: 'website',
   },
 }
 

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'About CheckMVP – Build Products People Love with Confidence',
+  title: 'Privacy Policy – CheckMVP',
   description:
-    'Discover the story behind CheckMVP, the AI tool helping developers, indie hackers, and founders to validate ideas and build products people will love.',
+    'CheckMVP is committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and protect your personal information.',
   openGraph: {
     type: 'website',
   },

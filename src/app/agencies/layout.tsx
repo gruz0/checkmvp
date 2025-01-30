@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     title: 'CheckMVP for Software Development Agencies',
     description:
       'If you dive right into development, you may end up pivoting mid-project, leading to scope creep, extra costs, and less profit',
+    type: 'website',
   },
 }
 
