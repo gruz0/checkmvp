@@ -1,6 +1,6 @@
 type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
 
-interface TargetAudience {
+export interface TargetAudience {
   segment: string
   description: string
   challenges: string[]
@@ -12,7 +12,7 @@ interface TargetAudience {
   }
 }
 
-interface ClarityScore {
+export interface ClarityScore {
   overallScore: number
   metrics: {
     problemClarity: number
@@ -22,7 +22,7 @@ interface ClarityScore {
   }
 }
 
-interface LanguageAnalysis {
+export interface LanguageAnalysis {
   vagueTerms: string[]
   missingContext: string[]
   ambiguousStatements: string[]
@@ -38,7 +38,7 @@ export class Evaluation {
   private readonly clarityScore: ClarityScore
   private readonly languageAnalysis: LanguageAnalysis
 
-  constructor(
+  private constructor(
     status: Status,
     suggestions: string[],
     recommendations: string[],
@@ -58,6 +58,28 @@ export class Evaluation {
     this.languageAnalysis = languageAnalysis
 
     this.validate()
+  }
+
+  public static New(
+    status: Status,
+    suggestions: string[],
+    recommendations: string[],
+    painPoints: string[],
+    marketExistence: string,
+    targetAudience: TargetAudience[],
+    clarityScore: ClarityScore,
+    languageAnalysis: LanguageAnalysis
+  ): Evaluation {
+    return new Evaluation(
+      status,
+      suggestions.map((suggestion) => suggestion.trim()),
+      recommendations.map((recommendation) => recommendation.trim()),
+      painPoints.map((painPoint) => painPoint.trim()),
+      marketExistence.trim(),
+      targetAudience,
+      clarityScore,
+      languageAnalysis
+    )
   }
 
   public getStatus(): Status {

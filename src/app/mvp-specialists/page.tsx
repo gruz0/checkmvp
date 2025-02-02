@@ -1,4 +1,5 @@
 import React from 'react'
+import { SystemTimeProvider } from '@/common/domain/TimeProvider'
 import AnalyticsBanner from '@/components/AnalyticsBanner'
 import {
   CheckList,
@@ -13,10 +14,14 @@ import {
 } from '@/components/LandingPage'
 import RandomMessage from '@/components/RandomMessage'
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
+import { env } from '@/lib/env'
 
 export const dynamic = 'force-dynamic'
 
-const repository = new ConceptRepositorySQLite()
+const repository = new ConceptRepositorySQLite(
+  new SystemTimeProvider(),
+  env.CONCEPT_EXPIRATION_DAYS
+)
 
 async function getTotalConceptsCount(): Promise<number> {
   return await repository.getTotal()

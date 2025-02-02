@@ -1,12 +1,19 @@
+import { TimeProvider } from '@/common/domain/TimeProvider'
 import { Concept } from '@/concept/domain/Aggregate'
 import { Evaluation } from '@/concept/domain/Evaluation'
 import { Repository } from '@/concept/domain/Repository'
 import { prisma } from '@/lib/prisma'
+import { Identity } from '@/shared/Identity'
 import type { PrismaClient } from '@prisma/client/extension'
 
 type UpdateFn = (concept: Concept) => Concept
 
 export class ConceptRepositorySQLite implements Repository {
+  constructor(
+    private readonly timeProvider: TimeProvider,
+    private readonly conceptExpirationDays: number
+  ) {}
+
   async addConcept(concept: Concept): Promise<void> {
     await prisma.concept.create({
       data: {
@@ -19,7 +26,7 @@ export class ConceptRepositorySQLite implements Repository {
   }
 
   async updateConcept(id: string, updateFn: UpdateFn): Promise<void> {
-    await prisma.$transaction(async (prisma: PrismaClient) => {
+    await prisma.$transaction(async (tx: PrismaClient) => {
       const concept = await this.getById(id)
 
       if (!concept) {
@@ -28,23 +35,31 @@ export class ConceptRepositorySQLite implements Repository {
 
       const updatedConcept = updateFn(concept)
 
-      const evaluation = updatedConcept.getEvaluation()
-
       // TODO: We should validate uniqueness of the ideaId before updating a record.
-      const ideaId = updatedConcept.getIdeaId()
 
-      await prisma.concept.update({
+      await tx.concept.update({
         where: {
           id: id,
         },
         data: {
           problem: updatedConcept.getProblem().getValue(),
           region: updatedConcept.getRegion().getValue(),
-          ...(evaluation && { evaluation: this.evaluationToJSON(evaluation) }),
-          ...(updatedConcept.isEvaluated() && { evaluatedAt: new Date() }),
-          ...(updatedConcept.isAccepted() && { acceptedAt: new Date() }),
-          ...(ideaId && { ideaId: ideaId.getValue() }),
+          ...(updatedConcept.isEvaluated() && {
+            evaluatedAt: new Date(),
+            evaluation: this.evaluationToJSON(updatedConcept.getEvaluation()),
+          }),
+          ...(updatedConcept.isAccepted() && {
+            acceptedAt: new Date(),
+            ideaId: updatedConcept.getIdeaId().getValue(),
+          }),
           ...(updatedConcept.isArchived() && { archivedAt: new Date() }),
+          ...(updatedConcept.isAnonymized() && {
+            anonymizedAt: new Date(),
+            problem: updatedConcept.getProblem().getValue(),
+            ...(updatedConcept.wasEvaluated() && {
+              evaluation: this.evaluationToJSON(updatedConcept.getEvaluation()),
+            }),
+          }),
           updatedAt: new Date(),
         },
       })
@@ -78,51 +93,46 @@ export class ConceptRepositorySQLite implements Repository {
       conceptModel.problem,
       // FIXME: This is a temporary fix to support the old data.
       conceptModel.region ?? 'worldwide',
+      this.conceptExpirationDays,
+      this.timeProvider,
       conceptModel.createdAt
     )
 
     if (conceptModel.evaluation) {
+      // FIXME: Refactor using zod.
       const json = JSON.parse(conceptModel.evaluation)
 
-      // FIXME: As many changes have applied since 18 Jan 2025, we don't want to support them
-      // This condition can be removed once we go live on production.
-      const createdAtDate = new Date(conceptModel.createdAt)
-      const thresholdDate = new Date('2025-01-18T00:00:00Z')
-
-      if (
-        json.status === 'requires_changes' &&
-        json.painPoints.length === 0 &&
-        createdAtDate < thresholdDate
-      ) {
-        throw new Error(
-          'The concept was created before January 18, 2025, and is no longer supported. Please create a new one.'
+      concept.evaluate(
+        Evaluation.New(
+          json.status,
+          json.suggestions,
+          json.recommendations,
+          json.painPoints,
+          json.marketExistence,
+          json.targetAudience,
+          json.clarityScore,
+          json.languageAnalysis
         )
-      }
-
-      const evaluation = new Evaluation(
-        json.status,
-        json.suggestions,
-        json.recommendations,
-        json.painPoints,
-        json.marketExistence,
-        json.targetAudience,
-        json.clarityScore,
-        json.languageAnalysis
       )
-
-      concept.evaluate(evaluation)
     }
 
     if (conceptModel.acceptedAt) {
+      // FIXME: I'm not sure this is the valid scenario.
+      // If concept has been accepted, it should have idea ID.
+      // It's better to re-test this scenario.
       if (!conceptModel.ideaId) {
         throw new Error('Concept has been accepted, but does not have idea ID')
       }
 
-      concept.accept(conceptModel.ideaId)
+      concept.accept(Identity.New(conceptModel.ideaId))
     }
 
     if (conceptModel.archivedAt) {
       concept.archive()
+    }
+
+    if (conceptModel.anonymizedAt) {
+      concept.anonymize()
     }
 
     return concept

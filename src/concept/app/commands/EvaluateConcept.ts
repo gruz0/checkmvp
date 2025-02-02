@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/nextjs'
+import { TimeProvider } from '@/common/domain/TimeProvider'
 import { Concept } from '@/concept/domain/Aggregate'
 import { Repository } from '@/concept/domain/Repository'
 import { ConceptCreated } from '@/concept/domain/events/ConceptCreated'
@@ -13,7 +14,9 @@ type Command = {
 export class EvaluateConceptHandler {
   constructor(
     private readonly repository: Repository,
-    private readonly eventBus: EventBus
+    private readonly eventBus: EventBus,
+    private readonly timeProvider: TimeProvider,
+    private readonly conceptExpirationDays: number
   ) {}
 
   async handle(command: Command): Promise<void> {
@@ -22,7 +25,13 @@ export class EvaluateConceptHandler {
     Sentry.setTag('concept_id', command.id)
 
     try {
-      const concept = Concept.New(command.id, command.problem, command.region)
+      const concept = Concept.New(
+        command.id,
+        command.problem,
+        command.region,
+        this.conceptExpirationDays,
+        this.timeProvider
+      )
 
       await this.repository.addConcept(concept)
 

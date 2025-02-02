@@ -67,9 +67,9 @@ export default async function Page({ params }: { params: { id: string } }) {
       evaluation: null,
     }
 
-    const conceptEvaluation = concept.getEvaluation()
+    if (concept.isEvaluated()) {
+      const conceptEvaluation = concept.getEvaluation()
 
-    if (conceptEvaluation) {
       const evaluation: Evaluation = {
         status: conceptEvaluation.getStatus(),
         marketExistence: conceptEvaluation.getMarketExistence(),

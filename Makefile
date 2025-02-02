@@ -53,6 +53,9 @@ redis-cli:
 test: # Run test
 	@${NPM_RUN} test
 
+test-types: # Run test types
+	@${NPM_RUN} test:types
+
 .PHONY: coverage
 coverage: # Run test coverage
 	@${NPM_RUN} test:coverage

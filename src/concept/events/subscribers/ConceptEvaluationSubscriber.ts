@@ -90,7 +90,7 @@ export class ConceptEvaluationSubscriber implements EventHandler {
         event.payload.id,
         (concept): Concept => {
           concept.evaluate(
-            new Evaluation(
+            Evaluation.New(
               evaluation.status,
               evaluation.suggestions,
               evaluation.recommendations,
