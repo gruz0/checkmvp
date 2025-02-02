@@ -1,7 +1,7 @@
+import { Identity } from '@/common/domain/Identity'
 import { FixedTimeProvider, TimeProvider } from '@/common/domain/TimeProvider'
 import { Concept } from '@/concept/domain/Aggregate'
 import { Service } from '@/concept/domain/anonymization/AnonymizationService'
-import { Identity } from '@/shared/Identity'
 import { NotWellDefinedEvaluationFactory } from '../../domain/NotWellDefinedEvaluationFactory'
 import { RequiresChangesEvaluationFactory } from '../../domain/RequiresChangesEvaluationFactory'
 import { WellDefinedEvaluationFactory } from '../../domain/WellDefinedEvaluationFactory'

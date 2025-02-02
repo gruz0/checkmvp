@@ -1,9 +1,9 @@
+import { Identity } from '@/common/domain/Identity'
 import { TimeProvider } from '@/common/domain/TimeProvider'
 import { Concept } from '@/concept/domain/Aggregate'
 import { Evaluation } from '@/concept/domain/Evaluation'
 import { Repository } from '@/concept/domain/Repository'
 import { prisma } from '@/lib/prisma'
-import { Identity } from '@/shared/Identity'
 import type { PrismaClient } from '@prisma/client/extension'
 
 type UpdateFn = (concept: Concept) => Concept

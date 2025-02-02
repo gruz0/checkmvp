@@ -1,8 +1,8 @@
+import { Identity } from '@/common/domain/Identity'
 import { FixedTimeProvider, TimeProvider } from '@/common/domain/TimeProvider'
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
 import { Concept } from '@/concept/domain/Aggregate'
 import { prisma } from '@/lib/prisma'
-import { Identity } from '@/shared/Identity'
 import { WellDefinedEvaluationFactory } from '../domain/WellDefinedEvaluationFactory'
 
 describe('ConceptRepositorySQLite', () => {

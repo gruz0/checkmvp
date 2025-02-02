@@ -1,3 +1,4 @@
+import { Identity } from '@/common/domain/Identity'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
 import { ContextAnalysis } from '@/idea/domain/ContextAnalysis'
@@ -11,7 +12,6 @@ import { SocialMediaCampaigns } from '@/idea/domain/SocialMediaCampaigns'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { TestingPlan } from '@/idea/domain/TestingPlan'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
-import { Identity } from '@/shared/Identity'
 
 export class Idea {
   private valueProposition: ValueProposition | null = null

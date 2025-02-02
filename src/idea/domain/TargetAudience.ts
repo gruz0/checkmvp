@@ -1,4 +1,4 @@
-import { Identity } from '@/shared/Identity'
+import { Identity } from '@/common/domain/Identity'
 
 export class TargetAudience {
   private why: string | null = null

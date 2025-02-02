@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/nextjs'
+import { Identity } from '@/common/domain/Identity'
 import { Concept } from '@/concept/domain/Aggregate'
 import { Repository } from '@/concept/domain/Repository'
 import { ConceptAccepted } from '@/concept/domain/events/ConceptAccepted'
 import { EventBus } from '@/concept/events/EventBus'
-import { Identity } from '@/shared/Identity'
 
 interface Reservation {
   success: boolean

@@ -1,3 +1,4 @@
+import { Identity } from '@/common/domain/Identity'
 import { Idea } from '@/idea/domain/Aggregate'
 import { Competitor } from '@/idea/domain/Competitor'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
@@ -11,7 +12,6 @@ import { SocialMediaCampaigns } from '@/idea/domain/SocialMediaCampaigns'
 import { TargetAudience } from '@/idea/domain/TargetAudience'
 import { TestingPlan } from '@/idea/domain/TestingPlan'
 import { ValueProposition } from '@/idea/domain/ValueProposition'
-import { Identity } from '@/shared/Identity'
 
 describe('Idea Class', () => {
   let validId: string
