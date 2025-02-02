@@ -20,6 +20,7 @@ jobs:
       - run: npm ci
       - run: make lint
       - run: make test-types
+      - run: .github/scripts/check-test-only.sh
       - run: make coverage
 
       - name: Upload coverage report
