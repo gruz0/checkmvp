@@ -3,6 +3,7 @@ import { Concept } from '@/concept/domain/Aggregate'
 import { Repository } from '@/concept/domain/Repository'
 import { ConceptAccepted } from '@/concept/domain/events/ConceptAccepted'
 import { EventBus } from '@/concept/events/EventBus'
+import { Identity } from '@/shared/Identity'
 
 interface Reservation {
   success: boolean
@@ -50,7 +51,7 @@ export class AcceptConceptHandler {
       await this.repository.updateConcept(
         command.id,
         (concept: Concept): Concept => {
-          concept.accept(command.newIdeaId)
+          concept.accept(Identity.New(command.newIdeaId))
 
           return concept
         }

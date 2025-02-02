@@ -19,6 +19,7 @@ jobs:
       - run: cp .env.example .env
       - run: npm ci
       - run: make lint
+      - run: make test-types
       - run: make coverage
 
       - name: Upload coverage report

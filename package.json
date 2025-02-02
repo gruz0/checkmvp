@@ -17,6 +17,7 @@
     "lint": "npm run next-lint && npm run prettier && npm run knip",
     "prisma:generate_client": "prisma generate",
     "test": "dotenv -e .env.test -- npx prisma migrate deploy && jest --detectOpenHandles -i ./__tests__/",
+    "test:types": "tsc --noEmit -p tsconfig.test.json",
     "test:coverage": "dotenv -e .env.test -- npx prisma migrate deploy && jest --coverage --detectOpenHandles -i ./__tests__/",
     "db:migrate": "prisma migrate deploy"
   },

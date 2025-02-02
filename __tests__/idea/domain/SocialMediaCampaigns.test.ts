@@ -131,8 +131,8 @@ describe('SocialMediaCampaigns Class', () => {
       })
 
       it('should throw an error when a required string property is missing', () => {
-        const invalidContent = { ...validVideoContent }
-        delete invalidContent.platform
+        const { platform, ...invalidContent } = validVideoContent
+
         expect(() => {
           campaigns.addVideoContent(invalidContent as any)
         }).toThrow('platform cannot be empty')
