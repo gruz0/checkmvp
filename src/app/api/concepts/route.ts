@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
+import { Identity } from '@/common/domain/Identity'
 import { App } from '@/concept/service/Service'
 import { createIdeaLimiterKey, manager } from '@/lib/rateLimiter'
-import { Identity } from '@/shared/Identity'
 
 const createIdeaLimiter = manager.getLimiter(createIdeaLimiterKey)
 

@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/nextjs'
+import { Identity } from '@/common/domain/Identity'
 import { SystemTimeProvider } from '@/common/domain/TimeProvider'
 import { ConceptRepositorySQLite } from '@/concept/adapters/ConceptRepositorySQLite'
 import { Concept } from '@/concept/domain/Aggregate'
@@ -6,7 +7,6 @@ import { Service } from '@/concept/domain/anonymization/AnonymizationService'
 import { ConceptTransitioned } from '@/concept/domain/events/ConceptTransitioned'
 import { ConceptAnonymizationSubscriber } from '@/concept/events/subscribers/ConceptAnonymizationSubscriber'
 import { prisma } from '@/lib/prisma'
-import { Identity } from '@/shared/Identity'
 import { WellDefinedEvaluationFactory } from '__tests__/concept/domain/WellDefinedEvaluationFactory'
 
 // Mock Sentry

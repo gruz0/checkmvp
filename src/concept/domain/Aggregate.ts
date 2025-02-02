@@ -1,8 +1,8 @@
+import { Identity } from '@/common/domain/Identity'
 import { TimeProvider } from '@/common/domain/TimeProvider'
 import { Evaluation } from '@/concept/domain/Evaluation'
 import { Problem } from '@/concept/domain/Problem'
 import { Region } from '@/concept/domain/Region'
-import { Identity } from '@/shared/Identity'
 
 enum ConceptState {
   DRAFT = 'draft',

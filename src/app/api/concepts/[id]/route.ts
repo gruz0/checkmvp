@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
+import { Identity } from '@/common/domain/Identity'
 import { App } from '@/concept/service/Service'
-import { Identity } from '@/shared/Identity'
 
 export async function POST(_: Request, { params }: { params: { id: string } }) {
   Sentry.setTag('component', 'HTTP API')

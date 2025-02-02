@@ -1,5 +1,5 @@
+import { Identity } from '@/common/domain/Identity'
 import { Concept } from '@/concept/domain/Aggregate'
-import { Identity } from '@/shared/Identity'
 import { WellDefinedEvaluationFactory } from './WellDefinedEvaluationFactory'
 
 describe('Concept Class', () => {

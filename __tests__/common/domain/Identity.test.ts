@@ -1,5 +1,5 @@
 import { validate as uuidValidate } from 'uuid'
-import { Identity } from '@/shared/Identity'
+import { Identity } from '@/common/domain/Identity'
 
 describe('Identity Class', () => {
   describe('New Method', () => {
