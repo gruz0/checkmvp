@@ -1,3 +1,4 @@
+import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
@@ -12,15 +13,12 @@ describe('Evaluation Class', () => {
     ),
   ]
 
-  const validClarityScore = {
-    overallScore: 8,
-    metrics: {
-      problemClarity: 8,
-      targetAudienceClarity: 7,
-      scopeDefinition: 9,
-      valuePropositionClarity: 8,
-    },
-  }
+  const validClarityScore = ClarityScore.New(8, {
+    problemClarity: 8,
+    targetAudienceClarity: 7,
+    scopeDefinition: 9,
+    valuePropositionClarity: 8,
+  })
 
   const validLanguageAnalysis = {
     vagueTerms: ['maybe', 'somehow'],
