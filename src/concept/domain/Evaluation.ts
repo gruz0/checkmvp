@@ -1,13 +1,8 @@
 import { ClarityScore } from '@/concept/domain/ClarityScore'
+import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 
 export type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
-
-export interface LanguageAnalysis {
-  vagueTerms: string[]
-  missingContext: string[]
-  ambiguousStatements: string[]
-}
 
 export class Evaluation {
   private readonly status: Status

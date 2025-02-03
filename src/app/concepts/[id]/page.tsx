@@ -99,7 +99,15 @@ export default async function Page({ params }: { params: { id: string } }) {
           overallScore: conceptEvaluation.getClarityScore().getOverallScore(),
           metrics: conceptEvaluation.getClarityScore().getMetrics(),
         },
-        languageAnalysis: conceptEvaluation.getLanguageAnalysis(),
+        languageAnalysis: {
+          vagueTerms: conceptEvaluation.getLanguageAnalysis().getVagueTerms(),
+          missingContext: conceptEvaluation
+            .getLanguageAnalysis()
+            .getMissingContext(),
+          ambiguousStatements: conceptEvaluation
+            .getLanguageAnalysis()
+            .getAmbiguousStatements(),
+        },
       }
 
       conceptProps.evaluation = evaluation

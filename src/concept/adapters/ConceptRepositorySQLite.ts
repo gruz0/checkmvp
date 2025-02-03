@@ -4,6 +4,7 @@ import { TimeProvider } from '@/common/domain/TimeProvider'
 import { Concept } from '@/concept/domain/Aggregate'
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation, Status } from '@/concept/domain/Evaluation'
+import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { Repository } from '@/concept/domain/Repository'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
@@ -172,7 +173,11 @@ export class ConceptRepositorySQLite implements Repository {
             evaluation.clarityScore.overallScore,
             evaluation.clarityScore.metrics
           ),
-          evaluation.languageAnalysis
+          LanguageAnalysis.New(
+            evaluation.languageAnalysis.vagueTerms,
+            evaluation.languageAnalysis.missingContext,
+            evaluation.languageAnalysis.ambiguousStatements
+          )
         )
       )
     }

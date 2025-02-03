@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/nextjs'
 import { Concept } from '@/concept/domain/Aggregate'
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { Repository } from '@/concept/domain/Repository'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
@@ -116,7 +117,11 @@ export class ConceptEvaluationSubscriber implements EventHandler {
                 evaluation.clarityScore.overallScore,
                 evaluation.clarityScore.metrics
               ),
-              evaluation.languageAnalysis
+              LanguageAnalysis.New(
+                evaluation.languageAnalysis.vagueTerms,
+                evaluation.languageAnalysis.missingContext,
+                evaluation.languageAnalysis.ambiguousStatements
+              )
             )
           )
 
