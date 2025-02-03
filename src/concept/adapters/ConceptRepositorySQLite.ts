@@ -81,7 +81,21 @@ export class ConceptRepositorySQLite implements Repository {
 
       const updatedConcept = updateFn(concept)
 
-      // TODO: We should validate uniqueness of the ideaId before updating a record.
+      // Validate ideaId uniqueness if the concept is being accepted
+      if (updatedConcept.isAccepted()) {
+        const existingConceptWithIdeaId = await tx.concept.findFirst({
+          where: {
+            ideaId: updatedConcept.getIdeaId().getValue(),
+            id: { not: id }, // Exclude the current concept
+          },
+        })
+
+        if (existingConceptWithIdeaId) {
+          throw new Error(
+            `Concept with ideaId ${updatedConcept.getIdeaId().getValue()} already exists`
+          )
+        }
+      }
 
       await tx.concept.update({
         where: {

@@ -277,5 +277,40 @@ describe('ConceptRepositorySQLite', () => {
       expect(updated?.wasArchived()).toBeTrue()
       expect(updated?.getIdeaId().getValue()).toBe(ideaId.getValue())
     })
+
+    it('should throw error when trying to accept a concept with duplicate ideaId', async () => {
+      // Create and save first concept
+      const firstConceptId = await createBaseConcept()
+      const sharedIdeaId = Identity.Generate()
+
+      // Accept first concept
+      await repository.updateConcept(firstConceptId, (concept) => {
+        concept.evaluate(WellDefinedEvaluationFactory.New())
+        concept.accept(sharedIdeaId)
+        return concept
+      })
+
+      // Create and save second concept
+      const secondConceptId = await createBaseConcept()
+
+      // Try to accept second concept with same ideaId
+      await expect(
+        repository.updateConcept(secondConceptId, (concept) => {
+          concept.evaluate(WellDefinedEvaluationFactory.New())
+          concept.accept(sharedIdeaId)
+          return concept
+        })
+      ).rejects.toThrow(
+        `Concept with ideaId ${sharedIdeaId.getValue()} already exists`
+      )
+
+      // Verify second concept was not accepted
+      const secondConcept = await repository.getById(secondConceptId)
+      if (!secondConcept) {
+        throw new Error(`Concept with ID ${secondConceptId} not found`)
+      }
+
+      expect(secondConcept.isAccepted()).toBeFalse()
+    })
   })
 })
