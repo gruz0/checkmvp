@@ -1,5 +1,6 @@
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 
@@ -20,11 +21,11 @@ describe('Evaluation Class', () => {
     valuePropositionClarity: 8,
   })
 
-  const validLanguageAnalysis = {
-    vagueTerms: ['maybe', 'somehow'],
-    missingContext: ['target market size'],
-    ambiguousStatements: ['it should work well'],
-  }
+  const validLanguageAnalysis = LanguageAnalysis.New(
+    ['maybe', 'somehow'],
+    ['target market size'],
+    ['it should work well']
+  )
 
   describe('Creation of Evaluation', () => {
     describe('well-defined status', () => {

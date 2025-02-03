@@ -1,5 +1,6 @@
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 
@@ -42,11 +43,7 @@ export class WellDefinedEvaluationFactory {
         scopeDefinition: 7,
         valuePropositionClarity: 10,
       }),
-      {
-        vagueTerms: [],
-        missingContext: [],
-        ambiguousStatements: [],
-      }
+      LanguageAnalysis.New([], [], [])
     )
   }
 }

@@ -1,6 +1,7 @@
 import { Concept } from '@/concept/domain/Aggregate'
 import { ClarityScore } from '@/concept/domain/ClarityScore'
-import { Evaluation, LanguageAnalysis } from '@/concept/domain/Evaluation'
+import { Evaluation } from '@/concept/domain/Evaluation'
+import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 
@@ -105,14 +106,10 @@ export class Service implements Anonymization {
   private getLanguageAnalysis(
     languageAnalysis: LanguageAnalysis
   ): LanguageAnalysis {
-    return {
-      vagueTerms: Array(languageAnalysis.vagueTerms.length).fill('[REDACTED]'),
-      missingContext: Array(languageAnalysis.missingContext.length).fill(
-        '[REDACTED]'
-      ),
-      ambiguousStatements: Array(
-        languageAnalysis.ambiguousStatements.length
-      ).fill('[REDACTED]'),
-    }
+    return LanguageAnalysis.New(
+      Array(languageAnalysis.getVagueTerms().length).fill('[REDACTED]'),
+      Array(languageAnalysis.getMissingContext().length).fill('[REDACTED]'),
+      Array(languageAnalysis.getAmbiguousStatements().length).fill('[REDACTED]')
+    )
   }
 }

@@ -1,5 +1,6 @@
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 
@@ -36,14 +37,11 @@ export class RequiresChangesEvaluationFactory {
         scopeDefinition: 6,
         valuePropositionClarity: 6,
       }),
-      {
-        vagueTerms: ['efficient', 'growing', 'scattered'],
-        missingContext: ['specific industry focus', 'pricing expectations'],
-        ambiguousStatements: [
-          'Teams waste time searching',
-          'Poor documentation practices',
-        ],
-      }
+      LanguageAnalysis.New(
+        ['efficient', 'growing', 'scattered'],
+        ['specific industry focus', 'pricing expectations'],
+        ['Teams waste time searching', 'Poor documentation practices']
+      )
     )
   }
 }

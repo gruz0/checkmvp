@@ -1,5 +1,6 @@
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 
 export class NotWellDefinedEvaluationFactory {
   public static New(): Evaluation {
@@ -20,18 +21,11 @@ export class NotWellDefinedEvaluationFactory {
         scopeDefinition: 2,
         valuePropositionClarity: 7,
       }),
-      {
-        vagueTerms: ['users', 'better', 'solution', 'improve'],
-        missingContext: [
-          'target market size',
-          'specific use cases',
-          'current alternatives',
-        ],
-        ambiguousStatements: [
-          'Make the experience better',
-          'Solve user problems efficiently',
-        ],
-      }
+      LanguageAnalysis.New(
+        ['users', 'better', 'solution', 'improve'],
+        ['target market size', 'specific use cases', 'current alternatives'],
+        ['Make the experience better', 'Solve user problems efficiently']
+      )
     )
   }
 }

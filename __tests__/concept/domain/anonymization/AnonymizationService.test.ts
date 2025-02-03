@@ -232,25 +232,21 @@ describe('AnonymizationService', () => {
       new Date('2024-01-01')
     )
 
-    const evaluation = RequiresChangesEvaluationFactory.New()
-    // Override language analysis with non-empty arrays
-    evaluation.getLanguageAnalysis().vagueTerms = ['vague1', 'vague2']
-    evaluation.getLanguageAnalysis().missingContext = ['context1']
-    evaluation.getLanguageAnalysis().ambiguousStatements = [
-      'ambiguous1',
-      'ambiguous2',
-      'ambiguous3',
-    ]
-
-    concept.evaluate(evaluation)
+    concept.evaluate(RequiresChangesEvaluationFactory.New())
 
     const result = service.anonymizeConcept(concept)
 
     const languageAnalysis = result.getEvaluation().getLanguageAnalysis()
-    expect(languageAnalysis.vagueTerms).toEqual(['[REDACTED]', '[REDACTED]'])
-    expect(languageAnalysis.missingContext).toEqual(['[REDACTED]'])
-    expect(languageAnalysis.ambiguousStatements).toEqual([
+    expect(languageAnalysis.getVagueTerms()).toEqual([
       '[REDACTED]',
+      '[REDACTED]',
+      '[REDACTED]',
+    ])
+    expect(languageAnalysis.getMissingContext()).toEqual([
+      '[REDACTED]',
+      '[REDACTED]',
+    ])
+    expect(languageAnalysis.getAmbiguousStatements()).toEqual([
       '[REDACTED]',
       '[REDACTED]',
     ])
