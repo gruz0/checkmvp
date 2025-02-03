@@ -2,6 +2,8 @@ import * as Sentry from '@sentry/nextjs'
 import { Concept } from '@/concept/domain/Aggregate'
 import { Evaluation } from '@/concept/domain/Evaluation'
 import { Repository } from '@/concept/domain/Repository'
+import { TargetAudience } from '@/concept/domain/TargetAudience'
+import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 import { ConceptCreated } from '@/concept/domain/events/ConceptCreated'
 import { ConceptEvaluated } from '@/concept/domain/events/ConceptEvaluated'
 import { EventBus } from '@/concept/events/EventBus'
@@ -15,7 +17,7 @@ interface ConceptEvaluation {
   recommendations: string[]
   painPoints: string[]
   marketExistence: string
-  targetAudience: TargetAudience[]
+  targetAudience: TargetAudienceEvaluation[]
   clarityScore: {
     overallScore: number
     metrics: {
@@ -32,7 +34,7 @@ interface ConceptEvaluation {
   }
 }
 
-interface TargetAudience {
+interface TargetAudienceEvaluation {
   segment: string
   description: string
   challenges: string[]
@@ -96,7 +98,19 @@ export class ConceptEvaluationSubscriber implements EventHandler {
               evaluation.recommendations,
               evaluation.painPoints,
               evaluation.marketExistence,
-              evaluation.targetAudience,
+              evaluation.targetAudience.map((targetAudience) =>
+                TargetAudience.New(
+                  targetAudience.segment,
+                  targetAudience.description,
+                  targetAudience.challenges,
+                  ValidationMetrics.New(
+                    targetAudience.validationMetrics.marketSize,
+                    targetAudience.validationMetrics.accessibility,
+                    targetAudience.validationMetrics.painPointIntensity,
+                    targetAudience.validationMetrics.willingnessToPay
+                  )
+                )
+              ),
               evaluation.clarityScore,
               evaluation.languageAnalysis
             )

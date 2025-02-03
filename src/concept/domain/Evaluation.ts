@@ -1,16 +1,6 @@
-type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
+import { TargetAudience } from '@/concept/domain/TargetAudience'
 
-export interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-  validationMetrics: {
-    marketSize: string
-    accessibility: number
-    painPointIntensity: number
-    willingnessToPay: number
-  }
-}
+export type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
 
 export interface ClarityScore {
   overallScore: number

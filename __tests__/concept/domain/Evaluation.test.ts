@@ -1,18 +1,15 @@
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { TargetAudience } from '@/concept/domain/TargetAudience'
+import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 
 describe('Evaluation Class', () => {
   const validTargetAudience = [
-    {
-      segment: 'Developers',
-      description: 'Professional software developers',
-      challenges: ['Time management', 'Code quality'],
-      validationMetrics: {
-        marketSize: 'Large',
-        accessibility: 8,
-        painPointIntensity: 9,
-        willingnessToPay: 7,
-      },
-    },
+    TargetAudience.New(
+      'Developers',
+      'Professional software developers',
+      ['Time management', 'Code quality'],
+      ValidationMetrics.New('Large', 8, 9, 7)
+    ),
   ]
 
   const validClarityScore = {

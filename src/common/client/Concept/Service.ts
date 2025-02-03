@@ -11,6 +11,12 @@ interface ConceptForReservation {
       segment: string
       description: string
       challenges: string[]
+      validationMetrics: {
+        marketSize: string
+        accessibility: number
+        painPointIntensity: number
+        willingnessToPay: number
+      }
     }[]
   }
 }
@@ -28,6 +34,12 @@ const ConceptForReservationResponseSchema = z.object({
           segment: z.string().min(1),
           description: z.string().min(1),
           challenges: z.array(z.string().min(1)),
+          validation_metrics: z.object({
+            market_size: z.string().min(1),
+            accessibility: z.number().min(0).max(10),
+            pain_point_intensity: z.number().min(0).max(10),
+            willingness_to_pay: z.number().min(0).max(10),
+          }),
         })
       ),
     })
@@ -58,31 +70,55 @@ export class Service {
         )
       }
 
-      const data = await response.json()
+      const json = await response.json()
 
-      const parsedData = ConceptForReservationResponseSchema.parse(data)
+      const parsedData = ConceptForReservationResponseSchema.safeParse(json)
+
+      if (!parsedData.success) {
+        // Create a more specific error message based on the validation errors
+        const errorMessages = parsedData.error.issues.map((issue) => {
+          const field = issue.path.join('.')
+          return `${field}: ${issue.message}`
+        })
+
+        const userFriendlyMessage =
+          errorMessages.length > 0
+            ? `Validation failed: ${errorMessages.join(', ')}`
+            : 'The data received from the server was invalid.'
+
+        throw new Error(userFriendlyMessage)
+      }
+
+      const { data } = parsedData
 
       return {
-        success: parsedData.success,
-        message: parsedData.message,
-        content: parsedData.content
+        success: data.success,
+        message: data.message,
+        content: data.content
           ? {
-              problem: parsedData.content.problem,
-              region: parsedData.content.region,
-              marketExistence: parsedData.content.market_existence,
-              targetAudience: parsedData.content.target_audience.map(
+              problem: data.content.problem,
+              region: data.content.region,
+              marketExistence: data.content.market_existence,
+              targetAudience: data.content.target_audience.map(
                 (targetAudience) => ({
                   segment: targetAudience.segment,
                   description: targetAudience.description,
                   challenges: targetAudience.challenges,
+                  validationMetrics: {
+                    marketSize: targetAudience.validation_metrics.market_size,
+                    accessibility:
+                      targetAudience.validation_metrics.accessibility,
+                    painPointIntensity:
+                      targetAudience.validation_metrics.pain_point_intensity,
+                    willingnessToPay:
+                      targetAudience.validation_metrics.willingness_to_pay,
+                  },
                 })
               ),
             }
           : undefined,
       }
     } catch (error) {
-      console.error('Error getting concept:', error)
-
       return {
         success: false,
         message: (error as Error).message || 'An unknown error occurred.',

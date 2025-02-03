@@ -3,8 +3,9 @@ import {
   ClarityScore,
   Evaluation,
   LanguageAnalysis,
-  TargetAudience,
 } from '@/concept/domain/Evaluation'
+import { TargetAudience } from '@/concept/domain/TargetAudience'
+import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 
 export interface Anonymization {
   anonymizeConcept(concept: Concept): Concept
@@ -85,17 +86,14 @@ export class Service implements Anonymization {
   private getTargetAudience(
     targetAudience: TargetAudience[]
   ): TargetAudience[] {
-    return targetAudience.map((audience) => ({
-      segment: '[REDACTED]',
-      description: '[REDACTED]',
-      challenges: Array(audience.challenges.length).fill('[REDACTED]'),
-      validationMetrics: {
-        marketSize: '[REDACTED]',
-        accessibility: 1,
-        painPointIntensity: 1,
-        willingnessToPay: 1,
-      },
-    }))
+    return targetAudience.map((audience) =>
+      TargetAudience.New(
+        '[REDACTED]',
+        '[REDACTED]',
+        Array(audience.getChallenges().length).fill('[REDACTED]'),
+        ValidationMetrics.New('[REDACTED]', 1, 1, 1)
+      )
+    )
   }
 
   private getClarityScore(): ClarityScore {

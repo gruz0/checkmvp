@@ -75,7 +75,25 @@ export default async function Page({ params }: { params: { id: string } }) {
         marketExistence: conceptEvaluation.getMarketExistence(),
         painPoints: conceptEvaluation.getPainPoints(),
         recommendations: conceptEvaluation.getRecommendations(),
-        targetAudience: conceptEvaluation.getTargetAudience(),
+        targetAudience: conceptEvaluation
+          .getTargetAudience()
+          .map((targetAudience) => ({
+            segment: targetAudience.getSegment(),
+            description: targetAudience.getDescription(),
+            challenges: targetAudience.getChallenges(),
+            validationMetrics: {
+              marketSize: targetAudience.getValidationMetrics().getMarketSize(),
+              accessibility: targetAudience
+                .getValidationMetrics()
+                .getAccessibility(),
+              painPointIntensity: targetAudience
+                .getValidationMetrics()
+                .getPainPointIntensity(),
+              willingnessToPay: targetAudience
+                .getValidationMetrics()
+                .getWillingnessToPay(),
+            },
+          })),
         suggestions: conceptEvaluation.getSuggestions(),
         clarityScore: conceptEvaluation.getClarityScore(),
         languageAnalysis: conceptEvaluation.getLanguageAnalysis(),

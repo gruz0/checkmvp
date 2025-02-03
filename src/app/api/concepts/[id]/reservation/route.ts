@@ -5,7 +5,6 @@ import { App } from '@/concept/service/Service'
 import {
   ApplicationError,
   ConceptArchivedError,
-  ConceptEvaluationMissingError,
   ConceptNotEvaluatedError,
 } from './errors'
 
@@ -22,6 +21,12 @@ const ConceptForReservationResponseSchema = z.object({
           segment: z.string().min(1),
           description: z.string().min(1),
           challenges: z.array(z.string().min(1)),
+          validation_metrics: z.object({
+            market_size: z.string().min(1),
+            accessibility: z.number().min(0).max(10),
+            pain_point_intensity: z.number().min(0).max(10),
+            willingness_to_pay: z.number().min(0).max(10),
+          }),
         })
       ),
     })
@@ -46,7 +51,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
       id: params.id,
     })
 
-    if (!concept.isEvaluated()) {
+    if (!concept.wasEvaluated()) {
       throw new ConceptNotEvaluatedError(params.id)
     }
 
@@ -55,10 +60,6 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     }
 
     const evaluation = concept.getEvaluation()
-
-    if (!evaluation) {
-      throw new ConceptEvaluationMissingError(params.id)
-    }
 
     const response: ConceptForReservationResponse = {
       success: true,
@@ -70,9 +71,23 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
         target_audience: evaluation
           .getTargetAudience()
           .map((targetAudience) => ({
-            segment: targetAudience.segment,
-            description: targetAudience.description,
-            challenges: targetAudience.challenges,
+            segment: targetAudience.getSegment(),
+            description: targetAudience.getDescription(),
+            challenges: targetAudience.getChallenges(),
+            validation_metrics: {
+              market_size: targetAudience
+                .getValidationMetrics()
+                .getMarketSize(),
+              accessibility: targetAudience
+                .getValidationMetrics()
+                .getAccessibility(),
+              pain_point_intensity: targetAudience
+                .getValidationMetrics()
+                .getPainPointIntensity(),
+              willingness_to_pay: targetAudience
+                .getValidationMetrics()
+                .getWillingnessToPay(),
+            },
           })),
       },
     }

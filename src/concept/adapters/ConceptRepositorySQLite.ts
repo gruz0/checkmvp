@@ -1,12 +1,56 @@
+import { z } from 'zod'
 import { Identity } from '@/common/domain/Identity'
 import { TimeProvider } from '@/common/domain/TimeProvider'
 import { Concept } from '@/concept/domain/Aggregate'
-import { Evaluation } from '@/concept/domain/Evaluation'
+import { Evaluation, Status } from '@/concept/domain/Evaluation'
 import { Repository } from '@/concept/domain/Repository'
+import { TargetAudience } from '@/concept/domain/TargetAudience'
+import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 import { prisma } from '@/lib/prisma'
 import type { PrismaClient } from '@prisma/client/extension'
 
 type UpdateFn = (concept: Concept) => Concept
+
+const ValidationMetricsSchema = z.object({
+  marketSize: z.string(),
+  accessibility: z.number().min(0).max(10),
+  painPointIntensity: z.number().min(0).max(10),
+  willingnessToPay: z.number().min(0).max(10),
+})
+
+const TargetAudienceSchema = z.object({
+  segment: z.string(),
+  description: z.string(),
+  challenges: z.array(z.string()),
+  validationMetrics: ValidationMetricsSchema,
+})
+
+const ClarityScoreSchema = z.object({
+  overallScore: z.number().min(0).max(10),
+  metrics: z.object({
+    problemClarity: z.number().min(0).max(10),
+    targetAudienceClarity: z.number().min(0).max(10),
+    scopeDefinition: z.number().min(0).max(10),
+    valuePropositionClarity: z.number().min(0).max(10),
+  }),
+})
+
+const LanguageAnalysisSchema = z.object({
+  vagueTerms: z.array(z.string()),
+  missingContext: z.array(z.string()),
+  ambiguousStatements: z.array(z.string()),
+})
+
+const EvaluationSchema = z.object({
+  status: z.string(),
+  suggestions: z.array(z.string()),
+  recommendations: z.array(z.string()),
+  painPoints: z.array(z.string()),
+  marketExistence: z.string(),
+  targetAudience: z.array(TargetAudienceSchema),
+  clarityScore: ClarityScoreSchema,
+  languageAnalysis: LanguageAnalysisSchema,
+})
 
 export class ConceptRepositorySQLite implements Repository {
   constructor(
@@ -99,19 +143,32 @@ export class ConceptRepositorySQLite implements Repository {
     )
 
     if (conceptModel.evaluation) {
-      // FIXME: Refactor using zod.
-      const json = JSON.parse(conceptModel.evaluation)
+      const evaluation = EvaluationSchema.parse(
+        JSON.parse(conceptModel.evaluation)
+      )
 
       concept.evaluate(
         Evaluation.New(
-          json.status,
-          json.suggestions,
-          json.recommendations,
-          json.painPoints,
-          json.marketExistence,
-          json.targetAudience,
-          json.clarityScore,
-          json.languageAnalysis
+          evaluation.status as Status,
+          evaluation.suggestions,
+          evaluation.recommendations,
+          evaluation.painPoints,
+          evaluation.marketExistence,
+          evaluation.targetAudience.map((audience) =>
+            TargetAudience.New(
+              audience.segment,
+              audience.description,
+              audience.challenges,
+              ValidationMetrics.New(
+                audience.validationMetrics.marketSize,
+                audience.validationMetrics.accessibility,
+                audience.validationMetrics.painPointIntensity,
+                audience.validationMetrics.willingnessToPay
+              )
+            )
+          ),
+          evaluation.clarityScore,
+          evaluation.languageAnalysis
         )
       )
     }
