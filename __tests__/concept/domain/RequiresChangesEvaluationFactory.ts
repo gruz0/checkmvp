@@ -1,4 +1,6 @@
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { TargetAudience } from '@/concept/domain/TargetAudience'
+import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 
 export class RequiresChangesEvaluationFactory {
   public static New(): Evaluation {
@@ -16,21 +18,16 @@ export class RequiresChangesEvaluationFactory {
       ['Teams waste time searching across multiple tools'],
       'Current market solutions like Notion and Confluence partially address documentation, but lack cross-platform search capabilities',
       [
-        {
-          segment: 'Tech Startups',
-          description: 'Growing technology companies with remote teams',
-          challenges: [
+        TargetAudience.New(
+          'Tech Startups',
+          'Growing technology companies with remote teams',
+          [
             'Scattered documentation',
             'Inefficient knowledge sharing',
             'Tool fragmentation',
           ],
-          validationMetrics: {
-            marketSize: '500K startups',
-            accessibility: 6,
-            painPointIntensity: 7,
-            willingnessToPay: 6,
-          },
-        },
+          ValidationMetrics.New('500K startups', 6, 7, 6)
+        ),
       ],
       {
         overallScore: 6,

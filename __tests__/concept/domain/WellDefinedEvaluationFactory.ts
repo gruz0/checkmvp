@@ -1,4 +1,6 @@
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { TargetAudience } from '@/concept/domain/TargetAudience'
+import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 
 export class WellDefinedEvaluationFactory {
   public static New(): Evaluation {
@@ -13,35 +15,25 @@ export class WellDefinedEvaluationFactory {
       ],
       'Existing solutions like Dropbox and Google Drive lack unified search capabilities across platforms',
       [
-        {
-          segment: 'Remote Technology Companies',
-          description: 'Software companies with 50+ distributed team members',
-          challenges: [
+        TargetAudience.New(
+          'Remote Technology Companies',
+          'Software companies with 50+ distributed team members',
+          [
             'Information fragmentation across tools',
             'Reduced productivity from context switching',
             'Difficulty maintaining consistent documentation',
           ],
-          validationMetrics: {
-            marketSize: '2.3M companies globally',
-            accessibility: 8,
-            painPointIntensity: 9,
-            willingnessToPay: 7,
-          },
-        },
-        {
-          segment: 'Digital Agencies',
-          description: 'Creative agencies with multiple client projects',
-          challenges: [
+          ValidationMetrics.New('2.3M companies globally', 8, 9, 7)
+        ),
+        TargetAudience.New(
+          'Digital Agencies',
+          'Creative agencies with multiple client projects',
+          [
             'Project asset management across clients',
             'Team collaboration across time zones',
           ],
-          validationMetrics: {
-            marketSize: '850K agencies worldwide',
-            accessibility: 7,
-            painPointIntensity: 8,
-            willingnessToPay: 9,
-          },
-        },
+          ValidationMetrics.New('850K agencies worldwide', 7, 8, 9)
+        ),
       ],
       {
         overallScore: 9,

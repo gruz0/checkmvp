@@ -21,10 +21,3 @@ export class ConceptArchivedError extends ApplicationError {
     this.name = 'ConceptArchivedError'
   }
 }
-
-export class ConceptEvaluationMissingError extends ApplicationError {
-  constructor(conceptId: string) {
-    super(`Concept ${conceptId} does not have evaluation`, 400)
-    this.name = 'ConceptEvaluationMissingError'
-  }
-}
