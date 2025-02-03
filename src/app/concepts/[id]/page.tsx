@@ -95,7 +95,10 @@ export default async function Page({ params }: { params: { id: string } }) {
             },
           })),
         suggestions: conceptEvaluation.getSuggestions(),
-        clarityScore: conceptEvaluation.getClarityScore(),
+        clarityScore: {
+          overallScore: conceptEvaluation.getClarityScore().getOverallScore(),
+          metrics: conceptEvaluation.getClarityScore().getMetrics(),
+        },
         languageAnalysis: conceptEvaluation.getLanguageAnalysis(),
       }
 

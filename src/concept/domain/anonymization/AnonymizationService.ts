@@ -1,9 +1,6 @@
 import { Concept } from '@/concept/domain/Aggregate'
-import {
-  ClarityScore,
-  Evaluation,
-  LanguageAnalysis,
-} from '@/concept/domain/Evaluation'
+import { ClarityScore } from '@/concept/domain/ClarityScore'
+import { Evaluation, LanguageAnalysis } from '@/concept/domain/Evaluation'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
 
@@ -97,15 +94,12 @@ export class Service implements Anonymization {
   }
 
   private getClarityScore(): ClarityScore {
-    return {
-      overallScore: 1,
-      metrics: {
-        problemClarity: 1,
-        targetAudienceClarity: 1,
-        scopeDefinition: 1,
-        valuePropositionClarity: 1,
-      },
-    }
+    return ClarityScore.New(1, {
+      problemClarity: 1,
+      targetAudienceClarity: 1,
+      scopeDefinition: 1,
+      valuePropositionClarity: 1,
+    })
   }
 
   private getLanguageAnalysis(

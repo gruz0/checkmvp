@@ -1,3 +1,4 @@
+import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
 
 export class NotWellDefinedEvaluationFactory {
@@ -13,15 +14,12 @@ export class NotWellDefinedEvaluationFactory {
       [],
       '',
       [],
-      {
-        overallScore: 3,
-        metrics: {
-          problemClarity: 4,
-          targetAudienceClarity: 5,
-          scopeDefinition: 2,
-          valuePropositionClarity: 7,
-        },
-      },
+      ClarityScore.New(3, {
+        problemClarity: 4,
+        targetAudienceClarity: 5,
+        scopeDefinition: 2,
+        valuePropositionClarity: 7,
+      }),
       {
         vagueTerms: ['users', 'better', 'solution', 'improve'],
         missingContext: [

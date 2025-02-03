@@ -1,3 +1,4 @@
+import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
@@ -29,15 +30,12 @@ export class RequiresChangesEvaluationFactory {
           ValidationMetrics.New('500K startups', 6, 7, 6)
         ),
       ],
-      {
-        overallScore: 6,
-        metrics: {
-          problemClarity: 6,
-          targetAudienceClarity: 5,
-          scopeDefinition: 6,
-          valuePropositionClarity: 6,
-        },
-      },
+      ClarityScore.New(6, {
+        problemClarity: 6,
+        targetAudienceClarity: 5,
+        scopeDefinition: 6,
+        valuePropositionClarity: 6,
+      }),
       {
         vagueTerms: ['efficient', 'growing', 'scattered'],
         missingContext: ['specific industry focus', 'pricing expectations'],

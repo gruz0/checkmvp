@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { Identity } from '@/common/domain/Identity'
 import { TimeProvider } from '@/common/domain/TimeProvider'
 import { Concept } from '@/concept/domain/Aggregate'
+import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation, Status } from '@/concept/domain/Evaluation'
 import { Repository } from '@/concept/domain/Repository'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
@@ -167,7 +168,10 @@ export class ConceptRepositorySQLite implements Repository {
               )
             )
           ),
-          evaluation.clarityScore,
+          ClarityScore.New(
+            evaluation.clarityScore.overallScore,
+            evaluation.clarityScore.metrics
+          ),
           evaluation.languageAnalysis
         )
       )

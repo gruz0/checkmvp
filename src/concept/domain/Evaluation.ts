@@ -1,16 +1,7 @@
+import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 
 export type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
-
-export interface ClarityScore {
-  overallScore: number
-  metrics: {
-    problemClarity: number
-    targetAudienceClarity: number
-    scopeDefinition: number
-    valuePropositionClarity: number
-  }
-}
 
 export interface LanguageAnalysis {
   vagueTerms: string[]

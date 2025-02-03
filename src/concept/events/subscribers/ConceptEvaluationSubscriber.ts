@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/nextjs'
 import { Concept } from '@/concept/domain/Aggregate'
+import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
 import { Repository } from '@/concept/domain/Repository'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
@@ -111,7 +112,10 @@ export class ConceptEvaluationSubscriber implements EventHandler {
                   )
                 )
               ),
-              evaluation.clarityScore,
+              ClarityScore.New(
+                evaluation.clarityScore.overallScore,
+                evaluation.clarityScore.metrics
+              ),
               evaluation.languageAnalysis
             )
           )

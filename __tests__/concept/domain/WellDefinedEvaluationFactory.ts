@@ -1,3 +1,4 @@
+import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
@@ -35,15 +36,12 @@ export class WellDefinedEvaluationFactory {
           ValidationMetrics.New('850K agencies worldwide', 7, 8, 9)
         ),
       ],
-      {
-        overallScore: 9,
-        metrics: {
-          problemClarity: 10,
-          targetAudienceClarity: 8,
-          scopeDefinition: 7,
-          valuePropositionClarity: 10,
-        },
-      },
+      ClarityScore.New(9, {
+        problemClarity: 10,
+        targetAudienceClarity: 8,
+        scopeDefinition: 7,
+        valuePropositionClarity: 10,
+      }),
       {
         vagueTerms: [],
         missingContext: [],
