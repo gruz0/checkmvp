@@ -788,6 +788,21 @@ export class IdeaRepositorySQLite implements Repository {
     )
 
     if (contextAnalysisModel) {
+      interface keyMetric {
+        label: string
+        value: string
+        change: string
+        trend: 'up' | 'down' | 'neutral'
+      }
+
+      interface actionPriority {
+        action: string
+        impact: number
+        effort: number
+        impactDescription: string
+        effortDescription: string
+      }
+
       interface contextAnalysis {
         problemDefinition: string
         region: string
@@ -798,8 +813,11 @@ export class IdeaRepositorySQLite implements Repository {
         whyItMatters: string
         opportunities: string[]
         callToAction: string[]
+        keyMetrics: keyMetric[]
+        actionPriorities: actionPriority[]
       }
 
+      // FIXME: Refactor this to use zod
       const data = JSON.parse(contextAnalysisModel.value) as contextAnalysis
 
       idea.setContextAnalysis(
@@ -812,7 +830,9 @@ export class IdeaRepositorySQLite implements Repository {
           data.targetUsers,
           data.whyItMatters,
           data.opportunities,
-          data.callToAction
+          data.callToAction,
+          data.keyMetrics,
+          data.actionPriorities
         )
       )
     }

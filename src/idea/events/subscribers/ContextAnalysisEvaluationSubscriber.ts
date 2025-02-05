@@ -7,6 +7,21 @@ import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEv
 import { EventBus } from '@/idea/events/EventBus'
 import { EventHandler } from '@/idea/events/EventHandler'
 
+interface KeyMetric {
+  label: string
+  value: string
+  change: string
+  trend: 'up' | 'down' | 'neutral'
+}
+
+interface ActionPriority {
+  action: string
+  impact: number
+  effort: number
+  impactDescription: string
+  effortDescription: string
+}
+
 type Evaluation = {
   problemDefinition: string
   region: string
@@ -17,6 +32,8 @@ type Evaluation = {
   whyItMatters: string
   opportunities: string[]
   callToAction: string[]
+  keyMetrics: KeyMetric[]
+  actionPriorities: ActionPriority[]
 }
 
 interface AIService {
@@ -72,7 +89,9 @@ export class ContextAnalysisEvaluationSubscriber implements EventHandler {
             evaluation.targetUsers,
             evaluation.whyItMatters,
             evaluation.opportunities,
-            evaluation.callToAction
+            evaluation.callToAction,
+            evaluation.keyMetrics,
+            evaluation.actionPriorities
           )
         )
 

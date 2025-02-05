@@ -1,6 +1,21 @@
 import { z } from 'zod'
 import { BaseEvaluator } from './BaseEvaluator'
 
+interface KeyMetric {
+  label: string
+  value: string
+  change: string
+  trend: 'up' | 'down' | 'neutral'
+}
+
+interface ActionPriority {
+  action: string
+  impact: number
+  effort: number
+  impactDescription: string
+  effortDescription: string
+}
+
 interface Evaluation {
   problemDefinition: string
   region: string
@@ -11,6 +26,8 @@ interface Evaluation {
   whyItMatters: string
   opportunities: string[]
   callToAction: string[]
+  keyMetrics: KeyMetric[]
+  actionPriorities: ActionPriority[]
 }
 
 const ResponseSchema = z.object({
@@ -24,6 +41,23 @@ const ResponseSchema = z.object({
     why_it_matters: z.string(),
     opportunities: z.array(z.string()),
     call_to_action: z.array(z.string()),
+    key_metrics: z.array(
+      z.object({
+        label: z.string(),
+        value: z.string(),
+        change: z.string(),
+        trend: z.enum(['up', 'down', 'neutral']),
+      })
+    ),
+    action_priorities: z.array(
+      z.object({
+        action: z.string(),
+        impact: z.number(),
+        effort: z.number(),
+        impactDescription: z.string(),
+        effortDescription: z.string(),
+      })
+    ),
   }),
 })
 
@@ -90,6 +124,8 @@ ${marketExistence.trim()}"""`,
       whyItMatters: response.context_analysis.why_it_matters,
       opportunities: response.context_analysis.opportunities,
       callToAction: response.context_analysis.call_to_action,
+      keyMetrics: response.context_analysis.key_metrics,
+      actionPriorities: response.context_analysis.action_priorities,
     }
   }
 }

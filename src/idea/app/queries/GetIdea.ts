@@ -146,6 +146,19 @@ interface FullIdeaDTO {
     whyItMatters: string
     opportunities: string[]
     callToAction: string[]
+    keyMetrics: {
+      label: string
+      value: string
+      change: string
+      trend: 'up' | 'down' | 'neutral'
+    }[]
+    actionPriorities: {
+      action: string
+      impact: number
+      effort: number
+      impactDescription: string
+      effortDescription: string
+    }[]
   } | null
 }
 
@@ -304,6 +317,8 @@ export class GetIdeaHandler {
             whyItMatters: contextAnalysis.getWhyItMatters(),
             opportunities: contextAnalysis.getOpportunities(),
             callToAction: contextAnalysis.getCallToAction(),
+            keyMetrics: contextAnalysis.getKeyMetrics(),
+            actionPriorities: contextAnalysis.getActionPriorities(),
           }
         : null,
     }
