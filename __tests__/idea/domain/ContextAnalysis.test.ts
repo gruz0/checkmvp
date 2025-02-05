@@ -11,6 +11,23 @@ describe('ContextAnalysis', () => {
     whyItMatters: 'It improves efficiency by 50%',
     opportunities: ['Opportunity 1', 'Opportunity 2'],
     callToAction: ['Sign up now', 'Learn more'],
+    keyMetrics: [
+      {
+        label: 'Market Size',
+        value: '5K -> 10K users',
+        change: '+200%',
+        trend: 'up' as const,
+      },
+    ],
+    actionPriorities: [
+      {
+        action: 'Action 1',
+        impact: 7,
+        impactDescription: 'Impact description',
+        effort: 3,
+        effortDescription: 'Effort description',
+      },
+    ],
   }
 
   describe('New', () => {
@@ -24,7 +41,9 @@ describe('ContextAnalysis', () => {
         validParams.targetUsers,
         validParams.whyItMatters,
         validParams.opportunities,
-        validParams.callToAction
+        validParams.callToAction,
+        validParams.keyMetrics,
+        validParams.actionPriorities
       )
 
       expect(contextAnalysis).toBeInstanceOf(ContextAnalysis)
@@ -40,7 +59,9 @@ describe('ContextAnalysis', () => {
         '  ' + validParams.targetUsers + '  ',
         '  ' + validParams.whyItMatters + '  ',
         validParams.opportunities.map((item) => '  ' + item + '  '),
-        validParams.callToAction.map((item) => '  ' + item + '  ')
+        validParams.callToAction.map((item) => '  ' + item + '  '),
+        validParams.keyMetrics,
+        validParams.actionPriorities
       )
 
       expect(contextAnalysis.getProblemDefinition()).toBe(
@@ -78,7 +99,9 @@ describe('ContextAnalysis', () => {
             validParams.targetUsers,
             validParams.whyItMatters,
             validParams.opportunities,
-            validParams.callToAction
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
           )
         ).toThrow('Problem definition cannot be empty')
       })
@@ -94,7 +117,9 @@ describe('ContextAnalysis', () => {
             validParams.targetUsers,
             validParams.whyItMatters,
             validParams.opportunities,
-            validParams.callToAction
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
           )
         ).toThrow('Region cannot be empty')
       })
@@ -110,7 +135,9 @@ describe('ContextAnalysis', () => {
             validParams.targetUsers,
             validParams.whyItMatters,
             validParams.opportunities,
-            validParams.callToAction
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
           )
         ).toThrow('Market existence cannot be empty')
       })
@@ -126,7 +153,9 @@ describe('ContextAnalysis', () => {
             validParams.targetUsers,
             validParams.whyItMatters,
             validParams.opportunities,
-            validParams.callToAction
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
           )
         ).toThrow('Existing solutions cannot be empty')
       })
@@ -142,7 +171,9 @@ describe('ContextAnalysis', () => {
             validParams.targetUsers,
             validParams.whyItMatters,
             validParams.opportunities,
-            validParams.callToAction
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
           )
         ).toThrow('Main challenges cannot be empty')
       })
@@ -158,7 +189,9 @@ describe('ContextAnalysis', () => {
             '',
             validParams.whyItMatters,
             validParams.opportunities,
-            validParams.callToAction
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
           )
         ).toThrow('Target users cannot be empty')
       })
@@ -174,7 +207,9 @@ describe('ContextAnalysis', () => {
             validParams.targetUsers,
             '',
             validParams.opportunities,
-            validParams.callToAction
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
           )
         ).toThrow('Why it matters cannot be empty')
       })
@@ -190,7 +225,9 @@ describe('ContextAnalysis', () => {
             validParams.targetUsers,
             validParams.whyItMatters,
             [],
-            validParams.callToAction
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
           )
         ).toThrow('Opportunities cannot be empty')
       })
@@ -206,9 +243,103 @@ describe('ContextAnalysis', () => {
             validParams.targetUsers,
             validParams.whyItMatters,
             validParams.opportunities,
-            []
+            [],
+            validParams.keyMetrics,
+            validParams.actionPriorities
           )
         ).toThrow('Call to action cannot be empty')
+      })
+
+      it('should throw error if keyMetrics is empty array', () => {
+        expect(() =>
+          ContextAnalysis.New(
+            validParams.problemDefinition,
+            validParams.region,
+            validParams.marketExistence,
+            validParams.existingSolutions,
+            validParams.mainChallenges,
+            validParams.targetUsers,
+            validParams.whyItMatters,
+            validParams.opportunities,
+            validParams.callToAction,
+            [],
+            validParams.actionPriorities
+          )
+        ).toThrow('Key metrics cannot be empty')
+      })
+
+      it('should throw error if actionPriorities is empty array', () => {
+        expect(() =>
+          ContextAnalysis.New(
+            validParams.problemDefinition,
+            validParams.region,
+            validParams.marketExistence,
+            validParams.existingSolutions,
+            validParams.mainChallenges,
+            validParams.targetUsers,
+            validParams.whyItMatters,
+            validParams.opportunities,
+            validParams.callToAction,
+            validParams.keyMetrics,
+            []
+          )
+        ).toThrow('Action priorities cannot be empty')
+      })
+
+      it('should throw error if action priority impact is not between 1 and 10', () => {
+        const invalidActionPriorities = [
+          {
+            action: 'Action 1',
+            impact: 11,
+            impactDescription: 'Impact description',
+            effort: 5,
+            effortDescription: 'Effort description',
+          },
+        ]
+
+        expect(() =>
+          ContextAnalysis.New(
+            validParams.problemDefinition,
+            validParams.region,
+            validParams.marketExistence,
+            validParams.existingSolutions,
+            validParams.mainChallenges,
+            validParams.targetUsers,
+            validParams.whyItMatters,
+            validParams.opportunities,
+            validParams.callToAction,
+            validParams.keyMetrics,
+            invalidActionPriorities
+          )
+        ).toThrow('Action priority impact must be between 1 and 10')
+      })
+
+      it('should throw error if action priority effort is not between 1 and 10', () => {
+        const invalidActionPriorities = [
+          {
+            action: 'Action 1',
+            impact: 5,
+            impactDescription: 'Impact description',
+            effort: 0,
+            effortDescription: 'Effort description',
+          },
+        ]
+
+        expect(() =>
+          ContextAnalysis.New(
+            validParams.problemDefinition,
+            validParams.region,
+            validParams.marketExistence,
+            validParams.existingSolutions,
+            validParams.mainChallenges,
+            validParams.targetUsers,
+            validParams.whyItMatters,
+            validParams.opportunities,
+            validParams.callToAction,
+            validParams.keyMetrics,
+            invalidActionPriorities
+          )
+        ).toThrow('Action priority effort must be between 1 and 10')
       })
     })
   })
@@ -226,7 +357,9 @@ describe('ContextAnalysis', () => {
         validParams.targetUsers,
         validParams.whyItMatters,
         validParams.opportunities,
-        validParams.callToAction
+        validParams.callToAction,
+        validParams.keyMetrics,
+        validParams.actionPriorities
       )
     })
 
@@ -260,6 +393,59 @@ describe('ContextAnalysis', () => {
       expect(contextAnalysis.getCallToAction()).toEqual(
         validParams.callToAction
       )
+    })
+
+    it('should return immutable arrays from keyMetrics and actionPriorities getters', () => {
+      const keyMetrics = contextAnalysis.getKeyMetrics()
+      const actionPriorities = contextAnalysis.getActionPriorities()
+
+      // Attempt to modify the arrays
+      keyMetrics.push({
+        label: 'New Metric',
+        value: '1 -> 2',
+        change: '+100%',
+        trend: 'up',
+      })
+      actionPriorities.push({
+        action: 'New Action',
+        impact: 5,
+        impactDescription: 'New Impact',
+        effort: 5,
+        effortDescription: 'New Effort',
+      })
+
+      // Verify original arrays are unchanged
+      expect(contextAnalysis.getKeyMetrics()).toEqual(validParams.keyMetrics)
+      expect(contextAnalysis.getActionPriorities()).toEqual(
+        validParams.actionPriorities
+      )
+    })
+
+    it('should validate key metric trend values', () => {
+      const invalidKeyMetrics = [
+        {
+          label: 'Market Size',
+          value: '5K -> 10K users',
+          change: '+200%',
+          trend: 'invalid' as 'up' | 'down' | 'neutral',
+        },
+      ]
+
+      expect(() =>
+        ContextAnalysis.New(
+          validParams.problemDefinition,
+          validParams.region,
+          validParams.marketExistence,
+          validParams.existingSolutions,
+          validParams.mainChallenges,
+          validParams.targetUsers,
+          validParams.whyItMatters,
+          validParams.opportunities,
+          validParams.callToAction,
+          invalidKeyMetrics,
+          validParams.actionPriorities
+        )
+      ).toThrow('Invalid trend value. Must be up, down, or neutral')
     })
   })
 })
