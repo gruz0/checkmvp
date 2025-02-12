@@ -1,5 +1,6 @@
-export class Stage {
-  private readonly value: string
+import { ArrayValueObject } from '@/common/domain/ArrayValueObject'
+
+export class Stage extends ArrayValueObject<typeof Stage.VALID_STAGES> {
   private static readonly VALID_STAGES = [
     'idea',
     'pre_mvp',
@@ -7,33 +8,16 @@ export class Stage {
     'post_launch',
   ] as const
 
-  private constructor(value: string) {
-    this.value = value
+  private constructor(value: (typeof Stage.VALID_STAGES)[number]) {
+    super(value)
   }
 
   static New(value: string): Stage {
-    if (!value) {
-      throw new Error('Stage must be defined.')
-    }
-
-    const cleanValue = value
-      .trim()
-      .toLowerCase() as (typeof Stage.VALID_STAGES)[number]
-
-    if (!cleanValue) {
-      throw new Error('Stage must be defined.')
-    }
-
-    if (!this.VALID_STAGES.includes(cleanValue)) {
-      throw new Error(
-        `Invalid stage. Must be one of: ${this.VALID_STAGES.join(', ')}`
-      )
-    }
-
-    return new Stage(cleanValue)
-  }
-
-  public getValue(): string {
-    return this.value
+    const validValue = ArrayValueObject.createNew(
+      value,
+      Stage.VALID_STAGES,
+      'Stage'
+    )
+    return new Stage(validValue)
   }
 }
