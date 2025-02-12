@@ -34,8 +34,8 @@ interface Evaluation {
     validationMethods: string[]
   } | null
   hypothesisFramework: {
-    format: string
-    examples: string[]
+    statement: string
+    hypotheses: string[]
   } | null
   validationPlan: {
     quickWins: string[]
@@ -107,8 +107,8 @@ const ResponseSchema = z.object({
       .nullable(),
     hypothesis_framework: z
       .object({
-        format: z.string(),
-        examples: z.array(z.string()),
+        statement: z.string(),
+        hypotheses: z.array(z.string()),
       })
       .nullable(),
     validation_plan: z
@@ -374,8 +374,8 @@ ${stage.trim()}
           validationMethods: assumptionsAnalysis.validation_methods,
         },
         hypothesisFramework: {
-          format: hypothesisFramework.format,
-          examples: hypothesisFramework.examples,
+          statement: hypothesisFramework.statement,
+          hypotheses: hypothesisFramework.hypotheses,
         },
         validationPlan: {
           quickWins: validationPlan.quick_wins,

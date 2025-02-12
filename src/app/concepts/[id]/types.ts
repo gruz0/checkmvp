@@ -36,8 +36,8 @@ interface AssumptionsAnalysis {
 }
 
 interface HypothesisFramework {
-  format: string
-  examples: string[]
+  statement: string
+  hypotheses: string[]
 }
 
 interface ValidationPlan {

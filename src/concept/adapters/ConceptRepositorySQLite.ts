@@ -54,8 +54,8 @@ const AssumptionsAnalysisSchema = z.object({
 })
 
 const HypothesisFrameworkSchema = z.object({
-  format: z.string(),
-  examples: z.array(z.string()),
+  statement: z.string(),
+  hypotheses: z.array(z.string()),
 })
 
 const ValidationPlanSchema = z.object({
@@ -215,8 +215,8 @@ export class ConceptRepositorySQLite implements Repository {
 
       if (evaluation.hypothesisFramework) {
         hypothesisFramework = HypothesisFramework.New(
-          evaluation.hypothesisFramework.format,
-          evaluation.hypothesisFramework.examples
+          evaluation.hypothesisFramework.statement,
+          evaluation.hypothesisFramework.hypotheses
         )
       }
 

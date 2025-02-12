@@ -44,8 +44,8 @@ interface ConceptEvaluation {
     validationMethods: string[]
   } | null
   hypothesisFramework: {
-    format: string
-    examples: string[]
+    statement: string
+    hypotheses: string[]
   } | null
   validationPlan: {
     quickWins: string[]
@@ -130,8 +130,8 @@ export class ConceptEvaluationSubscriber implements EventHandler {
 
       if (evaluation.hypothesisFramework) {
         hypothesisFramework = HypothesisFramework.New(
-          evaluation.hypothesisFramework.format,
-          evaluation.hypothesisFramework.examples
+          evaluation.hypothesisFramework.statement,
+          evaluation.hypothesisFramework.hypotheses
         )
       }
 
