@@ -36,8 +36,11 @@ describe('ConceptAnonymizationSubscriber', () => {
     conceptId = Identity.Generate().getValue()
     const concept = Concept.New(
       conceptId,
-      'Long problem that satisfies the criteria',
+      'Long problem that satisfies the criteria and is long enough to pass the validation',
+      'Persona that satisfies the criteria and is long enough to pass the validation',
       'worldwide',
+      'b2c',
+      'idea',
       30,
       new SystemTimeProvider()
     )
@@ -134,8 +137,13 @@ describe('ConceptAnonymizationSubscriber', () => {
       }
 
       expect(anonymizedConcept.getProblem().getValue()).toBe(
-        'This concept has been anonymized and is no longer available.'
+        'This problem has been anonymized and is no longer available for public view.'
       )
+      expect(anonymizedConcept.getPersona().getValue()).toBe(
+        'This persona has been anonymized and is no longer available for public view.'
+      )
+      expect(anonymizedConcept.getProductType().getValue()).toBe('b2c')
+      expect(anonymizedConcept.getStage().getValue()).toBe('idea')
       expect(anonymizedConcept.isAnonymized()).toBeTrue()
     })
   })

@@ -16,6 +16,12 @@ jest.mock('@sentry/nextjs', () => ({
 describe('GET /api/concepts/[id]/reservation', () => {
   const mockRequest = new Request('http://localhost:3000')
   const mockParams = { id: Identity.Generate().getValue() }
+  const problem =
+    'Long description of the problem that satisfies the criteria and is long enough to pass the validation'
+  const persona =
+    'Persona that satisfies the criteria and is long enough to pass the validation'
+  const productType = 'b2c'
+  const stage = 'idea'
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -25,8 +31,11 @@ describe('GET /api/concepts/[id]/reservation', () => {
     // Create a real Concept aggregate
     const concept = Concept.New(
       mockParams.id,
-      'Long description of the problem',
+      problem,
+      persona,
       'europe',
+      productType,
+      stage,
       3,
       new SystemTimeProvider()
     )
@@ -47,8 +56,11 @@ describe('GET /api/concepts/[id]/reservation', () => {
       success: true,
       message: 'Concept is ready for the reservation',
       content: {
-        problem: 'Long description of the problem',
+        problem,
+        persona,
         region: 'europe',
+        product_type: productType,
+        stage,
         market_existence: evaluation.getMarketExistence(),
         target_audience: [
           {
@@ -88,8 +100,11 @@ describe('GET /api/concepts/[id]/reservation', () => {
   it('should return error when concept is not evaluated', async () => {
     const concept = Concept.New(
       mockParams.id,
-      'Long description of the problem',
+      problem,
+      persona,
       'europe',
+      productType,
+      stage,
       3,
       new SystemTimeProvider()
     )
@@ -108,8 +123,11 @@ describe('GET /api/concepts/[id]/reservation', () => {
   it('should return error when concept is archived', async () => {
     const concept = Concept.New(
       mockParams.id,
-      'Long description of the problem',
+      problem,
+      persona,
       'europe',
+      productType,
+      stage,
       3,
       new SystemTimeProvider()
     )

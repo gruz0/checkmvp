@@ -16,11 +16,14 @@ export async function POST(request: Request) {
 
     const formData = await request.json()
 
-    const { problem, region } = formData
+    const { problem, persona, region, product_type, stage } = formData
 
     Sentry.setContext('payload', {
       problem: problem,
+      persona: persona,
       region: region,
+      product_type: product_type,
+      stage: stage,
     })
 
     if (!problem) {
@@ -30,9 +33,30 @@ export async function POST(request: Request) {
       )
     }
 
+    if (!persona) {
+      return NextResponse.json(
+        { error: 'Persona must be defined' },
+        { status: 422 }
+      )
+    }
+
     if (!region) {
       return NextResponse.json(
         { error: 'Region must be defined' },
+        { status: 422 }
+      )
+    }
+
+    if (!product_type) {
+      return NextResponse.json(
+        { error: 'Product type must be defined' },
+        { status: 422 }
+      )
+    }
+
+    if (!stage) {
+      return NextResponse.json(
+        { error: 'Stage must be defined' },
         { status: 422 }
       )
     }
@@ -62,7 +86,10 @@ export async function POST(request: Request) {
     await App.Commands.EvaluateConcept.handle({
       id: conceptId,
       problem: problem,
+      persona: persona,
       region: region,
+      productType: product_type,
+      stage: stage,
     })
 
     await createIdeaLimiter.updateCounter()

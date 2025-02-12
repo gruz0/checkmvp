@@ -27,6 +27,22 @@ interface Evaluation {
     missingContext: string[]
     ambiguousStatements: string[]
   }
+  assumptionsAnalysis: {
+    coreAssumptions: string[]
+    testability: number
+    riskLevel: 'high' | 'medium' | 'low'
+    validationMethods: string[]
+  } | null
+  hypothesisFramework: {
+    format: string
+    examples: string[]
+  } | null
+  validationPlan: {
+    quickWins: string[]
+    mediumEffort: string[]
+    deepDive: string[]
+    successCriteria: string[]
+  } | null
 }
 
 interface TargetAudience {
@@ -81,6 +97,28 @@ const ResponseSchema = z.object({
         }),
       })
     ),
+    assumptions_analysis: z
+      .object({
+        core_assumptions: z.array(z.string()),
+        testability: z.number(),
+        risk_level: z.enum(['high', 'medium', 'low']),
+        validation_methods: z.array(z.string()),
+      })
+      .nullable(),
+    hypothesis_framework: z
+      .object({
+        format: z.string(),
+        examples: z.array(z.string()),
+      })
+      .nullable(),
+    validation_plan: z
+      .object({
+        quick_wins: z.array(z.string()),
+        medium_effort: z.array(z.string()),
+        deep_dive: z.array(z.string()),
+        success_criteria: z.array(z.string()),
+      })
+      .nullable(),
   }),
 })
 
@@ -102,7 +140,10 @@ export class ConceptEvaluator {
   async evaluateConcept(
     conceptId: string,
     problem: string,
-    region: string
+    persona: string,
+    region: string,
+    productType: string,
+    stage: string
   ): Promise<Evaluation> {
     Sentry.setTag('component', 'AIService')
     Sentry.setTag('ai_service_type', ConceptEvaluator.className)
@@ -114,6 +155,26 @@ export class ConceptEvaluator {
       if (!promptContent) {
         throw new Error(`Prompt content ${ConceptEvaluator.prompt} not found`)
       }
+
+      const hypothesis = `Hypothesis: """
+${problem.trim()}
+"""
+
+Target Audience: """
+${persona.trim()}
+"""
+
+Region: """
+${region.trim()}
+"""
+
+Product Type: """
+${productType.trim()}
+"""
+
+Stage: """
+${stage.trim()}
+"""`
 
       const response = await this.openai.beta.chat.completions.parse({
         model: ConceptEvaluator.model,
@@ -132,11 +193,7 @@ export class ConceptEvaluator {
             content: [
               {
                 type: 'text',
-                text: problem.trim(),
-              },
-              {
-                type: 'text',
-                text: `Region: ${region.trim()}`,
+                text: hypothesis,
               },
             ],
           },
@@ -198,6 +255,9 @@ export class ConceptEvaluator {
             missingContext: [],
             ambiguousStatements: [],
           },
+          assumptionsAnalysis: null,
+          hypothesisFramework: null,
+          validationPlan: null,
         }
       }
 
@@ -235,6 +295,24 @@ export class ConceptEvaluator {
             `🧱 Challenges and Barriers to Entry:\n\n${marketExistenceData.challenges_and_barriers_to_entry}`
           )
         }
+      }
+
+      const assumptionsAnalysis = problemEvaluation.assumptions_analysis
+
+      if (!assumptionsAnalysis) {
+        throw new Error('Assumptions analysis is null')
+      }
+
+      const hypothesisFramework = problemEvaluation.hypothesis_framework
+
+      if (!hypothesisFramework) {
+        throw new Error('Hypothesis framework is null')
+      }
+
+      const validationPlan = problemEvaluation.validation_plan
+
+      if (!validationPlan) {
+        throw new Error('Validation plan is null')
       }
 
       return {
@@ -288,6 +366,22 @@ export class ConceptEvaluator {
             problemEvaluation.language_analysis.ambiguous_statements.filter(
               (statement) => statement.trim() !== ''
             ),
+        },
+        assumptionsAnalysis: {
+          coreAssumptions: assumptionsAnalysis.core_assumptions,
+          testability: assumptionsAnalysis.testability,
+          riskLevel: assumptionsAnalysis.risk_level,
+          validationMethods: assumptionsAnalysis.validation_methods,
+        },
+        hypothesisFramework: {
+          format: hypothesisFramework.format,
+          examples: hypothesisFramework.examples,
+        },
+        validationPlan: {
+          quickWins: validationPlan.quick_wins,
+          mediumEffort: validationPlan.medium_effort,
+          deepDive: validationPlan.deep_dive,
+          successCriteria: validationPlan.success_criteria,
         },
       }
     } catch (e) {

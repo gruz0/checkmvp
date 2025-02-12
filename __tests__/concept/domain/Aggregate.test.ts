@@ -6,14 +6,22 @@ describe('Concept Class', () => {
   let timeProvider: { now: jest.Mock }
   let validId: string
   let validProblem: string
+  let validPersona: string
   let validRegion: string
+  let validProductType: string
+  let validStage: string
   let validExpiryPeriodInDays: number
   let currentDate: Date
 
   beforeEach(() => {
     validId = Identity.Generate().getValue()
-    validProblem = 'Valid long problem statement with a lot of words'
+    validProblem =
+      'This is a valid problem statement that meets the minimum length requirement and provides meaningful context.'
+    validPersona =
+      'Software developers with extensive experience in building scalable applications and understanding of distributed systems architecture.'
     validRegion = 'worldwide'
+    validProductType = 'b2c'
+    validStage = 'idea'
     validExpiryPeriodInDays = 30
     currentDate = new Date('2024-01-01')
 
@@ -27,7 +35,10 @@ describe('Concept Class', () => {
       const concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider
       )
@@ -35,7 +46,10 @@ describe('Concept Class', () => {
       expect(concept).toBeInstanceOf(Concept)
       expect(concept.getId().getValue()).toBe(validId)
       expect(concept.getProblem().getValue()).toBe(validProblem)
+      expect(concept.getPersona().getValue()).toBe(validPersona)
       expect(concept.getRegion().getValue()).toBe(validRegion)
+      expect(concept.getProductType().getValue()).toBe(validProductType)
+      expect(concept.getStage().getValue()).toBe(validStage)
       expect(concept.isAvailable()).toBeTrue()
       expect(concept.isEvaluated()).toBeFalse()
       expect(concept.isAccepted()).toBeFalse()
@@ -58,7 +72,10 @@ describe('Concept Class', () => {
       const concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider,
         specificDate
@@ -69,7 +86,16 @@ describe('Concept Class', () => {
 
     it('should throw error when created with negative expiry period', () => {
       expect(() =>
-        Concept.New(validId, validProblem, validRegion, -1, timeProvider)
+        Concept.New(
+          validId,
+          validProblem,
+          validPersona,
+          validRegion,
+          validProductType,
+          validStage,
+          -1,
+          timeProvider
+        )
       ).toThrow('Expiry period must be positive')
     })
 
@@ -79,12 +105,79 @@ describe('Concept Class', () => {
         Concept.New(
           validId,
           validProblem,
+          validPersona,
           validRegion,
+          validProductType,
+          validStage,
           validExpiryPeriodInDays,
           timeProvider,
           futureDate
         )
       ).toThrow('Creation date cannot be in the future')
+    })
+
+    it('should throw error when created with invalid persona', () => {
+      const shortPersona = 'Too short persona'
+
+      expect(() =>
+        Concept.New(
+          validId,
+          validProblem,
+          shortPersona,
+          validRegion,
+          validProductType,
+          validStage,
+          validExpiryPeriodInDays,
+          timeProvider
+        )
+      ).toThrow('Personas must be defined and between 64 and 2048 characters.')
+    })
+
+    it('should throw error when created with empty persona', () => {
+      expect(() =>
+        Concept.New(
+          validId,
+          validProblem,
+          '',
+          validRegion,
+          validProductType,
+          validStage,
+          validExpiryPeriodInDays,
+          timeProvider
+        )
+      ).toThrow('Personas must be defined and between 64 and 2048 characters.')
+    })
+
+    it('should throw error when created with whitespace-only persona', () => {
+      expect(() =>
+        Concept.New(
+          validId,
+          validProblem,
+          '     ',
+          validRegion,
+          validProductType,
+          validStage,
+          validExpiryPeriodInDays,
+          timeProvider
+        )
+      ).toThrow('Personas must be defined and between 64 and 2048 characters.')
+    })
+
+    it('should throw error when created with too long personas', () => {
+      const longPersona = 'a'.repeat(2049)
+
+      expect(() =>
+        Concept.New(
+          validId,
+          validProblem,
+          longPersona,
+          validRegion,
+          validProductType,
+          validStage,
+          validExpiryPeriodInDays,
+          timeProvider
+        )
+      ).toThrow('Personas must be defined and between 64 and 2048 characters.')
     })
   })
 
@@ -93,7 +186,10 @@ describe('Concept Class', () => {
       const concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider
       )
@@ -110,7 +206,10 @@ describe('Concept Class', () => {
       const concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider
       )
@@ -123,7 +222,10 @@ describe('Concept Class', () => {
       const concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider
       )
@@ -137,7 +239,10 @@ describe('Concept Class', () => {
       const concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider,
         specificDate
@@ -155,7 +260,10 @@ describe('Concept Class', () => {
       concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider
       )
@@ -363,7 +471,10 @@ describe('Concept Class', () => {
       const concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider
       )
@@ -377,7 +488,10 @@ describe('Concept Class', () => {
       const concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider
       )
@@ -394,7 +508,10 @@ describe('Concept Class', () => {
       const concept = Concept.New(
         validId,
         validProblem,
+        validPersona,
         validRegion,
+        validProductType,
+        validStage,
         validExpiryPeriodInDays,
         timeProvider,
         utcDate

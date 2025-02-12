@@ -6,6 +6,8 @@ interface ConceptForReservation {
   content?: {
     problem: string
     region: string
+    productType: string
+    stage: string
     marketExistence: string
     targetAudience: {
       segment: string
@@ -28,6 +30,8 @@ const ConceptForReservationResponseSchema = z.object({
     .object({
       problem: z.string().min(1),
       region: z.string().min(1),
+      product_type: z.string().min(1),
+      stage: z.string().min(1),
       market_existence: z.string().min(1),
       target_audience: z.array(
         z.object({
@@ -98,6 +102,8 @@ export class Service {
           ? {
               problem: data.content.problem,
               region: data.content.region,
+              productType: data.content.product_type,
+              stage: data.content.stage,
               marketExistence: data.content.market_existence,
               targetAudience: data.content.target_audience.map(
                 (targetAudience) => ({

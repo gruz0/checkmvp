@@ -12,6 +12,8 @@ interface ConceptForReservation {
   content?: {
     problem: string
     region: string
+    productType: string
+    stage: string
     marketExistence: string
     targetAudience: {
       segment: string
@@ -74,11 +76,13 @@ export class MakeReservationHandler {
       const idea = Idea.New(
         command.ideaId,
         command.conceptId,
-        // FIXME: This is a temporary solution to pass the region to the idea
-        // Later we should refactor the idea to accept a region
-        `${concept.content.problem}\n\nRegion: ${this.formatRegionName(
-          concept.content.region
-        )}`,
+        // FIXME: This is a temporary solution to pass the region, product type and stage to the idea
+        // Later we should refactor the idea to accept a region, product type and stage
+        `${concept.content.problem}
+
+Region: ${this.formatRegionName(concept.content.region)}
+My business model: ${concept.content.productType}
+My current stage: ${concept.content.stage}`,
         concept.content.marketExistence,
         targetAudiences
       )

@@ -4,14 +4,26 @@ import { createIdeaLimiterKey, getLimits } from '@/lib/rateLimiter'
 
 export const dynamic = 'force-dynamic'
 
+type SearchParams = {
+  problem?: string
+  persona?: string
+  region?: string
+  productType?: string
+  stage?: string
+}
+
 export default async function StartPage({
   searchParams,
 }: {
-  searchParams: { problem?: string }
+  searchParams: SearchParams
 }) {
   const limiter = await getLimits(createIdeaLimiterKey)
 
   const problem = searchParams.problem || ''
+  const persona = searchParams.persona || ''
+  const region = searchParams.region || 'worldwide'
+  const productType = searchParams.productType || 'b2c'
+  const stage = searchParams.stage || 'idea'
 
   return (
     <div className="p-4 md:p-6 lg:p-8">
@@ -21,7 +33,13 @@ export default async function StartPage({
             Big Insights Start With Small Ideas! 🚀
           </h1>
 
-          <ConceptForm problem={problem} region="worldwide" />
+          <ConceptForm
+            problem={problem}
+            persona={persona}
+            region={region}
+            productType={productType}
+            stage={stage}
+          />
         </>
       ) : (
         <>

@@ -12,6 +12,10 @@ model Concept {
   problem      String
   evaluation   String?
   region       String?   @default("worldwide")
+  // FIXME: At some point we should make it mandatory
+  persona      String?   @default("")
+  productType  String?   @default("") @map(name: "product_type")
+  stage        String?   @default("")
   // We should validate uniqueness in the repository
   ideaId       String?   @map(name: "idea_id")
   createdAt    DateTime  @default(now()) @map(name: "created_at")

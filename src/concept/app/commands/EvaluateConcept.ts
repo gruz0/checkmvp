@@ -8,7 +8,10 @@ import { EventBus } from '@/concept/events/EventBus'
 type Command = {
   id: string
   problem: string
+  persona: string
   region: string
+  productType: string
+  stage: string
 }
 
 export class EvaluateConceptHandler {
@@ -28,7 +31,10 @@ export class EvaluateConceptHandler {
       const concept = Concept.New(
         command.id,
         command.problem,
+        command.persona,
         command.region,
+        command.productType,
+        command.stage,
         this.conceptExpirationDays,
         this.timeProvider
       )

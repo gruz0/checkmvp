@@ -1,11 +1,14 @@
 import * as Sentry from '@sentry/nextjs'
 import { Concept } from '@/concept/domain/Aggregate'
+import { AssumptionsAnalysis } from '@/concept/domain/AssumptionsAnalysis'
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { HypothesisFramework } from '@/concept/domain/HypothesisFramework'
 import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { Repository } from '@/concept/domain/Repository'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
+import { ValidationPlan } from '@/concept/domain/ValidationPlan'
 import { ConceptCreated } from '@/concept/domain/events/ConceptCreated'
 import { ConceptEvaluated } from '@/concept/domain/events/ConceptEvaluated'
 import { EventBus } from '@/concept/events/EventBus'
@@ -34,6 +37,22 @@ interface ConceptEvaluation {
     missingContext: string[]
     ambiguousStatements: string[]
   }
+  assumptionsAnalysis: {
+    coreAssumptions: string[]
+    testability: number
+    riskLevel: 'high' | 'medium' | 'low'
+    validationMethods: string[]
+  } | null
+  hypothesisFramework: {
+    format: string
+    examples: string[]
+  } | null
+  validationPlan: {
+    quickWins: string[]
+    mediumEffort: string[]
+    deepDive: string[]
+    successCriteria: string[]
+  } | null
 }
 
 interface TargetAudienceEvaluation {
@@ -52,7 +71,10 @@ interface AIService {
   evaluateConcept(
     conceptId: string,
     problem: string,
-    region: string
+    persona: string,
+    region: string,
+    productType: string,
+    stage: string
   ): Promise<ConceptEvaluation>
 }
 
@@ -87,8 +109,42 @@ export class ConceptEvaluationSubscriber implements EventHandler {
       const evaluation = await this.aiService.evaluateConcept(
         concept.getId().getValue(),
         concept.getProblem().getValue(),
-        concept.getRegion().getValue()
+        concept.getPersona().getValue(),
+        concept.getRegion().getValue(),
+        concept.getProductType().getValue(),
+        concept.getStage().getValue()
       )
+
+      let assumptionAnalysis: AssumptionsAnalysis | null = null
+
+      if (evaluation.assumptionsAnalysis) {
+        assumptionAnalysis = AssumptionsAnalysis.New(
+          evaluation.assumptionsAnalysis.coreAssumptions,
+          evaluation.assumptionsAnalysis.testability,
+          evaluation.assumptionsAnalysis.riskLevel,
+          evaluation.assumptionsAnalysis.validationMethods
+        )
+      }
+
+      let hypothesisFramework: HypothesisFramework | null = null
+
+      if (evaluation.hypothesisFramework) {
+        hypothesisFramework = HypothesisFramework.New(
+          evaluation.hypothesisFramework.format,
+          evaluation.hypothesisFramework.examples
+        )
+      }
+
+      let validationPlan: ValidationPlan | null = null
+
+      if (evaluation.validationPlan) {
+        validationPlan = ValidationPlan.New(
+          evaluation.validationPlan.quickWins,
+          evaluation.validationPlan.mediumEffort,
+          evaluation.validationPlan.deepDive,
+          evaluation.validationPlan.successCriteria
+        )
+      }
 
       await this.repository.updateConcept(
         event.payload.id,
@@ -121,7 +177,10 @@ export class ConceptEvaluationSubscriber implements EventHandler {
                 evaluation.languageAnalysis.vagueTerms,
                 evaluation.languageAnalysis.missingContext,
                 evaluation.languageAnalysis.ambiguousStatements
-              )
+              ),
+              assumptionAnalysis,
+              hypothesisFramework,
+              validationPlan
             )
           )
 

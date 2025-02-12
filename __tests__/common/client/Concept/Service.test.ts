@@ -1,11 +1,11 @@
 import { Service } from '@/common/client/Concept/Service'
 import { Identity } from '@/common/domain/Identity'
 
-// Mock fetch globally
-const mockFetch = jest.fn()
-global.fetch = mockFetch
-
 describe('Concept Service', () => {
+  // Mock fetch globally
+  const mockFetch = jest.fn()
+  global.fetch = mockFetch
+
   let service: Service
   const baseURL = 'http://test-api'
   const mockConceptId = Identity.Generate().getValue()
@@ -23,6 +23,8 @@ describe('Concept Service', () => {
         content: {
           problem: 'Test Problem',
           region: 'Test Region',
+          product_type: 'b2b',
+          stage: 'idea',
           market_existence: 'Test Market',
           target_audience: [
             {
@@ -63,6 +65,8 @@ describe('Concept Service', () => {
         content: {
           problem: 'Test Problem',
           region: 'Test Region',
+          productType: 'b2b',
+          stage: 'idea',
           marketExistence: 'Test Market',
           targetAudience: [
             {
@@ -159,6 +163,8 @@ describe('Concept Service', () => {
         content: {
           problem: '',
           region: '',
+          product_type: '',
+          stage: '',
           market_existence: '',
           target_audience: [],
         },
@@ -174,7 +180,7 @@ describe('Concept Service', () => {
       expect(result).toEqual({
         success: false,
         message:
-          'Validation failed: content.problem: String must contain at least 1 character(s), content.region: String must contain at least 1 character(s), content.market_existence: String must contain at least 1 character(s)',
+          'Validation failed: content.problem: String must contain at least 1 character(s), content.region: String must contain at least 1 character(s), content.product_type: String must contain at least 1 character(s), content.stage: String must contain at least 1 character(s), content.market_existence: String must contain at least 1 character(s)',
       })
     })
   })

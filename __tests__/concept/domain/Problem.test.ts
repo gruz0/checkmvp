@@ -23,31 +23,31 @@ describe('Problem Class', () => {
     it('should throw error when input is empty', () => {
       expect(() => {
         Problem.New('')
-      }).toThrow('Problem must be defined and between 30 and 2048 characters.')
+      }).toThrow('Problem must be defined and between 64 and 2048 characters.')
     })
 
     it('should throw error when input is only whitespace', () => {
       expect(() => {
         Problem.New('     ')
-      }).toThrow('Problem must be defined and between 30 and 2048 characters.')
+      }).toThrow('Problem must be defined and between 64 and 2048 characters.')
     })
 
-    it('should throw error when input is less than 30 characters', () => {
+    it('should throw error when input is less than 64 characters', () => {
       const shortProblem = 'Too short problem statement'
       expect(() => {
         Problem.New(shortProblem)
-      }).toThrow('Problem must be defined and between 30 and 2048 characters.')
+      }).toThrow('Problem must be defined and between 64 and 2048 characters.')
     })
 
     it('should throw error when input exceeds 2048 characters', () => {
       const longProblem = 'a'.repeat(2049)
       expect(() => {
         Problem.New(longProblem)
-      }).toThrow('Problem must be defined and between 30 and 2048 characters.')
+      }).toThrow('Problem must be defined and between 64 and 2048 characters.')
     })
 
-    it('should accept input at minimum length (30 characters)', () => {
-      const minLengthProblem = 'a'.repeat(30)
+    it('should accept input at minimum length (64 characters)', () => {
+      const minLengthProblem = 'a'.repeat(64)
       const problem = Problem.New(minLengthProblem)
 
       expect(problem.getValue()).toBe(minLengthProblem)

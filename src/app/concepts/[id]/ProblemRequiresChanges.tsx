@@ -1,34 +1,49 @@
 'use client'
-import Link from 'next/link'
+
 import { useRouter } from 'next/navigation'
 import { usePlausible } from 'next-plausible'
 import React, { useState } from 'react'
 import ConceptForm from '@/components/ConceptForm'
+import HorizontalLine from '@/components/HorizontalLine'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
 import { Goals } from '@/lib/goals'
+import AssumptionsAnalysisSection from './AssumptionsAnalysisSection'
 import ClarityScoreSection from './ClarityScoreSection'
+import HypothesisFrameworkSection from './HypothesisFrameworkSection'
 import LanguageAnalysisSection from './LanguageAnalysisSection'
+import MarketExistenceSection from './MarketExistenceSection'
+import RecommendationsSection from './RecommendationsSection'
+import SharpenIdeaSection from './SharpenIdeaSection'
 import TargetAudienceSection from './TargetAudienceSection'
+import ValidationPlanSection from './ValidationPlanSection'
+import WelcomeBanner from './WelcomeBanner'
 import { ProblemEvaluation } from './types'
 
 interface Props {
   conceptId: string
   problem: string
+  persona: string
   region: string
+  productType: string
+  stage: string
   evaluation: ProblemEvaluation
 }
 
 const ProblemRequiresChanges = ({
   conceptId,
   problem,
+  persona,
   region,
+  productType,
+  stage,
   evaluation,
 }: Props) => {
   const plausible = usePlausible()
 
   const [status, setStatus] = useState<string>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [showForm, setShowForm] = useState(false)
 
   const router = useRouter()
 
@@ -82,102 +97,71 @@ const ProblemRequiresChanges = ({
             even more accurate insights.
           </p>
 
-          <hr className="my-6 md:my-8" />
+          <WelcomeBanner />
 
-          <Section header="🔎 How Big Could This Get?">
-            <Paragraph>
-              {evaluation.marketExistence.split('\n').map((line, index) => (
-                <React.Fragment key={index}>
-                  {line}
-                  <br />
-                </React.Fragment>
-              ))}
-            </Paragraph>
-          </Section>
+          <HorizontalLine />
+
+          <MarketExistenceSection
+            marketExistence={evaluation.marketExistence}
+          />
         </>
       ) : (
-        <Section header="Hmm, We Need More Clarity! 🤔">
-          <Paragraph>
-            No worries—sometimes ideas need a bit more detail. Let&apos;s make
-            sure we fully capture what you&apos;re trying to build, so we can
-            offer the best insights.
-          </Paragraph>
-        </Section>
+        <>
+          <Section header="Hmm, We Need More Clarity! 🤔">
+            <Paragraph>
+              No worries—sometimes ideas need a bit more detail. Let&apos;s make
+              sure we fully capture what you&apos;re trying to build, so we can
+              offer the best insights.
+            </Paragraph>
+          </Section>
+
+          <WelcomeBanner />
+        </>
       )}
+
+      <HorizontalLine />
 
       <ClarityScoreSection clarityScore={evaluation.clarityScore} />
 
+      <HorizontalLine />
+
       <LanguageAnalysisSection languageAnalysis={evaluation.languageAnalysis} />
 
-      <hr className="my-6 md:my-8" />
+      <HorizontalLine />
 
-      <Section header="✍️ Try These Steps to Sharpen Your Idea:">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
-          {evaluation.suggestions.map((item, index) => (
-            <div
-              key={index}
-              className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:px-6 md:text-lg dark:bg-gray-900/50"
-            >
-              <p className="first-letter:float-left first-letter:pr-3 first-letter:text-5xl first-letter:font-bold">
-                {item}
-              </p>
-            </div>
-          ))}
-        </div>
-      </Section>
+      <SharpenIdeaSection suggestions={evaluation.suggestions} />
 
       {evaluation.recommendations.length > 0 && (
         <>
-          <hr className="my-6 md:my-8" />
+          <HorizontalLine />
 
-          <Section header="💡 Or Try These Auto-Generated Rewrites and Tweaks:">
-            <div className="mb-6 grid grid-cols-1 gap-4 md:gap-6">
-              {evaluation.recommendations.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 dark:bg-gray-900/50"
-                >
-                  <p className="grow md:text-lg">{item}</p>
-
-                  <div className="mt-6">
-                    <Link
-                      href={{
-                        pathname: '/start',
-                        query: { problem: item },
-                      }}
-                      target="_blank"
-                      className="inline-flex items-center gap-2 rounded bg-gray-500 px-4 py-2 text-white transition duration-300 hover:bg-[#023840]"
-                    >
-                      Try This Statement Instead
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        className="size-4"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z"
-                          clipRule="evenodd"
-                        />
-                        <path
-                          fillRule="evenodd"
-                          d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Section>
+          <RecommendationsSection
+            recommendations={evaluation.recommendations}
+          />
         </>
       )}
 
+      <HorizontalLine />
+
       <TargetAudienceSection targetAudience={evaluation.targetAudience} />
 
-      <hr className="my-6 md:my-8" />
+      <HorizontalLine />
+
+      <AssumptionsAnalysisSection
+        assumptionsAnalysis={evaluation.assumptionsAnalysis}
+      />
+
+      <HorizontalLine />
+
+      <HypothesisFrameworkSection
+        hypothesisFramework={evaluation.hypothesisFramework}
+      />
+
+      <HorizontalLine />
+
+      <ValidationPlanSection validationPlan={evaluation.validationPlan} />
+
+      <HorizontalLine />
 
       {status === 'error' && errorMessage && (
         <div className="mb-4 rounded bg-red-200 p-4 text-red-800">
@@ -186,8 +170,8 @@ const ProblemRequiresChanges = ({
       )}
 
       {evaluation.marketExistence && evaluation.targetAudience.length > 0 ? (
-        <>
-          <Section header="🚀 Ready for a Full Breakdown?">
+        <div className="mt-6">
+          <Section header="Ready for a Full Breakdown?">
             <p className="mb-6 text-lg md:text-xl">
               Explore complete competitor breakdowns, marketing angles, and
               more. In the next screen, we&apos;ll dive deeper into more than 10
@@ -196,7 +180,7 @@ const ProblemRequiresChanges = ({
               information.
             </p>
 
-            <p className="pb-2 text-center">
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
               <button
                 type="button"
                 onClick={handleSubmit}
@@ -205,29 +189,52 @@ const ProblemRequiresChanges = ({
               >
                 {status === 'loading' ? 'Saving...' : 'Go To Detailed Analysis'}
               </button>
-            </p>
+
+              <button
+                type="button"
+                onClick={() => setShowForm(!showForm)}
+                className="rounded-md border border-[#023840] bg-white px-4 py-2 text-xl font-medium text-[#023840] shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl dark:border-[#7bf179] dark:bg-transparent dark:text-[#7bf179] dark:hover:bg-gray-800"
+              >
+                Edit Your Input
+              </button>
+            </div>
           </Section>
 
-          <hr className="my-6 md:my-8" />
+          {showForm && (
+            <>
+              <HorizontalLine />
 
-          <Section header="📝 Or You Can Make Changes to Your Original Statement:">
-            <p className="mb-6 text-lg md:text-xl">
-              Feel free to copy any text from this page and add additional
-              information to your prompt. This will help us re-generate a basic
-              analysis that better matches your needs. Just give it one try and
-              see how it goes.
-            </p>
-            <ConceptForm
-              problem={problem}
-              region={region}
-              cta="Make Changes"
-              skipIntro
-            />
-          </Section>
-        </>
+              <div className="mt-6">
+                <Section header="📝 Make Changes to Your Original Statement:">
+                  <p className="mb-6 text-lg md:text-xl">
+                    Feel free to copy any text from this page and add additional
+                    information to your prompt. This will help us re-generate a
+                    basic analysis that better matches your needs. Just give it
+                    one try and see how it goes.
+                  </p>
+                  <ConceptForm
+                    problem={problem}
+                    persona={persona}
+                    region={region}
+                    productType={productType}
+                    stage={stage}
+                    cta="Make Changes"
+                  />
+                </Section>
+              </div>
+            </>
+          )}
+        </div>
       ) : (
         <Section header="📝 Please Make Changes to Your Original Statement:">
-          <ConceptForm problem={problem} region={region} cta="Make Changes" />
+          <ConceptForm
+            problem={problem}
+            persona={persona}
+            region={region}
+            productType={productType}
+            stage={stage}
+            cta="Make Changes"
+          />
         </Section>
       )}
     </div>

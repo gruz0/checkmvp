@@ -9,6 +9,13 @@ describe('ConceptRepositorySQLite', () => {
   let repository: ConceptRepositorySQLite
   let timeProvider: TimeProvider
   const fixedTime = new Date('2024-03-20T12:00:00Z')
+  const problem =
+    'Long problem statement with a lot of words that satisfies the criteria'
+  const persona =
+    'Persona that satisfies the criteria and is long enough to pass the validation'
+  const region = 'worldwide'
+  const productType = 'b2c'
+  const stage = 'idea'
 
   beforeAll(() => {
     timeProvider = new FixedTimeProvider(fixedTime)
@@ -27,14 +34,15 @@ describe('ConceptRepositorySQLite', () => {
   describe('addConcept', () => {
     it('should successfully add a new concept to the database', async () => {
       const id = Identity.Generate().getValue()
-      const problem = 'Long problem statement with a lot of words'
-      const region = 'worldwide'
       const createdAt = new Date(fixedTime.getTime() - 1000) // 1 second before fixed time
 
       const concept = Concept.New(
         id,
         problem,
+        persona,
         region,
+        productType,
+        stage,
         7,
         timeProvider,
         createdAt
@@ -50,7 +58,10 @@ describe('ConceptRepositorySQLite', () => {
       expect(savedConcept).toEqual({
         id,
         problem,
+        persona,
         region,
+        productType,
+        stage,
         createdAt,
         updatedAt: expect.any(Date),
         evaluation: null,
@@ -66,8 +77,11 @@ describe('ConceptRepositorySQLite', () => {
       const id = Identity.Generate().getValue()
       const concept = Concept.New(
         id,
-        'Long problem statement with a lot of words',
-        'worldwide',
+        problem,
+        persona,
+        region,
+        productType,
+        stage,
         7,
         timeProvider,
         new Date(fixedTime.getTime() - 1000)
@@ -82,8 +96,11 @@ describe('ConceptRepositorySQLite', () => {
     it('should successfully add a concept with different region', async () => {
       const concept = Concept.New(
         Identity.Generate().getValue(),
-        'Long problem statement with a lot of words',
+        problem,
+        persona,
         'europe',
+        productType,
+        stage,
         7,
         timeProvider,
         new Date(fixedTime.getTime() - 1000)
@@ -103,8 +120,11 @@ describe('ConceptRepositorySQLite', () => {
       const createdAt = new Date(fixedTime.getTime() - 1000) // 1 second before fixed time
       const concept = Concept.New(
         Identity.Generate().getValue(),
-        'Long problem statement with a lot of words',
-        'worldwide',
+        problem,
+        persona,
+        region,
+        productType,
+        stage,
         7,
         timeProvider,
         createdAt
@@ -126,8 +146,11 @@ describe('ConceptRepositorySQLite', () => {
       const id = Identity.Generate().getValue()
       const concept = Concept.New(
         id,
-        'This is a test problem that needs to be at least 30 characters long',
-        'worldwide',
+        problem,
+        persona,
+        region,
+        productType,
+        stage,
         7,
         timeProvider,
         new Date(fixedTime.getTime() - 1000)
@@ -143,8 +166,11 @@ describe('ConceptRepositorySQLite', () => {
       await repository.updateConcept(id, (concept) =>
         Concept.New(
           concept.getId().getValue(),
-          'Updated problem that needs to be at least thirty characters long',
+          'Updated problem that needs to be at least sixty-four characters long',
+          'Persona that satisfies the criteria and long enough to pass the validation',
           'europe',
+          productType,
+          stage,
           7,
           timeProvider,
           concept.getCreatedAt()
@@ -152,10 +178,17 @@ describe('ConceptRepositorySQLite', () => {
       )
 
       const updated = await repository.getById(id)
-      expect(updated?.getProblem().getValue()).toBe(
-        'Updated problem that needs to be at least thirty characters long'
+      if (!updated) {
+        throw new Error('Concept not found')
+      }
+
+      expect(updated.getProblem().getValue()).toBe(
+        'Updated problem that needs to be at least sixty-four characters long'
       )
-      expect(updated?.getRegion().getValue()).toBe('europe')
+      expect(updated.getPersona().getValue()).toBe(
+        'Persona that satisfies the criteria and long enough to pass the validation'
+      )
+      expect(updated.getRegion().getValue()).toBe('europe')
     })
 
     it('should evaluate a concept', async () => {
@@ -167,8 +200,12 @@ describe('ConceptRepositorySQLite', () => {
       })
 
       const updated = await repository.getById(id)
-      expect(updated?.isEvaluated()).toBeTrue()
-      expect(updated?.getEvaluation().getStatus()).toBe('well-defined')
+      if (!updated) {
+        throw new Error('Concept not found')
+      }
+
+      expect(updated.isEvaluated()).toBeTrue()
+      expect(updated.getEvaluation().getStatus()).toBe('well-defined')
     })
 
     it('should accept an evaluated concept', async () => {
@@ -186,8 +223,12 @@ describe('ConceptRepositorySQLite', () => {
       })
 
       const updated = await repository.getById(id)
-      expect(updated?.isAccepted()).toBeTrue()
-      expect(updated?.getIdeaId().getValue()).toBe(ideaId.getValue())
+      if (!updated) {
+        throw new Error('Concept not found')
+      }
+
+      expect(updated.isAccepted()).toBeTrue()
+      expect(updated.getIdeaId().getValue()).toBe(ideaId.getValue())
     })
 
     it('should archive an accepted concept', async () => {
@@ -210,7 +251,11 @@ describe('ConceptRepositorySQLite', () => {
       })
 
       const updated = await repository.getById(id)
-      expect(updated?.isArchived()).toBeTrue()
+      if (!updated) {
+        throw new Error('Concept not found')
+      }
+
+      expect(updated.isArchived()).toBeTrue()
     })
 
     it('should anonymize a concept', async () => {
@@ -238,7 +283,11 @@ describe('ConceptRepositorySQLite', () => {
       })
 
       const updated = await repository.getById(id)
-      expect(updated?.isAnonymized()).toBeTrue()
+      if (!updated) {
+        throw new Error('Concept not found')
+      }
+
+      expect(updated.isAnonymized()).toBeTrue()
     })
 
     it('should throw error when concept not found', async () => {
@@ -272,10 +321,14 @@ describe('ConceptRepositorySQLite', () => {
       })
 
       const updated = await repository.getById(id)
-      expect(updated?.wasEvaluated()).toBeTrue()
-      expect(updated?.wasAccepted()).toBeTrue()
-      expect(updated?.wasArchived()).toBeTrue()
-      expect(updated?.getIdeaId().getValue()).toBe(ideaId.getValue())
+      if (!updated) {
+        throw new Error('Concept not found')
+      }
+
+      expect(updated.wasEvaluated()).toBeTrue()
+      expect(updated.wasAccepted()).toBeTrue()
+      expect(updated.wasArchived()).toBeTrue()
+      expect(updated.getIdeaId().getValue()).toBe(ideaId.getValue())
     })
 
     it('should throw error when trying to accept a concept with duplicate ideaId', async () => {

@@ -25,7 +25,10 @@ export class NotWellDefinedEvaluationFactory {
         ['users', 'better', 'solution', 'improve'],
         ['target market size', 'specific use cases', 'current alternatives'],
         ['Make the experience better', 'Solve user problems efficiently']
-      )
+      ),
+      null,
+      null,
+      null
     )
   }
 }

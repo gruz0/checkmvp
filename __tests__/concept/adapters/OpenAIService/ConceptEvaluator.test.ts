@@ -10,7 +10,10 @@ describe('ConceptEvaluator', () => {
   const mockApiKey = 'test-api-key'
   const mockConceptId = 'test-concept-id'
   const mockProblem = 'test problem'
+  const mockPersona = 'test persona'
   const mockRegion = 'worldwide'
+  const mockProductType = 'b2b'
+  const mockStage = 'idea'
 
   beforeEach(() => {
     // Reset mocks
@@ -66,6 +69,20 @@ describe('ConceptEvaluator', () => {
                   missing_context: ['Context 1', '   ', 'Context 2'],
                   ambiguous_statements: ['Statement 1', '', 'Statement 2'],
                 },
+                assumptions_analysis: {
+                  core_assumptions: ['Core assumption'],
+                  testability: 1,
+                  risk_level: 'low',
+                  validation_methods: ['Validation method'],
+                },
+                hypothesis_framework: {
+                  format: 'Format',
+                  examples: ['Example 1', 'Example 2'],
+                },
+                validation_plan: {
+                  quick_wins: ['Quick win 1', 'Quick win 2'],
+                  medium_effort: ['Medium effort 1', 'Medium effort 2'],
+                },
               },
             },
             refusal: null,
@@ -98,7 +115,10 @@ describe('ConceptEvaluator', () => {
       const result = await evaluator.evaluateConcept(
         mockConceptId,
         mockProblem,
-        mockRegion
+        mockPersona,
+        mockRegion,
+        mockProductType,
+        mockStage
       )
 
       // Test status
@@ -230,7 +250,10 @@ describe('ConceptEvaluator', () => {
       const result = await evaluator.evaluateConcept(
         mockConceptId,
         mockProblem,
-        mockRegion
+        mockPersona,
+        mockRegion,
+        mockProductType,
+        mockStage
       )
 
       // Verify not-well-defined response
@@ -301,6 +324,20 @@ describe('ConceptEvaluator', () => {
                     missing_context: ['Context'],
                     ambiguous_statements: ['Statement'],
                   },
+                  assumptions_analysis: {
+                    core_assumptions: ['Core assumption'],
+                    testability: 1,
+                    risk_level: 'low',
+                    validation_methods: ['Validation method'],
+                  },
+                  hypothesis_framework: {
+                    format: 'Format',
+                    examples: ['Example 1', 'Example 2'],
+                  },
+                  validation_plan: {
+                    quick_wins: ['Quick win 1', 'Quick win 2'],
+                    medium_effort: ['Medium effort 1', 'Medium effort 2'],
+                  },
                 },
               },
               refusal: null,
@@ -328,7 +365,10 @@ describe('ConceptEvaluator', () => {
       const result = await evaluator.evaluateConcept(
         mockConceptId,
         mockProblem,
-        mockRegion
+        mockPersona,
+        mockRegion,
+        mockProductType,
+        mockStage
       )
 
       expect(result.status).toBe('requires_changes')
@@ -359,7 +399,14 @@ describe('ConceptEvaluator', () => {
       evaluator = new ConceptEvaluator(mockApiKey)
 
       await expect(
-        evaluator.evaluateConcept(mockConceptId, mockProblem, mockRegion)
+        evaluator.evaluateConcept(
+          mockConceptId,
+          mockProblem,
+          mockPersona,
+          mockRegion,
+          mockProductType,
+          mockStage
+        )
       ).rejects.toThrow('API Error')
     })
 
@@ -394,7 +441,14 @@ describe('ConceptEvaluator', () => {
       evaluator = new ConceptEvaluator(mockApiKey)
 
       await expect(
-        evaluator.evaluateConcept(mockConceptId, mockProblem, mockRegion)
+        evaluator.evaluateConcept(
+          mockConceptId,
+          mockProblem,
+          mockPersona,
+          mockRegion,
+          mockProductType,
+          mockStage
+        )
       ).rejects.toThrow()
     })
 
@@ -418,7 +472,14 @@ describe('ConceptEvaluator', () => {
       evaluator = new ConceptEvaluator(mockApiKey)
 
       await expect(
-        evaluator.evaluateConcept(mockConceptId, mockProblem, mockRegion)
+        evaluator.evaluateConcept(
+          mockConceptId,
+          mockProblem,
+          mockPersona,
+          mockRegion,
+          mockProductType,
+          mockStage
+        )
       ).rejects.toThrow('Test Error')
 
       expect(Sentry.captureException).toHaveBeenCalledWith(mockError)
@@ -451,6 +512,20 @@ describe('ConceptEvaluator', () => {
                     missing_context: [],
                     ambiguous_statements: [],
                   },
+                  assumptions_analysis: {
+                    core_assumptions: ['Core assumption'],
+                    testability: 1,
+                    risk_level: 'low',
+                    validation_methods: ['Validation method'],
+                  },
+                  hypothesis_framework: {
+                    format: 'Format',
+                    examples: ['Example 1', 'Example 2'],
+                  },
+                  validation_plan: {
+                    quick_wins: ['Quick win 1', 'Quick win 2'],
+                    medium_effort: ['Medium effort 1', 'Medium effort 2'],
+                  },
                 },
               },
               refusal: null,
@@ -480,7 +555,10 @@ describe('ConceptEvaluator', () => {
       const result = await evaluator.evaluateConcept(
         mockConceptId,
         mockProblem,
-        mockRegion
+        mockPersona,
+        mockRegion,
+        mockProductType,
+        mockStage
       )
 
       expect(result.marketExistence).toBe('')

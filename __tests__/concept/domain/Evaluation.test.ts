@@ -1,8 +1,11 @@
+import { AssumptionsAnalysis } from '@/concept/domain/AssumptionsAnalysis'
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { HypothesisFramework } from '@/concept/domain/HypothesisFramework'
 import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
+import { ValidationPlan } from '@/concept/domain/ValidationPlan'
 
 describe('Evaluation Class', () => {
   const validTargetAudience = [
@@ -27,6 +30,25 @@ describe('Evaluation Class', () => {
     ['it should work well']
   )
 
+  const validAssumptionsAnalysis = AssumptionsAnalysis.New(
+    ['Core assumption'],
+    1,
+    'low',
+    ['Validation method']
+  )
+
+  const validHypothesisFramework = HypothesisFramework.New('Format', [
+    'Example 1',
+    'Example 2',
+  ])
+
+  const validValidationPlan = ValidationPlan.New(
+    ['Quick win 1', 'Quick win 2'],
+    ['Medium effort 1', 'Medium effort 2'],
+    ['Deep dive 1', 'Deep dive 2'],
+    ['Success criteria 1', 'Success criteria 2']
+  )
+
   describe('Creation of Evaluation', () => {
     describe('well-defined status', () => {
       it('should create an Evaluation instance with well-defined status', () => {
@@ -38,7 +60,10 @@ describe('Evaluation Class', () => {
           'Market exists and is growing',
           validTargetAudience,
           validClarityScore,
-          validLanguageAnalysis
+          validLanguageAnalysis,
+          validAssumptionsAnalysis,
+          validHypothesisFramework,
+          validValidationPlan
         )
 
         expect(evaluation).toBeInstanceOf(Evaluation)
@@ -62,7 +87,10 @@ describe('Evaluation Class', () => {
             'Market exists',
             validTargetAudience,
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            validHypothesisFramework,
+            validValidationPlan
           )
         }).toThrow('Pain points for well-defined must not be empty')
       })
@@ -77,7 +105,10 @@ describe('Evaluation Class', () => {
             '', // empty market existence
             validTargetAudience,
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            validHypothesisFramework,
+            validValidationPlan
           )
         }).toThrow('Market existence for well-defined must not be empty')
       })
@@ -92,9 +123,66 @@ describe('Evaluation Class', () => {
             'Market exists',
             [], // empty target audience
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            validHypothesisFramework,
+            validValidationPlan
           )
         }).toThrow('Target audience for well-defined must not be empty')
+      })
+
+      it('should throw error when assumptions analysis is null', () => {
+        expect(() => {
+          Evaluation.New(
+            'well-defined',
+            [],
+            [],
+            ['Valid pain point'],
+            'Market exists',
+            validTargetAudience,
+            validClarityScore,
+            validLanguageAnalysis,
+            null, // null assumptions analysis
+            validHypothesisFramework,
+            validValidationPlan
+          )
+        }).toThrow('Assumptions analysis for well-defined must not be empty')
+      })
+
+      it('should throw error when hypothesis framework is null', () => {
+        expect(() => {
+          Evaluation.New(
+            'well-defined',
+            [],
+            [],
+            ['Valid pain point'],
+            'Market exists',
+            validTargetAudience,
+            validClarityScore,
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            null, // null hypothesis framework
+            validValidationPlan
+          )
+        }).toThrow('Hypothesis framework for well-defined must not be empty')
+      })
+
+      it('should throw error when validation plan is null', () => {
+        expect(() => {
+          Evaluation.New(
+            'well-defined',
+            [],
+            [],
+            ['Valid pain point'],
+            'Market exists',
+            validTargetAudience,
+            validClarityScore,
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            validHypothesisFramework,
+            null // null validation plan
+          )
+        }).toThrow('Validation plan for well-defined must not be empty')
       })
     })
 
@@ -108,7 +196,10 @@ describe('Evaluation Class', () => {
           'Market exists', // optional for requires_changes
           validTargetAudience,
           validClarityScore,
-          validLanguageAnalysis
+          validLanguageAnalysis,
+          validAssumptionsAnalysis,
+          validHypothesisFramework,
+          validValidationPlan
         )
 
         expect(evaluation).toBeInstanceOf(Evaluation)
@@ -134,7 +225,10 @@ describe('Evaluation Class', () => {
             'Market exists',
             validTargetAudience,
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            validHypothesisFramework,
+            validValidationPlan
           )
         }).toThrow('Suggestions for requires_changes must not be empty')
       })
@@ -149,7 +243,10 @@ describe('Evaluation Class', () => {
             'Market exists',
             validTargetAudience,
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            validHypothesisFramework,
+            validValidationPlan
           )
         }).toThrow('Recommendations for requires_changes must not be empty')
       })
@@ -164,7 +261,10 @@ describe('Evaluation Class', () => {
             'Market exists',
             validTargetAudience,
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            validHypothesisFramework,
+            validValidationPlan
           )
         }).toThrow('Pain points for requires_changes must not be empty')
       })
@@ -179,9 +279,70 @@ describe('Evaluation Class', () => {
             'Market exists',
             [], // empty target audience
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            validHypothesisFramework,
+            validValidationPlan
           )
         }).toThrow('Target audience for requires_changes must not be empty')
+      })
+
+      it('should throw error when assumptions analysis is null', () => {
+        expect(() => {
+          Evaluation.New(
+            'requires_changes',
+            ['Valid suggestion'],
+            ['Valid recommendation'],
+            ['Valid pain point'],
+            'Market exists',
+            validTargetAudience,
+            validClarityScore,
+            validLanguageAnalysis,
+            null, // null assumptions analysis
+            validHypothesisFramework,
+            validValidationPlan
+          )
+        }).toThrow(
+          'Assumptions analysis for requires_changes must not be empty'
+        )
+      })
+
+      it('should throw error when hypothesis framework is null', () => {
+        expect(() => {
+          Evaluation.New(
+            'requires_changes',
+            ['Valid suggestion'],
+            ['Valid recommendation'],
+            ['Valid pain point'],
+            'Market exists',
+            validTargetAudience,
+            validClarityScore,
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            null, // null hypothesis framework
+            validValidationPlan
+          )
+        }).toThrow(
+          'Hypothesis framework for requires_changes must not be empty'
+        )
+      })
+
+      it('should throw error when validation plan is null', () => {
+        expect(() => {
+          Evaluation.New(
+            'requires_changes',
+            ['Valid suggestion'],
+            ['Valid recommendation'],
+            ['Valid pain point'],
+            'Market exists',
+            validTargetAudience,
+            validClarityScore,
+            validLanguageAnalysis,
+            validAssumptionsAnalysis,
+            validHypothesisFramework,
+            null // null validation plan
+          )
+        }).toThrow('Validation plan for requires_changes must not be empty')
       })
     })
 
@@ -195,7 +356,10 @@ describe('Evaluation Class', () => {
           '', // must be empty for not-well-defined
           [], // must be empty for not-well-defined
           validClarityScore,
-          validLanguageAnalysis
+          validLanguageAnalysis,
+          null,
+          null,
+          null
         )
 
         expect(evaluation).toBeInstanceOf(Evaluation)
@@ -219,7 +383,10 @@ describe('Evaluation Class', () => {
             '',
             [],
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            null,
+            null,
+            null
           )
         }).toThrow('Suggestions for not-well-defined must not be empty')
       })
@@ -234,7 +401,10 @@ describe('Evaluation Class', () => {
             '',
             [],
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            null,
+            null,
+            null
           )
         }).toThrow('Recommendations for not-well-defined must be empty')
       })
@@ -249,7 +419,10 @@ describe('Evaluation Class', () => {
             '',
             [],
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            null,
+            null,
+            null
           )
         }).toThrow('Pain points for not-well-defined must be empty')
       })
@@ -264,7 +437,10 @@ describe('Evaluation Class', () => {
             'Invalid market existence', // should be empty
             [],
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            null,
+            null,
+            null
           )
         }).toThrow('Market existence for not-well-defined must be empty')
       })
@@ -279,9 +455,66 @@ describe('Evaluation Class', () => {
             '',
             validTargetAudience, // should be empty
             validClarityScore,
-            validLanguageAnalysis
+            validLanguageAnalysis,
+            null,
+            null,
+            null
           )
         }).toThrow('Target audience for not-well-defined must be empty')
+      })
+
+      it('should throw error when assumptions analysis is not null', () => {
+        expect(() => {
+          Evaluation.New(
+            'not-well-defined',
+            ['Valid suggestion'],
+            [],
+            [],
+            '',
+            [],
+            validClarityScore,
+            validLanguageAnalysis,
+            validAssumptionsAnalysis, // should be null
+            null,
+            null
+          )
+        }).toThrow('Assumptions analysis for not-well-defined must be empty')
+      })
+
+      it('should throw error when hypothesis framework is not null', () => {
+        expect(() => {
+          Evaluation.New(
+            'not-well-defined',
+            ['Valid suggestion'],
+            [],
+            [],
+            '',
+            [],
+            validClarityScore,
+            validLanguageAnalysis,
+            null,
+            validHypothesisFramework, // should be null
+            null
+          )
+        }).toThrow('Hypothesis framework for not-well-defined must be empty')
+      })
+
+      it('should throw error when validation plan is not null', () => {
+        expect(() => {
+          Evaluation.New(
+            'not-well-defined',
+            ['Valid suggestion'],
+            [],
+            [],
+            '',
+            [],
+            validClarityScore,
+            validLanguageAnalysis,
+            null,
+            null,
+            validValidationPlan // should be null
+          )
+        }).toThrow('Validation plan for not-well-defined must be empty')
       })
     })
 
@@ -295,7 +528,10 @@ describe('Evaluation Class', () => {
           '',
           [],
           validClarityScore,
-          validLanguageAnalysis
+          validLanguageAnalysis,
+          null,
+          null,
+          null
         )
       }).toThrow('Unsupported status: invalid-status')
     })
@@ -313,7 +549,10 @@ describe('Evaluation Class', () => {
         'Market exists',
         validTargetAudience,
         validClarityScore,
-        validLanguageAnalysis
+        validLanguageAnalysis,
+        validAssumptionsAnalysis,
+        validHypothesisFramework,
+        validValidationPlan
       )
     })
 
@@ -347,6 +586,22 @@ describe('Evaluation Class', () => {
 
     it('should return correct language analysis', () => {
       expect(evaluation.getLanguageAnalysis()).toEqual(validLanguageAnalysis)
+    })
+
+    it('should return correct assumptions analysis', () => {
+      expect(evaluation.getAssumptionsAnalysis()).toEqual(
+        validAssumptionsAnalysis
+      )
+    })
+
+    it('should return correct hypothesis framework', () => {
+      expect(evaluation.getHypothesisFramework()).toEqual(
+        validHypothesisFramework
+      )
+    })
+
+    it('should return correct validation plan', () => {
+      expect(evaluation.getValidationPlan()).toEqual(validValidationPlan)
     })
   })
 })
