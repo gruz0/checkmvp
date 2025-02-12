@@ -7,9 +7,19 @@ import SectionWrapper from '@/components/SectionWrapper'
 
 interface Props {
   recommendations: string[]
+  persona: string
+  region: string
+  productType: string
+  stage: string
 }
 
-const RecommendationsSection: React.FC<Props> = ({ recommendations }) => {
+const RecommendationsSection: React.FC<Props> = ({
+  recommendations,
+  persona,
+  region,
+  productType,
+  stage,
+}) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   if (!recommendations.length) return null
@@ -17,7 +27,7 @@ const RecommendationsSection: React.FC<Props> = ({ recommendations }) => {
   return (
     <SectionWrapper id="recommendations">
       <SectionHeader
-        title="Refined Problem Statements"
+        title="Refined Statements"
         emoji="💡"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
@@ -26,7 +36,7 @@ const RecommendationsSection: React.FC<Props> = ({ recommendations }) => {
 
       {isExpanded && (
         <div id="section_recommendations">
-          <p className="mb-6 text-lg md:text-xl">
+          <p className="mb-6 md:text-lg lg:text-xl">
             This section provides refined statements that probably are more
             effective and clear. Feel free to click on the button to try
             different versions; it will open a new tab with the pre-filled
@@ -45,7 +55,13 @@ const RecommendationsSection: React.FC<Props> = ({ recommendations }) => {
                   <Link
                     href={{
                       pathname: '/start',
-                      query: { problem: item },
+                      query: {
+                        problem: item,
+                        persona,
+                        region,
+                        productType,
+                        stage,
+                      },
                     }}
                     target="_blank"
                     className="inline-flex items-center gap-2 rounded bg-gray-500 px-4 py-2 text-white transition duration-300 hover:bg-[#023840] dark:hover:bg-[#034e59]"

@@ -60,7 +60,7 @@ const TargetAudienceSection = ({ targetAudience }: Props) => {
                   </p>
 
                   <div className="mb-4 rounded-md bg-white p-4 dark:bg-gray-800">
-                    <p className="text-lg text-gray-700 dark:text-gray-100">
+                    <p className="text-gray-700 md:text-lg dark:text-gray-100">
                       Market Size
                     </p>
                     <p className="mt-1 font-medium">
@@ -71,7 +71,7 @@ const TargetAudienceSection = ({ targetAudience }: Props) => {
                   <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <div className="flex items-center justify-between rounded-md bg-white px-4 py-3 dark:bg-gray-800">
                       <div>
-                        <p className="text-lg text-gray-700 dark:text-gray-100">
+                        <p className="text-gray-700 md:text-lg dark:text-gray-100">
                           Accessibility
                         </p>
                         <p className="mt-0.5 text-sm text-gray-700 dark:text-gray-400">
@@ -86,7 +86,7 @@ const TargetAudienceSection = ({ targetAudience }: Props) => {
 
                     <div className="flex items-center justify-between rounded-md bg-white px-4 py-3 dark:bg-gray-800">
                       <div>
-                        <p className="text-lg text-gray-700 dark:text-gray-100">
+                        <p className="text-gray-700 md:text-lg dark:text-gray-100">
                           Pain Point
                         </p>
                         <p className="mt-0.5 text-sm text-gray-700 dark:text-gray-400">
@@ -101,7 +101,7 @@ const TargetAudienceSection = ({ targetAudience }: Props) => {
 
                     <div className="flex items-center justify-between rounded-md bg-white px-4 py-3 dark:bg-gray-800">
                       <div>
-                        <p className="text-lg text-gray-700 dark:text-gray-100">
+                        <p className="text-gray-700 md:text-lg dark:text-gray-100">
                           Pay Intent
                         </p>
                         <p className="mt-0.5 text-sm text-gray-700 dark:text-gray-400">

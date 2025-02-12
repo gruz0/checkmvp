@@ -16,7 +16,7 @@ const SharpenIdeaSection: React.FC<Props> = ({ suggestions }) => {
   return (
     <SectionWrapper id="sharpen_idea">
       <SectionHeader
-        title="How to Improve Your Original Statement"
+        title="How to Improve It"
         emoji="✍️"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
@@ -25,7 +25,7 @@ const SharpenIdeaSection: React.FC<Props> = ({ suggestions }) => {
 
       {isExpanded && (
         <div id="section_sharpen_idea">
-          <p className="mb-6 text-lg md:text-xl">
+          <p className="mb-6 md:text-lg lg:text-xl">
             This section provides suggestions for improving the clarity and
             effectiveness of your assumptions.
           </p>
