@@ -39,7 +39,7 @@ const SectionContentIdeas: React.FC<SectionContentIdeasProps> = ({
   return (
     <SectionWrapper id="content_ideas">
       <SectionHeader
-        title="Content Ideas For Marketing"
+        title="Content For Marketing"
         emoji="💡"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}

@@ -137,6 +137,10 @@ const ProblemRequiresChanges = ({
 
           <RecommendationsSection
             recommendations={evaluation.recommendations}
+            persona={persona}
+            region={region}
+            productType={productType}
+            stage={stage}
           />
         </>
       )}
@@ -176,8 +180,6 @@ const ProblemRequiresChanges = ({
               Explore complete competitor breakdowns, marketing angles, and
               more. In the next screen, we&apos;ll dive deeper into more than 10
               sections and prepare a comprehensive report based on your problem.
-              This analysis might take up to a minute, depending on available
-              information.
             </p>
 
             <div className="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
