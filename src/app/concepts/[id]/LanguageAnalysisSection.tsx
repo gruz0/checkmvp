@@ -40,12 +40,12 @@ const LanguageAnalysisSection = ({ languageAnalysis }: Props) => {
   return (
     <SectionWrapper id="language_analysis">
       <SectionHeader
+        title="Language Analysis"
+        emoji="🔍"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_language_analysis"
-      >
-        <span className="inline-block w-8 md:w-10">🔍</span> Language Analysis
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_language_analysis">

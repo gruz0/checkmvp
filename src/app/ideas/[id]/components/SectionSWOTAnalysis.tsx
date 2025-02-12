@@ -21,12 +21,12 @@ const SectionSWOTAnalysis: React.FC<SectionSWOTAnalysisProps> = ({ data }) => {
   return (
     <SectionWrapper id="swot_analysis">
       <SectionHeader
+        title="SWOT Analysis"
+        emoji="⚖️"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_swot_analysis"
-      >
-        ⚖️ SWOT Analysis
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_swot_analysis">

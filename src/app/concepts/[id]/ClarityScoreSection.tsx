@@ -31,13 +31,12 @@ const ClarityScoreSection = ({ clarityScore }: Props) => {
   return (
     <SectionWrapper id="clarity_score">
       <SectionHeader
+        title="Statement Clarity Analysis"
+        emoji="📊"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_clarity_score"
-      >
-        <span className="inline-block w-8 md:w-10">📊</span> Statement Clarity
-        Analysis
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_clarity_score">

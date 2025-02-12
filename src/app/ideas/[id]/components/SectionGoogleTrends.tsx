@@ -20,12 +20,12 @@ const SectionGoogleTrends: React.FC<SectionGoogleTrendsProps> = ({ data }) => {
   return (
     <SectionWrapper id="google_trends">
       <SectionHeader
+        title="Google Trends Keywords"
+        emoji="📈"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_google_trends_keywords"
-      >
-        📈 Google Trends Keywords
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_google_trends_keywords">

@@ -27,13 +27,12 @@ const AssumptionsAnalysisSection: React.FC<Props> = ({
   return (
     <SectionWrapper id="assumptions_analysis">
       <SectionHeader
+        title="Assumptions Analysis"
+        emoji="🎯"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_assumptions_analysis"
-      >
-        <span className="inline-block w-8 md:w-10">🎯</span> Assumptions
-        Analysis
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_assumptions_analysis">

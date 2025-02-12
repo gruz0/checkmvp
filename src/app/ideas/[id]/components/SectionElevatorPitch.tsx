@@ -30,12 +30,12 @@ const SectionElevatorPitch: React.FC<SectionElevatorPitchProps> = ({
   return (
     <SectionWrapper id="elevator_pitch">
       <SectionHeader
+        title="Elevator Pitch"
+        emoji="🎤"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_elevator_pitch"
-      >
-        🎤 Elevator Pitch
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_elevator_pitch">

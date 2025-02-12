@@ -11,12 +11,12 @@ const SectionRoadmap = () => {
   return (
     <SectionWrapper id="roadmap">
       <SectionHeader
+        title="Soon: Roadmap Suggestions"
+        emoji="🗺️"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_roadmap_suggestions"
-      >
-        🗺️ Soon: Roadmap Suggestions
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_roadmap_suggestions">

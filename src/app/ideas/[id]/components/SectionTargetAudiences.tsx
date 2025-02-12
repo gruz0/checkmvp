@@ -29,12 +29,12 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
   return (
     <SectionWrapper id="target_audiences">
       <SectionHeader
+        title="Target Audiences"
+        emoji="🎯"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_target_audiences"
-      >
-        🎯 Target Audiences
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_target_audiences">

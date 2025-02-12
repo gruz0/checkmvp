@@ -27,12 +27,12 @@ const SectionMarketAnalysis: React.FC<SectionMarketAnalysisProps> = ({
   return (
     <SectionWrapper id="market_analysis">
       <SectionHeader
+        title="Market Analysis Overview"
+        emoji="📊"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_market_analysis_overview"
-      >
-        📊 Market Analysis Overview
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_market_analysis_overview">

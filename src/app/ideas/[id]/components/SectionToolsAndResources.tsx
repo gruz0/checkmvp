@@ -11,12 +11,12 @@ const SectionToolsAndResources = () => {
   return (
     <SectionWrapper id="tools_and_resources">
       <SectionHeader
+        title="Soon: Suggested Tools and Resources"
+        emoji="🛠️"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_suggested_tools_and_resources"
-      >
-        🛠️ Soon: Suggested Tools and Resources
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_suggested_tools_and_resources">

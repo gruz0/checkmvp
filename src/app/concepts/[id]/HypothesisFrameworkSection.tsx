@@ -24,13 +24,12 @@ const HypothesisFrameworkSection: React.FC<Props> = ({
   return (
     <SectionWrapper id="hypothesis_framework">
       <SectionHeader
+        title="Key Assumptions to Test"
+        emoji="🧪"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_hypothesis_framework"
-      >
-        <span className="inline-block w-8 md:w-10">🧪</span> Key Assumptions to
-        Test
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_hypothesis_framework">

@@ -16,13 +16,12 @@ const PainPointsSection: React.FC<Props> = ({ painPoints }) => {
   return (
     <SectionWrapper id="pain_points">
       <SectionHeader
+        title="What's Bugging Users?"
+        emoji="⚠️"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_pain_points"
-      >
-        <span className="inline-block w-8 md:w-10">⚠️</span> What&apos;s Bugging
-        Users?
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_pain_points">

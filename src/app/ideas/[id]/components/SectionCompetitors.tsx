@@ -37,12 +37,12 @@ const SectionCompetitors: React.FC<SectionCompetitorsProps> = ({ data }) => {
   return (
     <SectionWrapper id="competitor_overview">
       <SectionHeader
+        title="Competitor Overview"
+        emoji="👥"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_competitor_overview"
-      >
-        👥 Competitor Overview
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_competitor_overview">

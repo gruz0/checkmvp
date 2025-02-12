@@ -17,13 +17,12 @@ const MarketExistenceSection: React.FC<Props> = ({ marketExistence }) => {
   return (
     <SectionWrapper id="market_existence">
       <SectionHeader
+        title="How Big Could This Get?"
+        emoji="🔎"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_market_existence"
-      >
-        <span className="inline-block w-8 md:w-10">🔎</span> How Big Could This
-        Get?
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_market_existence">

@@ -3,14 +3,16 @@
 import React from 'react'
 
 interface SectionHeaderProps {
-  children: React.ReactNode
+  title: string
+  emoji?: string
   sectionId: string
   onClick?: () => void
   isExpanded?: boolean
 }
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({
-  children,
+  title,
+  emoji,
   sectionId,
   onClick,
   isExpanded,
@@ -27,7 +29,8 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     aria-controls={sectionId}
     style={{ width: '100%', textAlign: 'left' }}
   >
-    {children}
+    {emoji && <span className="inline-block w-8 md:w-10">{emoji}</span>}
+    {title}
     <span className="ml-2">{isExpanded ? '−' : '+'}</span>
   </button>
 )

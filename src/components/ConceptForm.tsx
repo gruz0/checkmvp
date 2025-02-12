@@ -353,15 +353,14 @@ const DefineConceptForm = ({
     <form onSubmit={handleSubmit}>
       <SectionWrapper id="primary_assumption">
         <SectionHeader
+          title="Define the Assumption"
+          emoji="🎯"
           onClick={() =>
             setIsPrimaryAssumptionExpanded(!isPrimaryAssumptionExpanded)
           }
           isExpanded={isPrimaryAssumptionExpanded}
           sectionId="section_primary_assumption"
-        >
-          <span className="inline-block w-8 md:w-10">🎯</span> Define the
-          Assumption
-        </SectionHeader>
+        />
 
         {isPrimaryAssumptionExpanded && (
           <div id="section_primary_assumption">
@@ -410,13 +409,12 @@ const DefineConceptForm = ({
 
       <SectionWrapper id="target_personas">
         <SectionHeader
+          title="Identify Target Personas"
+          emoji="👥"
           onClick={() => setIsTargetPersonasExpanded(!isTargetPersonasExpanded)}
           isExpanded={isTargetPersonasExpanded}
           sectionId="section_target_personas"
-        >
-          <span className="inline-block w-8 md:w-10">👥</span> Identify Target
-          Personas
-        </SectionHeader>
+        />
 
         {isTargetPersonasExpanded && (
           <div id="section_target_personas">
@@ -468,13 +466,12 @@ These people will save time, money, and reduce the risk of building a product no
 
       <SectionWrapper id="region">
         <SectionHeader
+          title="Choose Your Market"
+          emoji="🌍"
           onClick={() => setIsRegionExpanded(!isRegionExpanded)}
           isExpanded={isRegionExpanded}
           sectionId="section_region"
-        >
-          <span className="inline-block w-8 md:w-10">🌍</span> Choose Your
-          Market
-        </SectionHeader>
+        />
 
         {isRegionExpanded && (
           <div id="section_region">
@@ -518,13 +515,12 @@ These people will save time, money, and reduce the risk of building a product no
 
       <SectionWrapper id="product_type">
         <SectionHeader
+          title="Product or Business Model"
+          emoji="🏢"
           onClick={() => setIsProductTypeExpanded(!isProductTypeExpanded)}
           isExpanded={isProductTypeExpanded}
           sectionId="section_product_type"
-        >
-          <span className="inline-block w-8 md:w-10">🏢</span> Product or
-          Business Model
-        </SectionHeader>
+        />
 
         {isProductTypeExpanded && (
           <div id="section_product_type">
@@ -578,13 +574,12 @@ These people will save time, money, and reduce the risk of building a product no
 
       <SectionWrapper id="stage">
         <SectionHeader
+          title="Your Current Stage"
+          emoji="📈"
           onClick={() => setIsStageExpanded(!isStageExpanded)}
           isExpanded={isStageExpanded}
           sectionId="section_stage"
-        >
-          <span className="inline-block w-8 md:w-10">📈</span> Your Current
-          Stage
-        </SectionHeader>
+        />
 
         {isStageExpanded && (
           <div id="section_stage">

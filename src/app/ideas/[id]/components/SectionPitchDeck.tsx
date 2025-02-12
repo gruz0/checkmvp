@@ -11,12 +11,12 @@ const SectionPitchDeck = () => {
   return (
     <SectionWrapper id="pitch_deck">
       <SectionHeader
+        title="Soon: Pitch Deck Outline"
+        emoji="🎪"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_pitch_deck_outline"
-      >
-        🎪 Soon: Pitch Deck Outline
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_pitch_deck_outline">
