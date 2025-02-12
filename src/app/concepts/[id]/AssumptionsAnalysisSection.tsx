@@ -38,7 +38,7 @@ const AssumptionsAnalysisSection: React.FC<Props> = ({
       {isExpanded && (
         <div id="section_assumptions_analysis">
           <div className="space-y-6">
-            <p className="mb-6 text-lg md:text-xl">
+            <p className="mb-6 md:text-lg lg:text-xl">
               This analysis helps identify and validate key beliefs about your
               idea before investing resources. By breaking down core
               assumptions, measuring their testability, and assessing risk
@@ -57,20 +57,18 @@ const AssumptionsAnalysisSection: React.FC<Props> = ({
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 dark:bg-gray-900/50">
-                <h3 className="mb-4 text-lg font-semibold md:text-xl">
-                  Risk Level
-                </h3>
-
-                <p className="text-lg">{assumptionsAnalysis.riskLevel}</p>
+              <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 dark:bg-gray-900/50">
+                <span className="text-lg font-semibold">Risk Level:</span>
+                <span className="text-lg">{assumptionsAnalysis.riskLevel}</span>
               </div>
 
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 dark:bg-gray-900/50">
-                <h3 className="mb-4 text-lg font-semibold md:text-xl">
-                  Testability Score
-                </h3>
-
-                <p className="text-lg">{assumptionsAnalysis.testability}/10</p>
+              <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 dark:bg-gray-900/50">
+                <span className="text-lg font-semibold">
+                  Testability Score:
+                </span>
+                <span className="text-lg">
+                  {assumptionsAnalysis.testability}/10
+                </span>
               </div>
             </div>
 

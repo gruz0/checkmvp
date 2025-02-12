@@ -14,6 +14,7 @@ import MarketExistenceSection from './MarketExistenceSection'
 import PainPointsSection from './PainPointsSection'
 import TargetAudienceSection from './TargetAudienceSection'
 import ValidationPlanSection from './ValidationPlanSection'
+import WelcomeBanner from './WelcomeBanner'
 import { ProblemEvaluation } from './types'
 
 interface Props {
@@ -74,14 +75,16 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
       <p className="mb-6 text-lg md:text-2xl">
         Based on your concept, here&apos;s a quick look at your potential
         audience, market gaps, and common pain points. This snapshot uses a
-        GPT-4o AI model, so treat it as an informed starting point—not the final
-        word.
+        GPT-4o AI model, so treat it as an informed starting point - not the
+        final word.
       </p>
 
       <p className="mb-6 text-lg md:text-2xl">
         Scroll down to see the highlights and request a detailed report for
         deeper analysis.
       </p>
+
+      <WelcomeBanner />
 
       <HorizontalLine />
 
@@ -133,8 +136,6 @@ const WellDefinedProblem = ({ conceptId, evaluation }: Props) => {
             Explore complete competitor breakdowns, marketing angles, and more.
             In the next screen, we&apos;ll dive deeper into more than 10
             sections and prepare a comprehensive report based on your problem.
-            This analysis might take up to a minute, depending on available
-            information.
           </p>
 
           <button

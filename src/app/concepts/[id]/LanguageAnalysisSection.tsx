@@ -49,7 +49,7 @@ const LanguageAnalysisSection = ({ languageAnalysis }: Props) => {
 
       {isExpanded && (
         <div id="section_language_analysis">
-          <p className="mb-6 text-lg md:text-xl">
+          <p className="mb-6 md:text-lg lg:text-xl">
             This section helps identify and improve the clarity of your
             statements. By analyzing vague terms, missing context, and ambiguous
             statements, you can ensure your message is precise and effective. If

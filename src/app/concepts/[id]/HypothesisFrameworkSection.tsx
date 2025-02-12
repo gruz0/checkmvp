@@ -35,7 +35,7 @@ const HypothesisFrameworkSection: React.FC<Props> = ({
       {isExpanded && (
         <div id="section_hypothesis_framework">
           <div className="space-y-6">
-            <p className="mb-6 text-lg md:text-xl">
+            <p className="mb-6 md:text-lg lg:text-xl">
               This section transforms your assumptions into testable statements.
               Each hypothesis follows a structured format that clearly states
               what you believe, why you believe it, and how it can be tested.

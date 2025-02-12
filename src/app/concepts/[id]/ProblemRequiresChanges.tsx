@@ -17,6 +17,7 @@ import RecommendationsSection from './RecommendationsSection'
 import SharpenIdeaSection from './SharpenIdeaSection'
 import TargetAudienceSection from './TargetAudienceSection'
 import ValidationPlanSection from './ValidationPlanSection'
+import WelcomeBanner from './WelcomeBanner'
 import { ProblemEvaluation } from './types'
 
 interface Props {
@@ -96,6 +97,8 @@ const ProblemRequiresChanges = ({
             even more accurate insights.
           </p>
 
+          <WelcomeBanner />
+
           <HorizontalLine />
 
           <MarketExistenceSection
@@ -103,13 +106,17 @@ const ProblemRequiresChanges = ({
           />
         </>
       ) : (
-        <Section header="Hmm, We Need More Clarity! 🤔">
-          <Paragraph>
-            No worries—sometimes ideas need a bit more detail. Let&apos;s make
-            sure we fully capture what you&apos;re trying to build, so we can
-            offer the best insights.
-          </Paragraph>
-        </Section>
+        <>
+          <Section header="Hmm, We Need More Clarity! 🤔">
+            <Paragraph>
+              No worries—sometimes ideas need a bit more detail. Let&apos;s make
+              sure we fully capture what you&apos;re trying to build, so we can
+              offer the best insights.
+            </Paragraph>
+          </Section>
+
+          <WelcomeBanner />
+        </>
       )}
 
       <HorizontalLine />

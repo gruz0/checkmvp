@@ -124,7 +124,7 @@ describe('HypothesisFramework Class', () => {
     })
 
     it('should handle newlines in format and examples', () => {
-      const format = 'If we build [solution],\nwe will achieve [outcome]'
+      const format = 'If we build [solution],\n we will achieve [outcome]'
       const examples = [
         'Example with\nline break',
         'Another\nexample with\nbreaks',

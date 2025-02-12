@@ -35,7 +35,7 @@ const ValidationPlanSection: React.FC<Props> = ({ validationPlan }) => {
       {isExpanded && (
         <div id="section_validation_plan">
           <div className="space-y-6">
-            <p className="mb-6 text-lg md:text-xl">
+            <p className="mb-6 md:text-lg lg:text-xl">
               This plan provides a structured approach to testing your
               assumptions, from quick experiments to deeper research. By
               organizing validation tasks by effort level and defining clear

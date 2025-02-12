@@ -35,13 +35,13 @@ const ClarityScoreSection = ({ clarityScore }: Props) => {
         isExpanded={isExpanded}
         sectionId="section_clarity_score"
       >
-        <span className="inline-block w-8 md:w-10">📊</span> Your Statement
-        Clarity Analysis
+        <span className="inline-block w-8 md:w-10">📊</span> Statement Clarity
+        Analysis
       </SectionHeader>
 
       {isExpanded && (
         <div id="section_clarity_score">
-          <p className="mb-6 text-lg md:text-xl">
+          <p className="mb-6 md:text-lg lg:text-xl">
             This section provides a quantitative assessment of the clarity of
             your statement. Every metric is scored from 0 to 10, and to improve
             the score, you can apply the suggestions from the following

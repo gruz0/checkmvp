@@ -29,7 +29,7 @@ const TargetAudienceSection = ({ targetAudience }: Props) => {
 
       {isExpanded && (
         <div id="section_target_audience">
-          <p className="mb-6 text-lg md:text-xl">
+          <p className="mb-6 md:text-lg lg:text-xl">
             Sometimes we might be too focused on the problem itself that we
             forget about the people who are affected by it. This section helps
             identify potential target audiences for the given assumption or
@@ -75,7 +75,7 @@ const TargetAudienceSection = ({ targetAudience }: Props) => {
                         <p className="text-lg text-gray-700 dark:text-gray-100">
                           Accessibility
                         </p>
-                        <p className="mt-0.5 text-sm text-gray-400">
+                        <p className="mt-0.5 text-sm text-gray-700 dark:text-gray-400">
                           How easy to reach
                         </p>
                       </div>
@@ -90,7 +90,7 @@ const TargetAudienceSection = ({ targetAudience }: Props) => {
                         <p className="text-lg text-gray-700 dark:text-gray-100">
                           Pain Point
                         </p>
-                        <p className="mt-0.5 text-sm text-gray-400">
+                        <p className="mt-0.5 text-sm text-gray-700 dark:text-gray-400">
                           Problem severity
                         </p>
                       </div>
@@ -105,7 +105,7 @@ const TargetAudienceSection = ({ targetAudience }: Props) => {
                         <p className="text-lg text-gray-700 dark:text-gray-100">
                           Pay Intent
                         </p>
-                        <p className="mt-0.5 text-sm text-gray-400">
+                        <p className="mt-0.5 text-sm text-gray-700 dark:text-gray-400">
                           Willingness to pay
                         </p>
                       </div>

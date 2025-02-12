@@ -21,7 +21,7 @@ const PainPointsSection: React.FC<Props> = ({ painPoints }) => {
         sectionId="section_pain_points"
       >
         <span className="inline-block w-8 md:w-10">⚠️</span> What&apos;s Bugging
-        Your Potential Customers?
+        Users?
       </SectionHeader>
 
       {isExpanded && (
