@@ -379,7 +379,7 @@ const DefineConceptForm = ({
               value={formData.problem}
               onChange={handleChange}
               required
-              placeholder={`I/we suppose that [target audiences] might have a [specific problem problem] that can be solved by [offering a solution], which allows them to [benefit].`}
+              placeholder={`I/we suppose that [target audiences] might have a [specific problem] that can be solved by [offering a solution], which allows them to [benefit].`}
               minLength={64}
               maxLength={2048}
             />
