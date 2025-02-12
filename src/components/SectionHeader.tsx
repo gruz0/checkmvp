@@ -29,7 +29,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     aria-controls={sectionId}
     style={{ width: '100%', textAlign: 'left' }}
   >
-    {emoji && <span className="inline-block w-8 md:w-10">{emoji}</span>}
+    {emoji && <span className="inline-block w-9 md:w-10">{emoji}</span>}
     {title}
     <span className="ml-2">{isExpanded ? '−' : '+'}</span>
   </button>
