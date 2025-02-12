@@ -11,12 +11,12 @@ const SectionEarlyAdopters = () => {
   return (
     <SectionWrapper id="early_adopters">
       <SectionHeader
+        title="Soon: Early Adopters Acquisition Ideas"
+        emoji="🚀"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_early_adopters_acquisition_ideas"
-      >
-        🚀 Soon: Early Adopters Acquisition Ideas
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_early_adopters_acquisition_ideas">

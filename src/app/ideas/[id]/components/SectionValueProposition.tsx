@@ -25,12 +25,12 @@ const SectionValueProposition: React.FC<SectionValuePropositionProps> = ({
   return (
     <SectionWrapper id="value_proposition">
       <SectionHeader
+        title="Value Proposition"
+        emoji="💎"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_value_proposition"
-      >
-        💎 Value Proposition
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_value_proposition">

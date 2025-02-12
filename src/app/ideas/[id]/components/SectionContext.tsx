@@ -33,12 +33,12 @@ const SectionContext: React.FC<SectionContextProps> = ({ data }) => {
   return (
     <SectionWrapper id="context">
       <SectionHeader
+        title="Context"
+        emoji="🔎"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_context"
-      >
-        🔎 Context
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_context">

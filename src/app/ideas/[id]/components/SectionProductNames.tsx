@@ -29,12 +29,12 @@ const SectionProductNames: React.FC<SectionProductNamesProps> = ({ data }) => {
   return (
     <SectionWrapper id="product_names">
       <SectionHeader
+        title="Potential Product Names"
+        emoji="✨"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_potential_product_names"
-      >
-        ✨ Potential Product Names
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_potential_product_names">

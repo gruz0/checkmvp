@@ -11,12 +11,12 @@ const SectionEstimatedCosts = () => {
   return (
     <SectionWrapper id="estimated_costs">
       <SectionHeader
+        title="Soon: Estimated Costs and Timeline for MVP Launch"
+        emoji="💰"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_estimated_costs_and_timeline"
-      >
-        💰 Soon: Estimated Costs and Timeline for MVP Launch
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_estimated_costs_and_timeline">

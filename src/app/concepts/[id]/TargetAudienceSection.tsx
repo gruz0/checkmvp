@@ -19,13 +19,12 @@ const TargetAudienceSection = ({ targetAudience }: Props) => {
   return (
     <SectionWrapper id="target_audience">
       <SectionHeader
+        title="Who's This Really For?"
+        emoji="👥"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_target_audience"
-      >
-        <span className="inline-block w-8 md:w-10">👥</span> Who&apos;s This
-        Really For?
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_target_audience">

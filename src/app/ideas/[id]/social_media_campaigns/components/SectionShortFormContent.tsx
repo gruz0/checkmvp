@@ -27,12 +27,12 @@ const SectionShortFormContent: React.FC<SectionShortFormContentProps> = ({
   return (
     <SectionWrapper id="short_form_content">
       <SectionHeader
+        title="Short-Form Content"
+        emoji="📝"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_short_form_content"
-      >
-        Short-Form Content
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_short_form_content">

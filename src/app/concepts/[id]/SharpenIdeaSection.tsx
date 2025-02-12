@@ -16,13 +16,12 @@ const SharpenIdeaSection: React.FC<Props> = ({ suggestions }) => {
   return (
     <SectionWrapper id="sharpen_idea">
       <SectionHeader
+        title="How to Improve Your Original Statement"
+        emoji="✍️"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_sharpen_idea"
-      >
-        <span className="inline-block w-8 md:w-10">✍️</span> How to Improve Your
-        Original Statement
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_sharpen_idea">

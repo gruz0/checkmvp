@@ -17,13 +17,12 @@ const RecommendationsSection: React.FC<Props> = ({ recommendations }) => {
   return (
     <SectionWrapper id="recommendations">
       <SectionHeader
+        title="Refined Problem Statements"
+        emoji="💡"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_recommendations"
-      >
-        <span className="inline-block w-8 md:w-10">💡</span> Refined Problem
-        Statements
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_recommendations">

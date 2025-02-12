@@ -26,12 +26,12 @@ const SectionVideoContent: React.FC<SectionVideoContentProps> = ({ data }) => {
   return (
     <SectionWrapper id="video_content">
       <SectionHeader
+        title="Video Content"
+        emoji="📺"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_video_content"
-      >
-        Video Content
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_video_content">

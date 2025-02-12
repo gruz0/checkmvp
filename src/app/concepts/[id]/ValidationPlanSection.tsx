@@ -25,12 +25,12 @@ const ValidationPlanSection: React.FC<Props> = ({ validationPlan }) => {
   return (
     <SectionWrapper id="validation_plan">
       <SectionHeader
+        title="Validation Plan"
+        emoji="📋"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_validation_plan"
-      >
-        <span className="inline-block w-8 md:w-10">📋</span> Validation Plan
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_validation_plan">

@@ -28,12 +28,12 @@ const SectionLongFormContent: React.FC<SectionLongFormContentProps> = ({
   return (
     <SectionWrapper id="long_form_content">
       <SectionHeader
+        title="Long-Form Content"
+        emoji="📝"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_long_form_content"
-      >
-        Long-Form Content
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_long_form_content">

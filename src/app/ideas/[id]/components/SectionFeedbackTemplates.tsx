@@ -11,12 +11,12 @@ const SectionFeedbackTemplates = () => {
   return (
     <SectionWrapper id="feedback_templates">
       <SectionHeader
+        title="Soon: Initial Feedback Templates"
+        emoji="📝"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_initial_feedback_templates"
-      >
-        📝 Soon: Initial Feedback Templates
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_initial_feedback_templates">

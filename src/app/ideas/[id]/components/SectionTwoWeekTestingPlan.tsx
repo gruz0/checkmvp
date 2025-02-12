@@ -85,12 +85,12 @@ const SectionTwoWeekTestingPlan: React.FC<SectionTwoWeekTestingPlanProps> = ({
   return (
     <SectionWrapper id="two_week_testing_plan">
       <SectionHeader
+        title="Two-Week Testing Plan"
+        emoji="📅"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_two_week_testing_plan"
-      >
-        📅 Two-Week Testing Plan
-      </SectionHeader>
+      />
 
       {isExpanded && (
         <div id="section_two_week_testing_plan">
