@@ -1,5 +1,8 @@
-export class ProductType {
-  private readonly value: string
+import { ArrayValueObject } from '@/common/domain/ArrayValueObject'
+
+export class ProductType extends ArrayValueObject<
+  typeof ProductType.VALID_PRODUCT_TYPES
+> {
   private static readonly VALID_PRODUCT_TYPES = [
     'b2b',
     'b2c',
@@ -8,35 +11,16 @@ export class ProductType {
     'marketplace',
   ] as const
 
-  private constructor(value: string) {
-    this.value = value
+  private constructor(value: (typeof ProductType.VALID_PRODUCT_TYPES)[number]) {
+    super(value)
   }
 
   static New(value: string): ProductType {
-    if (!value) {
-      throw new Error('Product type must be defined.')
-    }
-
-    const cleanValue = value
-      .trim()
-      .toLowerCase() as (typeof ProductType.VALID_PRODUCT_TYPES)[number]
-
-    if (!cleanValue) {
-      throw new Error('Product type must be defined.')
-    }
-
-    if (!this.VALID_PRODUCT_TYPES.includes(cleanValue)) {
-      throw new Error(
-        `Invalid product type. Must be one of: ${this.VALID_PRODUCT_TYPES.join(
-          ', '
-        )}`
-      )
-    }
-
-    return new ProductType(cleanValue)
-  }
-
-  public getValue(): string {
-    return this.value
+    const validValue = ArrayValueObject.createNew(
+      value,
+      ProductType.VALID_PRODUCT_TYPES,
+      'Product type'
+    )
+    return new ProductType(validValue)
   }
 }
