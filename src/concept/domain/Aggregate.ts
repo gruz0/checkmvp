@@ -1,8 +1,11 @@
 import { Identity } from '@/common/domain/Identity'
 import { TimeProvider } from '@/common/domain/TimeProvider'
 import { Evaluation } from '@/concept/domain/Evaluation'
+import { Persona } from '@/concept/domain/Persona'
 import { Problem } from '@/concept/domain/Problem'
+import { ProductType } from '@/concept/domain/ProductType'
 import { Region } from '@/concept/domain/Region'
+import { Stage } from '@/concept/domain/Stage'
 
 enum ConceptState {
   DRAFT = 'draft',
@@ -42,7 +45,10 @@ export class Concept {
   private constructor(
     private readonly id: Identity,
     problem: Problem,
+    private readonly persona: Persona,
     private readonly region: Region,
+    private readonly productType: ProductType,
+    private readonly stage: Stage,
     private readonly createdAt: Date,
     private readonly expiryPeriodInDays: number,
     private readonly timeProvider: TimeProvider
@@ -53,7 +59,10 @@ export class Concept {
   static New(
     id: string,
     problem: string,
+    persona: string,
     region: string,
+    productType: string,
+    stage: string,
     expiryPeriodInDays: number,
     timeProvider: TimeProvider,
     createdAt?: Date
@@ -69,7 +78,10 @@ export class Concept {
     return new Concept(
       Identity.New(id),
       Problem.New(problem),
+      Persona.New(persona),
       Region.New(region),
+      ProductType.New(productType),
+      Stage.New(stage),
       createdAt ?? new Date(),
       expiryPeriodInDays,
       timeProvider
@@ -135,8 +147,20 @@ export class Concept {
     return this.problem
   }
 
+  public getPersona(): Persona {
+    return this.persona
+  }
+
   public getRegion(): Region {
     return this.region
+  }
+
+  public getProductType(): ProductType {
+    return this.productType
+  }
+
+  public getStage(): Stage {
+    return this.stage
   }
 
   public getEvaluation(): Evaluation {

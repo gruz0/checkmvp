@@ -8,6 +8,7 @@ import { ProblemEvaluation } from './types'
 type Props = {
   conceptId: string
   problem: string
+  persona: string
   region: string
   evaluation: ProblemEvaluation
 }
@@ -15,6 +16,7 @@ type Props = {
 const ProblemEvaluationPage = ({
   conceptId,
   problem,
+  persona,
   region,
   evaluation,
 }: Props) => (
@@ -22,6 +24,7 @@ const ProblemEvaluationPage = ({
     {evaluation.status === 'not-well-defined' && (
       <NotWellDefinedProblem
         problem={problem}
+        persona={persona}
         region={region}
         evaluation={evaluation}
       />
@@ -31,6 +34,7 @@ const ProblemEvaluationPage = ({
       <ProblemRequiresChanges
         conceptId={conceptId}
         problem={problem}
+        persona={persona}
         region={region}
         evaluation={evaluation}
       />

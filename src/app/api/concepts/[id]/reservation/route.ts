@@ -13,8 +13,11 @@ const ConceptForReservationResponseSchema = z.object({
   message: z.string(),
   content: z
     .object({
-      problem: z.string().min(1),
+      problem: z.string().min(64),
+      persona: z.string().min(64),
       region: z.string().min(1),
+      product_type: z.string().min(1),
+      stage: z.string().min(1),
       market_existence: z.string().min(1),
       target_audience: z.array(
         z.object({
@@ -66,7 +69,10 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
       message: 'Concept is ready for the reservation',
       content: {
         problem: concept.getProblem().getValue(),
+        persona: concept.getPersona().getValue(),
         region: concept.getRegion().getValue(),
+        product_type: concept.getProductType().getValue(),
+        stage: concept.getStage().getValue(),
         market_existence: evaluation.getMarketExistence(),
         target_audience: evaluation
           .getTargetAudience()

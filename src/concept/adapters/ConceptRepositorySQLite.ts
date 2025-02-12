@@ -2,12 +2,15 @@ import { z } from 'zod'
 import { Identity } from '@/common/domain/Identity'
 import { TimeProvider } from '@/common/domain/TimeProvider'
 import { Concept } from '@/concept/domain/Aggregate'
+import { AssumptionsAnalysis } from '@/concept/domain/AssumptionsAnalysis'
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation, Status } from '@/concept/domain/Evaluation'
+import { HypothesisFramework } from '@/concept/domain/HypothesisFramework'
 import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { Repository } from '@/concept/domain/Repository'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
+import { ValidationPlan } from '@/concept/domain/ValidationPlan'
 import { prisma } from '@/lib/prisma'
 import type { PrismaClient } from '@prisma/client/extension'
 
@@ -43,6 +46,25 @@ const LanguageAnalysisSchema = z.object({
   ambiguousStatements: z.array(z.string()),
 })
 
+const AssumptionsAnalysisSchema = z.object({
+  coreAssumptions: z.array(z.string()),
+  testability: z.number(),
+  riskLevel: z.enum(['high', 'medium', 'low']),
+  validationMethods: z.array(z.string()),
+})
+
+const HypothesisFrameworkSchema = z.object({
+  format: z.string(),
+  examples: z.array(z.string()),
+})
+
+const ValidationPlanSchema = z.object({
+  quickWins: z.array(z.string()),
+  mediumEffort: z.array(z.string()),
+  deepDive: z.array(z.string()),
+  successCriteria: z.array(z.string()),
+})
+
 const EvaluationSchema = z.object({
   status: z.string(),
   suggestions: z.array(z.string()),
@@ -52,6 +74,9 @@ const EvaluationSchema = z.object({
   targetAudience: z.array(TargetAudienceSchema),
   clarityScore: ClarityScoreSchema,
   languageAnalysis: LanguageAnalysisSchema,
+  assumptionsAnalysis: AssumptionsAnalysisSchema.nullable(),
+  hypothesisFramework: HypothesisFrameworkSchema.nullable(),
+  validationPlan: ValidationPlanSchema.nullable(),
 })
 
 export class ConceptRepositorySQLite implements Repository {
@@ -65,7 +90,10 @@ export class ConceptRepositorySQLite implements Repository {
       data: {
         id: concept.getId().getValue(),
         problem: concept.getProblem().getValue(),
+        persona: concept.getPersona().getValue(),
         region: concept.getRegion().getValue(),
+        productType: concept.getProductType().getValue(),
+        stage: concept.getStage().getValue(),
         createdAt: concept.getCreatedAt(),
       },
     })
@@ -103,7 +131,10 @@ export class ConceptRepositorySQLite implements Repository {
         },
         data: {
           problem: updatedConcept.getProblem().getValue(),
+          persona: updatedConcept.getPersona().getValue(),
           region: updatedConcept.getRegion().getValue(),
+          productType: updatedConcept.getProductType().getValue(),
+          stage: updatedConcept.getStage().getValue(),
           ...(updatedConcept.isEvaluated() && {
             evaluatedAt: new Date(),
             evaluation: this.evaluationToJSON(updatedConcept.getEvaluation()),
@@ -136,6 +167,9 @@ export class ConceptRepositorySQLite implements Repository {
       targetAudience: evaluation.getTargetAudience(),
       clarityScore: evaluation.getClarityScore(),
       languageAnalysis: evaluation.getLanguageAnalysis(),
+      assumptionsAnalysis: evaluation.getAssumptionsAnalysis(),
+      hypothesisFramework: evaluation.getHypothesisFramework(),
+      validationPlan: evaluation.getValidationPlan(),
     })
   }
 
@@ -151,8 +185,11 @@ export class ConceptRepositorySQLite implements Repository {
     const concept = Concept.New(
       conceptModel.id,
       conceptModel.problem,
+      conceptModel.persona ?? '',
       // FIXME: This is a temporary fix to support the old data.
       conceptModel.region ?? 'worldwide',
+      conceptModel.productType ?? 'b2c',
+      conceptModel.stage ?? 'idea',
       this.conceptExpirationDays,
       this.timeProvider,
       conceptModel.createdAt
@@ -162,6 +199,35 @@ export class ConceptRepositorySQLite implements Repository {
       const evaluation = EvaluationSchema.parse(
         JSON.parse(conceptModel.evaluation)
       )
+
+      let assumptionsAnalysis: AssumptionsAnalysis | null = null
+      let hypothesisFramework: HypothesisFramework | null = null
+      let validationPlan: ValidationPlan | null = null
+
+      if (evaluation.assumptionsAnalysis) {
+        assumptionsAnalysis = AssumptionsAnalysis.New(
+          evaluation.assumptionsAnalysis.coreAssumptions,
+          evaluation.assumptionsAnalysis.testability,
+          evaluation.assumptionsAnalysis.riskLevel,
+          evaluation.assumptionsAnalysis.validationMethods
+        )
+      }
+
+      if (evaluation.hypothesisFramework) {
+        hypothesisFramework = HypothesisFramework.New(
+          evaluation.hypothesisFramework.format,
+          evaluation.hypothesisFramework.examples
+        )
+      }
+
+      if (evaluation.validationPlan) {
+        validationPlan = ValidationPlan.New(
+          evaluation.validationPlan.quickWins,
+          evaluation.validationPlan.mediumEffort,
+          evaluation.validationPlan.deepDive,
+          evaluation.validationPlan.successCriteria
+        )
+      }
 
       concept.evaluate(
         Evaluation.New(
@@ -191,7 +257,10 @@ export class ConceptRepositorySQLite implements Repository {
             evaluation.languageAnalysis.vagueTerms,
             evaluation.languageAnalysis.missingContext,
             evaluation.languageAnalysis.ambiguousStatements
-          )
+          ),
+          assumptionsAnalysis,
+          hypothesisFramework,
+          validationPlan
         )
       )
     }

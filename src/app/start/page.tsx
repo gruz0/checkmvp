@@ -7,11 +7,12 @@ export const dynamic = 'force-dynamic'
 export default async function StartPage({
   searchParams,
 }: {
-  searchParams: { problem?: string }
+  searchParams: { problem?: string; persona?: string }
 }) {
   const limiter = await getLimits(createIdeaLimiterKey)
 
   const problem = searchParams.problem || ''
+  const persona = searchParams.persona || ''
 
   return (
     <div className="p-4 md:p-6 lg:p-8">
@@ -21,7 +22,7 @@ export default async function StartPage({
             Big Insights Start With Small Ideas! 🚀
           </h1>
 
-          <ConceptForm problem={problem} region="worldwide" />
+          <ConceptForm problem={problem} persona={persona} region="worldwide" />
         </>
       ) : (
         <>

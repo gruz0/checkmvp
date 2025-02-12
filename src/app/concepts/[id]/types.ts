@@ -28,6 +28,27 @@ interface LanguageAnalysis {
   ambiguousStatements: string[]
 }
 
+interface AssumptionsAnalysis {
+  coreAssumptions: string[]
+  testability: number
+  riskLevel: string
+  validationMethods: string[]
+}
+
+interface HypothesisFramework {
+  format: string
+  examples: string[]
+}
+
+interface ValidationPlan {
+  quickWins: string[]
+  mediumEffort: string[]
+  deepDive: string[]
+  successCriteria: string[]
+}
+
+// FIXME: Create a base evaluation type that can be used for all evaluations
+// Then extend it for each specific evaluation type
 export interface ProblemEvaluation {
   status: Status
   suggestions: string[]
@@ -37,4 +58,7 @@ export interface ProblemEvaluation {
   targetAudience: TargetAudience[]
   clarityScore: ClarityScore
   languageAnalysis: LanguageAnalysis
+  assumptionsAnalysis: AssumptionsAnalysis | null
+  hypothesisFramework: HypothesisFramework | null
+  validationPlan: ValidationPlan | null
 }

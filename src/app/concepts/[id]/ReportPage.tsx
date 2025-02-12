@@ -9,6 +9,7 @@ import { ProblemEvaluation } from './types'
 interface Concept {
   id: string
   problem: string
+  persona: string
   region: string
   evaluation: ProblemEvaluation | null
 }
@@ -42,6 +43,7 @@ const ReportPage = ({ concept }: Props) => {
         <ProblemEvaluationPage
           conceptId={concept.id}
           problem={concept.problem}
+          persona={concept.persona}
           region={concept.region}
           evaluation={concept.evaluation}
         />

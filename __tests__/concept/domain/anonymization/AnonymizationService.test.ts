@@ -9,6 +9,12 @@ import { WellDefinedEvaluationFactory } from '../../domain/WellDefinedEvaluation
 describe('AnonymizationService', () => {
   let service: Service
   let timeProvider: TimeProvider
+  const problem =
+    'Long problem description that fits the criteria and is long enough to pass the validation'
+  const persona =
+    'Persona that satisfies the criteria and is long enough to pass the validation'
+  const productType = 'b2c'
+  const stage = 'idea'
 
   beforeEach(() => {
     service = new Service()
@@ -18,8 +24,11 @@ describe('AnonymizationService', () => {
   it('should return already anonymized concept without changes', () => {
     const concept = Concept.New(
       Identity.Generate().getValue(),
-      'Long problem description that fits the criteria',
+      problem,
+      persona,
       'worldwide',
+      productType,
+      stage,
       30,
       timeProvider,
       new Date('2024-01-01')
@@ -33,8 +42,11 @@ describe('AnonymizationService', () => {
   it('should anonymize concept with not well defined evaluation', () => {
     const concept = Concept.New(
       Identity.Generate().getValue(),
-      'Long problem description that fits the criteria',
+      problem,
+      persona,
       'worldwide',
+      productType,
+      stage,
       30,
       timeProvider,
       new Date('2024-01-01')
@@ -44,8 +56,13 @@ describe('AnonymizationService', () => {
     const result = service.anonymizeConcept(concept)
 
     expect(result.getProblem().getValue()).toBe(
-      'This concept has been anonymized and is no longer available.'
+      'This problem has been anonymized and is no longer available for public view.'
     )
+    expect(result.getPersona().getValue()).toBe(
+      'This persona has been anonymized and is no longer available for public view.'
+    )
+    expect(result.getProductType().getValue()).toBe(productType)
+    expect(result.getStage().getValue()).toBe(stage)
     expect(result.isAnonymized()).toBeTrue()
 
     const evaluation = result.getEvaluation()
@@ -73,13 +90,19 @@ describe('AnonymizationService', () => {
       missingContext: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
       ambiguousStatements: ['[REDACTED]', '[REDACTED]'],
     })
+    expect(evaluation.getAssumptionsAnalysis()).toBeNull()
+    expect(evaluation.getHypothesisFramework()).toBeNull()
+    expect(evaluation.getValidationPlan()).toBeNull()
   })
 
   it('should anonymize concept with requires changes evaluation', () => {
     const concept = Concept.New(
       Identity.Generate().getValue(),
-      'Long problem description that fits the criteria',
+      problem,
+      persona,
       'worldwide',
+      productType,
+      stage,
       30,
       timeProvider,
       new Date('2024-01-01')
@@ -89,8 +112,13 @@ describe('AnonymizationService', () => {
     const result = service.anonymizeConcept(concept)
 
     expect(result.getProblem().getValue()).toBe(
-      'This concept has been anonymized and is no longer available.'
+      'This problem has been anonymized and is no longer available for public view.'
     )
+    expect(result.getPersona().getValue()).toBe(
+      'This persona has been anonymized and is no longer available for public view.'
+    )
+    expect(result.getProductType().getValue()).toBe(productType)
+    expect(result.getStage().getValue()).toBe(stage)
     expect(result.isAnonymized()).toBeTrue()
 
     const evaluation = result.getEvaluation()
@@ -119,13 +147,37 @@ describe('AnonymizationService', () => {
         },
       },
     ])
+    expect(evaluation.getAssumptionsAnalysis()).toEqual({
+      coreAssumptions: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
+      testability: 1,
+      riskLevel: 'high',
+      validationMethods: [
+        '[REDACTED]',
+        '[REDACTED]',
+        '[REDACTED]',
+        '[REDACTED]',
+      ],
+    })
+    expect(evaluation.getHypothesisFramework()).toEqual({
+      format: '[REDACTED]',
+      examples: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
+    })
+    expect(evaluation.getValidationPlan()).toEqual({
+      quickWins: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
+      mediumEffort: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
+      deepDive: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
+      successCriteria: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
+    })
   })
 
   it('should anonymize concept with well defined evaluation', () => {
     const concept = Concept.New(
       Identity.Generate().getValue(),
-      'Long problem description that fits the criteria',
+      problem,
+      persona,
       'worldwide',
+      productType,
+      stage,
       30,
       timeProvider,
       new Date('2024-01-01')
@@ -135,8 +187,13 @@ describe('AnonymizationService', () => {
     const result = service.anonymizeConcept(concept)
 
     expect(result.getProblem().getValue()).toBe(
-      'This concept has been anonymized and is no longer available.'
+      'This problem has been anonymized and is no longer available for public view.'
     )
+    expect(result.getPersona().getValue()).toBe(
+      'This persona has been anonymized and is no longer available for public view.'
+    )
+    expect(result.getProductType().getValue()).toBe(productType)
+    expect(result.getStage().getValue()).toBe(stage)
     expect(result.isAnonymized()).toBeTrue()
 
     const evaluation = result.getEvaluation()
@@ -173,13 +230,44 @@ describe('AnonymizationService', () => {
         },
       },
     ])
+    expect(evaluation.getAssumptionsAnalysis()).toEqual({
+      coreAssumptions: [
+        '[REDACTED]',
+        '[REDACTED]',
+        '[REDACTED]',
+        '[REDACTED]',
+        '[REDACTED]',
+      ],
+      testability: 1,
+      riskLevel: 'medium',
+      validationMethods: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
+    })
+    expect(evaluation.getHypothesisFramework()).toEqual({
+      format: '[REDACTED]',
+      examples: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
+    })
+    expect(evaluation.getValidationPlan()).toEqual({
+      quickWins: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
+      mediumEffort: [
+        '[REDACTED]',
+        '[REDACTED]',
+        '[REDACTED]',
+        '[REDACTED]',
+        '[REDACTED]',
+      ],
+      deepDive: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
+      successCriteria: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
+    })
   })
 
   it('should anonymize accepted concept', () => {
     const concept = Concept.New(
       Identity.Generate().getValue(),
-      'Long problem description that fits the criteria',
+      problem,
+      persona,
       'worldwide',
+      productType,
+      stage,
       30,
       timeProvider,
       new Date('2024-01-01')
@@ -193,8 +281,13 @@ describe('AnonymizationService', () => {
     const result = service.anonymizeConcept(concept)
 
     expect(result.getProblem().getValue()).toBe(
-      'This concept has been anonymized and is no longer available.'
+      'This problem has been anonymized and is no longer available for public view.'
     )
+    expect(result.getPersona().getValue()).toBe(
+      'This persona has been anonymized and is no longer available for public view.'
+    )
+    expect(result.getProductType().getValue()).toBe(productType)
+    expect(result.getStage().getValue()).toBe(stage)
     expect(result.isAnonymized()).toBeTrue()
     expect(result.wasAccepted()).toBeTrue()
     expect(result.getIdeaId()).toBe(ideaId)
@@ -203,8 +296,11 @@ describe('AnonymizationService', () => {
   it('should anonymize archived concept', () => {
     const concept = Concept.New(
       Identity.Generate().getValue(),
-      'Long problem description that fits the criteria',
+      problem,
+      persona,
       'worldwide',
+      productType,
+      stage,
       30,
       timeProvider,
       new Date('2024-01-01')
@@ -216,8 +312,13 @@ describe('AnonymizationService', () => {
     const result = service.anonymizeConcept(concept)
 
     expect(result.getProblem().getValue()).toBe(
-      'This concept has been anonymized and is no longer available.'
+      'This problem has been anonymized and is no longer available for public view.'
     )
+    expect(result.getPersona().getValue()).toBe(
+      'This persona has been anonymized and is no longer available for public view.'
+    )
+    expect(result.getProductType().getValue()).toBe(productType)
+    expect(result.getStage().getValue()).toBe(stage)
     expect(result.isAnonymized()).toBeTrue()
     expect(result.wasArchived()).toBeTrue()
   })
@@ -225,8 +326,11 @@ describe('AnonymizationService', () => {
   it('should anonymize concept with language analysis containing data', () => {
     const concept = Concept.New(
       Identity.Generate().getValue(),
-      'Long problem description that fits the criteria',
+      problem,
+      persona,
       'worldwide',
+      productType,
+      stage,
       30,
       timeProvider,
       new Date('2024-01-01')
