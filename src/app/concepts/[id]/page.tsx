@@ -44,8 +44,8 @@ interface AssumptionsAnalysis {
 }
 
 interface HypothesisFramework {
-  format: string
-  examples: string[]
+  statement: string
+  hypotheses: string[]
 }
 
 interface ValidationPlan {
@@ -117,8 +117,8 @@ export default async function Page({ params }: { params: { id: string } }) {
 
       if (hypothesisFrameworkData) {
         hypothesisFramework = {
-          format: hypothesisFrameworkData.getFormat(),
-          examples: hypothesisFrameworkData.getExamples(),
+          statement: hypothesisFrameworkData.getStatement(),
+          hypotheses: hypothesisFrameworkData.getHypotheses(),
         }
       }
 

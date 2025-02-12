@@ -1,33 +1,36 @@
 export class HypothesisFramework {
   private constructor(
-    private readonly format: string,
-    private readonly examples: string[]
+    private readonly statement: string,
+    private readonly hypotheses: string[]
   ) {}
 
-  public static New(format: string, examples: string[]): HypothesisFramework {
-    if (!format.trim()) {
-      throw new Error('Format must not be empty')
+  public static New(
+    statement: string,
+    hypotheses: string[]
+  ): HypothesisFramework {
+    if (!statement.trim()) {
+      throw new Error('Statement must not be empty')
     }
 
-    if (examples.length === 0) {
-      throw new Error('Examples must not be empty')
+    if (hypotheses.length === 0) {
+      throw new Error('Hypotheses must not be empty')
     }
 
-    if (examples.some((example) => !example.trim())) {
-      throw new Error('Examples must not contain empty values')
+    if (hypotheses.some((hypothesis) => !hypothesis.trim())) {
+      throw new Error('Hypotheses must not contain empty values')
     }
 
     return new HypothesisFramework(
-      format.trim(),
-      examples.map((e) => e.trim())
+      statement.trim(),
+      hypotheses.map((h) => h.trim())
     )
   }
 
-  public getFormat(): string {
-    return this.format
+  public getStatement(): string {
+    return this.statement
   }
 
-  public getExamples(): string[] {
-    return [...this.examples]
+  public getHypotheses(): string[] {
+    return [...this.hypotheses]
   }
 }

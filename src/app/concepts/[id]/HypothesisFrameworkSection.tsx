@@ -6,8 +6,8 @@ import SectionHeader from '@/components/SectionHeader'
 import SectionWrapper from '@/components/SectionWrapper'
 
 interface HypothesisFramework {
-  format: string
-  examples: string[]
+  statement: string
+  hypotheses: string[]
 }
 
 interface Props {
@@ -44,10 +44,10 @@ const HypothesisFrameworkSection: React.FC<Props> = ({
 
             <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 dark:bg-gray-900/50">
               <h3 className="mb-4 text-lg font-semibold md:text-xl">
-                Your Primary Assumption:
+                Your Statement:
               </h3>
 
-              <p className="md:text-lg">{hypothesisFramework.format}</p>
+              <p className="md:text-lg">{hypothesisFramework.statement}</p>
             </div>
 
             <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 dark:bg-gray-900/50">
@@ -56,12 +56,12 @@ const HypothesisFrameworkSection: React.FC<Props> = ({
               </h3>
 
               <div className="space-y-4">
-                {hypothesisFramework.examples.map((example, index) => (
+                {hypothesisFramework.hypotheses.map((hypothesis, index) => (
                   <div
                     key={index}
                     className="rounded-md bg-gray-100 p-4 dark:bg-gray-800"
                   >
-                    <p className="md:text-lg">{example}</p>
+                    <p className="md:text-lg">{hypothesis}</p>
                   </div>
                 ))}
               </div>

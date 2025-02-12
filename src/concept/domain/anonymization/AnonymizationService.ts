@@ -152,7 +152,7 @@ export class Service implements Anonymization {
 
     return HypothesisFramework.New(
       '[REDACTED]',
-      Array(hypothesisFramework.getExamples().length).fill('[REDACTED]')
+      Array(hypothesisFramework.getHypotheses().length).fill('[REDACTED]')
     )
   }
 

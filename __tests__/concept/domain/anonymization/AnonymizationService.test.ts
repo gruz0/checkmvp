@@ -159,8 +159,8 @@ describe('AnonymizationService', () => {
       ],
     })
     expect(evaluation.getHypothesisFramework()).toEqual({
-      format: '[REDACTED]',
-      examples: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
+      statement: '[REDACTED]',
+      hypotheses: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
     })
     expect(evaluation.getValidationPlan()).toEqual({
       quickWins: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
@@ -243,8 +243,8 @@ describe('AnonymizationService', () => {
       validationMethods: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
     })
     expect(evaluation.getHypothesisFramework()).toEqual({
-      format: '[REDACTED]',
-      examples: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
+      statement: '[REDACTED]',
+      hypotheses: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
     })
     expect(evaluation.getValidationPlan()).toEqual({
       quickWins: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
