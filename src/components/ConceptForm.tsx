@@ -12,6 +12,8 @@ interface Props {
   problem: string
   persona: string
   region: string
+  productType: string
+  stage: string
   cta?: string
 }
 
@@ -208,7 +210,14 @@ const TargetPersonasPopup: React.FC<{
   )
 }
 
-const DefineConceptForm = ({ problem, persona, region, cta }: Props) => {
+const DefineConceptForm = ({
+  problem,
+  persona,
+  region,
+  productType,
+  stage,
+  cta,
+}: Props) => {
   const [isPrimaryAssumptionExpanded, setIsPrimaryAssumptionExpanded] =
     useState<boolean>(true)
   const [isTargetPersonasExpanded, setIsTargetPersonasExpanded] =
@@ -228,8 +237,8 @@ const DefineConceptForm = ({ problem, persona, region, cta }: Props) => {
     problem: problem,
     persona: persona,
     region: region,
-    productType: 'b2c',
-    stage: 'idea',
+    productType: productType,
+    stage: stage,
   })
 
   const regions = [
@@ -371,7 +380,7 @@ const DefineConceptForm = ({ problem, persona, region, cta }: Props) => {
               value={formData.problem}
               onChange={handleChange}
               required
-              placeholder={`If we [take an action], then [we expect this outcome], because [underlying assumption]`}
+              placeholder={`I/we suppose that [target audiences] might have a [specific problem problem] that can be solved by [offering a solution], which allows them to [benefit].`}
               minLength={64}
               maxLength={2048}
             />

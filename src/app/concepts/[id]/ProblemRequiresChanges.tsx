@@ -24,6 +24,8 @@ interface Props {
   problem: string
   persona: string
   region: string
+  productType: string
+  stage: string
   evaluation: ProblemEvaluation
 }
 
@@ -32,6 +34,8 @@ const ProblemRequiresChanges = ({
   problem,
   persona,
   region,
+  productType,
+  stage,
   evaluation,
 }: Props) => {
   const plausible = usePlausible()
@@ -205,6 +209,8 @@ const ProblemRequiresChanges = ({
                     problem={problem}
                     persona={persona}
                     region={region}
+                    productType={productType}
+                    stage={stage}
                     cta="Make Changes"
                   />
                 </Section>
@@ -218,6 +224,8 @@ const ProblemRequiresChanges = ({
             problem={problem}
             persona={persona}
             region={region}
+            productType={productType}
+            stage={stage}
             cta="Make Changes"
           />
         </Section>

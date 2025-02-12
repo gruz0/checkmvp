@@ -74,6 +74,8 @@ interface Concept {
   problem: string
   persona: string
   region: string
+  productType: string
+  stage: string
   evaluation: Evaluation | null
 }
 
@@ -88,6 +90,8 @@ export default async function Page({ params }: { params: { id: string } }) {
       problem: concept.getProblem().getValue(),
       persona: concept.getPersona().getValue(),
       region: concept.getRegion().getValue(),
+      productType: concept.getProductType().getValue(),
+      stage: concept.getStage().getValue(),
       evaluation: null,
     }
 

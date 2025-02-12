@@ -11,6 +11,8 @@ interface Concept {
   problem: string
   persona: string
   region: string
+  productType: string
+  stage: string
   evaluation: ProblemEvaluation | null
 }
 
@@ -45,6 +47,8 @@ const ReportPage = ({ concept }: Props) => {
           problem={concept.problem}
           persona={concept.persona}
           region={concept.region}
+          productType={concept.productType}
+          stage={concept.stage}
           evaluation={concept.evaluation}
         />
       )}

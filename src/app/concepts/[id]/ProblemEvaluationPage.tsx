@@ -10,6 +10,8 @@ type Props = {
   problem: string
   persona: string
   region: string
+  productType: string
+  stage: string
   evaluation: ProblemEvaluation
 }
 
@@ -18,6 +20,8 @@ const ProblemEvaluationPage = ({
   problem,
   persona,
   region,
+  productType,
+  stage,
   evaluation,
 }: Props) => (
   <div>
@@ -26,6 +30,8 @@ const ProblemEvaluationPage = ({
         problem={problem}
         persona={persona}
         region={region}
+        productType={productType}
+        stage={stage}
         evaluation={evaluation}
       />
     )}
@@ -36,6 +42,8 @@ const ProblemEvaluationPage = ({
         problem={problem}
         persona={persona}
         region={region}
+        productType={productType}
+        stage={stage}
         evaluation={evaluation}
       />
     )}

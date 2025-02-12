@@ -11,6 +11,8 @@ interface Props {
   problem: string
   persona: string
   region: string
+  productType: string
+  stage: string
   evaluation: ProblemEvaluation
 }
 
@@ -18,6 +20,8 @@ const NotWellDefinedProblem = ({
   problem,
   persona,
   region,
+  productType,
+  stage,
   evaluation,
 }: Props) => (
   <div>
@@ -67,6 +71,8 @@ const NotWellDefinedProblem = ({
       problem={problem}
       persona={persona}
       region={region}
+      productType={productType}
+      stage={stage}
       cta="Give It Another Shot"
     />
   </div>
