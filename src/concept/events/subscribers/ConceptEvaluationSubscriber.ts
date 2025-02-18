@@ -1,14 +1,12 @@
 import * as Sentry from '@sentry/nextjs'
+import { Identity } from '@/common/domain/Identity'
 import { Concept } from '@/concept/domain/Aggregate'
-import { AssumptionsAnalysis } from '@/concept/domain/AssumptionsAnalysis'
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
-import { HypothesisFramework } from '@/concept/domain/HypothesisFramework'
 import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { Repository } from '@/concept/domain/Repository'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
-import { ValidationPlan } from '@/concept/domain/ValidationPlan'
 import { ConceptCreated } from '@/concept/domain/events/ConceptCreated'
 import { ConceptEvaluated } from '@/concept/domain/events/ConceptEvaluated'
 import { EventBus } from '@/concept/events/EventBus'
@@ -37,28 +35,17 @@ interface ConceptEvaluation {
     missingContext: string[]
     ambiguousStatements: string[]
   }
-  assumptionsAnalysis: {
-    coreAssumptions: string[]
-    testability: number
-    riskLevel: 'high' | 'medium' | 'low'
-    validationMethods: string[]
-  } | null
-  hypothesisFramework: {
-    statement: string
-    hypotheses: string[]
-  } | null
-  validationPlan: {
-    quickWins: string[]
-    mediumEffort: string[]
-    deepDive: string[]
-    successCriteria: string[]
-  } | null
 }
 
 interface TargetAudienceEvaluation {
   segment: string
   description: string
   challenges: string[]
+  why: string
+  painPoints: string[]
+  targetingStrategy: string
+  statement: string
+  hypotheses: string[]
   validationMetrics: {
     marketSize: string
     accessibility: number
@@ -115,37 +102,6 @@ export class ConceptEvaluationSubscriber implements EventHandler {
         concept.getStage().getValue()
       )
 
-      let assumptionAnalysis: AssumptionsAnalysis | null = null
-
-      if (evaluation.assumptionsAnalysis) {
-        assumptionAnalysis = AssumptionsAnalysis.New(
-          evaluation.assumptionsAnalysis.coreAssumptions,
-          evaluation.assumptionsAnalysis.testability,
-          evaluation.assumptionsAnalysis.riskLevel,
-          evaluation.assumptionsAnalysis.validationMethods
-        )
-      }
-
-      let hypothesisFramework: HypothesisFramework | null = null
-
-      if (evaluation.hypothesisFramework) {
-        hypothesisFramework = HypothesisFramework.New(
-          evaluation.hypothesisFramework.statement,
-          evaluation.hypothesisFramework.hypotheses
-        )
-      }
-
-      let validationPlan: ValidationPlan | null = null
-
-      if (evaluation.validationPlan) {
-        validationPlan = ValidationPlan.New(
-          evaluation.validationPlan.quickWins,
-          evaluation.validationPlan.mediumEffort,
-          evaluation.validationPlan.deepDive,
-          evaluation.validationPlan.successCriteria
-        )
-      }
-
       await this.repository.updateConcept(
         event.payload.id,
         (concept): Concept => {
@@ -158,9 +114,15 @@ export class ConceptEvaluationSubscriber implements EventHandler {
               evaluation.marketExistence,
               evaluation.targetAudience.map((targetAudience) =>
                 TargetAudience.New(
+                  Identity.Generate().getValue(),
                   targetAudience.segment,
                   targetAudience.description,
                   targetAudience.challenges,
+                  targetAudience.why,
+                  targetAudience.painPoints,
+                  targetAudience.targetingStrategy,
+                  targetAudience.statement,
+                  targetAudience.hypotheses,
                   ValidationMetrics.New(
                     targetAudience.validationMetrics.marketSize,
                     targetAudience.validationMetrics.accessibility,
@@ -177,10 +139,7 @@ export class ConceptEvaluationSubscriber implements EventHandler {
                 evaluation.languageAnalysis.vagueTerms,
                 evaluation.languageAnalysis.missingContext,
                 evaluation.languageAnalysis.ambiguousStatements
-              ),
-              assumptionAnalysis,
-              hypothesisFramework,
-              validationPlan
+              )
             )
           )
 

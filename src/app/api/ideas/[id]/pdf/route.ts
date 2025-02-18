@@ -1,11 +1,7 @@
 import { renderToBuffer } from '@react-pdf/renderer'
 import * as Sentry from '@sentry/nextjs'
 import { NextResponse } from 'next/server'
-import {
-  IdeaPDFReport,
-  Report,
-  TargetAudiences,
-} from '@/components/IdeaPDFReport'
+import { IdeaPDFReport, Report } from '@/components/IdeaPDFReport'
 import { App } from '@/idea/service/Service'
 
 export async function GET(_: Request, { params }: { params: { id: string } }) {
@@ -23,31 +19,6 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     if (!dto.valueProposition) {
       throw new Error('No value proposition')
     }
-
-    const targetAudiences: TargetAudiences = []
-
-    dto.targetAudiences.forEach((targetAudience) => {
-      if (!targetAudience.why) {
-        throw new Error('No why in target audience')
-      }
-
-      if (!targetAudience.painPoints) {
-        throw new Error('No pain points in target audience')
-      }
-
-      if (!targetAudience.targetingStrategy) {
-        throw new Error('No targeting strategy in target audience')
-      }
-
-      targetAudiences.push({
-        id: targetAudience.id,
-        segment: targetAudience.segment,
-        description: targetAudience.description,
-        why: targetAudience.why,
-        painPoints: targetAudience.painPoints,
-        targetingStrategy: targetAudience.targetingStrategy,
-      })
-    })
 
     if (!dto.marketAnalysis) {
       throw new Error('No market analysis')
@@ -88,7 +59,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
         contextAnalysis: dto.contextAnalysis,
         marketExistence: dto.marketExistence,
         valueProposition: dto.valueProposition,
-        targetAudiences: targetAudiences,
+        targetAudience: dto.targetAudience,
         marketAnalysis: dto.marketAnalysis,
         competitorAnalysis: dto.competitorAnalysis,
         productNames: dto.productNames,

@@ -16,9 +16,19 @@ interface ConceptForReservation {
     stage: string
     marketExistence: string
     targetAudience: {
+      id: string
       segment: string
       description: string
       challenges: string[]
+      why: string
+      painPoints: string[]
+      targetingStrategy: string
+      validationMetrics: {
+        marketSize: string
+        accessibility: number
+        painPointIntensity: number
+        willingnessToPay: number
+      }
     }[]
   }
 }
@@ -30,6 +40,9 @@ interface ConceptService {
 type Command = {
   ideaId: string
   conceptId: string
+  targetAudienceId: string
+  statement: string
+  hypotheses: string
 }
 
 export class MakeReservationHandler {
@@ -62,29 +75,37 @@ export class MakeReservationHandler {
         )
       }
 
-      const targetAudiences = concept.content.targetAudience.map(
-        (targetAudience) =>
-          TargetAudience.New(
-            Identity.Generate().getValue(),
-            command.ideaId,
-            targetAudience.segment,
-            targetAudience.description,
-            targetAudience.challenges
-          )
+      const requestedTargetAudience = concept.content.targetAudience.find(
+        (targetAudience) => targetAudience.id === command.targetAudienceId
+      )
+
+      if (!requestedTargetAudience) {
+        throw new Error(`Target audience ${command.targetAudienceId} not found`)
+      }
+
+      // TODO: Add validation metrics to the target audience
+      const targetAudience = TargetAudience.New(
+        Identity.Generate().getValue(),
+        command.ideaId,
+        requestedTargetAudience.segment,
+        requestedTargetAudience.description,
+        requestedTargetAudience.challenges,
+        requestedTargetAudience.why,
+        requestedTargetAudience.painPoints,
+        requestedTargetAudience.targetingStrategy
       )
 
       const idea = Idea.New(
         command.ideaId,
         command.conceptId,
-        // FIXME: This is a temporary solution to pass the region, product type and stage to the idea
-        // Later we should refactor the idea to accept a region, product type and stage
-        `${concept.content.problem}
-
-Region: ${this.formatRegionName(concept.content.region)}
-My business model: ${concept.content.productType}
-My current stage: ${concept.content.stage}`,
+        concept.content.problem,
         concept.content.marketExistence,
-        targetAudiences
+        concept.content.region,
+        concept.content.productType,
+        concept.content.stage,
+        command.statement,
+        command.hypotheses,
+        targetAudience
       )
 
       await this.repository.addIdea(idea)

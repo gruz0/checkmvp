@@ -15,7 +15,6 @@ interface SectionContextProps {
     problem: string
     contextAnalysis: {
       problemDefinition: string
-      region: string
       marketExistence: string[]
       existingSolutions: string[]
       mainChallenges: string[]

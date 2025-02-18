@@ -6,6 +6,7 @@ import { ContextAnalysisEvaluated } from '@/idea/domain/events/ContextAnalysisEv
 import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEvaluated'
 import { EventBus } from '@/idea/events/EventBus'
 import { EventHandler } from '@/idea/events/EventHandler'
+import { TargetAudience } from './types'
 
 interface KeyMetric {
   label: string
@@ -24,7 +25,6 @@ interface ActionPriority {
 
 type Evaluation = {
   problemDefinition: string
-  region: string
   marketExistence: string[]
   existingSolutions: string[]
   mainChallenges: string[]
@@ -40,7 +40,12 @@ interface AIService {
   evaluateContext(
     ideaId: string,
     problem: string,
-    marketExistence: string
+    statement: string,
+    hypotheses: string,
+    region: string,
+    productType: string,
+    stage: string,
+    targetAudience: TargetAudience
   ): Promise<Evaluation>
 }
 
@@ -72,17 +77,27 @@ export class ContextAnalysisEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
+      const targetAudience: TargetAudience = {
+        segment: idea.getTargetAudience().getSegment(),
+        description: idea.getTargetAudience().getDescription(),
+        challenges: idea.getTargetAudience().getChallenges(),
+      }
+
       const evaluation = await this.aiService.evaluateContext(
         idea.getId().getValue(),
         idea.getProblem().getValue(),
-        idea.getMarketExistence()
+        idea.getStatement(),
+        idea.getHypotheses(),
+        idea.getRegion(),
+        idea.getProductType(),
+        idea.getStage(),
+        targetAudience
       )
 
       await this.repository.updateIdea(event.payload.id, (idea): Idea => {
         idea.setContextAnalysis(
           ContextAnalysis.New(
             evaluation.problemDefinition,
-            evaluation.region,
             evaluation.marketExistence,
             evaluation.existingSolutions,
             evaluation.mainChallenges,

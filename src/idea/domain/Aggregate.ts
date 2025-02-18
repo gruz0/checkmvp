@@ -33,7 +33,12 @@ export class Idea {
     private readonly conceptId: Identity,
     private readonly problem: Problem,
     private readonly marketExistence: string,
-    private readonly targetAudiences: TargetAudience[]
+    private readonly region: string,
+    private readonly productType: string,
+    private readonly stage: string,
+    private readonly statement: string,
+    private readonly hypotheses: string,
+    private readonly targetAudience: TargetAudience
   ) {}
 
   static New(
@@ -41,7 +46,12 @@ export class Idea {
     conceptId: string,
     problem: string,
     marketExistence: string,
-    targetAudiences: TargetAudience[]
+    region: string,
+    productType: string,
+    stage: string,
+    statement: string,
+    hypotheses: string,
+    targetAudience: TargetAudience
   ): Idea {
     if (!problem || problem.trim() === '') {
       throw new Error('Problem cannot be empty')
@@ -51,8 +61,24 @@ export class Idea {
       throw new Error('Market existence cannot be empty')
     }
 
-    if (targetAudiences.length === 0) {
-      throw new Error('Target audiences cannot be empty')
+    if (!region || region.trim() === '') {
+      throw new Error('Region cannot be empty')
+    }
+
+    if (!productType || productType.trim() === '') {
+      throw new Error('Product type cannot be empty')
+    }
+
+    if (!stage || stage.trim() === '') {
+      throw new Error('Stage cannot be empty')
+    }
+
+    if (!statement || statement.trim() === '') {
+      throw new Error('Statement cannot be empty')
+    }
+
+    if (!hypotheses || hypotheses.trim() === '') {
+      throw new Error('Hypotheses cannot be empty')
     }
 
     return new Idea(
@@ -60,42 +86,13 @@ export class Idea {
       Identity.New(conceptId),
       Problem.New(problem),
       marketExistence.trim(),
-      targetAudiences
+      region.trim(),
+      productType.trim(),
+      stage.trim(),
+      statement.trim(),
+      hypotheses.trim(),
+      targetAudience
     )
-  }
-
-  public updateTargetAudience(updatedAudience: TargetAudience): void {
-    const index = this.targetAudiences.findIndex(
-      (audience) =>
-        audience.getId().getValue() === updatedAudience.getId().getValue()
-    )
-
-    if (index === -1) {
-      throw new Error(
-        `TargetAudience with ID ${updatedAudience.getId().getValue()} does not exist`
-      )
-    }
-
-    const why = updatedAudience.getWhy()
-    if (why === null) {
-      throw new Error('Why has not been set for this TargetAudience.')
-    }
-
-    const painPoints = updatedAudience.getPainPoints()
-    if (painPoints === null) {
-      throw new Error('PainPoints have not been set for this TargetAudience.')
-    }
-
-    const targetingStrategy = updatedAudience.getTargetingStrategy()
-    if (targetingStrategy === null) {
-      throw new Error(
-        'TargetingStrategy has not been set for this TargetAudience.'
-      )
-    }
-
-    this.targetAudiences[index].setWhy(why)
-    this.targetAudiences[index].setPainPoints(painPoints)
-    this.targetAudiences[index].setTargetingStrategy(targetingStrategy)
   }
 
   public setValueProposition(valueProposition: ValueProposition): void {
@@ -246,8 +243,28 @@ export class Idea {
     return this.marketExistence
   }
 
-  public getTargetAudiences(): ReadonlyArray<TargetAudience> {
-    return this.targetAudiences
+  public getRegion(): string {
+    return this.region
+  }
+
+  public getProductType(): string {
+    return this.productType
+  }
+
+  public getStage(): string {
+    return this.stage
+  }
+
+  public getStatement(): string {
+    return this.statement
+  }
+
+  public getHypotheses(): string {
+    return this.hypotheses
+  }
+
+  public getTargetAudience(): TargetAudience {
+    return this.targetAudience
   }
 
   public getValueProposition(): ValueProposition | null {

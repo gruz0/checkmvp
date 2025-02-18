@@ -40,14 +40,14 @@ interface Props {
       problemSolving: string
       differentiation: string
     } | null
-    targetAudiences: Array<{
+    targetAudience: {
       id: string
       segment: string
       description: string
-      why: string | null
-      painPoints: string[] | null
-      targetingStrategy: string | null
-    }>
+      why: string
+      painPoints: string[]
+      targetingStrategy: string
+    }
     marketAnalysis: {
       trends: string
       userBehaviors: string
@@ -164,7 +164,6 @@ interface Props {
     } | null
     contextAnalysis: {
       problemDefinition: string
-      region: string
       marketExistence: string[]
       existingSolutions: string[]
       mainChallenges: string[]
@@ -218,7 +217,6 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
       clearInterval(intervalId)
     }
   }, [
-    data.targetAudiences,
     data.valueProposition,
     data.marketAnalysis,
     data.competitorAnalysis,
@@ -315,7 +313,7 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
 
           <HorizontalLine />
 
-          <SectionTargetAudiences data={data.targetAudiences} />
+          <SectionTargetAudiences data={data.targetAudience} />
 
           <HorizontalLine />
 

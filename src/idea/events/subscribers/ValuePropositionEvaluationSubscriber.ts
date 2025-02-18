@@ -6,6 +6,7 @@ import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEv
 import { ValuePropositionEvaluated } from '@/idea/domain/events/ValuePropositionEvaluated'
 import { EventBus } from '@/idea/events/EventBus'
 import { EventHandler } from '@/idea/events/EventHandler'
+import { TargetAudience } from './types'
 
 type Evaluation = {
   mainBenefit: string
@@ -13,17 +14,11 @@ type Evaluation = {
   differentiation: string
 }
 
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
 interface AIService {
   evaluateValueProposition(
     ideaId: string,
     problem: string,
-    targetAudiences: TargetAudience[]
+    targetAudience: TargetAudience
   ): Promise<Evaluation>
 }
 
@@ -55,16 +50,16 @@ export class ValuePropositionEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
-      const audiences = idea.getTargetAudiences().map((targetAudience) => ({
-        segment: targetAudience.getSegment(),
-        description: targetAudience.getDescription(),
-        challenges: targetAudience.getChallenges(),
-      }))
+      const targetAudience: TargetAudience = {
+        segment: idea.getTargetAudience().getSegment(),
+        description: idea.getTargetAudience().getDescription(),
+        challenges: idea.getTargetAudience().getChallenges(),
+      }
 
       const evaluation = await this.aiService.evaluateValueProposition(
         idea.getId().getValue(),
         idea.getProblem().getValue(),
-        audiences
+        targetAudience
       )
 
       await this.repository.updateIdea(event.payload.id, (idea): Idea => {

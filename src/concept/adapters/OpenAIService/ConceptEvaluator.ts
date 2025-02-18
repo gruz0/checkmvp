@@ -27,28 +27,17 @@ interface Evaluation {
     missingContext: string[]
     ambiguousStatements: string[]
   }
-  assumptionsAnalysis: {
-    coreAssumptions: string[]
-    testability: number
-    riskLevel: 'high' | 'medium' | 'low'
-    validationMethods: string[]
-  } | null
-  hypothesisFramework: {
-    statement: string
-    hypotheses: string[]
-  } | null
-  validationPlan: {
-    quickWins: string[]
-    mediumEffort: string[]
-    deepDive: string[]
-    successCriteria: string[]
-  } | null
 }
 
 interface TargetAudience {
   segment: string
   description: string
   challenges: string[]
+  why: string
+  painPoints: string[]
+  targetingStrategy: string
+  statement: string
+  hypotheses: string[]
   validationMetrics: {
     marketSize: string
     accessibility: number
@@ -89,6 +78,11 @@ const ResponseSchema = z.object({
         segment: z.string(),
         description: z.string(),
         challenges: z.array(z.string()),
+        why: z.string(),
+        pain_points: z.array(z.string()),
+        targeting_strategy: z.string(),
+        statement: z.string(),
+        hypotheses: z.array(z.string()),
         validation_metrics: z.object({
           market_size: z.string(),
           accessibility: z.number(),
@@ -97,28 +91,6 @@ const ResponseSchema = z.object({
         }),
       })
     ),
-    assumptions_analysis: z
-      .object({
-        core_assumptions: z.array(z.string()),
-        testability: z.number(),
-        risk_level: z.enum(['high', 'medium', 'low']),
-        validation_methods: z.array(z.string()),
-      })
-      .nullable(),
-    hypothesis_framework: z
-      .object({
-        statement: z.string(),
-        hypotheses: z.array(z.string()),
-      })
-      .nullable(),
-    validation_plan: z
-      .object({
-        quick_wins: z.array(z.string()),
-        medium_effort: z.array(z.string()),
-        deep_dive: z.array(z.string()),
-        success_criteria: z.array(z.string()),
-      })
-      .nullable(),
   }),
 })
 
@@ -255,9 +227,6 @@ ${stage.trim()}
             missingContext: [],
             ambiguousStatements: [],
           },
-          assumptionsAnalysis: null,
-          hypothesisFramework: null,
-          validationPlan: null,
         }
       }
 
@@ -297,24 +266,6 @@ ${stage.trim()}
         }
       }
 
-      const assumptionsAnalysis = problemEvaluation.assumptions_analysis
-
-      if (!assumptionsAnalysis) {
-        throw new Error('Assumptions analysis is null')
-      }
-
-      const hypothesisFramework = problemEvaluation.hypothesis_framework
-
-      if (!hypothesisFramework) {
-        throw new Error('Hypothesis framework is null')
-      }
-
-      const validationPlan = problemEvaluation.validation_plan
-
-      if (!validationPlan) {
-        throw new Error('Validation plan is null')
-      }
-
       return {
         status: problemEvaluation.status,
         suggestions: problemEvaluation.suggestions.filter(
@@ -333,6 +284,13 @@ ${stage.trim()}
           challenges: audience.challenges.filter(
             (challenge) => challenge.trim() !== ''
           ),
+          why: audience.why,
+          painPoints: audience.pain_points.filter(
+            (painPoint) => painPoint.trim() !== ''
+          ),
+          targetingStrategy: audience.targeting_strategy,
+          statement: audience.statement,
+          hypotheses: audience.hypotheses,
           validationMetrics: {
             marketSize: audience.validation_metrics.market_size,
             accessibility: audience.validation_metrics.accessibility,
@@ -366,22 +324,6 @@ ${stage.trim()}
             problemEvaluation.language_analysis.ambiguous_statements.filter(
               (statement) => statement.trim() !== ''
             ),
-        },
-        assumptionsAnalysis: {
-          coreAssumptions: assumptionsAnalysis.core_assumptions,
-          testability: assumptionsAnalysis.testability,
-          riskLevel: assumptionsAnalysis.risk_level,
-          validationMethods: assumptionsAnalysis.validation_methods,
-        },
-        hypothesisFramework: {
-          statement: hypothesisFramework.statement,
-          hypotheses: hypothesisFramework.hypotheses,
-        },
-        validationPlan: {
-          quickWins: validationPlan.quick_wins,
-          mediumEffort: validationPlan.medium_effort,
-          deepDive: validationPlan.deep_dive,
-          successCriteria: validationPlan.success_criteria,
         },
       }
     } catch (e) {

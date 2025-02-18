@@ -33,6 +33,12 @@ model Idea {
   conceptId       String           @unique @map(name: "concept_id")
   problem         String
   marketExistence String           @map(name: "market_existence")
+  // FIXME: At some point we should make these five fields mandatory
+  region          String?
+  productType     String?          @map(name: "product_type")
+  stage           String?
+  statement       String?
+  hypotheses      String?
   targetAudiences TargetAudience[]
   contents        IdeaContent[]
   createdAt       DateTime         @default(now()) @map(name: "created_at")
@@ -59,11 +65,10 @@ model IdeaContent {
 
 model TargetAudience {
   id                String    @id @default(uuid())
-  // These 3 fields (segment, description, challenged) are populated from the concept
   segment           String
   description       String
   challenges        String
-  // These 3 fields (why, painPoints, targetingStrategy) are populated from AI
+  // FIXME: At some point we should make these three fields mandatory
   why               String?
   painPoints        String?   @map(name: "pain_points")
   targetingStrategy String?   @map(name: "targeting_strategy")

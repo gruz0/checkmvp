@@ -61,7 +61,6 @@ Font.registerEmojiSource({
 
 type ContextAnalysis = {
   problemDefinition: string
-  region: string
   marketExistence: string[]
   existingSolutions: string[]
   mainChallenges: string[]
@@ -85,8 +84,6 @@ type TargetAudience = {
   painPoints: string[]
   targetingStrategy: string
 }
-
-export type TargetAudiences = Array<TargetAudience>
 
 type MarketAnalysis = {
   trends: string
@@ -228,7 +225,7 @@ export type Report = {
     contextAnalysis: ContextAnalysis
     marketExistence: string
     valueProposition: ValueProposition
-    targetAudiences: TargetAudiences
+    targetAudience: TargetAudience
     marketAnalysis: MarketAnalysis
     competitorAnalysis: CompetitorAnalysis
     productNames: ProductNames
@@ -325,7 +322,7 @@ export const IdeaPDFReport = ({ data }: Report) => (
 
       <SectionValueProposition data={data.valueProposition} />
 
-      <SectionTargetAudiences data={data.targetAudiences} />
+      <SectionTargetAudiences data={data.targetAudience} />
 
       <SectionSWOTAnalysis data={data.swotAnalysis} />
 
@@ -401,9 +398,6 @@ const SectionContextAnalysis = ({ data }: SectionContextAnalysisProps) => (
       facing similar challenges. Knowing the context helps you see how your
       product can fit into the larger picture.
     </Text>
-
-    <Text style={styles.subsection}>Region:</Text>
-    <Text style={styles.text}>{data.region}</Text>
 
     <Text style={styles.subsection}>Market Existence:</Text>
     {data.marketExistence.map((market, index) => (
@@ -622,7 +616,7 @@ const SectionValueProposition = ({ data }: SectionValuePropositionProps) => (
 )
 
 type SectionTargetAudiencesProps = {
-  data: TargetAudiences
+  data: TargetAudience
 }
 
 const SectionTargetAudiences = ({ data }: SectionTargetAudiencesProps) => (
@@ -639,29 +633,23 @@ const SectionTargetAudiences = ({ data }: SectionTargetAudiencesProps) => (
       audience is key to success!
     </Text>
 
-    {data.map((audience, idx) => (
-      <React.Fragment key={idx}>
-        <Text style={styles.subsection}>
-          {`${idx + 1}. ${audience.segment}`}
-        </Text>
+    <Text style={styles.subsection}>{data.segment}</Text>
 
-        <Text style={styles.subsectionHeader}>Description:</Text>
+    <Text style={styles.subsectionHeader}>Description:</Text>
 
-        <Text style={styles.text}>{audience.description}</Text>
+    <Text style={styles.text}>{data.description}</Text>
 
-        <Text style={styles.subsectionHeader}>Why:</Text>
+    <Text style={styles.subsectionHeader}>Why:</Text>
 
-        <Text style={styles.text}>{audience.why}</Text>
+    <Text style={styles.text}>{data.why}</Text>
 
-        <Text style={styles.subsectionHeader}>Pain Points:</Text>
+    <Text style={styles.subsectionHeader}>Pain Points:</Text>
 
-        <SimpleList items={audience.painPoints} />
+    <SimpleList items={data.painPoints} />
 
-        <Text style={styles.subsectionHeader}>Targeting Strategy:</Text>
+    <Text style={styles.subsectionHeader}>Targeting Strategy:</Text>
 
-        <Text style={styles.text}>{audience.targetingStrategy}</Text>
-      </React.Fragment>
-    ))}
+    <Text style={styles.text}>{data.targetingStrategy}</Text>
   </View>
 )
 

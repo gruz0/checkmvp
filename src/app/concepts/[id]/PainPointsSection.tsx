@@ -25,6 +25,11 @@ const PainPointsSection: React.FC<Props> = ({ painPoints }) => {
 
       {isExpanded && (
         <div id="section_pain_points">
+          <p className="mb-6 md:text-lg lg:text-xl">
+            These pain points are the ones that your potential customers are
+            most likely to experience.
+          </p>
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
             {painPoints.map((item, index) => (
               <div

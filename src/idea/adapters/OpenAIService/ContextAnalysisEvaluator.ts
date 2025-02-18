@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { BaseEvaluator } from './BaseEvaluator'
+import { TargetAudience } from './types'
 
 interface KeyMetric {
   label: string
@@ -18,7 +19,6 @@ interface ActionPriority {
 
 interface Evaluation {
   problemDefinition: string
-  region: string
   marketExistence: string[]
   existingSolutions: string[]
   mainChallenges: string[]
@@ -33,7 +33,6 @@ interface Evaluation {
 const ResponseSchema = z.object({
   context_analysis: z.object({
     problem_definition: z.string(),
-    region: z.string(),
     market_existence: z.array(z.string()),
     existing_solutions: z.array(z.string()),
     main_challenges: z.array(z.string()),
@@ -90,22 +89,21 @@ export class ContextAnalysisEvaluator extends BaseEvaluator<
   async evaluateContext(
     ideaId: string,
     problem: string,
-    marketExistence: string
+    statement: string,
+    hypotheses: string,
+    region: string,
+    productType: string,
+    stage: string,
+    targetAudience: TargetAudience
   ): Promise<Evaluation> {
     const messages = [
-      {
-        role: 'user' as const,
-        content: [
-          {
-            type: 'text' as const,
-            text: `Here is the problem my product aims to solve: """
-${problem.trim()}"""
-
-Also I have a market existence research: """
-${marketExistence.trim()}"""`,
-          },
-        ],
-      },
+      this.messageBuilder.createProblemMessage(problem),
+      this.messageBuilder.createStatementMessage(statement),
+      this.messageBuilder.createHypothesesMessage(hypotheses),
+      this.messageBuilder.createRegionMessage(region),
+      this.messageBuilder.createProductTypeMessage(productType),
+      this.messageBuilder.createStageMessage(stage),
+      ...this.messageBuilder.createTargetAudienceMessages(targetAudience),
     ]
 
     return this.evaluate(ideaId, messages)
@@ -116,7 +114,6 @@ ${marketExistence.trim()}"""`,
   ): Evaluation {
     return {
       problemDefinition: response.context_analysis.problem_definition,
-      region: response.context_analysis.region,
       marketExistence: response.context_analysis.market_existence,
       existingSolutions: response.context_analysis.existing_solutions,
       mainChallenges: response.context_analysis.main_challenges,

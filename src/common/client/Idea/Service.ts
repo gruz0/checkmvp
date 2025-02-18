@@ -13,7 +13,13 @@ const ReservationResponseSchema = z.object({
 export class Service {
   constructor(private readonly baseURL: string) {}
 
-  async reserve(ideaId: string, conceptId: string): Promise<Reservation> {
+  async reserve(
+    ideaId: string,
+    conceptId: string,
+    targetAudienceId: string,
+    statement: string,
+    hypotheses: string
+  ): Promise<Reservation> {
     try {
       const response = await fetch(`${this.baseURL}/ideas`, {
         method: 'POST',
@@ -23,6 +29,9 @@ export class Service {
         body: JSON.stringify({
           idea_id: ideaId,
           concept_id: conceptId,
+          target_audience_id: targetAudienceId,
+          statement: statement,
+          hypotheses: hypotheses,
         }),
       })
 
@@ -40,8 +49,6 @@ export class Service {
         message: parsedData.message,
       }
     } catch (error) {
-      console.error('Error reserving idea:', error)
-
       return {
         success: false,
         message: (error as Error).message || 'An unknown error occurred.',

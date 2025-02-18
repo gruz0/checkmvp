@@ -18,7 +18,6 @@ interface ActionPriority {
 export class ContextAnalysis {
   private constructor(
     private readonly problemDefinition: string,
-    private readonly region: string,
     private readonly marketExistence: string[],
     private readonly existingSolutions: string[],
     private readonly mainChallenges: string[],
@@ -32,7 +31,6 @@ export class ContextAnalysis {
 
   static New(
     problemDefinition: string,
-    region: string,
     marketExistence: string[],
     existingSolutions: string[],
     mainChallenges: string[],
@@ -45,10 +43,6 @@ export class ContextAnalysis {
   ): ContextAnalysis {
     if (!problemDefinition || problemDefinition.trim() === '') {
       throw new Error('Problem definition cannot be empty')
-    }
-
-    if (!region || region.trim() === '') {
-      throw new Error('Region cannot be empty')
     }
 
     if (!Array.isArray(marketExistence) || marketExistence.length === 0) {
@@ -106,9 +100,51 @@ export class ContextAnalysis {
       }
     })
 
+    // Add validation for empty strings in arrays
+    if (marketExistence.some((item) => !item || item.trim() === '')) {
+      throw new Error('Market existence items cannot be empty')
+    }
+
+    if (existingSolutions.some((item) => !item || item.trim() === '')) {
+      throw new Error('Existing solutions items cannot be empty')
+    }
+
+    if (mainChallenges.some((item) => !item || item.trim() === '')) {
+      throw new Error('Main challenges items cannot be empty')
+    }
+
+    if (opportunities.some((item) => !item || item.trim() === '')) {
+      throw new Error('Opportunities items cannot be empty')
+    }
+
+    if (callToAction.some((item) => !item || item.trim() === '')) {
+      throw new Error('Call to action items cannot be empty')
+    }
+
+    if (
+      keyMetrics.some(
+        (metric) =>
+          !metric.label?.trim() ||
+          !metric.value?.trim() ||
+          !metric.change?.trim()
+      )
+    ) {
+      throw new Error('Key metrics items cannot have empty values')
+    }
+
+    if (
+      actionPriorities.some(
+        (priority) =>
+          !priority.action?.trim() ||
+          !priority.impactDescription?.trim() ||
+          !priority.effortDescription?.trim()
+      )
+    ) {
+      throw new Error('Action priorities items cannot have empty values')
+    }
+
     return new ContextAnalysis(
       problemDefinition.trim(),
-      region.trim(),
       marketExistence.map((item) => item.trim()),
       existingSolutions.map((item) => item.trim()),
       mainChallenges.map((item) => item.trim()),
@@ -123,10 +159,6 @@ export class ContextAnalysis {
 
   public getProblemDefinition(): string {
     return this.problemDefinition
-  }
-
-  public getRegion(): string {
-    return this.region
   }
 
   public getMarketExistence(): string[] {

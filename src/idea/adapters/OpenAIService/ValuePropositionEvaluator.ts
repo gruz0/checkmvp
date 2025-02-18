@@ -1,16 +1,11 @@
 import { z } from 'zod'
 import { BaseEvaluator } from './BaseEvaluator'
+import { TargetAudience } from './types'
 
 interface Evaluation {
   mainBenefit: string
   problemSolving: string
   differentiation: string
-}
-
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
 }
 
 const ResponseSchema = z.object({
@@ -50,33 +45,11 @@ export class ValuePropositionEvaluator extends BaseEvaluator<
   async evaluateValueProposition(
     ideaId: string,
     problem: string,
-    targetAudiences: TargetAudience[]
+    targetAudience: TargetAudience
   ): Promise<Evaluation> {
     const messages = [
-      {
-        role: 'user' as const,
-        content: [
-          {
-            type: 'text' as const,
-            text: `Here is the problem my product aims to solve: """
-${problem.trim()}"""
-
-Here are my segments: """
-${targetAudiences
-  .map((targetAudience, idx) => {
-    let content = ''
-
-    content += `Segment ${idx + 1}: ${targetAudience.segment}\n`
-    content += `Description: ${targetAudience.description}\n`
-    content += `Challenges:\n${targetAudience.challenges.join('; ')}\n\n`
-
-    return content
-  })
-  .join('\n\n')}
-"""`,
-          },
-        ],
-      },
+      this.messageBuilder.createProblemMessage(problem),
+      ...this.messageBuilder.createTargetAudienceMessages(targetAudience),
     ]
 
     return this.evaluate(ideaId, messages)

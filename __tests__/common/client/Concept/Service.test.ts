@@ -28,9 +28,13 @@ describe('Concept Service', () => {
           market_existence: 'Test Market',
           target_audience: [
             {
+              id: '1',
               segment: 'Test Segment',
               description: 'Test Description',
               challenges: ['Challenge 1', 'Challenge 2'],
+              why: 'Test Why',
+              pain_points: ['Pain Point 1', 'Pain Point 2'],
+              targeting_strategy: 'Test Targeting Strategy',
               validation_metrics: {
                 market_size: 'Large',
                 accessibility: 8,
@@ -70,9 +74,13 @@ describe('Concept Service', () => {
           marketExistence: 'Test Market',
           targetAudience: [
             {
+              id: '1',
               segment: 'Test Segment',
               description: 'Test Description',
               challenges: ['Challenge 1', 'Challenge 2'],
+              why: 'Test Why',
+              painPoints: ['Pain Point 1', 'Pain Point 2'],
+              targetingStrategy: 'Test Targeting Strategy',
               validationMetrics: {
                 marketSize: 'Large',
                 accessibility: 8,

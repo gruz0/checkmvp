@@ -4,6 +4,7 @@ import { Repository } from '@/idea/domain/Repository'
 import { TestingPlan } from '@/idea/domain/TestingPlan'
 import { ValuePropositionEvaluated } from '@/idea/domain/events/ValuePropositionEvaluated'
 import { EventHandler } from '@/idea/events/EventHandler'
+import { TargetAudience, ValueProposition } from './types'
 
 interface CoreAssumption {
   assumption: string
@@ -84,23 +85,11 @@ interface Evaluation {
   softLaunchStrategy: SoftLaunchStrategy
 }
 
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
-interface ValueProposition {
-  mainBenefit: string
-  problemSolving: string
-  differentiation: string
-}
-
 interface AIService {
   evaluateTestingPlan(
     ideaId: string,
     problem: string,
-    targetAudiences: TargetAudience[],
+    targetAudience: TargetAudience,
     valueProposition: ValueProposition
   ): Promise<Evaluation>
 }
@@ -132,11 +121,11 @@ export class TestingPlanEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
-      const audiences = idea.getTargetAudiences().map((targetAudience) => ({
-        segment: targetAudience.getSegment(),
-        description: targetAudience.getDescription(),
-        challenges: targetAudience.getChallenges(),
-      }))
+      const targetAudience: TargetAudience = {
+        segment: idea.getTargetAudience().getSegment(),
+        description: idea.getTargetAudience().getDescription(),
+        challenges: idea.getTargetAudience().getChallenges(),
+      }
 
       const valueProposition = idea.getValueProposition()
 
@@ -149,7 +138,7 @@ export class TestingPlanEvaluationSubscriber implements EventHandler {
       const evaluation = await this.aiService.evaluateTestingPlan(
         idea.getId().getValue(),
         idea.getProblem().getValue(),
-        audiences,
+        targetAudience,
         {
           mainBenefit: valueProposition.getMainBenefit(),
           problemSolving: valueProposition.getProblemSolving(),

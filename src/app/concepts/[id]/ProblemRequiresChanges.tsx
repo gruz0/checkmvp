@@ -8,15 +8,11 @@ import HorizontalLine from '@/components/HorizontalLine'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
 import { Goals } from '@/lib/goals'
-import AssumptionsAnalysisSection from './AssumptionsAnalysisSection'
 import ClarityScoreSection from './ClarityScoreSection'
-import HypothesisFrameworkSection from './HypothesisFrameworkSection'
 import LanguageAnalysisSection from './LanguageAnalysisSection'
 import MarketExistenceSection from './MarketExistenceSection'
 import RecommendationsSection from './RecommendationsSection'
 import SharpenIdeaSection from './SharpenIdeaSection'
-import TargetAudienceSection from './TargetAudienceSection'
-import ValidationPlanSection from './ValidationPlanSection'
 import WelcomeBanner from './WelcomeBanner'
 import { ProblemEvaluation } from './types'
 
@@ -41,46 +37,25 @@ const ProblemRequiresChanges = ({
 }: Props) => {
   const plausible = usePlausible()
 
-  const [status, setStatus] = useState<string>('idle')
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSubmitting) return
 
-    try {
-      setStatus('loading')
-      setErrorMessage(null)
+    setIsSubmitting(true)
 
-      plausible(Goals.Analysis, {
-        props: {
-          page: 'ProblemRequiresChanges',
-          buttonId: 'requires_changes',
-        },
-      })
+    plausible(Goals.Analysis, {
+      props: {
+        page: 'ProblemRequiresChanges',
+        buttonId: 'requires_changes',
+      },
+    })
 
-      const res = await fetch(`/api/concepts/${conceptId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (res.status === 201) {
-        const data = await res.json()
-        router.push(`/ideas/${data.idea_id}`)
-      } else {
-        const errorData = await res.json()
-        setErrorMessage(errorData.error || 'Something went wrong.')
-        setStatus('error')
-      }
-    } catch (error) {
-      setErrorMessage('An error occurred. Please try again.')
-      setStatus('error')
-      console.error('Error submitting form:', error)
-    }
+    router.push(`/concepts/${conceptId}/audiences`)
   }
 
   return (
@@ -147,60 +122,25 @@ const ProblemRequiresChanges = ({
 
       <HorizontalLine />
 
-      <TargetAudienceSection targetAudience={evaluation.targetAudience} />
-
-      <HorizontalLine />
-
-      <AssumptionsAnalysisSection
-        assumptionsAnalysis={evaluation.assumptionsAnalysis}
-      />
-
-      <HorizontalLine />
-
-      <HypothesisFrameworkSection
-        hypothesisFramework={evaluation.hypothesisFramework}
-      />
-
-      <HorizontalLine />
-
-      <ValidationPlanSection validationPlan={evaluation.validationPlan} />
-
-      <HorizontalLine />
-
-      {status === 'error' && errorMessage && (
-        <div className="mb-4 rounded bg-red-200 p-4 text-red-800">
-          {errorMessage}
-        </div>
-      )}
-
       {evaluation.marketExistence && evaluation.targetAudience.length > 0 ? (
-        <div className="mt-6">
-          <Section header="Ready for a Full Breakdown?">
-            <p className="mb-6 text-lg md:text-xl">
-              Explore complete competitor breakdowns, marketing angles, and
-              more. In the next screen, we&apos;ll dive deeper into more than 10
-              sections and prepare a comprehensive report based on your problem.
-            </p>
+        <div>
+          <div className="mt-6 flex flex-col justify-between gap-4 md:flex-row md:gap-6">
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className="rounded-md border border-transparent bg-[#023840] px-4 py-2 text-xl font-medium text-[#7bf179] shadow-sm hover:bg-[#034e59] focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:px-6 md:py-4 md:text-2xl dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]"
+            >
+              {isSubmitting ? 'Processing...' : 'Discover Your Target Audience'}
+            </button>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="rounded-md border border-transparent bg-[#023840] px-4 py-2 text-xl font-medium text-[#7bf179] shadow-sm hover:bg-[#034e59] focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl dark:bg-[#7bf179] dark:text-[#023840] dark:hover:bg-[#5ed15b]"
-                disabled={status === 'loading'}
-              >
-                {status === 'loading' ? 'Saving...' : 'Go To Detailed Analysis'}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setShowForm(!showForm)}
-                className="rounded-md border border-[#023840] bg-white px-4 py-2 text-xl font-medium text-[#023840] shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl dark:border-[#7bf179] dark:bg-transparent dark:text-[#7bf179] dark:hover:bg-gray-800"
-              >
-                Edit Your Input
-              </button>
-            </div>
-          </Section>
+            <button
+              type="button"
+              onClick={() => setShowForm(!showForm)}
+              className="rounded-md border border-[#023840] bg-white px-4 py-2 text-xl font-medium text-[#023840] shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 md:px-6 md:py-4 md:text-2xl dark:border-[#7bf179] dark:bg-transparent dark:text-[#7bf179] dark:hover:bg-gray-800"
+            >
+              Or Edit Your Input
+            </button>
+          </div>
 
           {showForm && (
             <>

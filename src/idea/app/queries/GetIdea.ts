@@ -15,14 +15,14 @@ interface FullIdeaDTO {
     problemSolving: string
     differentiation: string
   } | null
-  targetAudiences: Array<{
+  targetAudience: {
     id: string
     segment: string
     description: string
-    why: string | null
-    painPoints: string[] | null
-    targetingStrategy: string | null
-  }>
+    why: string
+    painPoints: string[]
+    targetingStrategy: string
+  }
   marketAnalysis: {
     trends: string
     userBehaviors: string
@@ -138,7 +138,6 @@ interface FullIdeaDTO {
   } | null
   contextAnalysis: {
     problemDefinition: string
-    region: string
     marketExistence: string[]
     existingSolutions: string[]
     mainChallenges: string[]
@@ -187,7 +186,7 @@ export class GetIdeaHandler {
     }
 
     const valueProposition = idea.getValueProposition()
-    const targetAudiences = idea.getTargetAudiences()
+    const targetAudience = idea.getTargetAudience()
     const marketAnalysis = idea.getMarketAnalysis()
     const competitorAnalysis = idea.getCompetitorAnalysis()
     const productNames = idea.getProductNames()
@@ -209,14 +208,14 @@ export class GetIdeaHandler {
             differentiation: valueProposition.getDifferentiation(),
           }
         : null,
-      targetAudiences: targetAudiences.map((audience) => ({
-        id: audience.getId().getValue(),
-        segment: audience.getSegment(),
-        description: audience.getDescription(),
-        why: audience.getWhy(),
-        painPoints: audience.getPainPoints(),
-        targetingStrategy: audience.getTargetingStrategy(),
-      })),
+      targetAudience: {
+        id: targetAudience.getId().getValue(),
+        segment: targetAudience.getSegment(),
+        description: targetAudience.getDescription(),
+        why: targetAudience.getWhy(),
+        painPoints: targetAudience.getPainPoints(),
+        targetingStrategy: targetAudience.getTargetingStrategy(),
+      },
       marketAnalysis: marketAnalysis
         ? {
             trends: marketAnalysis.getTrends(),
@@ -309,7 +308,6 @@ export class GetIdeaHandler {
       contextAnalysis: contextAnalysis
         ? {
             problemDefinition: contextAnalysis.getProblemDefinition(),
-            region: contextAnalysis.getRegion(),
             marketExistence: contextAnalysis.getMarketExistence(),
             existingSolutions: contextAnalysis.getExistingSolutions(),
             mainChallenges: contextAnalysis.getMainChallenges(),
