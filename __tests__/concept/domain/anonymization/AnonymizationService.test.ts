@@ -90,9 +90,6 @@ describe('AnonymizationService', () => {
       missingContext: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
       ambiguousStatements: ['[REDACTED]', '[REDACTED]'],
     })
-    expect(evaluation.getAssumptionsAnalysis()).toBeNull()
-    expect(evaluation.getHypothesisFramework()).toBeNull()
-    expect(evaluation.getValidationPlan()).toBeNull()
   })
 
   it('should anonymize concept with requires changes evaluation', () => {
@@ -136,9 +133,15 @@ describe('AnonymizationService', () => {
     expect(evaluation.getMarketExistence()).toBe('[REDACTED]')
     expect(evaluation.getTargetAudience()).toEqual([
       {
+        id: 'id-1',
         segment: '[REDACTED]',
         description: '[REDACTED]',
         challenges: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
+        why: '[REDACTED]',
+        painPoints: ['[REDACTED]', '[REDACTED]'],
+        targetingStrategy: '[REDACTED]',
+        statement: '[REDACTED]',
+        hypotheses: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
         validationMetrics: {
           marketSize: '[REDACTED]',
           accessibility: 1,
@@ -147,27 +150,6 @@ describe('AnonymizationService', () => {
         },
       },
     ])
-    expect(evaluation.getAssumptionsAnalysis()).toEqual({
-      coreAssumptions: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
-      testability: 1,
-      riskLevel: 'high',
-      validationMethods: [
-        '[REDACTED]',
-        '[REDACTED]',
-        '[REDACTED]',
-        '[REDACTED]',
-      ],
-    })
-    expect(evaluation.getHypothesisFramework()).toEqual({
-      statement: '[REDACTED]',
-      hypotheses: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
-    })
-    expect(evaluation.getValidationPlan()).toEqual({
-      quickWins: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
-      mediumEffort: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
-      deepDive: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
-      successCriteria: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
-    })
   })
 
   it('should anonymize concept with well defined evaluation', () => {
@@ -208,9 +190,15 @@ describe('AnonymizationService', () => {
     expect(evaluation.getMarketExistence()).toBe('[REDACTED]')
     expect(evaluation.getTargetAudience()).toEqual([
       {
+        id: 'id-1',
         segment: '[REDACTED]',
         description: '[REDACTED]',
         challenges: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
+        why: '[REDACTED]',
+        painPoints: ['[REDACTED]', '[REDACTED]'],
+        targetingStrategy: '[REDACTED]',
+        statement: '[REDACTED]',
+        hypotheses: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
         validationMetrics: {
           marketSize: '[REDACTED]',
           accessibility: 1,
@@ -219,9 +207,15 @@ describe('AnonymizationService', () => {
         },
       },
       {
+        id: 'id-2',
         segment: '[REDACTED]',
         description: '[REDACTED]',
         challenges: ['[REDACTED]', '[REDACTED]'],
+        why: '[REDACTED]',
+        painPoints: ['[REDACTED]'],
+        targetingStrategy: '[REDACTED]',
+        statement: '[REDACTED]',
+        hypotheses: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
         validationMetrics: {
           marketSize: '[REDACTED]',
           accessibility: 1,
@@ -230,34 +224,6 @@ describe('AnonymizationService', () => {
         },
       },
     ])
-    expect(evaluation.getAssumptionsAnalysis()).toEqual({
-      coreAssumptions: [
-        '[REDACTED]',
-        '[REDACTED]',
-        '[REDACTED]',
-        '[REDACTED]',
-        '[REDACTED]',
-      ],
-      testability: 1,
-      riskLevel: 'medium',
-      validationMethods: ['[REDACTED]', '[REDACTED]', '[REDACTED]'],
-    })
-    expect(evaluation.getHypothesisFramework()).toEqual({
-      statement: '[REDACTED]',
-      hypotheses: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
-    })
-    expect(evaluation.getValidationPlan()).toEqual({
-      quickWins: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
-      mediumEffort: [
-        '[REDACTED]',
-        '[REDACTED]',
-        '[REDACTED]',
-        '[REDACTED]',
-        '[REDACTED]',
-      ],
-      deepDive: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
-      successCriteria: ['[REDACTED]', '[REDACTED]', '[REDACTED]', '[REDACTED]'],
-    })
   })
 
   it('should anonymize accepted concept', () => {

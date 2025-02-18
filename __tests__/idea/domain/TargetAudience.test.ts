@@ -7,6 +7,9 @@ describe('TargetAudience Class', () => {
   const validSegment = 'Developers'
   const validDescription = 'Developers interested in AI tools'
   const validChallenges = ['Time constraints', 'Resource limitations']
+  const validWhy = 'Developers need tools to improve productivity'
+  const validPainPoints = ['Lack of time', 'High costs']
+  const validTargetingStrategy = 'Social media marketing'
 
   describe('Constructor', () => {
     it('should create a TargetAudience with valid inputs', () => {
@@ -15,7 +18,10 @@ describe('TargetAudience Class', () => {
         validIdeaId,
         validSegment,
         validDescription,
-        validChallenges
+        validChallenges,
+        validWhy,
+        validPainPoints,
+        validTargetingStrategy
       )
 
       expect(audience.getId().getValue()).toBe(validId)
@@ -23,6 +29,9 @@ describe('TargetAudience Class', () => {
       expect(audience.getSegment()).toBe(validSegment)
       expect(audience.getDescription()).toBe(validDescription)
       expect(audience.getChallenges()).toEqual(validChallenges)
+      expect(audience.getWhy()).toBe(validWhy)
+      expect(audience.getPainPoints()).toEqual(validPainPoints)
+      expect(audience.getTargetingStrategy()).toBe(validTargetingStrategy)
     })
 
     it('should throw an error if segment is empty', () => {
@@ -32,7 +41,10 @@ describe('TargetAudience Class', () => {
           validIdeaId,
           ' ',
           validDescription,
-          validChallenges
+          validChallenges,
+          validWhy,
+          validPainPoints,
+          validTargetingStrategy
         )
       ).toThrow('Segment cannot be empty')
     })
@@ -44,7 +56,10 @@ describe('TargetAudience Class', () => {
           validIdeaId,
           validSegment,
           ' ',
-          validChallenges
+          validChallenges,
+          validWhy,
+          validPainPoints,
+          validTargetingStrategy
         )
       ).toThrow('Description cannot be empty')
     })
@@ -56,57 +71,87 @@ describe('TargetAudience Class', () => {
           validIdeaId,
           validSegment,
           validDescription,
-          []
+          [],
+          validWhy,
+          validPainPoints,
+          validTargetingStrategy
         )
       ).toThrow('Challenges cannot be empty')
     })
-  })
 
-  describe('Setters', () => {
-    let audience: TargetAudience
-
-    beforeEach(() => {
-      audience = TargetAudience.New(
-        validId,
-        validIdeaId,
-        validSegment,
-        validDescription,
-        validChallenges
-      )
+    it('should throw an error if challenges array contains empty strings', () => {
+      expect(() =>
+        TargetAudience.New(
+          validId,
+          validIdeaId,
+          validSegment,
+          validDescription,
+          ['Challenge 1', '', 'Challenge 2'],
+          validWhy,
+          validPainPoints,
+          validTargetingStrategy
+        )
+      ).toThrow('Challenges cannot contain empty strings')
     })
 
-    it('should set why with a valid string', () => {
-      const why = 'They need tools to improve productivity'
-      audience.setWhy(why)
-      expect(audience.getWhy()).toBe(why)
+    it('should throw an error if why is empty', () => {
+      expect(() =>
+        TargetAudience.New(
+          validId,
+          validIdeaId,
+          validSegment,
+          validDescription,
+          validChallenges,
+          ' ',
+          validPainPoints,
+          validTargetingStrategy
+        )
+      ).toThrow('Why cannot be empty')
     })
 
-    it('should throw an error when setting an empty why', () => {
-      expect(() => audience.setWhy(' ')).toThrow('Why cannot be empty')
+    it('should throw an error if pain points array contains empty strings', () => {
+      expect(() =>
+        TargetAudience.New(
+          validId,
+          validIdeaId,
+          validSegment,
+          validDescription,
+          validChallenges,
+          validWhy,
+          ['Pain Point 1', '', 'Pain Point 2'],
+          validTargetingStrategy
+        )
+      ).toThrow('Pain points cannot contain empty strings')
     })
 
-    it('should set painPoints with a valid array', () => {
-      const painPoints = ['Lack of time', 'High costs']
-      audience.setPainPoints(painPoints)
-      expect(audience.getPainPoints()).toEqual(painPoints)
+    it('should throw an error if pain points array is empty', () => {
+      expect(() =>
+        TargetAudience.New(
+          validId,
+          validIdeaId,
+          validSegment,
+          validDescription,
+          validChallenges,
+          validWhy,
+          [],
+          validTargetingStrategy
+        )
+      ).toThrow('Pain points cannot be empty')
     })
 
-    it('should throw an error when setting empty painPoints array', () => {
-      expect(() => audience.setPainPoints([])).toThrow(
-        'Pain points cannot be empty'
-      )
-    })
-
-    it('should set targetingStrategy with a valid string', () => {
-      const strategy = 'Social media marketing'
-      audience.setTargetingStrategy(strategy)
-      expect(audience.getTargetingStrategy()).toBe(strategy)
-    })
-
-    it('should throw an error when setting an empty targetingStrategy', () => {
-      expect(() => audience.setTargetingStrategy(' ')).toThrow(
-        'Targeting strategy cannot be empty'
-      )
+    it('should throw an error if targeting strategy is empty', () => {
+      expect(() =>
+        TargetAudience.New(
+          validId,
+          validIdeaId,
+          validSegment,
+          validDescription,
+          validChallenges,
+          validWhy,
+          validPainPoints,
+          ' '
+        )
+      ).toThrow('Targeting strategy cannot be empty')
     })
   })
 })

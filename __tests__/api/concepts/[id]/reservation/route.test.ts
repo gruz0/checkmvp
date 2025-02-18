@@ -64,6 +64,7 @@ describe('GET /api/concepts/[id]/reservation', () => {
         market_existence: evaluation.getMarketExistence(),
         target_audience: [
           {
+            id: 'id-1',
             segment: 'Remote Technology Companies',
             description: 'Software companies with 50+ distributed team members',
             challenges: [
@@ -71,6 +72,9 @@ describe('GET /api/concepts/[id]/reservation', () => {
               'Reduced productivity from context switching',
               'Difficulty maintaining consistent documentation',
             ],
+            why: 'Why',
+            pain_points: ['Pain point 1', 'Pain point 2'],
+            targeting_strategy: 'Targeting strategy',
             validation_metrics: {
               market_size: '2.3M companies globally',
               accessibility: 8,
@@ -79,12 +83,16 @@ describe('GET /api/concepts/[id]/reservation', () => {
             },
           },
           {
+            id: 'id-2',
             segment: 'Digital Agencies',
             description: 'Creative agencies with multiple client projects',
             challenges: [
               'Project asset management across clients',
               'Team collaboration across time zones',
             ],
+            why: 'Why',
+            pain_points: ['Pain point 1'],
+            targeting_strategy: 'Targeting strategy',
             validation_metrics: {
               market_size: '850K agencies worldwide',
               accessibility: 7,

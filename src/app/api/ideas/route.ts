@@ -8,11 +8,16 @@ export async function POST(request: Request) {
   try {
     const formData = await request.json()
 
-    const { idea_id, concept_id } = formData
+    // FIXME: Refactor this to use zod
+    const { idea_id, concept_id, target_audience_id, statement, hypotheses } =
+      formData
 
     Sentry.setContext('payload', {
       idea_id: idea_id,
       concept_id: concept_id,
+      target_audience_id: target_audience_id,
+      statement: statement,
+      hypotheses: hypotheses,
     })
 
     if (!idea_id) {
@@ -25,6 +30,27 @@ export async function POST(request: Request) {
     if (!concept_id) {
       return NextResponse.json(
         { error: 'Concept ID must be defined' },
+        { status: 422 }
+      )
+    }
+
+    if (!target_audience_id) {
+      return NextResponse.json(
+        { error: 'Target audience ID must be defined' },
+        { status: 422 }
+      )
+    }
+
+    if (!statement) {
+      return NextResponse.json(
+        { error: 'Statement must be defined' },
+        { status: 422 }
+      )
+    }
+
+    if (!hypotheses) {
+      return NextResponse.json(
+        { error: 'Hypotheses must be defined' },
         { status: 422 }
       )
     }
@@ -42,6 +68,9 @@ export async function POST(request: Request) {
     await App.Commands.MakeReservation.handle({
       ideaId: idea_id,
       conceptId: concept_id,
+      targetAudienceId: target_audience_id,
+      statement: statement,
+      hypotheses: hypotheses,
     })
 
     return NextResponse.json(

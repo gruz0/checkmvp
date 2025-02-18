@@ -11,12 +11,21 @@ interface Reservation {
 }
 
 interface IdeaService {
-  reserve(ideaId: string, conceptId: string): Promise<Reservation>
+  reserve(
+    ideaId: string,
+    conceptId: string,
+    targetAudienceId: string,
+    statement: string,
+    hypotheses: string
+  ): Promise<Reservation>
 }
 
 type Command = {
   id: string
   newIdeaId: string
+  targetAudienceId: string
+  statement: string
+  hypotheses: string
 }
 
 export class AcceptConceptHandler {
@@ -41,7 +50,10 @@ export class AcceptConceptHandler {
 
       const reservation = await this.ideaService.reserve(
         command.newIdeaId,
-        command.id
+        command.id,
+        command.targetAudienceId,
+        command.statement,
+        command.hypotheses
       )
 
       if (!reservation.success) {

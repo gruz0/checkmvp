@@ -25,12 +25,10 @@ const IDEA_EXPIRATION_DAYS = env.IDEA_EXPIRATION_DAYS
 
 export class IdeaRepositorySQLite implements Repository {
   async addIdea(idea: Idea): Promise<void> {
-    if (idea.getTargetAudiences().length === 0) {
-      throw new Error('Idea does not have target audiences')
-    }
-
     const expiresBy = new Date()
     expiresBy.setDate(expiresBy.getDate() + IDEA_EXPIRATION_DAYS)
+
+    const targetAudience = idea.getTargetAudience()
 
     await prisma.idea.create({
       data: {
@@ -38,13 +36,21 @@ export class IdeaRepositorySQLite implements Repository {
         conceptId: idea.getConceptId().getValue(),
         problem: idea.getProblem().getValue(),
         marketExistence: idea.getMarketExistence(),
+        region: idea.getRegion(),
+        productType: idea.getProductType(),
+        stage: idea.getStage(),
+        statement: idea.getStatement(),
+        hypotheses: idea.getHypotheses(),
         expiresBy: expiresBy,
         targetAudiences: {
-          create: idea.getTargetAudiences().map((audience) => ({
-            segment: audience.getSegment(),
-            description: audience.getDescription(),
-            challenges: JSON.stringify(audience.getChallenges()),
-          })),
+          create: {
+            segment: targetAudience.getSegment(),
+            description: targetAudience.getDescription(),
+            challenges: JSON.stringify(targetAudience.getChallenges()),
+            why: targetAudience.getWhy(),
+            painPoints: JSON.stringify(targetAudience.getPainPoints()),
+            targetingStrategy: targetAudience.getTargetingStrategy(),
+          },
         },
       },
     })
@@ -74,25 +80,6 @@ export class IdeaRepositorySQLite implements Repository {
       // FIXME: We must refactor the entire code below to update only changed fields.
       // Because now we are updating all fields every time no matter if they have changed or not.
       // It could be done by using domain events or by adding isChanged flag to each field.
-
-      const targetAudiences = updatedIdea.getTargetAudiences()
-      if (targetAudiences.length > 0) {
-        await Promise.all(
-          targetAudiences.map((audience) =>
-            prisma.targetAudience.update({
-              where: { id: audience.getId().getValue() },
-              data: {
-                why: audience.getWhy() ?? null,
-                painPoints: audience.getPainPoints()
-                  ? JSON.stringify(audience.getPainPoints())
-                  : null,
-                targetingStrategy: audience.getTargetingStrategy() ?? null,
-                updatedAt: new Date(),
-              },
-            })
-          )
-        )
-      }
 
       const valueProposition = updatedIdea.getValueProposition()
       if (valueProposition) {
@@ -360,36 +347,71 @@ export class IdeaRepositorySQLite implements Repository {
       }
     }
 
-    const targetAudiences = ideaModel.targetAudiences.map((audience) => {
-      const targetAudience = TargetAudience.New(
-        audience.id,
-        ideaModel.id,
-        audience.segment,
-        audience.description,
-        JSON.parse(audience.challenges)
-      )
+    const targetAudiences = ideaModel.targetAudiences
 
-      if (audience.why) {
-        targetAudience.setWhy(audience.why)
-      }
+    if (targetAudiences.length !== 1) {
+      throw new Error('Target audience must be exactly one')
+    }
 
-      if (audience.painPoints) {
-        targetAudience.setPainPoints(JSON.parse(audience.painPoints))
-      }
+    const { why, painPoints, targetingStrategy } = targetAudiences[0]
 
-      if (audience.targetingStrategy) {
-        targetAudience.setTargetingStrategy(audience.targetingStrategy)
-      }
+    // FIXME: This is a temporary solution and must be removed after we make the fields required
+    if (!why) {
+      throw new Error('Target audience is missing why')
+    }
 
-      return targetAudience
-    })
+    if (!painPoints) {
+      throw new Error('Target audience is missing pain points')
+    }
+
+    if (!targetingStrategy) {
+      throw new Error('Target audience is missing targeting strategy')
+    }
+
+    const targetAudience = TargetAudience.New(
+      targetAudiences[0].id,
+      ideaModel.id,
+      targetAudiences[0].segment,
+      targetAudiences[0].description,
+      JSON.parse(targetAudiences[0].challenges),
+      why,
+      JSON.parse(painPoints),
+      targetingStrategy
+    )
+
+    const { region, productType, stage, statement, hypotheses } = ideaModel
+
+    if (!region) {
+      throw new Error('Idea is missing region')
+    }
+
+    if (!productType) {
+      throw new Error('Idea is missing product type')
+    }
+
+    if (!stage) {
+      throw new Error('Idea is missing stage')
+    }
+
+    if (!statement) {
+      throw new Error('Idea is missing statement')
+    }
+
+    if (!hypotheses) {
+      throw new Error('Idea is missing hypotheses')
+    }
 
     const idea = Idea.New(
       ideaModel.id,
       ideaModel.conceptId,
       ideaModel.problem,
       ideaModel.marketExistence,
-      targetAudiences
+      region,
+      productType,
+      stage,
+      statement,
+      hypotheses,
+      targetAudience
     )
 
     // Value proposition
@@ -805,7 +827,6 @@ export class IdeaRepositorySQLite implements Repository {
 
       interface contextAnalysis {
         problemDefinition: string
-        region: string
         marketExistence: string[]
         existingSolutions: string[]
         mainChallenges: string[]
@@ -823,7 +844,6 @@ export class IdeaRepositorySQLite implements Repository {
       idea.setContextAnalysis(
         ContextAnalysis.New(
           data.problemDefinition,
-          data.region,
           data.marketExistence,
           data.existingSolutions,
           data.mainChallenges,

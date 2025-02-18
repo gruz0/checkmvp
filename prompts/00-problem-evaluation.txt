@@ -69,27 +69,19 @@ Based on the classification, follow the guidelines below.
   - **segment**: A concise name of the target audience segment
   - **description**: A detailed description of their specific challenges and motivations
   - **challenges**: Array of 3 specific challenges this audience segment faces related to the problem
+  - **why**: Explain the importance of this target audience, including their demographics, motivations, and how they relate to the product.
+  - **pain_points**: Identify specific challenges or issues faced by this audience that the product can address.
+  - **targeting_strategy**: Recommend ways to effectively target this audience based on their behaviors and preferences.
+  - **statement**: A single testable statement (started with "I/we believe that...") that captures the essence of the target audience's needs and motivations
+  - **hypotheses**: Array of 3 properly formatted hypotheses based on user's input. Each hypothesis should focus on a different aspect of the problem for this specific target audience:
+    - "Small real estate agencies (1-10 agents) will reduce their average response time to client inquiries from 4 hours to 30 minutes because our automated notification system alerts agents instantly, resulting in 40% more successful property viewings within the first month"
+    - "Property managers handling 50+ units will save 15 hours per week because our automated rent collection and maintenance request system eliminates manual tracking, resulting in a 60% reduction in payment delays and maintenance response times"
+    - "Independent real estate agents will increase their client portfolio by 30% within 3 months because our AI-powered matching system connects them with qualified leads based on historical preferences, resulting in a 25% higher closing rate"
   - **validation_metrics**: Quantitative assessment of the segment's potential
     - **market_size**: Description of the estimated market size for this segment, including source of information where available (e.g., industry reports, market research, public data)
     - **accessibility**: Score (0-10) indicating how easily this segment can be reached and acquired
     - **pain_point_intensity**: Score (0-10) indicating how severely this segment experiences the problem
     - **willingness_to_pay**: Score (0-10) indicating the segment's likelihood to pay for a solution
-- **assumptions_analysis**: Analyze the key assumptions present in the user's statement
-  - **core_assumptions**: Array of identified assumptions that need validation
-  - **testability**: Score (0-10) for how easily each assumption can be tested
-  - **risk_level**: Assessment of risk if assumption proves false (high/medium/low)
-  - **validation_methods**: Array of specific ways to test each assumption
-- **hypothesis_framework**: Help structure testable hypotheses. Skip formal, sales-like language, and buzzwords such as: streamline, enhance, tailor, leverage, thrill, seamless, etc., in any form.
-  - **statement**: User's input rewritten in a single testable statement following this pattern: "We believe [specific user group] will [take specific action] because [clear reason], resulting in [measurable outcome in X time period]"
-  - **hypotheses**: Array of 3 properly formatted hypotheses based on user's input. Each hypothesis should focus on a different aspect of the problem:
-    - "Small real estate agencies (1-10 agents) will reduce their average response time to client inquiries from 4 hours to 30 minutes because our automated notification system alerts agents instantly, resulting in 40% more successful property viewings within the first month"
-    - "Property managers handling 50+ units will save 15 hours per week because our automated rent collection and maintenance request system eliminates manual tracking, resulting in a 60% reduction in payment delays and maintenance response times"
-    - "Independent real estate agents will increase their client portfolio by 30% within 3 months because our AI-powered matching system connects them with qualified leads based on historical preferences, resulting in a 25% higher closing rate"
-- **validation_plan**: Provide a structured approach to validate assumptions
-  - **quick_wins**: Tests that can be done in 1-2 days
-  - **medium_effort**: Tests requiring 1-2 weeks
-  - **deep_dive**: Tests requiring 1+ months
-  - **success_criteria**: Specific metrics to determine if assumption is valid
 
 ### Important Instructions
 

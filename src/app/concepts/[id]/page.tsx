@@ -9,9 +9,15 @@ export const dynamic = 'force-dynamic'
 type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
 
 interface TargetAudience {
+  id: string
   segment: string
   description: string
   challenges: string[]
+  why: string
+  painPoints: string[]
+  targetingStrategy: string
+  statement: string
+  hypotheses: string[]
   validationMetrics: {
     marketSize: string
     accessibility: number
@@ -36,25 +42,6 @@ interface LanguageAnalysis {
   ambiguousStatements: string[]
 }
 
-interface AssumptionsAnalysis {
-  coreAssumptions: string[]
-  testability: number
-  riskLevel: string
-  validationMethods: string[]
-}
-
-interface HypothesisFramework {
-  statement: string
-  hypotheses: string[]
-}
-
-interface ValidationPlan {
-  quickWins: string[]
-  mediumEffort: string[]
-  deepDive: string[]
-  successCriteria: string[]
-}
-
 interface Evaluation {
   status: Status
   suggestions: string[]
@@ -64,9 +51,6 @@ interface Evaluation {
   targetAudience: TargetAudience[]
   clarityScore: ClarityScore
   languageAnalysis: LanguageAnalysis
-  assumptionsAnalysis: AssumptionsAnalysis | null
-  hypothesisFramework: HypothesisFramework | null
-  validationPlan: ValidationPlan | null
 }
 
 interface Concept {
@@ -98,41 +82,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     if (concept.isEvaluated()) {
       const conceptEvaluation = concept.getEvaluation()
 
-      let assumptionsAnalysis: AssumptionsAnalysis | null = null
-      let hypothesisFramework: HypothesisFramework | null = null
-      let validationPlan: ValidationPlan | null = null
-
-      const assumptionsAnalysisData = conceptEvaluation.getAssumptionsAnalysis()
-
-      if (assumptionsAnalysisData) {
-        assumptionsAnalysis = {
-          coreAssumptions: assumptionsAnalysisData.getCoreAssumptions(),
-          testability: assumptionsAnalysisData.getTestability(),
-          riskLevel: assumptionsAnalysisData.getRiskLevel(),
-          validationMethods: assumptionsAnalysisData.getValidationMethods(),
-        }
-      }
-
-      const hypothesisFrameworkData = conceptEvaluation.getHypothesisFramework()
-
-      if (hypothesisFrameworkData) {
-        hypothesisFramework = {
-          statement: hypothesisFrameworkData.getStatement(),
-          hypotheses: hypothesisFrameworkData.getHypotheses(),
-        }
-      }
-
-      const validationPlanData = conceptEvaluation.getValidationPlan()
-
-      if (validationPlanData) {
-        validationPlan = {
-          quickWins: validationPlanData.getQuickWins(),
-          mediumEffort: validationPlanData.getMediumEffort(),
-          deepDive: validationPlanData.getDeepDive(),
-          successCriteria: validationPlanData.getSuccessCriteria(),
-        }
-      }
-
       const evaluation: Evaluation = {
         status: conceptEvaluation.getStatus(),
         marketExistence: conceptEvaluation.getMarketExistence(),
@@ -141,9 +90,15 @@ export default async function Page({ params }: { params: { id: string } }) {
         targetAudience: conceptEvaluation
           .getTargetAudience()
           .map((targetAudience) => ({
+            id: targetAudience.getId(),
             segment: targetAudience.getSegment(),
             description: targetAudience.getDescription(),
             challenges: targetAudience.getChallenges(),
+            why: targetAudience.getWhy(),
+            painPoints: targetAudience.getPainPoints(),
+            targetingStrategy: targetAudience.getTargetingStrategy(),
+            statement: targetAudience.getStatement(),
+            hypotheses: targetAudience.getHypotheses(),
             validationMetrics: {
               marketSize: targetAudience.getValidationMetrics().getMarketSize(),
               accessibility: targetAudience
@@ -171,9 +126,6 @@ export default async function Page({ params }: { params: { id: string } }) {
             .getLanguageAnalysis()
             .getAmbiguousStatements(),
         },
-        assumptionsAnalysis: assumptionsAnalysis,
-        hypothesisFramework: hypothesisFramework,
-        validationPlan: validationPlan,
       }
 
       conceptProps.evaluation = evaluation

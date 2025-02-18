@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { BaseEvaluator } from './BaseEvaluator'
+import { TargetAudience, ValueProposition } from './types'
 
 interface ShortFormContent {
   header: string
@@ -31,17 +32,6 @@ type Evaluation = {
   shortFormContents: ShortFormContent[]
   longFormContents: LongFormContent[]
   videoContents: VideoContent[]
-}
-
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
-interface ValueProposition {
-  mainBenefit: string
-  problemSolving: string
 }
 
 const shortFormContentSchema = z.object({
@@ -107,38 +97,13 @@ export class SocialMediaCampaignsEvaluator extends BaseEvaluator<
   async evaluateSocialMediaCampaigns(
     ideaId: string,
     problem: string,
-    targetAudiences: TargetAudience[],
+    targetAudience: TargetAudience,
     valueProposition: ValueProposition
   ): Promise<Evaluation> {
     const messages = [
-      {
-        role: 'user' as const,
-        content: [
-          {
-            type: 'text' as const,
-            text: `Here is the problem my product aims to solve: """
-${problem.trim()}"""
-
-Here are my segments: """
-${targetAudiences
-  .map((targetAudience, idx) => {
-    let content = ''
-
-    content += `Segment ${idx + 1}: ${targetAudience.segment}\n`
-    content += `Description: ${targetAudience.description}\n`
-    content += `Challenges:\n${targetAudience.challenges.join('; ')}\n\n`
-
-    return content
-  })
-  .join('\n\n')}
-"""
-
-And here is my value proposition:
-- Main benefit: ${valueProposition.mainBenefit}
-- Problem solving: ${valueProposition.problemSolving}`,
-          },
-        ],
-      },
+      this.messageBuilder.createProblemMessage(problem),
+      ...this.messageBuilder.createTargetAudienceMessages(targetAudience),
+      this.messageBuilder.createValuePropositionMessage(valueProposition),
     ]
 
     return this.evaluate(ideaId, messages)

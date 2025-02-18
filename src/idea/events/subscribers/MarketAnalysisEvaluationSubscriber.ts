@@ -4,6 +4,7 @@ import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
 import { Repository } from '@/idea/domain/Repository'
 import { TargetAudiencesEvaluated } from '@/idea/domain/events/TargetAudiencesEvaluated'
 import { EventHandler } from '@/idea/events/EventHandler'
+import { TargetAudience } from './types'
 
 type Evaluation = {
   trends: string
@@ -13,18 +14,12 @@ type Evaluation = {
   strategicDirection: string
 }
 
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
 interface AIService {
   evaluateMarketAnalysis(
     ideaId: string,
     problem: string,
     marketExistence: string,
-    targetAudiences: TargetAudience[]
+    targetAudience: TargetAudience
   ): Promise<Evaluation>
 }
 
@@ -55,17 +50,17 @@ export class MarketAnalysisEvaluationSubscriber implements EventHandler {
         throw new Error(`Unable to get idea by ID: ${event.payload.id}`)
       }
 
-      const audiences = idea.getTargetAudiences().map((targetAudience) => ({
-        segment: targetAudience.getSegment(),
-        description: targetAudience.getDescription(),
-        challenges: targetAudience.getChallenges(),
-      }))
+      const targetAudience: TargetAudience = {
+        segment: idea.getTargetAudience().getSegment(),
+        description: idea.getTargetAudience().getDescription(),
+        challenges: idea.getTargetAudience().getChallenges(),
+      }
 
       const evaluation = await this.aiService.evaluateMarketAnalysis(
         idea.getId().getValue(),
         idea.getProblem().getValue(),
         idea.getMarketExistence(),
-        audiences
+        targetAudience
       )
 
       await this.repository.updateIdea(event.payload.id, (idea): Idea => {

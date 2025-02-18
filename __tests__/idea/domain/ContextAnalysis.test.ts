@@ -3,7 +3,6 @@ import { ContextAnalysis } from '@/idea/domain/ContextAnalysis'
 describe('ContextAnalysis', () => {
   const validParams = {
     problemDefinition: 'A significant problem that needs solving',
-    region: 'North America',
     marketExistence: ['Market exists in urban areas', 'Growing demand'],
     existingSolutions: ['Solution A', 'Solution B'],
     mainChallenges: ['Challenge 1', 'Challenge 2'],
@@ -34,7 +33,6 @@ describe('ContextAnalysis', () => {
     it('should create a new ContextAnalysis instance with valid parameters', () => {
       const contextAnalysis = ContextAnalysis.New(
         validParams.problemDefinition,
-        validParams.region,
         validParams.marketExistence,
         validParams.existingSolutions,
         validParams.mainChallenges,
@@ -52,7 +50,6 @@ describe('ContextAnalysis', () => {
     it('should trim all string inputs', () => {
       const contextAnalysis = ContextAnalysis.New(
         '  ' + validParams.problemDefinition + '  ',
-        '  ' + validParams.region + '  ',
         validParams.marketExistence.map((item) => '  ' + item + '  '),
         validParams.existingSolutions.map((item) => '  ' + item + '  '),
         validParams.mainChallenges.map((item) => '  ' + item + '  '),
@@ -67,7 +64,6 @@ describe('ContextAnalysis', () => {
       expect(contextAnalysis.getProblemDefinition()).toBe(
         validParams.problemDefinition
       )
-      expect(contextAnalysis.getRegion()).toBe(validParams.region)
       expect(contextAnalysis.getMarketExistence()).toEqual(
         validParams.marketExistence
       )
@@ -92,7 +88,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             '',
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -106,29 +101,10 @@ describe('ContextAnalysis', () => {
         ).toThrow('Problem definition cannot be empty')
       })
 
-      it('should throw error if region is empty', () => {
-        expect(() =>
-          ContextAnalysis.New(
-            validParams.problemDefinition,
-            '',
-            validParams.marketExistence,
-            validParams.existingSolutions,
-            validParams.mainChallenges,
-            validParams.targetUsers,
-            validParams.whyItMatters,
-            validParams.opportunities,
-            validParams.callToAction,
-            validParams.keyMetrics,
-            validParams.actionPriorities
-          )
-        ).toThrow('Region cannot be empty')
-      })
-
       it('should throw error if marketExistence is empty array', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             [],
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -146,7 +122,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             [],
             validParams.mainChallenges,
@@ -164,7 +139,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             [],
@@ -182,7 +156,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -200,7 +173,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -218,7 +190,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -236,7 +207,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -254,7 +224,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -272,7 +241,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -300,7 +268,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -328,7 +295,6 @@ describe('ContextAnalysis', () => {
         expect(() =>
           ContextAnalysis.New(
             validParams.problemDefinition,
-            validParams.region,
             validParams.marketExistence,
             validParams.existingSolutions,
             validParams.mainChallenges,
@@ -341,6 +307,93 @@ describe('ContextAnalysis', () => {
           )
         ).toThrow('Action priority effort must be between 1 and 10')
       })
+
+      it('should throw error if market existence contains empty items', () => {
+        expect(() =>
+          ContextAnalysis.New(
+            validParams.problemDefinition,
+            ['Valid item', '   ', 'Another valid item'],
+            validParams.existingSolutions,
+            validParams.mainChallenges,
+            validParams.targetUsers,
+            validParams.whyItMatters,
+            validParams.opportunities,
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
+          )
+        ).toThrow('Market existence items cannot be empty')
+      })
+
+      it('should throw error if existing solutions contains empty items', () => {
+        expect(() =>
+          ContextAnalysis.New(
+            validParams.problemDefinition,
+            validParams.marketExistence,
+            ['', 'Valid solution'],
+            validParams.mainChallenges,
+            validParams.targetUsers,
+            validParams.whyItMatters,
+            validParams.opportunities,
+            validParams.callToAction,
+            validParams.keyMetrics,
+            validParams.actionPriorities
+          )
+        ).toThrow('Existing solutions items cannot be empty')
+      })
+
+      it('should throw error if key metrics contains empty values', () => {
+        const invalidKeyMetrics = [
+          {
+            label: '',
+            value: '5K -> 10K users',
+            change: '+200%',
+            trend: 'up' as const,
+          },
+        ]
+
+        expect(() =>
+          ContextAnalysis.New(
+            validParams.problemDefinition,
+            validParams.marketExistence,
+            validParams.existingSolutions,
+            validParams.mainChallenges,
+            validParams.targetUsers,
+            validParams.whyItMatters,
+            validParams.opportunities,
+            validParams.callToAction,
+            invalidKeyMetrics,
+            validParams.actionPriorities
+          )
+        ).toThrow('Key metrics items cannot have empty values')
+      })
+
+      it('should throw error if action priorities contains empty values', () => {
+        const invalidActionPriorities = [
+          {
+            action: '   ',
+            impact: 5,
+            impactDescription: 'Valid description',
+            effort: 5,
+            effortDescription: 'Valid description',
+          },
+        ]
+
+        expect(() =>
+          ContextAnalysis.New(
+            validParams.problemDefinition,
+            validParams.marketExistence,
+            validParams.existingSolutions,
+            validParams.mainChallenges,
+            validParams.targetUsers,
+            validParams.whyItMatters,
+            validParams.opportunities,
+            validParams.callToAction,
+            validParams.keyMetrics,
+            invalidActionPriorities
+          )
+        ).toThrow('Action priorities items cannot have empty values')
+      })
     })
   })
 
@@ -350,7 +403,6 @@ describe('ContextAnalysis', () => {
     beforeEach(() => {
       contextAnalysis = ContextAnalysis.New(
         validParams.problemDefinition,
-        validParams.region,
         validParams.marketExistence,
         validParams.existingSolutions,
         validParams.mainChallenges,
@@ -434,7 +486,6 @@ describe('ContextAnalysis', () => {
       expect(() =>
         ContextAnalysis.New(
           validParams.problemDefinition,
-          validParams.region,
           validParams.marketExistence,
           validParams.existingSolutions,
           validParams.mainChallenges,

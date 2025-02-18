@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import FetchingDataMessage from '@/components/FetchingDataMessage'
 import Paragraph from '@/components/Paragraph'
 import Section from '@/components/Section'
 import SectionContainer from '@/components/SectionContainer'
@@ -11,14 +10,14 @@ import SectionWrapper from '@/components/SectionWrapper'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 
 interface SectionTargetAudiencesProps {
-  data: Array<{
+  data: {
     id: string
     segment: string
     description: string
-    why: string | null
-    painPoints: string[] | null
-    targetingStrategy: string | null
-  }>
+    why: string
+    painPoints: string[]
+    targetingStrategy: string
+  }
 }
 
 const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
@@ -46,44 +45,27 @@ const SectionTargetAudiences: React.FC<SectionTargetAudiencesProps> = ({
             Knowing your audience is key to success!
           </SectionDescription>
 
-          {data.map((audience, idx) => (
-            <Section
-              key={audience.id}
-              header={`${idx + 1}. ${audience.segment}`}
-            >
-              <SectionContainer>
-                <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Description:
-                </h3>
-                <Paragraph>{audience.description}</Paragraph>
+          <Section header={`${data.segment}`}>
+            <SectionContainer>
+              <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                Description:
+              </h3>
+              <Paragraph>{data.description}</Paragraph>
 
-                <h3 className="mb-2 text-lg font-semibold md:text-xl">Why:</h3>
-                {audience.why ? (
-                  <Paragraph>{audience.why}</Paragraph>
-                ) : (
-                  <FetchingDataMessage />
-                )}
+              <h3 className="mb-2 text-lg font-semibold md:text-xl">Why:</h3>
+              <Paragraph>{data.why}</Paragraph>
 
-                <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Pain Points:
-                </h3>
-                {audience.painPoints ? (
-                  <SimpleUnorderedList items={audience.painPoints} />
-                ) : (
-                  <FetchingDataMessage />
-                )}
+              <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                Pain Points:
+              </h3>
+              <SimpleUnorderedList items={data.painPoints} />
 
-                <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Targeting Strategy:
-                </h3>
-                {audience.targetingStrategy ? (
-                  <Paragraph>{audience.targetingStrategy}</Paragraph>
-                ) : (
-                  <FetchingDataMessage />
-                )}
-              </SectionContainer>
-            </Section>
-          ))}
+              <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                Targeting Strategy:
+              </h3>
+              <Paragraph>{data.targetingStrategy}</Paragraph>
+            </SectionContainer>
+          </Section>
         </div>
       )}
     </SectionWrapper>

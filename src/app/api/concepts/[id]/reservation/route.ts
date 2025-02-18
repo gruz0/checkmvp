@@ -21,9 +21,13 @@ const ConceptForReservationResponseSchema = z.object({
       market_existence: z.string().min(1),
       target_audience: z.array(
         z.object({
+          id: z.string().min(1),
           segment: z.string().min(1),
           description: z.string().min(1),
           challenges: z.array(z.string().min(1)),
+          why: z.string().min(1),
+          pain_points: z.array(z.string().min(1)),
+          targeting_strategy: z.string().min(1),
           validation_metrics: z.object({
             market_size: z.string().min(1),
             accessibility: z.number().min(0).max(10),
@@ -77,9 +81,13 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
         target_audience: evaluation
           .getTargetAudience()
           .map((targetAudience) => ({
+            id: targetAudience.getId(),
             segment: targetAudience.getSegment(),
             description: targetAudience.getDescription(),
             challenges: targetAudience.getChallenges(),
+            why: targetAudience.getWhy(),
+            pain_points: targetAudience.getPainPoints(),
+            targeting_strategy: targetAudience.getTargetingStrategy(),
             validation_metrics: {
               market_size: targetAudience
                 .getValidationMetrics()

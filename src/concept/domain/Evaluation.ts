@@ -1,9 +1,6 @@
-import { AssumptionsAnalysis } from '@/concept/domain/AssumptionsAnalysis'
 import { ClarityScore } from '@/concept/domain/ClarityScore'
-import { HypothesisFramework } from '@/concept/domain/HypothesisFramework'
 import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
-import { ValidationPlan } from '@/concept/domain/ValidationPlan'
 
 export type Status = 'well-defined' | 'requires_changes' | 'not-well-defined'
 
@@ -19,9 +16,6 @@ export class Evaluation {
   private readonly targetAudience: TargetAudience[]
   private readonly clarityScore: ClarityScore
   private readonly languageAnalysis: LanguageAnalysis
-  private readonly assumptionsAnalysis: AssumptionsAnalysis | null
-  private readonly hypothesisFramework: HypothesisFramework | null
-  private readonly validationPlan: ValidationPlan | null
 
   private constructor(
     status: Status,
@@ -31,10 +25,7 @@ export class Evaluation {
     marketExistence: string,
     targetAudience: TargetAudience[],
     clarityScore: ClarityScore,
-    languageAnalysis: LanguageAnalysis,
-    assumptionsAnalysis: AssumptionsAnalysis | null,
-    hypothesisFramework: HypothesisFramework | null,
-    validationPlan: ValidationPlan | null
+    languageAnalysis: LanguageAnalysis
   ) {
     this.status = status
     this.suggestions = suggestions
@@ -44,9 +35,6 @@ export class Evaluation {
     this.targetAudience = targetAudience
     this.clarityScore = clarityScore
     this.languageAnalysis = languageAnalysis
-    this.assumptionsAnalysis = assumptionsAnalysis
-    this.hypothesisFramework = hypothesisFramework
-    this.validationPlan = validationPlan
 
     this.validate()
   }
@@ -59,10 +47,7 @@ export class Evaluation {
     marketExistence: string,
     targetAudience: TargetAudience[],
     clarityScore: ClarityScore,
-    languageAnalysis: LanguageAnalysis,
-    assumptionsAnalysis: AssumptionsAnalysis | null,
-    hypothesisFramework: HypothesisFramework | null,
-    validationPlan: ValidationPlan | null
+    languageAnalysis: LanguageAnalysis
   ): Evaluation {
     return new Evaluation(
       status,
@@ -72,10 +57,7 @@ export class Evaluation {
       marketExistence.trim(),
       targetAudience,
       clarityScore,
-      languageAnalysis,
-      assumptionsAnalysis,
-      hypothesisFramework,
-      validationPlan
+      languageAnalysis
     )
   }
 
@@ -111,18 +93,6 @@ export class Evaluation {
     return this.languageAnalysis
   }
 
-  public getAssumptionsAnalysis(): AssumptionsAnalysis | null {
-    return this.assumptionsAnalysis
-  }
-
-  public getHypothesisFramework(): HypothesisFramework | null {
-    return this.hypothesisFramework
-  }
-
-  public getValidationPlan(): ValidationPlan | null {
-    return this.validationPlan
-  }
-
   private validate(): void {
     switch (this.status) {
       case 'well-defined':
@@ -154,22 +124,6 @@ export class Evaluation {
     if (this.targetAudience.length === 0) {
       throw new Error(`Target audience for ${this.status} must not be empty`)
     }
-
-    if (!this.assumptionsAnalysis) {
-      throw new Error(
-        `Assumptions analysis for ${this.status} must not be empty`
-      )
-    }
-
-    if (!this.hypothesisFramework) {
-      throw new Error(
-        `Hypothesis framework for ${this.status} must not be empty`
-      )
-    }
-
-    if (!this.validationPlan) {
-      throw new Error(`Validation plan for ${this.status} must not be empty`)
-    }
   }
 
   private validateRequiresChanges(): void {
@@ -187,22 +141,6 @@ export class Evaluation {
 
     if (this.targetAudience.length === 0) {
       throw new Error(`Target audience for ${this.status} must not be empty`)
-    }
-
-    if (!this.assumptionsAnalysis) {
-      throw new Error(
-        `Assumptions analysis for ${this.status} must not be empty`
-      )
-    }
-
-    if (!this.hypothesisFramework) {
-      throw new Error(
-        `Hypothesis framework for ${this.status} must not be empty`
-      )
-    }
-
-    if (!this.validationPlan) {
-      throw new Error(`Validation plan for ${this.status} must not be empty`)
     }
   }
 
@@ -225,18 +163,6 @@ export class Evaluation {
 
     if (this.targetAudience.length !== 0) {
       throw new Error(`Target audience for ${this.status} must be empty`)
-    }
-
-    if (this.assumptionsAnalysis) {
-      throw new Error(`Assumptions analysis for ${this.status} must be empty`)
-    }
-
-    if (this.hypothesisFramework) {
-      throw new Error(`Hypothesis framework for ${this.status} must be empty`)
-    }
-
-    if (this.validationPlan) {
-      throw new Error(`Validation plan for ${this.status} must be empty`)
     }
   }
 }

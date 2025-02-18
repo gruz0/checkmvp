@@ -1,23 +1,12 @@
 import { z } from 'zod'
 import { BaseEvaluator } from './BaseEvaluator'
+import { TargetAudience, ValueProposition } from './types'
 
 interface Evaluation {
   strengths: string[]
   weaknesses: string[]
   opportunities: string[]
   threats: string[]
-}
-
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
-}
-
-interface ValueProposition {
-  mainBenefit: string
-  problemSolving: string
-  differentiation: string
 }
 
 const ResponseSchema = z.object({
@@ -69,42 +58,14 @@ export class SWOTAnalysisEvaluator extends BaseEvaluator<
     ideaId: string,
     problem: string,
     marketExistence: string,
-    targetAudiences: TargetAudience[],
+    targetAudience: TargetAudience,
     valueProposition: ValueProposition
   ): Promise<Evaluation> {
     const messages = [
-      {
-        role: 'user' as const,
-        content: [
-          {
-            type: 'text' as const,
-            text: `Here is the problem my product aims to solve: """
-${problem.trim()}"""
-
-Also I have a market existence research: """
-${marketExistence.trim()}"""
-
-Here are my segments: """
-${targetAudiences
-  .map((targetAudience, idx) => {
-    let content = ''
-
-    content += `Segment ${idx + 1}: ${targetAudience.segment}\n`
-    content += `Description: ${targetAudience.description}\n`
-    content += `Challenges:\n${targetAudience.challenges.join('; ')}\n\n`
-
-    return content
-  })
-  .join('\n\n')}
-"""
-
-And here is my value proposition:
-- Main benefit: ${valueProposition.mainBenefit}
-- Problem solving: ${valueProposition.problemSolving}
-- Differentiation: ${valueProposition.differentiation}`,
-          },
-        ],
-      },
+      this.messageBuilder.createProblemMessage(problem),
+      this.messageBuilder.createMarketExistenceMessage(marketExistence),
+      ...this.messageBuilder.createTargetAudienceMessages(targetAudience),
+      this.messageBuilder.createValuePropositionMessage(valueProposition),
     ]
 
     return this.evaluate(ideaId, messages)

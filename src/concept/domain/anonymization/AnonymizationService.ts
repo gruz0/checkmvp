@@ -1,12 +1,9 @@
 import { Concept } from '@/concept/domain/Aggregate'
-import { AssumptionsAnalysis } from '@/concept/domain/AssumptionsAnalysis'
 import { ClarityScore } from '@/concept/domain/ClarityScore'
 import { Evaluation } from '@/concept/domain/Evaluation'
-import { HypothesisFramework } from '@/concept/domain/HypothesisFramework'
 import { LanguageAnalysis } from '@/concept/domain/LanguageAnalysis'
 import { TargetAudience } from '@/concept/domain/TargetAudience'
 import { ValidationMetrics } from '@/concept/domain/ValidationMetrics'
-import { ValidationPlan } from '@/concept/domain/ValidationPlan'
 
 export interface Anonymization {
   anonymizeConcept(concept: Concept): Concept
@@ -66,10 +63,7 @@ export class Service implements Anonymization {
       this.getMarketExistence(evaluation.getMarketExistence()),
       this.getTargetAudience(evaluation.getTargetAudience()),
       this.getClarityScore(),
-      this.getLanguageAnalysis(evaluation.getLanguageAnalysis()),
-      this.getAssumptionsAnalysis(evaluation.getAssumptionsAnalysis()),
-      this.getHypothesisFramework(evaluation.getHypothesisFramework()),
-      this.getValidationPlan(evaluation.getValidationPlan())
+      this.getLanguageAnalysis(evaluation.getLanguageAnalysis())
     )
   }
 
@@ -99,9 +93,15 @@ export class Service implements Anonymization {
   ): TargetAudience[] {
     return targetAudience.map((audience) =>
       TargetAudience.New(
+        audience.getId(),
         '[REDACTED]',
         '[REDACTED]',
         Array(audience.getChallenges().length).fill('[REDACTED]'),
+        '[REDACTED]',
+        Array(audience.getPainPoints().length).fill('[REDACTED]'),
+        '[REDACTED]',
+        '[REDACTED]',
+        Array(audience.getHypotheses().length).fill('[REDACTED]'),
         ValidationMetrics.New('[REDACTED]', 1, 1, 1)
       )
     )
@@ -123,51 +123,6 @@ export class Service implements Anonymization {
       Array(languageAnalysis.getVagueTerms().length).fill('[REDACTED]'),
       Array(languageAnalysis.getMissingContext().length).fill('[REDACTED]'),
       Array(languageAnalysis.getAmbiguousStatements().length).fill('[REDACTED]')
-    )
-  }
-
-  private getAssumptionsAnalysis(
-    assumptionsAnalysis: AssumptionsAnalysis | null
-  ): AssumptionsAnalysis | null {
-    if (!assumptionsAnalysis) {
-      return null
-    }
-
-    return AssumptionsAnalysis.New(
-      Array(assumptionsAnalysis.getCoreAssumptions().length).fill('[REDACTED]'),
-      1,
-      assumptionsAnalysis.getRiskLevel(),
-      Array(assumptionsAnalysis.getValidationMethods().length).fill(
-        '[REDACTED]'
-      )
-    )
-  }
-
-  private getHypothesisFramework(
-    hypothesisFramework: HypothesisFramework | null
-  ): HypothesisFramework | null {
-    if (!hypothesisFramework) {
-      return null
-    }
-
-    return HypothesisFramework.New(
-      '[REDACTED]',
-      Array(hypothesisFramework.getHypotheses().length).fill('[REDACTED]')
-    )
-  }
-
-  private getValidationPlan(
-    validationPlan: ValidationPlan | null
-  ): ValidationPlan | null {
-    if (!validationPlan) {
-      return null
-    }
-
-    return ValidationPlan.New(
-      Array(validationPlan.getQuickWins().length).fill('[REDACTED]'),
-      Array(validationPlan.getMediumEffort().length).fill('[REDACTED]'),
-      Array(validationPlan.getDeepDive().length).fill('[REDACTED]'),
-      Array(validationPlan.getSuccessCriteria().length).fill('[REDACTED]')
     )
   }
 }

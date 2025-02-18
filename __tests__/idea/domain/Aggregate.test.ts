@@ -3,6 +3,7 @@ import { Idea } from '@/idea/domain/Aggregate'
 import { Competitor } from '@/idea/domain/Competitor'
 import { CompetitorAnalysis } from '@/idea/domain/CompetitorAnalysis'
 import { ContentIdeasForMarketing } from '@/idea/domain/ContentIdeasForMarketing'
+import { ContextAnalysis } from '@/idea/domain/ContextAnalysis'
 import { ElevatorPitch } from '@/idea/domain/ElevatorPitch'
 import { GoogleTrendsKeyword } from '@/idea/domain/GoogleTrendsKeyword'
 import { MarketAnalysis } from '@/idea/domain/MarketAnalysis'
@@ -18,8 +19,11 @@ describe('Idea Class', () => {
   let validConceptId: string
   let validProblem: string
   let validMarketExistence: string
-  let validTargetAudiences: TargetAudience[]
-
+  let validRegion: string
+  let validProductType: string
+  let validStage: string
+  let validStatement: string
+  let validHypotheses: string
   let validTargetAudience: TargetAudience
 
   beforeEach(() => {
@@ -27,21 +31,22 @@ describe('Idea Class', () => {
     validConceptId = Identity.Generate().getValue()
     validProblem = 'This is a valid problem statement.'
     validMarketExistence = 'The market exists because...'
+    validRegion = 'This is a valid region.'
+    validProductType = 'This is a valid product type.'
+    validStage = 'This is a valid stage.'
+    validStatement = 'This is a valid statement.'
+    validHypotheses = 'This is a valid hypotheses.'
 
     validTargetAudience = TargetAudience.New(
       Identity.Generate().getValue(),
       Identity.Generate().getValue(),
       'Developers',
       'Description',
-      ['Challenge 1']
+      ['Challenge 1'],
+      'Developers need tools to increase productivity.',
+      ['Time-consuming tasks', 'Manual errors'],
+      'Offer automation tools.'
     )
-    validTargetAudience.setWhy(
-      'Developers need tools to increase productivity.'
-    )
-    validTargetAudience.setPainPoints(['Time-consuming tasks', 'Manual errors'])
-    validTargetAudience.setTargetingStrategy('Offer automation tools.')
-
-    validTargetAudiences = [validTargetAudience]
   })
 
   describe('Creation of Idea', () => {
@@ -51,14 +56,19 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       expect(idea).toBeInstanceOf(Idea)
       expect(idea.getId().getValue()).toBe(validId)
       expect(idea.getConceptId().getValue()).toBe(validConceptId)
       expect(idea.getProblem().getValue()).toBe(validProblem)
       expect(idea.getMarketExistence()).toBe(validMarketExistence)
-      expect(idea.getTargetAudiences()).toEqual(validTargetAudiences)
+      expect(idea.getTargetAudience()).toEqual(validTargetAudience)
     })
   })
 
@@ -70,7 +80,12 @@ describe('Idea Class', () => {
           validConceptId,
           ' ',
           validMarketExistence,
-          validTargetAudiences
+          validRegion,
+          validProductType,
+          validStage,
+          validStatement,
+          validHypotheses,
+          validTargetAudience
         )
       }).toThrow('Problem cannot be empty')
     })
@@ -82,76 +97,99 @@ describe('Idea Class', () => {
           validConceptId,
           validProblem,
           ' ',
-          validTargetAudiences
+          validRegion,
+          validProductType,
+          validStage,
+          validStatement,
+          validHypotheses,
+          validTargetAudience
         )
       }).toThrow('Market existence cannot be empty')
     })
 
-    it('should throw an error when targetAudiences is empty', () => {
+    it('should throw an error when region is empty', () => {
       expect(() => {
         Idea.New(
           validId,
           validConceptId,
           validProblem,
           validMarketExistence,
-          []
+          ' ',
+          validProductType,
+          validStage,
+          validStatement,
+          validHypotheses,
+          validTargetAudience
         )
-      }).toThrow('Target audiences cannot be empty')
-    })
-  })
-
-  describe('updateTargetAudience', () => {
-    let idea: Idea
-    let updatedAudience: TargetAudience
-
-    beforeEach(() => {
-      idea = Idea.New(
-        validId,
-        validConceptId,
-        validProblem,
-        validMarketExistence,
-        validTargetAudiences
-      )
-
-      updatedAudience = TargetAudience.New(
-        validTargetAudience.getId().getValue(),
-        idea.getId().getValue(),
-        'Developers',
-        'Description',
-        ['Challenge 1']
-      )
-      updatedAudience.setWhy('Updated why')
-      updatedAudience.setPainPoints(['Updated pain point'])
-      updatedAudience.setTargetingStrategy('Updated targeting strategy')
+      }).toThrow('Region cannot be empty')
     })
 
-    it('should update an existing target audience', () => {
-      idea.updateTargetAudience(updatedAudience)
-      const audiences = idea.getTargetAudiences()
-      expect(audiences[0].getPainPoints()).toEqual(['Updated pain point'])
-      expect(audiences[0].getWhy()).toBe('Updated why')
-      expect(audiences[0].getTargetingStrategy()).toBe(
-        'Updated targeting strategy'
-      )
-    })
-
-    it('should throw an error if target audience does not exist', () => {
-      const nonExistingAudience = TargetAudience.New(
-        Identity.Generate().getValue(),
-        idea.getId().getValue(),
-        'Developers',
-        'Description',
-        ['Challenge 1']
-      )
-
-      nonExistingAudience.setWhy('Why')
-      nonExistingAudience.setPainPoints(['Pain point'])
-      nonExistingAudience.setTargetingStrategy('Strategy')
+    it('should throw an error when product type is empty', () => {
       expect(() => {
-        idea.updateTargetAudience(nonExistingAudience)
-      }).toThrow(
-        `TargetAudience with ID ${nonExistingAudience.getId().getValue()} does not exist`
-      )
+        Idea.New(
+          validId,
+          validConceptId,
+          validProblem,
+          validMarketExistence,
+          validRegion,
+          ' ',
+          validStage,
+          validStatement,
+          validHypotheses,
+          validTargetAudience
+        )
+      }).toThrow('Product type cannot be empty')
+    })
+
+    it('should throw an error when stage is empty', () => {
+      expect(() => {
+        Idea.New(
+          validId,
+          validConceptId,
+          validProblem,
+          validMarketExistence,
+          validRegion,
+          validProductType,
+          ' ',
+          validStatement,
+          validHypotheses,
+          validTargetAudience
+        )
+      }).toThrow('Stage cannot be empty')
+    })
+
+    it('should throw an error when statement is empty', () => {
+      expect(() => {
+        Idea.New(
+          validId,
+          validConceptId,
+          validProblem,
+          validMarketExistence,
+          validRegion,
+          validProductType,
+          validStage,
+          ' ',
+          validHypotheses,
+          validTargetAudience
+        )
+      }).toThrow('Statement cannot be empty')
+    })
+
+    it('should throw an error when hypotheses is empty', () => {
+      expect(() => {
+        Idea.New(
+          validId,
+          validConceptId,
+          validProblem,
+          validMarketExistence,
+          validRegion,
+          validProductType,
+          validStage,
+          validStatement,
+          ' ',
+          validTargetAudience
+        )
+      }).toThrow('Hypotheses cannot be empty')
     })
   })
 
@@ -165,7 +203,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       valueProposition = ValueProposition.New(
         'Saves time',
@@ -197,7 +240,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       marketAnalysis = MarketAnalysis.New(
         'Trends in the market',
@@ -231,7 +279,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
 
       const competitor = Competitor.New(
@@ -279,7 +332,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       swotAnalysis = SWOTAnalysis.New(
         ['Strength 1'],
@@ -312,7 +370,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       contentIdeas = ContentIdeasForMarketing.New()
       // Assume we have a valid ContentIdea instance to add
@@ -342,7 +405,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       socialMediaCampaigns = SocialMediaCampaigns.New()
       // Assume we have valid content to add to socialMediaCampaigns
@@ -371,7 +439,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       elevatorPitch = ElevatorPitch.New(
         'This is a hook',
@@ -405,7 +478,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       googleTrendsKeyword = GoogleTrendsKeyword.New('Keyword')
     })
@@ -433,7 +511,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       productName = ProductName.New(
         'ProductX',
@@ -468,7 +551,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
     })
 
@@ -494,7 +582,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
     })
 
@@ -520,7 +613,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
     })
 
@@ -540,8 +638,8 @@ describe('Idea Class', () => {
       expect(idea.getMarketExistence()).toBe(validMarketExistence)
     })
 
-    it('should return the correct targetAudiences', () => {
-      expect(idea.getTargetAudiences()).toEqual(validTargetAudiences)
+    it('should return the correct targetAudience', () => {
+      expect(idea.getTargetAudience()).toEqual(validTargetAudience)
     })
 
     it('should return the correct valueProposition', () => {
@@ -657,6 +755,26 @@ describe('Idea Class', () => {
       idea.archive()
       expect(idea.isArchived()).toBeTrue()
     })
+
+    it('should return the correct region', () => {
+      expect(idea.getRegion()).toBe(validRegion)
+    })
+
+    it('should return the correct productType', () => {
+      expect(idea.getProductType()).toBe(validProductType)
+    })
+
+    it('should return the correct stage', () => {
+      expect(idea.getStage()).toBe(validStage)
+    })
+
+    it('should return the correct statement', () => {
+      expect(idea.getStatement()).toBe(validStatement)
+    })
+
+    it('should return the correct hypotheses', () => {
+      expect(idea.getHypotheses()).toBe(validHypotheses)
+    })
   })
 
   describe('setTestingPlan', () => {
@@ -669,7 +787,12 @@ describe('Idea Class', () => {
         validConceptId,
         validProblem,
         validMarketExistence,
-        validTargetAudiences
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
       )
       testingPlan = TestingPlan.New(
         [{ assumption: 'test', whyCritical: 'test', validationMethod: 'test' }],
@@ -743,6 +866,65 @@ describe('Idea Class', () => {
       expect(() => idea.setTestingPlan(testingPlan)).toThrow(
         'TestingPlan already set'
       )
+    })
+  })
+
+  describe('setContextAnalysis', () => {
+    let idea: Idea
+    let contextAnalysis: ContextAnalysis
+
+    beforeEach(() => {
+      idea = Idea.New(
+        validId,
+        validConceptId,
+        validProblem,
+        validMarketExistence,
+        validRegion,
+        validProductType,
+        validStage,
+        validStatement,
+        validHypotheses,
+        validTargetAudience
+      )
+      contextAnalysis = ContextAnalysis.New(
+        'Clear problem definition',
+        ['Market exists in region A', 'Growing demand'],
+        ['Existing solution A', 'Existing solution B'],
+        ['Challenge 1', 'Challenge 2'],
+        'Software developers aged 25-40',
+        'This matters because it solves critical pain points',
+        ['Opportunity 1', 'Opportunity 2'],
+        ['Sign up now', 'Learn more'],
+        [
+          {
+            label: 'Market Size',
+            value: '$1B',
+            change: '+20%',
+            trend: 'up',
+          },
+        ],
+        [
+          {
+            action: 'Launch MVP',
+            impact: 8,
+            effort: 6,
+            impactDescription: 'High market penetration',
+            effortDescription: 'Requires significant development',
+          },
+        ]
+      )
+    })
+
+    it('should set context analysis when not already set', () => {
+      idea.setContextAnalysis(contextAnalysis)
+      expect(idea.getContextAnalysis()).toBe(contextAnalysis)
+    })
+
+    it('should throw an error when context analysis is already set', () => {
+      idea.setContextAnalysis(contextAnalysis)
+      expect(() => {
+        idea.setContextAnalysis(contextAnalysis)
+      }).toThrow('ContextAnalysis already set')
     })
   })
 })

@@ -1,16 +1,11 @@
 import { z } from 'zod'
 import { BaseEvaluator } from './BaseEvaluator'
+import { TargetAudience } from './types'
 
 interface Evaluation {
   competitors: Competitor[]
   comparison: Comparison
   differentiationSuggestions: string[]
-}
-
-interface TargetAudience {
-  segment: string
-  description: string
-  challenges: string[]
 }
 
 interface Competitor {
@@ -83,36 +78,12 @@ export class CompetitorAnalysisEvaluator extends BaseEvaluator<
     ideaId: string,
     problem: string,
     marketExistence: string,
-    targetAudiences: TargetAudience[]
+    targetAudience: TargetAudience
   ): Promise<Evaluation> {
     const messages = [
-      {
-        role: 'user' as const,
-        content: [
-          {
-            type: 'text' as const,
-            text: `Here is the problem my product aims to solve: """
-${problem.trim()}"""
-
-Also I have a market existence research: """
-${marketExistence.trim()}"""
-
-Here are my segments: """
-${targetAudiences
-  .map((targetAudience, idx) => {
-    let content = ''
-
-    content += `Segment ${idx + 1}: ${targetAudience.segment}\n`
-    content += `Description: ${targetAudience.description}\n`
-    content += `Challenges:\n${targetAudience.challenges.join('; ')}\n\n`
-
-    return content
-  })
-  .join('\n\n')}
-"""`,
-          },
-        ],
-      },
+      this.messageBuilder.createProblemMessage(problem),
+      this.messageBuilder.createMarketExistenceMessage(marketExistence),
+      ...this.messageBuilder.createTargetAudienceMessages(targetAudience),
     ]
 
     return this.evaluate(ideaId, messages)

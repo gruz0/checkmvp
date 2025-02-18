@@ -1,16 +1,15 @@
 import { Identity } from '@/common/domain/Identity'
 
 export class TargetAudience {
-  private why: string | null = null
-  private painPoints: string[] | null = null
-  private targetingStrategy: string | null = null
-
   private constructor(
     private readonly id: Identity,
     private readonly ideaId: Identity,
     private readonly segment: string,
     private readonly description: string,
-    private readonly challenges: string[]
+    private readonly challenges: string[],
+    private readonly why: string,
+    private readonly painPoints: string[],
+    private readonly targetingStrategy: string
   ) {}
 
   static New(
@@ -18,7 +17,10 @@ export class TargetAudience {
     ideaId: string,
     segment: string,
     description: string,
-    challenges: string[]
+    challenges: string[],
+    why: string,
+    painPoints: string[],
+    targetingStrategy: string
   ): TargetAudience {
     if (!segment || segment.trim() === '') {
       throw new Error('Segment cannot be empty')
@@ -32,37 +34,36 @@ export class TargetAudience {
       throw new Error('Challenges cannot be empty')
     }
 
+    if (challenges.some((challenge) => !challenge || challenge.trim() === '')) {
+      throw new Error('Challenges cannot contain empty strings')
+    }
+
+    if (!why || why.trim() === '') {
+      throw new Error('Why cannot be empty')
+    }
+
+    if (!Array.isArray(painPoints) || painPoints.length === 0) {
+      throw new Error('Pain points cannot be empty')
+    }
+
+    if (painPoints.some((painPoint) => !painPoint || painPoint.trim() === '')) {
+      throw new Error('Pain points cannot contain empty strings')
+    }
+
+    if (!targetingStrategy || targetingStrategy.trim() === '') {
+      throw new Error('Targeting strategy cannot be empty')
+    }
+
     return new TargetAudience(
       Identity.New(id),
       Identity.New(ideaId),
       segment.trim(),
       description.trim(),
-      challenges
+      challenges,
+      why.trim(),
+      painPoints,
+      targetingStrategy
     )
-  }
-
-  public setWhy(why: string): void {
-    if (!why || why.trim() === '') {
-      throw new Error('Why cannot be empty')
-    }
-
-    this.why = why
-  }
-
-  public setPainPoints(painPoints: string[]): void {
-    if (!Array.isArray(painPoints) || painPoints.length === 0) {
-      throw new Error('Pain points cannot be empty')
-    }
-
-    this.painPoints = painPoints
-  }
-
-  public setTargetingStrategy(targetingStrategy: string): void {
-    if (!targetingStrategy || targetingStrategy.trim() === '') {
-      throw new Error('Targeting strategy cannot be empty')
-    }
-
-    this.targetingStrategy = targetingStrategy
   }
 
   public getId(): Identity {
@@ -85,15 +86,15 @@ export class TargetAudience {
     return this.challenges
   }
 
-  public getWhy(): string | null {
+  public getWhy(): string {
     return this.why
   }
 
-  public getPainPoints(): string[] | null {
+  public getPainPoints(): string[] {
     return this.painPoints
   }
 
-  public getTargetingStrategy(): string | null {
+  public getTargetingStrategy(): string {
     return this.targetingStrategy
   }
 }

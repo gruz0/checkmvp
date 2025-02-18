@@ -10,9 +10,13 @@ interface ConceptForReservation {
     stage: string
     marketExistence: string
     targetAudience: {
+      id: string
       segment: string
       description: string
       challenges: string[]
+      why: string
+      painPoints: string[]
+      targetingStrategy: string
       validationMetrics: {
         marketSize: string
         accessibility: number
@@ -35,9 +39,13 @@ const ConceptForReservationResponseSchema = z.object({
       market_existence: z.string().min(1),
       target_audience: z.array(
         z.object({
+          id: z.string().min(1),
           segment: z.string().min(1),
           description: z.string().min(1),
           challenges: z.array(z.string().min(1)),
+          why: z.string().min(1),
+          pain_points: z.array(z.string().min(1)),
+          targeting_strategy: z.string().min(1),
           validation_metrics: z.object({
             market_size: z.string().min(1),
             accessibility: z.number().min(0).max(10),
@@ -107,9 +115,13 @@ export class Service {
               marketExistence: data.content.market_existence,
               targetAudience: data.content.target_audience.map(
                 (targetAudience) => ({
+                  id: targetAudience.id,
                   segment: targetAudience.segment,
                   description: targetAudience.description,
                   challenges: targetAudience.challenges,
+                  why: targetAudience.why,
+                  painPoints: targetAudience.pain_points,
+                  targetingStrategy: targetAudience.targeting_strategy,
                   validationMetrics: {
                     marketSize: targetAudience.validation_metrics.market_size,
                     accessibility:

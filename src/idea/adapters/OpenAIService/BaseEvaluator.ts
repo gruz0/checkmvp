@@ -3,12 +3,15 @@ import OpenAI from 'openai'
 import { zodResponseFormat } from 'openai/helpers/zod'
 import { z } from 'zod'
 import { getPromptContent } from '@/lib/prompts'
+import { MessageBuilder } from './MessageBuilder'
 
 export abstract class BaseEvaluator<TResponse, TEvaluation> {
   protected readonly openai: OpenAI
+  protected readonly messageBuilder: MessageBuilder
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string, messageBuilder: MessageBuilder) {
     this.openai = new OpenAI({ apiKey })
+    this.messageBuilder = messageBuilder
   }
 
   protected abstract get className(): string

@@ -13,7 +13,6 @@ Use the following details to generate a helpful summary that orients the user ab
 ### Field Guidelines
 
 - **problem_definition** (string): A refined and clarified version of the user's core problem or idea.
-- **region** (string): The geographic focus, if relevant.
 - **market_existence** (array of 3 short strings): High-level info about market trends, size, or relevant data. Presents concise data points and market trends so the founder quickly sees the bigger picture without wading through lengthy research.
 - **existing_solutions** (array of 2-3 short strings): Quick mention of any known competitors or alternative solutions. Identifies the competitor landscape (even if briefly) and pinpoints where the idea stands out.
 - **main_challenges** (array of 2-3 strings): Brief note on barriers to entry or significant hurdles. Shows obstacles the founder should anticipate, helping them strategize early on.

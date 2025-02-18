@@ -221,7 +221,7 @@ const DefineConceptForm = ({
   const [isPrimaryAssumptionExpanded, setIsPrimaryAssumptionExpanded] =
     useState<boolean>(true)
   const [isTargetPersonasExpanded, setIsTargetPersonasExpanded] =
-    useState<boolean>(false)
+    useState<boolean>(true)
   const [isRegionExpanded, setIsRegionExpanded] = useState<boolean>(false)
   const [isProductTypeExpanded, setIsProductTypeExpanded] =
     useState<boolean>(false)
