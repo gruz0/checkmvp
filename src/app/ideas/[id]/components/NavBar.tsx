@@ -39,41 +39,5 @@ export const NavBar = () => (
     <Link href="#two_week_testing_plan" className={className}>
       <span className="inline-block w-6">📅</span> Two-Week Plan
     </Link>
-    <Link
-      href="#estimated_costs"
-      className="block rounded px-4 py-2 text-gray-500"
-    >
-      <span className="inline-block w-6">💰</span> Estimated Costs
-    </Link>
-    <Link
-      href="#early_adopters"
-      className="block rounded px-4 py-2 text-gray-500"
-    >
-      <span className="inline-block w-6">🚀</span> Early Adopters
-    </Link>
-    <Link
-      href="#networking_opportunities"
-      className="block rounded px-4 py-2 text-gray-500"
-    >
-      <span className="inline-block w-6">🤝</span> Networking
-    </Link>
-    <Link
-      href="#feedback_templates"
-      className="block rounded px-4 py-2 text-gray-500"
-    >
-      <span className="inline-block w-6">📝</span> Feedback Templates
-    </Link>
-    <Link href="#pitch_deck" className="block rounded px-4 py-2 text-gray-500">
-      <span className="inline-block w-6">🎪</span> Pitch Deck
-    </Link>
-    <Link href="#roadmap" className="block rounded px-4 py-2 text-gray-500">
-      <span className="inline-block w-6">🗺️</span> Roadmap
-    </Link>
-    <Link
-      href="#tools_and_resources"
-      className="block rounded px-4 py-2 text-gray-500"
-    >
-      <span className="inline-block w-6">🛠️</span> Tools & Resources
-    </Link>
   </nav>
 )

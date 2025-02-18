@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 
 const MessageBox = () => (
-  <div className="mb-4 rounded-lg border border-yellow-200 bg-yellow-50 p-4 shadow-lg lg:p-6">
+  <div className="mb-4 mt-8 rounded-lg border border-yellow-200 bg-yellow-50 p-4 shadow-lg lg:p-6">
     <h2 className="mb-2 text-lg font-semibold text-gray-800 md:text-xl">
       Was this report helpful? ❤️
     </h2>
