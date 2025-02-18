@@ -14,19 +14,12 @@ import { NavBar } from './components/NavBar'
 import SectionCompetitors from './components/SectionCompetitors'
 import SectionContentIdeas from './components/SectionContentIdeas'
 import SectionContext from './components/SectionContext'
-import SectionEarlyAdopters from './components/SectionEarlyAdopters'
 import SectionElevatorPitch from './components/SectionElevatorPitch'
-import SectionEstimatedCosts from './components/SectionEstimatedCosts'
-import SectionFeedbackTemplates from './components/SectionFeedbackTemplates'
 import SectionGoogleTrends from './components/SectionGoogleTrends'
 import SectionMarketAnalysis from './components/SectionMarketAnalysis'
-import SectionNetworkingOpportunities from './components/SectionNetworkingOpportunities'
-import SectionPitchDeck from './components/SectionPitchDeck'
 import SectionProductNames from './components/SectionProductNames'
-import SectionRoadmap from './components/SectionRoadmap'
 import SectionSWOTAnalysis from './components/SectionSWOTAnalysis'
 import SectionTargetAudiences from './components/SectionTargetAudiences'
-import SectionToolsAndResources from './components/SectionToolsAndResources'
 import SectionTwoWeekTestingPlan from './components/SectionTwoWeekTestingPlan'
 import SectionValueProposition from './components/SectionValueProposition'
 
@@ -342,13 +335,11 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
 
           <SectionTwoWeekTestingPlan data={data.testingPlan} />
 
+          <MessageBox />
+
           <HorizontalLine />
 
-          <div className="my-4 flex items-center justify-between">
-            <p className="text-xl font-bold text-gray-700 md:text-2xl dark:text-gray-300">
-              Your PDF Report:
-            </p>
-
+          <div className="mt-6 flex justify-between text-right">
             {readyForReport ? (
               <DownloadPDFButton
                 ideaId={data.id}
@@ -365,49 +356,14 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
                 Loading...
               </span>
             )}
+            <button
+              onClick={handleRemove}
+              className="rounded bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
+            >
+              Remove Report
+            </button>
           </div>
-
-          <MessageBox />
-
-          <HorizontalLine />
-
-          <SectionEstimatedCosts />
-
-          <HorizontalLine />
-
-          <SectionEarlyAdopters />
-
-          <HorizontalLine />
-
-          <SectionNetworkingOpportunities />
-
-          <HorizontalLine />
-
-          <SectionFeedbackTemplates />
-
-          <HorizontalLine />
-
-          <SectionPitchDeck />
-
-          <HorizontalLine />
-
-          <SectionRoadmap />
-
-          <HorizontalLine />
-
-          <SectionToolsAndResources />
         </div>
-      </div>
-
-      <HorizontalLine />
-
-      <div className="mt-6 text-right">
-        <button
-          onClick={handleRemove}
-          className="rounded bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
-        >
-          Remove Idea
-        </button>
       </div>
 
       <BackToTopButton />

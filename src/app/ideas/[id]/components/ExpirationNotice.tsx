@@ -37,9 +37,9 @@ const ExpirationNotice = ({ expirationDays }: Props) => {
             ⚡ Important Notice
           </h2>
           <p className="text-yellow-800 dark:text-yellow-200">
-            This idea will only be accessible for {expirationDays} days. After
+            This report will only be accessible for {expirationDays} days. After
             that, it will be archived automatically, and you won&apos;t be able
-            to access it online. Download the PDF report now to save your idea
+            to access it online. Download the PDF report now to save your data
             locally.
           </p>
         </div>
