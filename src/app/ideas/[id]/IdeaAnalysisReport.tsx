@@ -5,23 +5,12 @@ import { usePlausible } from 'next-plausible'
 import React, { useEffect, useState } from 'react'
 import BackToTopButton from '@/components/BackToTopButton'
 import HorizontalLine from '@/components/HorizontalLine'
-import MessageBox from '@/components/MessageBox'
 import { Goals } from '@/lib/goals'
 import AboutReport from './components/AboutReport'
 import DownloadPDFButton from './components/DownloadPDFButton'
 import ExpirationNotice from './components/ExpirationNotice'
 import { NavBar } from './components/NavBar'
-import SectionCompetitors from './components/SectionCompetitors'
-import SectionContentIdeas from './components/SectionContentIdeas'
 import SectionContext from './components/SectionContext'
-import SectionElevatorPitch from './components/SectionElevatorPitch'
-import SectionGoogleTrends from './components/SectionGoogleTrends'
-import SectionMarketAnalysis from './components/SectionMarketAnalysis'
-import SectionProductNames from './components/SectionProductNames'
-import SectionSWOTAnalysis from './components/SectionSWOTAnalysis'
-import SectionTargetAudiences from './components/SectionTargetAudiences'
-import SectionTwoWeekTestingPlan from './components/SectionTwoWeekTestingPlan'
-import SectionValueProposition from './components/SectionValueProposition'
 
 interface Props {
   data: {
@@ -291,51 +280,6 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
               contextAnalysis: data.contextAnalysis,
             }}
           />
-
-          <HorizontalLine />
-
-          <SectionMarketAnalysis data={data.marketAnalysis} />
-
-          <HorizontalLine />
-
-          <SectionCompetitors data={data.competitorAnalysis} />
-
-          <HorizontalLine />
-
-          <SectionValueProposition data={data.valueProposition} />
-
-          <HorizontalLine />
-
-          <SectionTargetAudiences data={data.targetAudience} />
-
-          <HorizontalLine />
-
-          <SectionSWOTAnalysis data={data.swotAnalysis} />
-
-          <HorizontalLine />
-
-          <SectionElevatorPitch data={data.elevatorPitches} />
-
-          <HorizontalLine />
-
-          <SectionProductNames data={data.productNames} />
-
-          <HorizontalLine />
-
-          <SectionGoogleTrends data={data.googleTrendsKeywords} />
-
-          <HorizontalLine />
-
-          <SectionContentIdeas
-            ideaId={data.id}
-            data={data.contentIdeasForMarketing}
-          />
-
-          <HorizontalLine />
-
-          <SectionTwoWeekTestingPlan data={data.testingPlan} />
-
-          <MessageBox />
 
           <HorizontalLine />
 
