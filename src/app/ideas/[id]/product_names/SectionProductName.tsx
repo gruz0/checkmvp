@@ -10,6 +10,7 @@ import SectionWrapper from '@/components/SectionWrapper'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 
 interface SectionProductNameProps {
+  id: number
   productName: string
   domains: string[]
   why: string
@@ -20,6 +21,7 @@ interface SectionProductNameProps {
 }
 
 const SectionProductName: React.FC<SectionProductNameProps> = ({
+  id,
   productName,
   domains,
   why,
@@ -31,13 +33,13 @@ const SectionProductName: React.FC<SectionProductNameProps> = ({
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
 
   return (
-    <SectionWrapper id={`product_name_${productName}`}>
+    <SectionWrapper id={`product_name_${id}`}>
       <SectionHeader
         title={`${productName} - ${tagline}`}
         emoji="🎤"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
-        sectionId={`section_product_name_${productName}`}
+        sectionId={`section_product_name_${id}`}
       />
 
       {isExpanded && (
