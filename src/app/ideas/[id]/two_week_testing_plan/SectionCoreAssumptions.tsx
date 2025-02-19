@@ -17,7 +17,7 @@ interface SectionCoreAssumptionsProps {
 const SectionCoreAssumptions: React.FC<SectionCoreAssumptionsProps> = ({
   coreAssumptions,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="core_assumptions">

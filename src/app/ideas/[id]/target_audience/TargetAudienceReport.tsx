@@ -3,7 +3,6 @@ import BackToTopButton from '@/components/BackToTopButton'
 import HorizontalLine from '@/components/HorizontalLine'
 import Paragraph from '@/components/Paragraph'
 import { NavBar } from '../components/NavBar'
-import SectionDescription from './SectionDescription'
 import SectionPainPoints from './SectionPainPoints'
 import SectionTargetingStrategy from './SectionTargetingStrategy'
 import SectionWhy from './SectionWhy'
@@ -30,19 +29,11 @@ export const TargetAudienceReport = ({ ideaId, targetAudience }: Props) => (
       <div className="flex-1 md:pl-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-700 md:text-3xl lg:text-4xl dark:text-gray-200">
-            � {targetAudience.segment}
+            🎯 {targetAudience.segment}
           </h1>
         </div>
 
-        <Paragraph>
-          It&apos;s vital to understand who you&apos;re trying to reach because
-          designing your message to these groups can make your product more
-          appealing. This is the key to success!
-        </Paragraph>
-
-        <HorizontalLine />
-
-        <SectionDescription description={targetAudience.description} />
+        <Paragraph>{targetAudience.description}</Paragraph>
 
         <HorizontalLine />
 
@@ -57,6 +48,8 @@ export const TargetAudienceReport = ({ ideaId, targetAudience }: Props) => (
         <SectionTargetingStrategy
           targetingStrategy={targetAudience.targetingStrategy}
         />
+
+        <HorizontalLine />
       </div>
     </div>
 

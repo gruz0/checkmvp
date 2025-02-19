@@ -19,7 +19,7 @@ const SectionTargetingStrategy: React.FC<SectionTargetingStrategyProps> = ({
     <SectionWrapper id="targeting_strategy">
       <SectionHeader
         title="Targeting Strategy"
-        emoji="📈"
+        emoji="⚡"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_targeting_strategy"

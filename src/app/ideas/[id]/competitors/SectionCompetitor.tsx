@@ -8,7 +8,7 @@ import SectionWrapper from '@/components/SectionWrapper'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 
 interface SectionCompetitorProps {
-  id: string
+  position: number
   competitor: {
     name: string
     productName: string
@@ -22,29 +22,37 @@ interface SectionCompetitorProps {
   }
 }
 
+const numberEmojis = {
+  1: '1️⃣',
+  2: '2️⃣',
+  3: '3️⃣',
+  4: '4️⃣',
+  5: '5️⃣',
+}
+
 const SectionCompetitor: React.FC<SectionCompetitorProps> = ({
-  id,
+  position,
   competitor,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
-    <SectionWrapper id={`competitor_${id}`}>
+    <SectionWrapper id={`competitor_${position}`}>
       <SectionHeader
         title={competitor.name}
-        emoji="📈"
+        emoji={numberEmojis[position as keyof typeof numberEmojis] || '📈'}
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
-        sectionId={`section_competitor_${id}`}
+        sectionId={`section_competitor_${position}`}
       />
 
       {isExpanded && (
-        <div id={`section_competitor_${id}`}>
+        <div id={`section_competitor_${position}`}>
           <SectionContainer>
             <h3 className="mb-2 text-lg font-semibold md:text-xl">Product:</h3>
             <Paragraph>
               <a
-                href={competitor.url}
+                href={`${competitor.url}?ref=checkmvp.com`}
                 target="_blank"
                 rel="nofollow noopener noreferrer"
                 className="text-blue-700 underline hover:text-blue-600 dark:text-blue-300 dark:hover:text-blue-400"

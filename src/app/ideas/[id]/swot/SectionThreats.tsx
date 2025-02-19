@@ -11,7 +11,7 @@ interface SectionThreatsProps {
 }
 
 const SectionThreats: React.FC<SectionThreatsProps> = ({ threats }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="threats">

@@ -10,7 +10,7 @@ import SectionWrapper from '@/components/SectionWrapper'
 import SimpleUnorderedList from '@/components/SimpleUnorderedList'
 
 interface SectionProductNameProps {
-  id: number
+  position: number
   productName: string
   domains: string[]
   why: string
@@ -20,8 +20,16 @@ interface SectionProductNameProps {
   brandingPotential: string
 }
 
+const numberEmojis = {
+  1: '1️⃣',
+  2: '2️⃣',
+  3: '3️⃣',
+  4: '4️⃣',
+  5: '5️⃣',
+}
+
 const SectionProductName: React.FC<SectionProductNameProps> = ({
-  id,
+  position,
   productName,
   domains,
   why,
@@ -30,20 +38,20 @@ const SectionProductName: React.FC<SectionProductNameProps> = ({
   similarNames,
   brandingPotential,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
-    <SectionWrapper id={`product_name_${id}`}>
+    <SectionWrapper id={`product_name_${position}`}>
       <SectionHeader
         title={`${productName} - ${tagline}`}
-        emoji="🎤"
+        emoji={numberEmojis[position as keyof typeof numberEmojis] || '📈'}
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
-        sectionId={`section_product_name_${id}`}
+        sectionId={`section_product_name_${position}`}
       />
 
       {isExpanded && (
-        <div id={`section_product_name_${productName}`}>
+        <div id={`section_product_name_${position}`}>
           <SectionContainer>
             <h3 className="mb-2 text-lg font-semibold md:text-xl">Why:</h3>
             <Paragraph>

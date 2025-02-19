@@ -42,7 +42,7 @@ export const ProductNamesReport = ({ ideaId, productNames }: Props) => (
 
         {productNames.map((productName, idx) => (
           <React.Fragment key={idx}>
-            <SectionProductName key={idx} id={idx + 1} {...productName} />
+            <SectionProductName key={idx} position={idx + 1} {...productName} />
             <HorizontalLine />
           </React.Fragment>
         ))}

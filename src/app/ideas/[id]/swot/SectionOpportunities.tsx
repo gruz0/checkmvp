@@ -13,7 +13,7 @@ interface SectionOpportunitiesProps {
 const SectionOpportunities: React.FC<SectionOpportunitiesProps> = ({
   opportunities,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="opportunities">

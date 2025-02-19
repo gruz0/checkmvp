@@ -17,7 +17,7 @@ interface SectionContingencyPlansProps {
 const SectionContingencyPlans: React.FC<SectionContingencyPlansProps> = ({
   contingencyPlans,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="contingency_plans">

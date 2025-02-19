@@ -133,6 +133,8 @@ export const TwoWeekTestingPlanReport = ({ ideaId, testingPlan }: Props) => (
         <SectionSoftLaunchStrategy
           softLaunchStrategy={testingPlan.softLaunchStrategy}
         />
+
+        <HorizontalLine />
       </div>
     </div>
 

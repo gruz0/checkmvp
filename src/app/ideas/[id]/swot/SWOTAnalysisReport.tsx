@@ -55,6 +55,8 @@ export const SWOTAnalysisReport = ({ ideaId, swotAnalysis }: Props) => (
         <HorizontalLine />
 
         <SectionThreats threats={swotAnalysis.threats} />
+
+        <HorizontalLine />
       </div>
     </div>
 

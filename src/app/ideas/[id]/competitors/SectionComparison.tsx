@@ -16,13 +16,13 @@ interface SectionComparisonProps {
 const SectionComparison: React.FC<SectionComparisonProps> = ({
   comparison,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="comparison">
       <SectionHeader
         title="Comparison"
-        emoji="📈"
+        emoji="⚖️"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_comparison"

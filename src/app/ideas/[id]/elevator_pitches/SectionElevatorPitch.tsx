@@ -24,7 +24,7 @@ const SectionElevatorPitch: React.FC<SectionElevatorPitchProps> = ({
   valueProposition,
   cta,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false)
 
   const handleSpeak = (pitchText: string) => {

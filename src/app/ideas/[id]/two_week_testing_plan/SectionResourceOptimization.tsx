@@ -19,7 +19,7 @@ interface SectionResourceOptimizationProps {
 const SectionResourceOptimization: React.FC<
   SectionResourceOptimizationProps
 > = ({ resourceOptimization }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="resource_optimization">

@@ -13,7 +13,7 @@ interface SectionWeaknessesProps {
 const SectionWeaknesses: React.FC<SectionWeaknessesProps> = ({
   weaknesses,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="weaknesses">

@@ -19,7 +19,7 @@ const SectionPainPoints: React.FC<SectionPainPointsProps> = ({
     <SectionWrapper id="pain_points">
       <SectionHeader
         title="Pain Points"
-        emoji="📈"
+        emoji="😣"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_pain_points"

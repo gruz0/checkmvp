@@ -17,7 +17,7 @@ const SectionWhy: React.FC<SectionWhyProps> = ({ why }) => {
     <SectionWrapper id="why">
       <SectionHeader
         title="Why"
-        emoji="📈"
+        emoji="🤔"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_why"

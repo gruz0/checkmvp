@@ -18,7 +18,7 @@ interface SectionTestingMethodsProps {
 const SectionTestingMethods: React.FC<SectionTestingMethodsProps> = ({
   testingMethods,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="testing_methods">

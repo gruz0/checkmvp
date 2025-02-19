@@ -19,7 +19,7 @@ const SectionDifferentiation: React.FC<SectionDifferentiationProps> = ({
     <SectionWrapper id="differentiation">
       <SectionHeader
         title="Differentiation"
-        emoji="📈"
+        emoji="💫"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_differentiation"

@@ -60,7 +60,7 @@ export const CompetitorsReport = ({
           <React.Fragment key={idx}>
             <SectionCompetitor
               key={idx}
-              id={idx.toString()}
+              position={idx + 1}
               competitor={competitor}
             />
 
@@ -75,6 +75,8 @@ export const CompetitorsReport = ({
         <SectionDifferentiationSuggestions
           differentiationSuggestions={differentiationSuggestions}
         />
+
+        <HorizontalLine />
       </div>
     </div>
 

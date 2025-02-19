@@ -13,13 +13,13 @@ interface SectionDifferentiationSuggestionsProps {
 const SectionDifferentiationSuggestions: React.FC<
   SectionDifferentiationSuggestionsProps
 > = ({ differentiationSuggestions }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="differentiation_suggestions">
       <SectionHeader
         title="Differentiation Suggestions"
-        emoji="📈"
+        emoji="💡"
         onClick={() => setIsExpanded(!isExpanded)}
         isExpanded={isExpanded}
         sectionId="section_differentiation_suggestions"

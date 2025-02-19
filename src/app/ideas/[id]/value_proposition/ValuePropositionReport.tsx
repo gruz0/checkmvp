@@ -48,6 +48,8 @@ export const ValuePropositionReport = ({ ideaId, valueProposition }: Props) => (
         <SectionDifferentiation
           differentiation={valueProposition.differentiation}
         />
+
+        <HorizontalLine />
       </div>
     </div>
 

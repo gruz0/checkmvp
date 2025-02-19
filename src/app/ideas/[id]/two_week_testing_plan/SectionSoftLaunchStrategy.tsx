@@ -40,7 +40,7 @@ interface SectionSoftLaunchStrategyProps {
 const SectionSoftLaunchStrategy: React.FC<SectionSoftLaunchStrategyProps> = ({
   softLaunchStrategy,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="soft_launch_strategy">

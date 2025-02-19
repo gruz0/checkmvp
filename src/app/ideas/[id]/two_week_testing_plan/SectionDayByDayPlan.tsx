@@ -21,7 +21,7 @@ interface SectionDayByDayPlanProps {
 const SectionDayByDayPlan: React.FC<SectionDayByDayPlanProps> = ({
   twoWeekPlan,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
   return (
     <SectionWrapper id="day_by_day_plan">
