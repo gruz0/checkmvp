@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
     return (
       <CompetitorsReport
-        id={params.id}
+        ideaId={params.id}
         competitors={dto.competitorAnalysis.competitors}
         comparison={dto.competitorAnalysis.comparison}
         differentiationSuggestions={

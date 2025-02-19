@@ -17,7 +17,12 @@ export default async function Page({ params }: { params: { id: string } }) {
       notFound()
     }
 
-    return <ValuePropositionReport valueProposition={dto.valueProposition} />
+    return (
+      <ValuePropositionReport
+        ideaId={params.id}
+        valueProposition={dto.valueProposition}
+      />
+    )
   } catch (e) {
     if (e instanceof Error) {
       if ('isNotFoundError' in e) {

@@ -13,7 +13,12 @@ export default async function Page({ params }: { params: { id: string } }) {
       id: params.id,
     })
 
-    return <TargetAudienceReport targetAudience={dto.targetAudience} />
+    return (
+      <TargetAudienceReport
+        ideaId={params.id}
+        targetAudience={dto.targetAudience}
+      />
+    )
   } catch (e) {
     if (e instanceof Error) {
       if ('isNotFoundError' in e) {

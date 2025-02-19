@@ -10,7 +10,7 @@ import SectionTrends from './SectionTrends'
 import SectionUserBehaviors from './SectionUserBehaviors'
 
 interface Props {
-  id: string
+  ideaId: string
   marketAnalysis: {
     trends: string
     userBehaviors: string
@@ -20,11 +20,11 @@ interface Props {
   }
 }
 
-export const MarketAnalysisReport = ({ marketAnalysis }: Props) => (
+export const MarketAnalysisReport = ({ ideaId, marketAnalysis }: Props) => (
   <div className="p-4 md:p-6 lg:p-8">
     <div className="flex flex-col md:flex-row">
       <aside className="sticky top-4 hidden self-start rounded-lg bg-gray-100 p-2 shadow-lg md:block md:w-1/4 dark:bg-gray-900">
-        <NavBar />
+        <NavBar ideaId={ideaId} />
       </aside>
 
       <div className="flex-1 md:pl-8">

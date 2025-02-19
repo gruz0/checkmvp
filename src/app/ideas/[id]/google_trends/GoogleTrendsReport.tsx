@@ -6,14 +6,15 @@ import { NavBar } from '../components/NavBar'
 import SectionGoogleTrends from './SectionSuggestedKeywords'
 
 interface Props {
+  ideaId: string
   googleTrendsKeywords: Array<string>
 }
 
-export const GoogleTrendsReport = ({ googleTrendsKeywords }: Props) => (
+export const GoogleTrendsReport = ({ ideaId, googleTrendsKeywords }: Props) => (
   <div className="p-4 md:p-6 lg:p-8">
     <div className="flex flex-col md:flex-row">
       <aside className="sticky top-4 hidden self-start rounded-lg bg-gray-100 p-2 shadow-lg md:block md:w-1/4 dark:bg-gray-900">
-        <NavBar />
+        <NavBar ideaId={ideaId} />
       </aside>
 
       <div className="flex-1 md:pl-8">

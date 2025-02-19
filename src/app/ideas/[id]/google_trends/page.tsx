@@ -18,7 +18,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     }
 
     return (
-      <GoogleTrendsReport googleTrendsKeywords={dto.googleTrendsKeywords} />
+      <GoogleTrendsReport
+        ideaId={params.id}
+        googleTrendsKeywords={dto.googleTrendsKeywords}
+      />
     )
   } catch (e) {
     if (e instanceof Error) {

@@ -17,7 +17,12 @@ export default async function Page({ params }: { params: { id: string } }) {
       notFound()
     }
 
-    return <ElevatorPitchesReport elevatorPitches={dto.elevatorPitches} />
+    return (
+      <ElevatorPitchesReport
+        ideaId={params.id}
+        elevatorPitches={dto.elevatorPitches}
+      />
+    )
   } catch (e) {
     if (e instanceof Error) {
       if ('isNotFoundError' in e) {

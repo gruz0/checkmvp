@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
     return (
       <MarketAnalysisReport
-        id={params.id}
+        ideaId={params.id}
         marketAnalysis={dto.marketAnalysis}
       />
     )

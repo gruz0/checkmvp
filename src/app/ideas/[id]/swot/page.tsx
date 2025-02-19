@@ -17,7 +17,9 @@ export default async function Page({ params }: { params: { id: string } }) {
       notFound()
     }
 
-    return <SWOTAnalysisReport swotAnalysis={dto.swotAnalysis} />
+    return (
+      <SWOTAnalysisReport ideaId={params.id} swotAnalysis={dto.swotAnalysis} />
+    )
   } catch (e) {
     if (e instanceof Error) {
       if ('isNotFoundError' in e) {

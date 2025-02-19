@@ -17,7 +17,9 @@ export default async function Page({ params }: { params: { id: string } }) {
       notFound()
     }
 
-    return <ProductNamesReport productNames={dto.productNames} />
+    return (
+      <ProductNamesReport ideaId={params.id} productNames={dto.productNames} />
+    )
   } catch (e) {
     if (e instanceof Error) {
       if ('isNotFoundError' in e) {
