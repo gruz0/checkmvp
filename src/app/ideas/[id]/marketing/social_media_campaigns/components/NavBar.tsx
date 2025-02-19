@@ -19,7 +19,7 @@ export const NavBar = ({ ideaId }: { ideaId: string }) => (
 
     <HorizontalLine />
 
-    <Link href={`/ideas/${ideaId}`} className={className}>
+    <Link href={`/ideas/${ideaId}/marketing`} className={className}>
       Back to the Report
     </Link>
   </nav>
