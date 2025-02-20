@@ -4,13 +4,21 @@ import { useRouter } from 'next/navigation'
 import { usePlausible } from 'next-plausible'
 import React, { useEffect, useState } from 'react'
 import BackToTopButton from '@/components/BackToTopButton'
+import FetchingDataMessage from '@/components/FetchingDataMessage'
 import HorizontalLine from '@/components/HorizontalLine'
 import { Goals } from '@/lib/goals'
 import AboutReport from './components/AboutReport'
 import DownloadPDFButton from './components/DownloadPDFButton'
 import ExpirationNotice from './components/ExpirationNotice'
 import { NavBar } from './components/NavBar'
-import SectionContext from './components/SectionContext'
+import SectionExistingSolutions from './components/SectionExistingSolutions'
+import SectionMainChallenges from './components/SectionMainChallenges'
+import SectionMarketExistenceDetails from './components/SectionMarketExistenceDetails'
+import SectionNextSteps from './components/SectionNextSteps'
+import SectionOpportunities from './components/SectionOpportunities'
+import SectionProblemDefinition from './components/SectionProblemDefinition'
+import SectionRewrittenProblemStatement from './components/SectionRewrittenProblemStatement'
+import SectionTargetUsers from './components/SectionTargetUsers'
 
 interface Props {
   data: {
@@ -274,12 +282,56 @@ export const IdeaAnalysisReport = ({ data, expirationDays }: Props) => {
 
           <ExpirationNotice expirationDays={expirationDays} />
 
-          <SectionContext
-            data={{
-              problem: data.problem,
-              contextAnalysis: data.contextAnalysis,
-            }}
-          />
+          <SectionProblemDefinition problemDefinition={data.problem} />
+
+          <HorizontalLine />
+
+          {data.contextAnalysis ? (
+            <>
+              <SectionRewrittenProblemStatement
+                rewrittenProblemStatement={
+                  data.contextAnalysis.problemDefinition
+                }
+              />
+
+              <HorizontalLine />
+
+              <SectionMarketExistenceDetails
+                marketExistenceDetails={data.contextAnalysis.marketExistence}
+              />
+
+              <HorizontalLine />
+
+              <SectionTargetUsers
+                targetUsers={data.contextAnalysis.targetUsers}
+                whyItMatters={data.contextAnalysis.whyItMatters}
+              />
+
+              <HorizontalLine />
+
+              <SectionExistingSolutions
+                existingSolutions={data.contextAnalysis.existingSolutions}
+              />
+
+              <HorizontalLine />
+
+              <SectionMainChallenges
+                mainChallenges={data.contextAnalysis.mainChallenges}
+              />
+
+              <HorizontalLine />
+
+              <SectionOpportunities
+                opportunities={data.contextAnalysis.opportunities}
+              />
+
+              <HorizontalLine />
+
+              <SectionNextSteps nextSteps={data.contextAnalysis.callToAction} />
+            </>
+          ) : (
+            <FetchingDataMessage />
+          )}
 
           <HorizontalLine />
 
