@@ -20,7 +20,7 @@ export const ElevatorPitchesReport = ({ ideaId, elevatorPitches }: Props) => (
   <div className="p-4 md:p-6 lg:p-8">
     <div className="flex flex-col md:flex-row">
       <aside className="sticky top-4 hidden self-start rounded-lg bg-gray-100 p-2 shadow-lg md:block md:w-1/4 dark:bg-gray-900">
-        <NavBar ideaId={ideaId} activePath="elevator_pitches" />
+        <NavBar ideaId={ideaId} activePath="elevator_pitches" reportIsReady />
       </aside>
 
       <div className="flex-1 md:pl-8">
