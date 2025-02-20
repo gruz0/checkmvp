@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 
 const getItemClassName = (isActive: boolean, isDisabled: boolean) =>
   `block rounded px-4 py-2 ${
@@ -42,25 +42,78 @@ export const NavBar: React.FC<Props> = ({
   ideaId,
   activePath,
   reportIsReady,
-}) => (
-  <nav className="space-y-1">
-    {MENU_ITEMS.map(({ path, label, emoji }) => {
-      const fullPath = `/ideas/${ideaId}${path ? `/${path}` : ''}`
-      const isDisabled = !reportIsReady && path !== ''
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
 
-      return (
-        <Link
-          key={path || 'context'}
-          href={isDisabled ? '#' : fullPath}
-          className={getItemClassName(activePath === path, isDisabled)}
-          onClick={(e) => isDisabled && e.preventDefault()}
-        >
-          <span className="inline-block w-6">
-            {!reportIsReady && path !== '' ? '⏳' : emoji}
-          </span>{' '}
-          {label}
-        </Link>
-      )
-    })}
-  </nav>
-)
+  return (
+    <>
+      {/* Mobile burger menu button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed right-4 top-4 z-50 rounded-lg bg-gray-100 p-2 shadow-lg md:hidden dark:bg-gray-900"
+        aria-label="Toggle menu"
+      >
+        <div className="space-y-1.5">
+          <span
+            className={`block h-0.5 w-6 bg-gray-600 transition-transform duration-300 dark:bg-gray-300 ${isOpen ? 'translate-y-2 rotate-45' : ''}`}
+          />
+          <span
+            className={`block h-0.5 w-6 bg-gray-600 transition-opacity duration-300 dark:bg-gray-300 ${isOpen ? 'opacity-0' : ''}`}
+          />
+          <span
+            className={`block h-0.5 w-6 bg-gray-600 transition-transform duration-300 dark:bg-gray-300 ${isOpen ? '-translate-y-2 -rotate-45' : ''}`}
+          />
+        </div>
+      </button>
+
+      {/* Mobile menu overlay */}
+      <div
+        role="button"
+        tabIndex={0}
+        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 md:hidden ${
+          isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+        }`}
+        onClick={() => setIsOpen(false)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === 'Escape') {
+            setIsOpen(false)
+          }
+        }}
+      />
+
+      {/* Navigation menu - desktop and mobile */}
+      <nav
+        className={`space-y-1 md:block ${
+          isOpen
+            ? 'fixed right-4 top-16 z-40 w-64 rounded-lg bg-gray-100 p-2 shadow-lg dark:bg-gray-900'
+            : 'hidden'
+        }`}
+      >
+        {MENU_ITEMS.map(({ path, label, emoji }) => {
+          const fullPath = `/ideas/${ideaId}${path ? `/${path}` : ''}`
+          const isDisabled = !reportIsReady && path !== ''
+
+          return (
+            <Link
+              key={path || 'context'}
+              href={isDisabled ? '#' : fullPath}
+              className={getItemClassName(activePath === path, isDisabled)}
+              onClick={(e) => {
+                if (isDisabled) {
+                  e.preventDefault()
+                } else {
+                  setIsOpen(false)
+                }
+              }}
+            >
+              <span className="inline-block w-6">
+                {!reportIsReady && path !== '' ? '⏳' : emoji}
+              </span>{' '}
+              {label}
+            </Link>
+          )
+        })}
+      </nav>
+    </>
+  )
+}
