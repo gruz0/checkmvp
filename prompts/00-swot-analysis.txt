@@ -11,9 +11,9 @@ Based on the following information, please generate a response that outlines the
 
 - **strengths** (array of strings): List the strengths of the product.
 - **weaknesses** (array of objects): For each weakness, provide:
-  - **description** (string): A brief description of the weakness.
+  - **description** (string): A brief description of the weakness. Must be ended with a period.
   - **action** (string): A suggested action to address or mitigate the weakness.
 - **opportunities** (array of strings): List the opportunities available.
 - **threats** (array of objects): For each threat, provide:
-  - **description** (string): A brief description of the threat.
+  - **description** (string): A brief description of the threat. Must be ended with a period.
   - **action** (string): A suggested action to address or mitigate the threat.
