@@ -114,6 +114,14 @@ const Template = ({ children }: { children: React.ReactNode }) => (
             <ul className="space-y-2">
               <li>
                 <Link
+                  href="/tools"
+                  className="text-sm text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400"
+                >
+                  Free AI Tools
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/about"
                   className="text-sm text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400"
                 >

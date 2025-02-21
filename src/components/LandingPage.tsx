@@ -12,6 +12,8 @@ interface SectionGridProps {
 interface SectionCellProps {
   heading: string
   description: string
+  centerizeDescription?: boolean
+  children?: React.ReactNode
 }
 
 interface HeadingProps {
@@ -64,12 +66,17 @@ export const SectionGridTwoColumns: React.FC<SectionGridProps> = ({
 export const SectionCell: React.FC<SectionCellProps> = ({
   heading,
   description,
+  centerizeDescription = false,
+  children,
 }) => (
-  <div className="rounded-lg bg-gray-50 px-6 py-5 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
+  <div className="flex h-full flex-col rounded-lg bg-gray-50 px-6 py-5 shadow-lg lg:hover:bg-gray-100 dark:bg-gray-700 dark:lg:hover:bg-gray-600">
     <h3 className="mb-2 text-center text-xl font-semibold md:mb-3">
       {heading}
     </h3>
-    <p className="text-center md:text-left">{description}</p>
+    <p className={`flex ${centerizeDescription ? 'text-center' : 'text-left'}`}>
+      {description}
+    </p>
+    {children && <div className="mt-4 flex justify-center">{children}</div>}
   </div>
 )
 
