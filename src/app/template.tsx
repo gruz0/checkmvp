@@ -15,19 +15,11 @@ const Template = ({ children }: { children: React.ReactNode }) => (
             <ThemeToggle />
 
             <Link
-              href="/about"
+              href="/tools"
               className="flex items-center space-x-1 text-gray-900 transition-colors duration-300 hover:text-blue-500 dark:text-gray-100 dark:hover:text-blue-400"
               title="About"
             >
-              About
-            </Link>
-
-            <Link
-              href="/supporters"
-              className="flex items-center space-x-1 text-gray-900 transition-colors duration-300 hover:text-blue-500 dark:text-gray-100 dark:hover:text-blue-400"
-              title="Supporters"
-            >
-              Supporters
+              Free AI Tools
             </Link>
           </div>
         </div>
@@ -112,6 +104,14 @@ const Template = ({ children }: { children: React.ReactNode }) => (
               📚 Resources
             </h3>
             <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/tools"
+                  className="text-sm text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400"
+                >
+                  Free AI Tools
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/about"

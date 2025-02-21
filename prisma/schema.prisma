@@ -80,3 +80,17 @@ model TargetAudience {
 
   @@map("target_audiences")
 }
+
+model GeneratedHypothesis {
+  id        String    @id @default(uuid())
+  content   String
+  result    String?
+  status    String    @default("pending") // pending, completed, error
+  error     String?
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @updatedAt @map(name: "updated_at")
+  startedAt DateTime? @map(name: "started_at")
+  endedAt   DateTime? @map(name: "ended_at")
+
+  @@map("generated_hypotheses")
+}
